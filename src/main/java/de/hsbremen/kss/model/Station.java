@@ -32,7 +32,10 @@ public final class Station {
 	private final Collection<Order> destinationOrders;
 
 	public Station(Integer id, String name, Integer xCoordinate, Integer yCoordinate) {
-		Validate.notNull(id, name, xCoordinate, yCoordinate);
+		Validate.notNull(id);
+		Validate.notNull(name);
+		Validate.notNull(xCoordinate);
+		Validate.notNull(yCoordinate);
 		
 		this.id = id;
 		this.name = name;

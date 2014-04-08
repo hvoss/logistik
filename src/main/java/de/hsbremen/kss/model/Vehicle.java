@@ -11,7 +11,8 @@ public final class Vehicle {
 	private final String name;
 
 	public Vehicle(Integer id, String name) {
-		Validate.notNull(id, name);
+		Validate.notNull(id);
+		Validate.notNull(name);
 		
 		this.id = id;
 		this.name = name;

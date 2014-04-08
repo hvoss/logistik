@@ -27,7 +27,10 @@ public final class Order {
 	}
 		
 	public Order(Integer id, String name, Station source, Station destination) {
-		Validate.notNull(id, name, source);
+		Validate.notNull(id);
+		Validate.notNull(name);
+		Validate.notNull(source);
+		
 		this.id = id;
 		this.name = name;
 		this.source = source;
