@@ -1,6 +1,7 @@
 package de.hsbremen.kss.model;
 
 import java.util.Collection;
+import java.util.Collections;
 
 import org.apache.commons.lang3.Validate;
 
@@ -21,9 +22,21 @@ public final class Configuration {
 		Validate.noNullElements(stations);
 		Validate.noNullElements(vehicles);
 		
-		this.orders = orders;
-		this.stations = stations;
-		this.vehicles = vehicles;
+		this.orders = Collections.unmodifiableCollection(orders);
+		this.stations = Collections.unmodifiableCollection(stations);
+		this.vehicles = Collections.unmodifiableCollection(vehicles);
+		
+		for (Order order : this.orders) {
+			order.makeUnmodifyable();
+		}
+		
+		for (Station station : this.stations) {
+			station.makeUnmodifyable();
+		}
+		
+		for (Vehicle vehicle : this.vehicles) {
+			vehicle.makeUnmodifyable();
+		}
 	}
 
 	public Collection<Order> getOrders() {
@@ -37,6 +50,5 @@ public final class Configuration {
 	public Collection<Vehicle> getVehicles() {
 		return vehicles;
 	}
-	
 	
 }

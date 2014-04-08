@@ -1,5 +1,6 @@
 package de.hsbremen.kss.model;
 
+
 import org.apache.commons.lang3.Validate;
 
 public final class Vehicle {
@@ -11,8 +12,8 @@ public final class Vehicle {
 	private final String name;
 
 	public Vehicle(Integer id, String name) {
-		Validate.notNull(id);
-		Validate.notNull(name);
+		Validate.notNull(id, "id is null");
+		Validate.notNull(name, "name is null");
 		
 		this.id = id;
 		this.name = name;
@@ -25,5 +26,8 @@ public final class Vehicle {
 	public String getName() {
 		return name;
 	}
-	
+
+	void makeUnmodifyable() {
+		// nothing to do yet
+	}
 }

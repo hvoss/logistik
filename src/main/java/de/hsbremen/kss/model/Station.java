@@ -1,9 +1,11 @@
 package de.hsbremen.kss.model;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 
 import org.apache.commons.lang3.Validate;
+import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 /**
  * represents a station.
@@ -19,28 +21,24 @@ public final class Station {
 	/** the name */
 	private final String name;
 	
-	/** the x coordinate */
-	private final Integer xCoordinate;
-	
-	/** the y coordinate */
-	private final Integer yCoordinate;
-	
+	/** the coordinates */
+	private final Vector2D coordinates;
+
 	/** a list of orders for which this station is assigned as the source station */
-	private final Collection<Order> sourceOrders;
+	private Collection<Order> sourceOrders;
 	
 	/** a list of orders for which this station is assigned as the destination station */
-	private final Collection<Order> destinationOrders;
+	private Collection<Order> destinationOrders;
+	
 
-	public Station(Integer id, String name, Integer xCoordinate, Integer yCoordinate) {
-		Validate.notNull(id);
-		Validate.notNull(name);
-		Validate.notNull(xCoordinate);
-		Validate.notNull(yCoordinate);
+	public Station(Integer id, String name, Vector2D coordinates) {
+		Validate.notNull(id, "id is null");
+		Validate.notNull(name, "name is null");
+		Validate.notNull(coordinates, "coordinates is null");
 		
 		this.id = id;
 		this.name = name;
-		this.xCoordinate = xCoordinate;
-		this.yCoordinate = yCoordinate;
+		this.coordinates = coordinates;
 		this.sourceOrders = new HashSet<>();
 		this.destinationOrders = new HashSet<Order>();
 	}
@@ -53,20 +51,21 @@ public final class Station {
 		return name;
 	}
 
-	public Integer getxCoordinate() {
-		return xCoordinate;
+	public Vector2D getCoordinates() {
+		return coordinates;
 	}
-
-	public Integer getyCoordinate() {
-		return yCoordinate;
-	}
-
+	
 	public Collection<Order> getSourceOrders() {
 		return sourceOrders;
 	}
 
 	public Collection<Order> getDestinationOrders() {
 		return destinationOrders;
+	}
+	
+	void makeUnmodifyable() {
+		this.sourceOrders = Collections.unmodifiableCollection(this.sourceOrders);
+		this.destinationOrders = Collections.unmodifiableCollection(this.destinationOrders);
 	}
 	
 }

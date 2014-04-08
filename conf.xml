@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Configuration>
+	<Orders>
+		<Order id="1">
+			<Name>Test Auftrag</Name>
+			<SourceStationId>1</SourceStationId>
+		</Order>
+	</Orders>
+	
+	<Stations>
+		<Station id="1">
+			<Name>Bremen</Name>
+			<XCoordinate>432</XCoordinate>
+			<YCoordinate>222</YCoordinate>
+		</Station>
+		<Station id="2">
+			<Name>Hamburg</Name>
+			<XCoordinate>350</XCoordinate>
+			<YCoordinate>169</YCoordinate>
+		</Station>
+		<Station id="3">
+			<Name>Hannover</Name>
+			<XCoordinate>367</XCoordinate>
+			<YCoordinate>301</YCoordinate>
+		</Station>
+		<Station id="4">
+			<Name>München</Name>
+			<XCoordinate>240</XCoordinate>
+			<YCoordinate>778</YCoordinate>
+		</Station>
+		<Station id="5">
+			<Name>Osnabrück</Name>
+			<XCoordinate>485</XCoordinate>
+			<YCoordinate>312</YCoordinate>
+		</Station>
+		<Station id="6">
+			<Name>Berlin</Name>
+			<XCoordinate>113</XCoordinate>
+			<YCoordinate>285</YCoordinate>
+		</Station>
+		<Station id="7">
+			<Name>Ellenbogen</Name>
+			<XCoordinate>459</XCoordinate>
+			<YCoordinate>0</YCoordinate>
+		</Station>
+		<Station id="8">
+			<Name>Neißeaue</Name>
+			<XCoordinate>5</XCoordinate>
+			<YCoordinate>428</YCoordinate>
+		</Station>
+	</Stations>
+	
+	<Vehicles>
+		<Vehicle id="1">
+			<Name>VW Bus</Name>
+		</Vehicle>
+	</Vehicles>
+</Configuration>
