@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import de.hsbremen.kss.configuration.ConfigurationParser;
 import de.hsbremen.kss.configuration.impl.JAXBConfigurationParserImpl;
 import de.hsbremen.kss.model.Configuration;
+import de.hsbremen.kss.model.Station;
 
 /**
  * Hello world!
@@ -30,5 +31,13 @@ public class App {
     	LOG.info("got " + configuration.getStations().size() + " stations");
     	LOG.info("got " + configuration.getVehicles().size() + " vehicles");
     	LOG.info("got " + configuration.getOrders().size() + " orders");
+    	
+    	for (Station station : configuration.getStations()) {
+    		for (Station otherStation : configuration.getStations()) {
+    			if (station != otherStation) {
+    				LOG.debug("distance between " + station.getName() + " and " + otherStation.getName() + ": " + Math.round(station.distance(otherStation)) + " km");
+    			}
+    		}
+    	}
     }
 }

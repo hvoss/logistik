@@ -68,4 +68,8 @@ public final class Station {
 		this.destinationOrders = Collections.unmodifiableCollection(this.destinationOrders);
 	}
 	
+	public double distance(Station station) {
+		return station.coordinates.distance(this.coordinates);
+	}
+	
 }
