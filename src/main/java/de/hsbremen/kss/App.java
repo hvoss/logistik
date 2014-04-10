@@ -10,8 +10,14 @@ import org.slf4j.LoggerFactory;
 
 import de.hsbremen.kss.configuration.ConfigurationParser;
 import de.hsbremen.kss.configuration.impl.JAXBConfigurationParserImpl;
+import de.hsbremen.kss.construction.Construction;
+import de.hsbremen.kss.construction.NearestNeighbor;
+import de.hsbremen.kss.construction.SavingsContruction;
 import de.hsbremen.kss.model.Configuration;
+import de.hsbremen.kss.model.Plan;
 import de.hsbremen.kss.model.Station;
+import de.hsbremen.kss.validate.SimpleValidator;
+import de.hsbremen.kss.validate.Validator;
 
 /**
  * Hello world!
@@ -36,6 +42,17 @@ public class App {
 		LOG.info("got " + configuration.getVehicles().size() + " vehicles");
 
 		logDistancesBetweenStations(configuration.getStations());
+		
+		Construction nearestNeighbor = new NearestNeighbor();
+		Construction savingsContruction = new SavingsContruction();
+		
+		Plan plan1 = nearestNeighbor.constructPlan(configuration);
+		Plan plan2 = savingsContruction.constructPlan(configuration);
+		
+		Validator validator = new SimpleValidator();
+		
+		boolean test = validator.validate(configuration, plan1);
+		
 	
 	}
 	

@@ -5,6 +5,10 @@
 			<Name>Test Auftrag</Name>
 			<SourceStationId>1</SourceStationId>
 		</Order>
+		<Order id="2">
+			<Name>Noch ein Auftrag</Name>
+			<SourceStationId>5</SourceStationId>
+		</Order>
 	</Orders>
 	
 	<Stations>
@@ -53,6 +57,8 @@
 	<Vehicles>
 		<Vehicle id="1">
 			<Name>VW Bus</Name>
+			<SourceDepotId>3</SourceDepotId>
+			<DestinationDepotId>3</DestinationDepotId>
 		</Vehicle>
 	</Vehicles>
 </Configuration>
