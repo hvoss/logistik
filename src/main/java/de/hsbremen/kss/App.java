@@ -31,9 +31,9 @@ public class App {
 
 		Configuration configuration = confParser.parseConfiguration(file);
 
+		LOG.info("got " + configuration.getOrders().size() + " orders");
 		LOG.info("got " + configuration.getStations().size() + " stations");
 		LOG.info("got " + configuration.getVehicles().size() + " vehicles");
-		LOG.info("got " + configuration.getOrders().size() + " orders");
 
 		logDistancesBetweenStations(configuration.getStations());
 	
