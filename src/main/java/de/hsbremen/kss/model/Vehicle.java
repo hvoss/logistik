@@ -10,13 +10,23 @@ public final class Vehicle {
 	
 	/** the name */
 	private final String name;
+	
+	/** the source depot (station) */
+	private final Station sourceDepot;
+	
+	/** the destination depot (station) */
+	private final Station destinationDepot;
 
-	public Vehicle(Integer id, String name) {
+	public Vehicle(Integer id, String name, Station sourceDepot,  Station destinationDepot) {
 		Validate.notNull(id, "id is null");
 		Validate.notNull(name, "name is null");
+		Validate.notNull(sourceDepot, "sourceDepot is null");
+		Validate.notNull(destinationDepot, "destinationDepot is null");
 		
 		this.id = id;
 		this.name = name;
+		this.sourceDepot = sourceDepot;
+		this.destinationDepot = destinationDepot;
 	}
 
 	public Integer getId() {
@@ -29,5 +39,13 @@ public final class Vehicle {
 
 	void makeUnmodifyable() {
 		// nothing to do yet
+	}
+
+	public Station getSourceDepot() {
+		return sourceDepot;
+	}
+
+	public Station getDestinationDepot() {
+		return destinationDepot;
 	}
 }

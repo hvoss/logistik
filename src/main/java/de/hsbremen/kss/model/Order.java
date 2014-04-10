@@ -1,5 +1,9 @@
 package de.hsbremen.kss.model;
 
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.apache.commons.lang3.Validate;
 
 /**
@@ -21,6 +25,9 @@ public final class Order {
 
 	/** the destination station. could be null */
 	private final Station destination;
+	
+	/** all items */ 
+	private Set<Item> items;
 
 	public Order(Integer id, String name, Station source) {
 		this(id, name, source, null);
@@ -35,6 +42,7 @@ public final class Order {
 		this.name = name;
 		this.source = source;
 		this.destination = destination;
+		this.items = new HashSet<>();
 	}
 
 	public int getId() {
@@ -54,6 +62,10 @@ public final class Order {
 	}
 
 	void makeUnmodifyable() {
-		// nothing to do yet
+		this.items = Collections.unmodifiableSet(this.items);
+	}
+
+	public Set<Item> getItems() {
+		return items;
 	}
 }

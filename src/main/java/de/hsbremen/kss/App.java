@@ -40,6 +40,8 @@ public class App {
 		LOG.info("got " + configuration.getStations().size() + " stations");
 		LOG.info("got " + configuration.getVehicles().size() + " vehicles");
 		LOG.info("got " + configuration.getOrders().size() + " orders");
+		LOG.info("got " + configuration.getProducts().size() + " products");
+		LOG.info("got " + configuration.getProductGroups().size() + " product groups");
 
 		logDistancesBetweenStations(configuration.getStations());
 		

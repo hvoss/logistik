@@ -21,11 +21,17 @@ import org.slf4j.LoggerFactory;
 import de.hsbremen.kss.common.exception.DuplicateIdException;
 import de.hsbremen.kss.configuration.ConfigurationParser;
 import de.hsbremen.kss.model.Configuration;
+import de.hsbremen.kss.model.Item;
 import de.hsbremen.kss.model.Order;
+import de.hsbremen.kss.model.Product;
+import de.hsbremen.kss.model.ProductGroup;
 import de.hsbremen.kss.model.Station;
 import de.hsbremen.kss.model.Vehicle;
 import de.hsbremen.kss.xml.ConfigurationElement;
+import de.hsbremen.kss.xml.ItemElement;
 import de.hsbremen.kss.xml.OrderElement;
+import de.hsbremen.kss.xml.ProductElement;
+import de.hsbremen.kss.xml.ProductGroupElement;
 import de.hsbremen.kss.xml.StationElement;
 import de.hsbremen.kss.xml.VehicleElement;
 
@@ -57,6 +63,8 @@ public class JAXBConfigurationParserImpl implements ConfigurationParser {
 			List<StationElement> stationElements = configuration.getStations();
 			List<OrderElement> orderElements = configuration.getOrders();
 			List<VehicleElement> vehicleElements = configuration.getVehicles();
+			List<ProductGroupElement> productGroupElements = configuration.getProductGroups();
+			List<ProductElement> productElements = configuration.getProducts();
 
 			Map<Integer, Station> stationMap = new HashMap<>(
 					stationElements.size());
@@ -68,6 +76,14 @@ public class JAXBConfigurationParserImpl implements ConfigurationParser {
 			Map<Integer, Vehicle> vehicleMap = new HashMap<>(
 					vehicleElements.size());
 			List<Vehicle> vehicleList = new ArrayList<>(vehicleElements.size());
+			
+			Map<Integer, ProductGroup> productGroupMap = new HashMap<>(
+					productGroupElements.size());
+			List<ProductGroup> productGroupList = new ArrayList<>(productGroupElements.size());
+			
+			Map<Integer, Product> productMap = new HashMap<>(
+					productElements.size());
+			List<Product> productList = new ArrayList<>(productElements.size());
 
 			for (StationElement element : stationElements) {
 				Station station = convert(element);
@@ -81,24 +97,50 @@ public class JAXBConfigurationParserImpl implements ConfigurationParser {
 			}
 
 			for (VehicleElement element : vehicleElements) {
-				Vehicle vehicle = convert(element);
+				Vehicle vehicle = convert(element, stationMap);
 				Vehicle oldVehicle = vehicleMap.put(vehicle.getId(), vehicle);
 				vehicleList.add(vehicle);
 
 				if (oldVehicle != null) {
-					throw new DuplicateIdException(Station.class, oldVehicle,
+					throw new DuplicateIdException(Vehicle.class, oldVehicle,
 							vehicle);
+				}
+			}
+			
+			
+			
+			for (ProductElement element : productElements) {
+				Product product = convert(element);
+				Product oldProduct = productMap.put(product.getId(), product);
+				productList.add(product);
+
+				if (oldProduct != null) {
+					throw new DuplicateIdException(ProductElement.class, oldProduct,
+							product);
+				}
+			}
+			
+			for (ProductGroupElement element : productGroupElements) {
+				ProductGroup productGroup = convert(element);
+				ProductGroup oldProductGroup = productGroupMap.put(productGroup.getId(), productGroup);
+				productGroupList.add(productGroup);
+
+				if (oldProductGroup != null) {
+					throw new DuplicateIdException(ProductGroupElement.class, oldProductGroup,
+							productGroup);
+				}
+				
+				for(Integer productId : element.getProductIds()) {
+					Product product = productMap.get(productId);
+					product.getProductGroup().add(productGroup);
+					productGroup.getProductGroup().add(productGroup);
 				}
 			}
 
 			for (OrderElement element : orderElements) {
-				Station sourceStation = stationMap.get(element
-						.getSourceStationId());
-				Station destinationStation = stationMap.get(element
-						.getDestinationStationId());
+				
 
-				Order order = convert(element, sourceStation,
-						destinationStation);
+				Order order = convert(element, stationMap, productMap);
 				Order oldOrder = orderMap.put(order.getId(), order);
 				orderList.add(order);
 
@@ -106,16 +148,9 @@ public class JAXBConfigurationParserImpl implements ConfigurationParser {
 					throw new DuplicateIdException(Station.class, oldOrder,
 							order);
 				}
-
-				if (sourceStation != null) { // not necessary
-					sourceStation.getSourceOrders().add(order);
-				}
-				if (destinationStation != null) {
-					destinationStation.getDestinationOrders().add(order);
-				}
 			}
 
-			return new Configuration(orderList, stationList, vehicleList);
+			return new Configuration(orderList, stationList, vehicleList, productList, productGroupList);
 
 		} catch (JAXBException e) {
 			throw new RuntimeException(e);
@@ -135,16 +170,43 @@ public class JAXBConfigurationParserImpl implements ConfigurationParser {
 		}
 	}
 
-	private Order convert(OrderElement element, Station sourceStation,
-			Station destinationStation) {
+	private Order convert(OrderElement element, Map<Integer, Station> stationMap, Map<Integer, Product> productMap) {
 		LOG.trace("convert element: " + element);
-		return new Order(element.getId(), element.getName(), sourceStation,
+		Station sourceStation = stationMap.get(element
+				.getSourceStationId());
+		Station destinationStation = stationMap.get(element
+				.getDestinationStationId());
+		
+		Order order = new Order(element.getId(), element.getName(), sourceStation,
 				destinationStation);
+		
+		if (element.getItems() != null) {
+			for (ItemElement itemElement : element.getItems()) {
+				Item item = convert(itemElement, order, productMap);
+				order.getItems().add(item);
+			}
+		}
+		
+		if (sourceStation != null) { // not necessary
+			sourceStation.getSourceOrders().add(order);
+		}
+		if (destinationStation != null) {
+			destinationStation.getDestinationOrders().add(order);
+		}
+		
+		return order;
+	}
+	
+	private Item convert(ItemElement element, Order order, Map<Integer, Product> productMap) {
+		Product product = productMap.get(element.getProductId());
+		return new Item(order, product, element.getAmount());
 	}
 
-	private Vehicle convert(VehicleElement element) {
+	private Vehicle convert(VehicleElement element, Map<Integer, Station> stationMap) {
 		LOG.trace("convert element: " + element);
-		return new Vehicle(element.getId(), element.getName());
+		Station sourceStation = stationMap.get(element.getSourceDepotId());
+		Station destinationStation = stationMap.get(element.getDestinationDepotId());
+		return new Vehicle(element.getId(), element.getName(), sourceStation, destinationStation);
 	}
 
 	/**
@@ -182,6 +244,14 @@ public class JAXBConfigurationParserImpl implements ConfigurationParser {
 			stationElements.add(convert(station));
 		}
 		return stationElements;
+	}
+	
+	private Product convert(ProductElement element) {
+		return new Product(element.getId(), element.getName());
+	}
+	
+	private ProductGroup convert(ProductGroupElement element) {
+		return new ProductGroup(element.getId(), element.getName());
 	}
 
 }
