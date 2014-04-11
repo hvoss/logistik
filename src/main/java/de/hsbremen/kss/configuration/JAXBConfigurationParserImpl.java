@@ -76,61 +76,78 @@ public class JAXBConfigurationParserImpl implements ConfigurationParser {
 
 			init(configuration);
 
-			List<StationElement> stationElements = configuration.getStations();
-			List<OrderElement> orderElements = configuration.getOrders();
-			List<VehicleElement> vehicleElements = configuration.getVehicles();
-			List<ProductGroupElement> productGroupElements = configuration
-					.getProductGroups();
-			List<ProductElement> productElements = configuration.getProducts();
+			convertStations(configuration.getStations());
+			convertProducts(configuration.getProducts());
+			convertProductGroups(configuration.getProductGroups());
+			convertVehicles(configuration.getVehicles());
+			convertOrders(configuration.getOrders());
 
-			for (StationElement element : stationElements) {
-				Station station = convert(element);
-				addStation(station);
-			}
-
-			for (ProductElement element : productElements) {
-				Product product = convert(element);
-				addProduct(product);
-			}
-
-			for (ProductGroupElement element : productGroupElements) {
-				ProductGroup productGroup = convert(element);
-				addProductGroup(productGroup);
-
-				for (Integer productId : element.getProductIds()) {
-					Product product = productMap.get(productId);
-					product.addProductGroup(productGroup);
-					productGroup.addProduct(product);
-				}
-			}
-
-			for (VehicleElement element : vehicleElements) {
-				Vehicle vehicle = convert(element);
-				addVehicle(vehicle);
-
-				for (CapacityElement capacityElement : element.getCapacities()) {
-					Capacity capacity = convert(capacityElement, vehicle);
-					vehicle.addCapacity(capacity);
-				}
-			}
-
-			for (OrderElement element : orderElements) {
-				Order order = convert(element);
-				addOrder(order);
-			}
-
-			Set<Order> orders = new HashSet<>(this.orderMap.values());
-			Set<Station> stations = new HashSet<>(this.stationMap.values());
-			Set<Vehicle> vehicles = new HashSet<>(this.vehicleMap.values());
-			Set<Product> products = new HashSet<>(this.productMap.values());
-			Set<ProductGroup> productGroups = new HashSet<>(
-					this.productGroupMap.values());
-
-			return new Configuration(orders, stations, vehicles, products,
-					productGroups);
+			return createConfiguration();
 
 		} catch (JAXBException e) {
 			throw new RuntimeException(e);
+		}
+	}
+
+	private Configuration createConfiguration() {
+		Set<Order> orders = new HashSet<>(this.orderMap.values());
+		Set<Station> stations = new HashSet<>(this.stationMap.values());
+		Set<Vehicle> vehicles = new HashSet<>(this.vehicleMap.values());
+		Set<Product> products = new HashSet<>(this.productMap.values());
+		Set<ProductGroup> productGroups = new HashSet<>(
+				this.productGroupMap.values());
+
+		return new Configuration(orders, stations, vehicles, products,
+				productGroups);
+	}
+
+	private void convertOrders(Collection<OrderElement> orders) {
+		for (OrderElement element : orders) {
+			Order order = convert(element);
+			addOrder(order);
+		}
+	}
+
+	private void convertVehicles(Collection<VehicleElement> vehicles) {
+		for (VehicleElement element : vehicles) {
+			Vehicle vehicle = convert(element);
+			addVehicle(vehicle);
+
+			convertCapacities(element.getCapacities(), vehicle);
+		}
+	}
+
+	private void convertCapacities(Collection<CapacityElement> capacities, Vehicle vehicle) {
+		for (CapacityElement capacityElement : capacities) {
+			Capacity capacity = convert(capacityElement, vehicle);
+			vehicle.addCapacity(capacity);
+		}
+	}
+
+	private void convertProductGroups(Collection<ProductGroupElement> productGroups) {
+		for (ProductGroupElement element : productGroups) {
+			ProductGroup productGroup = convert(element);
+			addProductGroup(productGroup);
+
+			for (Integer productId : element.getProductIds()) {
+				Product product = productMap.get(productId);
+				product.addProductGroup(productGroup);
+				productGroup.addProduct(product);
+			}
+		}
+	}
+
+	private void convertProducts(Collection<ProductElement> products) {
+		for (ProductElement element : products) {
+			Product product = convert(element);
+			addProduct(product);
+		}
+	}
+
+	private void convertStations(Collection<StationElement> stations) {
+		for (StationElement element : stations) {
+			Station station = convert(element);
+			addStation(station);
 		}
 	}
 
