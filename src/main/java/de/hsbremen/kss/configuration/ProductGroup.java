@@ -51,12 +51,12 @@ public class ProductGroup {
 		return this.vehicles.contains(product);
 	}
 	
-	public void addProduct(Product product) {
+	void addProduct(Product product) {
 		Validate.notNull(product);
 		this.products.add(product);
 	}
 	
-	public void addVehicle(Vehicle vehicle) {
+	void addVehicle(Vehicle vehicle) {
 		Validate.notNull(vehicle);
 		this.vehicles.add(vehicle);
 	}

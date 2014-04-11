@@ -12,7 +12,6 @@ import de.hsbremen.kss.configuration.Configuration;
 import de.hsbremen.kss.configuration.ConfigurationParser;
 import de.hsbremen.kss.configuration.JAXBConfigurationParserImpl;
 import de.hsbremen.kss.configuration.Order;
-import de.hsbremen.kss.configuration.Product;
 import de.hsbremen.kss.configuration.Station;
 import de.hsbremen.kss.construction.Construction;
 import de.hsbremen.kss.construction.NearestNeighbor;

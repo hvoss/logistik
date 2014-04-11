@@ -42,12 +42,12 @@ public class Product {
 		return Collections.unmodifiableSet(vehicles);
 	}
 	
-	public void addProductGroup(ProductGroup productGroup) {
+	void addProductGroup(ProductGroup productGroup) {
 		Validate.notNull(productGroup);
 		this.productGroups.add(productGroup);
 	}
 	
-	public void addVehicle(Vehicle vehicle) {
+	void addVehicle(Vehicle vehicle) {
 		Validate.notNull(vehicle);
 		this.vehicles.add(vehicle);
 	}

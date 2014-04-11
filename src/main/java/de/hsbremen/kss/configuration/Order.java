@@ -61,15 +61,11 @@ public final class Order {
 		return destination;
 	}
 
-	void makeUnmodifyable() {
-		this.items = Collections.unmodifiableSet(this.items);
-	}
-
 	public Set<Item> getItems() {
 		return Collections.unmodifiableSet(items);
 	}
 	
-	public void addItem(Item item) {
+	void addItem(Item item) {
 		Validate.notNull(item, "item is null");
 		this.items.add(item);
 	}

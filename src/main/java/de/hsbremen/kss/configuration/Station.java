@@ -1,6 +1,5 @@
 package de.hsbremen.kss.configuration;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -26,10 +25,10 @@ public final class Station {
 	private final Vector2D coordinates;
 
 	/** a list of orders for which this station is assigned as the source station */
-	private Collection<Order> sourceOrders;
+	private Set<Order> sourceOrders;
 	
 	/** a list of orders for which this station is assigned as the destination station */
-	private Collection<Order> destinationOrders;
+	private Set<Order> destinationOrders;
 
 	Station(Integer id, String name, Vector2D coordinates) {
 		Validate.notNull(id, "id is null");
@@ -55,17 +54,12 @@ public final class Station {
 		return coordinates;
 	}
 	
-	public Collection<Order> getSourceOrders() {
-		return sourceOrders;
+	public Set<Order> getSourceOrders() {
+		return Collections.unmodifiableSet(sourceOrders);
 	}
 
-	public Collection<Order> getDestinationOrders() {
-		return destinationOrders;
-	}
-	
-	void makeUnmodifyable() {
-		this.sourceOrders = Collections.unmodifiableCollection(this.sourceOrders);
-		this.destinationOrders = Collections.unmodifiableCollection(this.destinationOrders);
+	public Set<Order> getDestinationOrders() {
+		return Collections.unmodifiableSet(destinationOrders);
 	}
 	
 	public double distance(Station station) {
@@ -92,6 +86,16 @@ public final class Station {
 		}
 		
 		return destinationProducts;
+	}
+	
+	void addSourceOrder(Order order) {
+		Validate.notNull(order, "order is null");
+		this.sourceOrders.add(order);
+	}
+	
+	void addDestinationOrder(Order order) {
+		Validate.notNull(order, "order is null");
+		this.destinationOrders.add(order);
 	}
 	
 	@Override

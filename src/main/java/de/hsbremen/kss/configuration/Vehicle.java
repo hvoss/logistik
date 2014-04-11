@@ -44,10 +44,6 @@ public final class Vehicle {
 		return name;
 	}
 
-	void makeUnmodifyable() {
-		// nothing to do yet
-	}
-
 	public Station getSourceDepot() {
 		return sourceDepot;
 	}
