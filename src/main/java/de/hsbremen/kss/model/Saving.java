@@ -1,5 +1,8 @@
 package de.hsbremen.kss.model;
 
+import de.hsbremen.kss.configuration.Order;
+import de.hsbremen.kss.configuration.Station;
+
 
 public class Saving implements Comparable<Saving>{
 	

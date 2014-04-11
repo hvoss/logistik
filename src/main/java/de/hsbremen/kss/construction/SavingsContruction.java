@@ -6,11 +6,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import de.hsbremen.kss.model.Configuration;
-import de.hsbremen.kss.model.Order;
+import de.hsbremen.kss.configuration.Configuration;
+import de.hsbremen.kss.configuration.Order;
 import de.hsbremen.kss.model.Plan;
 import de.hsbremen.kss.model.Saving;
-import de.hsbremen.kss.model.Station;
+import de.hsbremen.kss.configuration.Station;
 
 /**
  * Realizes the sequential Savings-Algorithm

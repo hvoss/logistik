@@ -4,10 +4,42 @@
 		<Order id="1">
 			<Name>Test Auftrag</Name>
 			<SourceStationId>1</SourceStationId>
+			<Items>
+				<Item>
+					<ProductId>1</ProductId>
+					<Amount>50</Amount>
+				</Item>
+				<Item>
+					<ProductId>2</ProductId>
+					<Amount>100</Amount>
+				</Item>
+				<Item>
+					<ProductId>3</ProductId>
+					<Amount>75</Amount>
+				</Item>
+			</Items>
 		</Order>
 		<Order id="2">
 			<Name>Noch ein Auftrag</Name>
 			<SourceStationId>5</SourceStationId>
+			<Items>
+				<Item>
+					<ProductId>4</ProductId>
+					<Amount>200</Amount>
+				</Item>
+			</Items>
+		</Order>
+		<Order id="3">
+			<Name>Noch ein Auftrag</Name>
+			<SourceStationId>8</SourceStationId>
+		</Order>
+		<Order id="4">
+			<Name>Noch ein Auftrag</Name>
+			<SourceStationId>7</SourceStationId>
+		</Order>
+		<Order id="5">
+			<Name>Noch ein Auftrag</Name>
+			<SourceStationId>6</SourceStationId>
 		</Order>
 	</Orders>
 		
@@ -59,6 +91,54 @@
 			<Name>VW Bus</Name>
 			<SourceDepotId>3</SourceDepotId>
 			<DestinationDepotId>3</DestinationDepotId>
+			<Capacities>
+				<Capacity productGroupId="1" miscible="true">100</Capacity>
+			</Capacities>
+		</Vehicle>
+		<Vehicle id="2">
+			<Name>Tankwagen mit Anhänger</Name>
+			<SourceDepotId>6</SourceDepotId>
+			<DestinationDepotId>6</DestinationDepotId>
+			<Capacities>
+				<Capacity productId="4" miscible="false">500</Capacity>
+				<Capacity productGroupId="1" miscible="true">1000</Capacity>
+			</Capacities>
 		</Vehicle>
 	</Vehicles>
+	
+	<ProductGroups>
+		<ProductGroup id="1">
+			<Name>Kleinteile</Name>
+			<Products>
+				<ProductId>1</ProductId>
+				<ProductId>2</ProductId>
+				<ProductId>3</ProductId>
+			</Products>
+		</ProductGroup>
+		<ProductGroup id="2">
+			<Name>Treibstoff</Name>
+			<Products>
+				<ProductId>4</ProductId>
+				<ProductId>5</ProductId>
+			</Products>
+		</ProductGroup>
+	</ProductGroups>
+	
+	<Products>
+		<Product id="1">
+			<Name>Snickers</Name>
+		</Product>
+		<Product id="2">
+			<Name>Mars</Name>
+		</Product>
+		<Product id="3">
+			<Name>Cola</Name>
+		</Product>
+		<Product id="4">
+			<Name>Diesel</Name>
+		</Product>
+		<Product id="5">
+			<Name>Benzin</Name>
+		</Product>
+	</Products>
 </Configuration>

@@ -1,4 +1,9 @@
-package de.hsbremen.kss.model;
+package de.hsbremen.kss.configuration;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.apache.commons.lang3.Validate;
 
@@ -21,12 +26,15 @@ public final class Order {
 
 	/** the destination station. could be null */
 	private final Station destination;
-
-	public Order(Integer id, String name, Station source) {
+	
+	/** all items */ 
+	private Set<Item> items;
+	
+	Order(Integer id, String name, Station source) {
 		this(id, name, source, null);
 	}
 
-	public Order(Integer id, String name, Station source, Station destination) {
+	Order(Integer id, String name, Station source, Station destination) {
 		Validate.notNull(id, "id is null");
 		Validate.notNull(name, "name is null");
 		Validate.notNull(source, "source station is null");
@@ -35,6 +43,7 @@ public final class Order {
 		this.name = name;
 		this.source = source;
 		this.destination = destination;
+		this.items = new HashSet<>();
 	}
 
 	public int getId() {
@@ -53,7 +62,27 @@ public final class Order {
 		return destination;
 	}
 
-	void makeUnmodifyable() {
-		// nothing to do yet
+	public Set<Item> getItems() {
+		return Collections.unmodifiableSet(items);
+	}
+	
+	void addItem(Item item) {
+		Validate.notNull(item, "item is null");
+		this.items.add(item);
+	}
+	
+	public Set<Product> getProducts() {
+		Set<Product> products = new HashSet<>(this.items.size());
+		
+		for (Item item : this.items) {
+			products.add(item.getProduct());
+		}
+		
+		return products;
+	}
+	
+	@Override
+	public String toString() {
+		return this.name;
 	}
 }
