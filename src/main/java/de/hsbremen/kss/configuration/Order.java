@@ -29,11 +29,11 @@ public final class Order {
 	/** all items */ 
 	private Set<Item> items;
 	
-	public Order(Integer id, String name, Station source) {
+	Order(Integer id, String name, Station source) {
 		this(id, name, source, null);
 	}
 
-	public Order(Integer id, String name, Station source, Station destination) {
+	Order(Integer id, String name, Station source, Station destination) {
 		Validate.notNull(id, "id is null");
 		Validate.notNull(name, "name is null");
 		Validate.notNull(source, "source station is null");

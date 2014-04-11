@@ -64,7 +64,7 @@ public class App {
 						+ station.getSourceProducts().toString());
 			}
 		}
-
+		
 		Construction nearestNeighbor = new NearestNeighbor();
 		Construction savingsContruction = new SavingsContruction();
 

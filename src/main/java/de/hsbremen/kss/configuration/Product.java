@@ -19,7 +19,7 @@ public class Product {
 	/** Product groups to which the product belongs */
 	private final Set<ProductGroup> productGroups;
 
-	public Product(Integer id, String name) {
+	Product(Integer id, String name) {
 		this.id = id;
 		this.name = name;
 		this.productGroups = new HashSet<>();

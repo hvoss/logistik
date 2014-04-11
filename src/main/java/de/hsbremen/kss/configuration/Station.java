@@ -31,7 +31,7 @@ public final class Station {
 	/** a list of orders for which this station is assigned as the destination station */
 	private Collection<Order> destinationOrders;
 
-	public Station(Integer id, String name, Vector2D coordinates) {
+	Station(Integer id, String name, Vector2D coordinates) {
 		Validate.notNull(id, "id is null");
 		Validate.notNull(name, "name is null");
 		Validate.notNull(coordinates, "coordinates is null");

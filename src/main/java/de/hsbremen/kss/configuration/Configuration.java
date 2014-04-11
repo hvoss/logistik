@@ -22,7 +22,7 @@ public final class Configuration {
 	/** a collection of all product groups */
 	private final Collection<ProductGroup> productGroups;
 
-	public Configuration(Collection<Order> orders,
+	Configuration(Collection<Order> orders,
 			Collection<Station> stations, Collection<Vehicle> vehicles, Collection<Product> products, Collection<ProductGroup> productGroups) {
 		Validate.noNullElements(orders);
 		Validate.noNullElements(stations);

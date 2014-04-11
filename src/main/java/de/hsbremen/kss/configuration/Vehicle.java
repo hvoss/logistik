@@ -23,7 +23,7 @@ public final class Vehicle {
 	
 	private final Set<Capacity> capacities;
 
-	public Vehicle(Integer id, String name, Station sourceDepot,  Station destinationDepot) {
+	Vehicle(Integer id, String name, Station sourceDepot,  Station destinationDepot) {
 		Validate.notNull(id, "id is null");
 		Validate.notNull(name, "name is null");
 		Validate.notNull(sourceDepot, "sourceDepot is null");

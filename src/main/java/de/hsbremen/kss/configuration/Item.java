@@ -11,8 +11,7 @@ public class Item {
 	
 	private final Integer amount;
 	
-	
-	public Item(Order order, Product product, Integer amount) {
+	Item(Order order, Product product, Integer amount) {
 		Validate.notNull(order, "order is null");
 		Validate.notNull(product, "product is null");
 		Validate.notNull(amount, "amount is null");

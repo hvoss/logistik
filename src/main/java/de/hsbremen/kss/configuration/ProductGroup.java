@@ -20,7 +20,7 @@ public class ProductGroup {
 	private final Set<Vehicle> vehicles;
 
 	
-	public ProductGroup(Integer id, String name) {
+	ProductGroup(Integer id, String name) {
 		this.id = id;
 		this.name = name;
 		this.products = new HashSet<>();

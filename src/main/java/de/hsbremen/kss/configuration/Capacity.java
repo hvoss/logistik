@@ -16,11 +16,11 @@ public class Capacity {
 	
 	private final Vehicle vehicle;
 
-	public Capacity(Product product, Vehicle vehicle, Boolean miscible, Integer capacity) {
+	Capacity(Product product, Vehicle vehicle, Boolean miscible, Integer capacity) {
 		this(product, null, vehicle, miscible, capacity);
 	}
 
-	public Capacity(ProductGroup productGroup, Vehicle vehicle, Boolean miscible,
+	Capacity(ProductGroup productGroup, Vehicle vehicle, Boolean miscible,
 			Integer capacity) {
 		this(null, productGroup, vehicle, miscible, capacity);
 	}
