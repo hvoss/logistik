@@ -12,13 +12,16 @@ public class ProductGroup {
 	private final String name;
 
 	/** Products belonging to this product group */
-	private final Set<ProductGroup> productGroup;
+	private final Set<Product> products;
+	
+	private final Set<Vehicle> vehicles;
 
 	
 	public ProductGroup(Integer id, String name) {
 		this.id = id;
 		this.name = name;
-		this.productGroup = new HashSet<ProductGroup>();
+		this.products = new HashSet<>();
+		this.vehicles = new HashSet<>();
 	}
 
 
@@ -32,8 +35,13 @@ public class ProductGroup {
 	}
 
 
-	public Set<ProductGroup> getProductGroup() {
-		return productGroup;
+	public Set<Product> getProducts() {
+		return products;
+	}
+
+
+	public Set<Vehicle> getVehicles() {
+		return vehicles;
 	}
 	
 }

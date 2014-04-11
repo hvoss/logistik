@@ -1,6 +1,9 @@
 package de.hsbremen.kss.model;
 
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.apache.commons.lang3.Validate;
 
 public final class Vehicle {
@@ -16,6 +19,8 @@ public final class Vehicle {
 	
 	/** the destination depot (station) */
 	private final Station destinationDepot;
+	
+	private final Set<Capacity> capacities;
 
 	public Vehicle(Integer id, String name, Station sourceDepot,  Station destinationDepot) {
 		Validate.notNull(id, "id is null");
@@ -27,6 +32,7 @@ public final class Vehicle {
 		this.name = name;
 		this.sourceDepot = sourceDepot;
 		this.destinationDepot = destinationDepot;
+		this.capacities = new HashSet<>();
 	}
 
 	public Integer getId() {
@@ -47,5 +53,9 @@ public final class Vehicle {
 
 	public Station getDestinationDepot() {
 		return destinationDepot;
+	}
+
+	public Set<Capacity> getCapacities() {
+		return capacities;
 	}
 }

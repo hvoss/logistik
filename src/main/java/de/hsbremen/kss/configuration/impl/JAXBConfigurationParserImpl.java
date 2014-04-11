@@ -14,12 +14,14 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
+import org.apache.commons.lang3.Validate;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.hsbremen.kss.common.exception.DuplicateIdException;
 import de.hsbremen.kss.configuration.ConfigurationParser;
+import de.hsbremen.kss.model.Capacity;
 import de.hsbremen.kss.model.Configuration;
 import de.hsbremen.kss.model.Item;
 import de.hsbremen.kss.model.Order;
@@ -27,6 +29,7 @@ import de.hsbremen.kss.model.Product;
 import de.hsbremen.kss.model.ProductGroup;
 import de.hsbremen.kss.model.Station;
 import de.hsbremen.kss.model.Vehicle;
+import de.hsbremen.kss.xml.CapacityElement;
 import de.hsbremen.kss.xml.ConfigurationElement;
 import de.hsbremen.kss.xml.ItemElement;
 import de.hsbremen.kss.xml.OrderElement;
@@ -63,7 +66,8 @@ public class JAXBConfigurationParserImpl implements ConfigurationParser {
 			List<StationElement> stationElements = configuration.getStations();
 			List<OrderElement> orderElements = configuration.getOrders();
 			List<VehicleElement> vehicleElements = configuration.getVehicles();
-			List<ProductGroupElement> productGroupElements = configuration.getProductGroups();
+			List<ProductGroupElement> productGroupElements = configuration
+					.getProductGroups();
 			List<ProductElement> productElements = configuration.getProducts();
 
 			Map<Integer, Station> stationMap = new HashMap<>(
@@ -76,11 +80,12 @@ public class JAXBConfigurationParserImpl implements ConfigurationParser {
 			Map<Integer, Vehicle> vehicleMap = new HashMap<>(
 					vehicleElements.size());
 			List<Vehicle> vehicleList = new ArrayList<>(vehicleElements.size());
-			
+
 			Map<Integer, ProductGroup> productGroupMap = new HashMap<>(
 					productGroupElements.size());
-			List<ProductGroup> productGroupList = new ArrayList<>(productGroupElements.size());
-			
+			List<ProductGroup> productGroupList = new ArrayList<>(
+					productGroupElements.size());
+
 			Map<Integer, Product> productMap = new HashMap<>(
 					productElements.size());
 			List<Product> productList = new ArrayList<>(productElements.size());
@@ -96,6 +101,35 @@ public class JAXBConfigurationParserImpl implements ConfigurationParser {
 				}
 			}
 
+			for (ProductElement element : productElements) {
+				Product product = convert(element);
+				Product oldProduct = productMap.put(product.getId(), product);
+				productList.add(product);
+
+				if (oldProduct != null) {
+					throw new DuplicateIdException(ProductElement.class,
+							oldProduct, product);
+				}
+			}
+
+			for (ProductGroupElement element : productGroupElements) {
+				ProductGroup productGroup = convert(element);
+				ProductGroup oldProductGroup = productGroupMap.put(
+						productGroup.getId(), productGroup);
+				productGroupList.add(productGroup);
+
+				if (oldProductGroup != null) {
+					throw new DuplicateIdException(ProductGroupElement.class,
+							oldProductGroup, productGroup);
+				}
+
+				for (Integer productId : element.getProductIds()) {
+					Product product = productMap.get(productId);
+					product.getProductGroup().add(productGroup);
+					productGroup.getProducts().add(product);
+				}
+			}
+
 			for (VehicleElement element : vehicleElements) {
 				Vehicle vehicle = convert(element, stationMap);
 				Vehicle oldVehicle = vehicleMap.put(vehicle.getId(), vehicle);
@@ -105,40 +139,15 @@ public class JAXBConfigurationParserImpl implements ConfigurationParser {
 					throw new DuplicateIdException(Vehicle.class, oldVehicle,
 							vehicle);
 				}
-			}
-			
-			
-			
-			for (ProductElement element : productElements) {
-				Product product = convert(element);
-				Product oldProduct = productMap.put(product.getId(), product);
-				productList.add(product);
 
-				if (oldProduct != null) {
-					throw new DuplicateIdException(ProductElement.class, oldProduct,
-							product);
-				}
-			}
-			
-			for (ProductGroupElement element : productGroupElements) {
-				ProductGroup productGroup = convert(element);
-				ProductGroup oldProductGroup = productGroupMap.put(productGroup.getId(), productGroup);
-				productGroupList.add(productGroup);
-
-				if (oldProductGroup != null) {
-					throw new DuplicateIdException(ProductGroupElement.class, oldProductGroup,
-							productGroup);
-				}
-				
-				for(Integer productId : element.getProductIds()) {
-					Product product = productMap.get(productId);
-					product.getProductGroup().add(productGroup);
-					productGroup.getProductGroup().add(productGroup);
+				for (CapacityElement capacityElement : element.getCapacities()) {
+					Capacity capacity = convert(capacityElement, vehicle,
+							productMap, productGroupMap);
+					vehicle.getCapacities().add(capacity);
 				}
 			}
 
 			for (OrderElement element : orderElements) {
-				
 
 				Order order = convert(element, stationMap, productMap);
 				Order oldOrder = orderMap.put(order.getId(), order);
@@ -150,7 +159,8 @@ public class JAXBConfigurationParserImpl implements ConfigurationParser {
 				}
 			}
 
-			return new Configuration(orderList, stationList, vehicleList, productList, productGroupList);
+			return new Configuration(orderList, stationList, vehicleList,
+					productList, productGroupList);
 
 		} catch (JAXBException e) {
 			throw new RuntimeException(e);
@@ -170,43 +180,47 @@ public class JAXBConfigurationParserImpl implements ConfigurationParser {
 		}
 	}
 
-	private Order convert(OrderElement element, Map<Integer, Station> stationMap, Map<Integer, Product> productMap) {
+	private Order convert(OrderElement element,
+			Map<Integer, Station> stationMap, Map<Integer, Product> productMap) {
 		LOG.trace("convert element: " + element);
-		Station sourceStation = stationMap.get(element
-				.getSourceStationId());
+		Station sourceStation = stationMap.get(element.getSourceStationId());
 		Station destinationStation = stationMap.get(element
 				.getDestinationStationId());
-		
-		Order order = new Order(element.getId(), element.getName(), sourceStation,
-				destinationStation);
-		
+
+		Order order = new Order(element.getId(), element.getName(),
+				sourceStation, destinationStation);
+
 		if (element.getItems() != null) {
 			for (ItemElement itemElement : element.getItems()) {
 				Item item = convert(itemElement, order, productMap);
 				order.getItems().add(item);
 			}
 		}
-		
+
 		if (sourceStation != null) { // not necessary
 			sourceStation.getSourceOrders().add(order);
 		}
 		if (destinationStation != null) {
 			destinationStation.getDestinationOrders().add(order);
 		}
-		
+
 		return order;
 	}
-	
-	private Item convert(ItemElement element, Order order, Map<Integer, Product> productMap) {
+
+	private Item convert(ItemElement element, Order order,
+			Map<Integer, Product> productMap) {
 		Product product = productMap.get(element.getProductId());
 		return new Item(order, product, element.getAmount());
 	}
 
-	private Vehicle convert(VehicleElement element, Map<Integer, Station> stationMap) {
+	private Vehicle convert(VehicleElement element,
+			Map<Integer, Station> stationMap) {
 		LOG.trace("convert element: " + element);
 		Station sourceStation = stationMap.get(element.getSourceDepotId());
-		Station destinationStation = stationMap.get(element.getDestinationDepotId());
-		return new Vehicle(element.getId(), element.getName(), sourceStation, destinationStation);
+		Station destinationStation = stationMap.get(element
+				.getDestinationDepotId());
+		return new Vehicle(element.getId(), element.getName(), sourceStation,
+				destinationStation);
 	}
 
 	/**
@@ -245,13 +259,36 @@ public class JAXBConfigurationParserImpl implements ConfigurationParser {
 		}
 		return stationElements;
 	}
-	
+
 	private Product convert(ProductElement element) {
 		return new Product(element.getId(), element.getName());
 	}
-	
+
 	private ProductGroup convert(ProductGroupElement element) {
 		return new ProductGroup(element.getId(), element.getName());
+	}
+
+	private Capacity convert(CapacityElement element, Vehicle vehicle,
+			Map<Integer, Product> productMap,
+			Map<Integer, ProductGroup> productGroupMap) {
+		Integer productGroupId = element.getProductGroupId();
+		Integer productId = element.getProductId();
+		Boolean miscible = element.getMiscible();
+		Integer capacity = element.getCapacity();
+
+		Validate.isTrue(productId == null ^ productGroupId == null,
+				"only productId xor productGroupId must be defined. productId: "
+						+ productId + ", productGroupId: " + productGroupId);
+
+		if (productId != null) {
+			Product product = productMap.get(productId);
+			product.getVehicles().add(vehicle);
+			return new Capacity(product, vehicle, miscible, capacity);
+		} else {
+			ProductGroup productGroup = productGroupMap.get(productGroupId);
+			productGroup.getVehicles().add(vehicle);
+			return new Capacity(productGroup, vehicle, miscible, capacity);
+		}
 	}
 
 }

@@ -10,6 +10,8 @@ public class Product {
 
 	/** the name */
 	private final String name;
+	
+	private final Set<Vehicle> vehicles;
 
 	/** Product groups to which the product belongs */
 	private final Set<ProductGroup> productGroup;
@@ -18,6 +20,7 @@ public class Product {
 		this.id = id;
 		this.name = name;
 		this.productGroup = new HashSet<>();
+		this.vehicles = new HashSet<>();
 	}
 
 	public Integer getId() {
@@ -30,6 +33,10 @@ public class Product {
 
 	public Set<ProductGroup> getProductGroup() {
 		return productGroup;
+	}
+
+	public Set<Vehicle> getVehicles() {
+		return vehicles;
 	}
 
 }
