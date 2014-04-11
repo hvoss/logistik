@@ -1,6 +1,6 @@
 package de.hsbremen.kss.construction;
 
-import de.hsbremen.kss.model.Configuration;
+import de.hsbremen.kss.configuration.Configuration;
 import de.hsbremen.kss.model.Plan;
 
 public class SavingsContruction implements Construction {

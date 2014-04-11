@@ -1,4 +1,4 @@
-package de.hsbremen.kss.configuration.impl;
+package de.hsbremen.kss.configuration;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -20,15 +20,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.hsbremen.kss.common.exception.DuplicateIdException;
-import de.hsbremen.kss.configuration.ConfigurationParser;
-import de.hsbremen.kss.model.Capacity;
-import de.hsbremen.kss.model.Configuration;
-import de.hsbremen.kss.model.Item;
-import de.hsbremen.kss.model.Order;
-import de.hsbremen.kss.model.Product;
-import de.hsbremen.kss.model.ProductGroup;
-import de.hsbremen.kss.model.Station;
-import de.hsbremen.kss.model.Vehicle;
 import de.hsbremen.kss.xml.CapacityElement;
 import de.hsbremen.kss.xml.ConfigurationElement;
 import de.hsbremen.kss.xml.ItemElement;

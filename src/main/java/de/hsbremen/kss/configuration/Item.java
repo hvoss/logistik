@@ -1,4 +1,4 @@
-package de.hsbremen.kss.model;
+package de.hsbremen.kss.configuration;
 
 import org.apache.commons.lang3.Validate;
 

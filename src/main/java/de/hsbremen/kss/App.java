@@ -8,16 +8,16 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.hsbremen.kss.configuration.Configuration;
 import de.hsbremen.kss.configuration.ConfigurationParser;
-import de.hsbremen.kss.configuration.impl.JAXBConfigurationParserImpl;
+import de.hsbremen.kss.configuration.JAXBConfigurationParserImpl;
+import de.hsbremen.kss.configuration.Order;
+import de.hsbremen.kss.configuration.Product;
+import de.hsbremen.kss.configuration.Station;
 import de.hsbremen.kss.construction.Construction;
 import de.hsbremen.kss.construction.NearestNeighbor;
 import de.hsbremen.kss.construction.SavingsContruction;
-import de.hsbremen.kss.model.Configuration;
-import de.hsbremen.kss.model.Order;
 import de.hsbremen.kss.model.Plan;
-import de.hsbremen.kss.model.Product;
-import de.hsbremen.kss.model.Station;
 import de.hsbremen.kss.validate.SimpleValidator;
 import de.hsbremen.kss.validate.Validator;
 

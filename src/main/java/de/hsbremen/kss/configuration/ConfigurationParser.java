@@ -2,8 +2,6 @@ package de.hsbremen.kss.configuration;
 
 import java.io.File;
 
-import de.hsbremen.kss.model.Configuration;
-
 public interface ConfigurationParser {
 	
 	/**
