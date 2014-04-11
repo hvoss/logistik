@@ -6,6 +6,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import de.hsbremen.kss.configuration.Configuration;
 import de.hsbremen.kss.configuration.Order;
 import de.hsbremen.kss.model.Plan;
@@ -19,6 +22,8 @@ import de.hsbremen.kss.configuration.Station;
  *
  */
 public class SavingsContruction implements Construction {
+	
+	private static final Logger LOG = LoggerFactory.getLogger(SavingsContruction.class);
 	
 	@Override
 	public Plan constructPlan(Configuration configuration) {
@@ -41,14 +46,14 @@ public class SavingsContruction implements Construction {
 		
 		Collections.sort(savingList);
 		
-		System.out.println("Depot: " + depot.getName());
+		LOG.info("Depot: " + depot.getName());
 		
 		for (Saving saving : savingList){
-			System.out.println("Savings: " + saving.getSourceOrder().getSource().getName() + " " + saving.getDestinationOrder()
+			LOG.info("Savings: " + saving.getSourceOrder().getSource().getName() + " => " + saving.getDestinationOrder()
 					.getSource().getName() + ": " + saving.getSavingsValue());
 		}
 		
-		System.out.println("Best Pair: " + savingList.get(0).getSourceOrder().getSource().getName() + " " + 
+		LOG.info("Best Pair: " + savingList.get(0).getSourceOrder().getSource().getName() + " " + 
 				savingList.get(0).getDestinationOrder().getSource().getName());
 		savingsOrderList.add(savingList.get(0).getSourceOrder());
 		savingsOrderList.add(savingList.get(0).getDestinationOrder());
@@ -56,7 +61,7 @@ public class SavingsContruction implements Construction {
 				
 		while(savingsOrderList.size() < orderList.size()){
 			int indexNextPair = searchNextPair(savingList, savingsOrderList.get(0), savingsOrderList.get(savingsOrderList.size()-1));
-			System.out.println("Next Pair: " + savingList.get(indexNextPair).getSourceOrder().getSource().getName() + " " + 
+			LOG.info("Next Pair: " + savingList.get(indexNextPair).getSourceOrder().getSource().getName() + " " + 
 			savingList.get(indexNextPair).getDestinationOrder().getSource().getName());
 			
 			if(!savingsOrderList.contains(savingList.get(indexNextPair).getSourceOrder())){
@@ -76,14 +81,14 @@ public class SavingsContruction implements Construction {
 			savingList.remove(indexNextPair);
 		}
 		
-		System.out.print("Route: ");
-		for (Order order : savingsOrderList){
-			if (order.equals(savingsOrderList.get(savingsOrderList.size()-1))){
-				System.out.print(order.getSource().getName());
-			} else{
-				System.out.print(order.getSource().getName() + " - ");
-			}
+		LOG.info("Route: ");
+		for (int i=0; i<savingsOrderList.size()-1;i++){
+			LOG.info(savingsOrderList.get(i).getSource().getName() + " => "
+					+ savingsOrderList.get(i+1).getSource().getName());
 		}
+//		for (Order order : savingsOrderList){
+//			LOG.info(order.getSource().getName() + " - ");
+//		}
 		
 		return null;
 	}
