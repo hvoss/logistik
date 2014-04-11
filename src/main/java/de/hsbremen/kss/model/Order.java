@@ -28,7 +28,7 @@ public final class Order {
 	
 	/** all items */ 
 	private Set<Item> items;
-
+	
 	public Order(Integer id, String name, Station source) {
 		this(id, name, source, null);
 	}
@@ -66,6 +66,21 @@ public final class Order {
 	}
 
 	public Set<Item> getItems() {
-		return items;
+		return Collections.unmodifiableSet(items);
+	}
+	
+	public void addItem(Item item) {
+		Validate.notNull(item, "item is null");
+		this.items.add(item);
+	}
+	
+	public Set<Product> getProducts() {
+		Set<Product> products = new HashSet<>(this.items.size());
+		
+		for (Item item : this.items) {
+			products.add(item.getProduct());
+		}
+		
+		return products;
 	}
 }

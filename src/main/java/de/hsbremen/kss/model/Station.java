@@ -3,6 +3,7 @@ package de.hsbremen.kss.model;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Set;
 
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
@@ -29,7 +30,6 @@ public final class Station {
 	
 	/** a list of orders for which this station is assigned as the destination station */
 	private Collection<Order> destinationOrders;
-	
 
 	public Station(Integer id, String name, Vector2D coordinates) {
 		Validate.notNull(id, "id is null");
@@ -72,4 +72,25 @@ public final class Station {
 		return station.coordinates.distance(this.coordinates);
 	}
 	
+	public Set<Product> getSourceProducts() {
+		Set<Product> sourceProducts = new HashSet<>();
+		
+		for (Order order : this.sourceOrders) {
+			Set<Product> products = order.getProducts();
+			sourceProducts.addAll(products);
+		}
+		
+		return sourceProducts;
+	}
+	
+	public Set<Product> getDestinationProducts() {
+		Set<Product> destinationProducts = new HashSet<>();
+		
+		for (Order order : this.destinationOrders) {
+			Set<Product> products = order.getProducts();
+			destinationProducts.addAll(products);
+		}
+		
+		return destinationProducts;
+	}
 }

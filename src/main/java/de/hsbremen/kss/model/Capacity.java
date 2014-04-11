@@ -1,14 +1,13 @@
 package de.hsbremen.kss.model;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.apache.commons.lang3.Validate;
 
 public class Capacity {
 
+	/** the product */
 	private final Product product;
 
+	/** the product group */
 	private final ProductGroup productGroup;
 
 	private final Boolean miscible;
@@ -61,4 +60,19 @@ public class Capacity {
 		return vehicle;
 	}
 
+	public boolean contains(Product product) {
+		if (product == null) {
+			return false;
+		}
+		
+		if (product.equals(this.product)) {
+			return true;
+		}
+		
+		if (this.productGroup != null) {
+			return this.productGroup.contains(product);
+		}
+		
+		return false;
+	}
 }

@@ -1,6 +1,7 @@
 package de.hsbremen.kss.model;
 
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -56,6 +57,21 @@ public final class Vehicle {
 	}
 
 	public Set<Capacity> getCapacities() {
-		return capacities;
+		return Collections.unmodifiableSet(capacities);
+	}
+	
+	public boolean canBeTransported(Product product) {
+		for (Capacity capacity : this.capacities){
+			if (capacity.contains(product)) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	public void addCapacity(Capacity capacity) {
+		Validate.notNull(capacity);
+		this.capacities.add(capacity);
 	}
 }

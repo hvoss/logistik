@@ -1,7 +1,10 @@
 package de.hsbremen.kss.model;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+
+import org.apache.commons.lang3.Validate;
 
 public class ProductGroup {
 
@@ -36,12 +39,26 @@ public class ProductGroup {
 
 
 	public Set<Product> getProducts() {
-		return products;
+		return Collections.unmodifiableSet(products);
 	}
 
 
 	public Set<Vehicle> getVehicles() {
-		return vehicles;
+		return Collections.unmodifiableSet(vehicles);
+	}
+	
+	public boolean contains(Product product) {
+		return this.vehicles.contains(product);
+	}
+	
+	public void addProduct(Product product) {
+		Validate.notNull(product);
+		this.products.add(product);
+	}
+	
+	public void addVehicle(Vehicle vehicle) {
+		Validate.notNull(vehicle);
+		this.vehicles.add(vehicle);
 	}
 	
 }

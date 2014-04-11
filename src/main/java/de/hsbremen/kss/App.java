@@ -14,7 +14,9 @@ import de.hsbremen.kss.construction.Construction;
 import de.hsbremen.kss.construction.NearestNeighbor;
 import de.hsbremen.kss.construction.SavingsContruction;
 import de.hsbremen.kss.model.Configuration;
+import de.hsbremen.kss.model.Order;
 import de.hsbremen.kss.model.Plan;
+import de.hsbremen.kss.model.Product;
 import de.hsbremen.kss.model.Station;
 import de.hsbremen.kss.validate.SimpleValidator;
 import de.hsbremen.kss.validate.Validator;
@@ -41,23 +43,36 @@ public class App {
 		LOG.info("got " + configuration.getVehicles().size() + " vehicles");
 		LOG.info("got " + configuration.getOrders().size() + " orders");
 		LOG.info("got " + configuration.getProducts().size() + " products");
-		LOG.info("got " + configuration.getProductGroups().size() + " product groups");
+		LOG.info("got " + configuration.getProductGroups().size()
+				+ " product groups");
 
 		logDistancesBetweenStations(configuration.getStations());
+
+		for (Order order : configuration.getOrders()) {
+			LOG.info(order.getName() + ": " + order.getProducts());
+		}
 		
+		for (Product product : configuration.getProducts()) {
+			LOG.info("product: " + product.getName());
+		}
+		
+		for (Station station : configuration.getStations()) {
+			LOG.info(station.getName() +": " + station.getSourceProducts().toString());
+		}
+
 		Construction nearestNeighbor = new NearestNeighbor();
 		Construction savingsContruction = new SavingsContruction();
-		
+
 		Plan plan1 = nearestNeighbor.constructPlan(configuration);
 		Plan plan2 = savingsContruction.constructPlan(configuration);
-		
+
 		Validator validator = new SimpleValidator();
+
 		
 		boolean test = validator.validate(configuration, plan1);
-		
-	
+
 	}
-	
+
 	private static void logDistancesBetweenStations(Collection<Station> stations) {
 		Set<Station> processedStations = new HashSet<>();
 		for (Station station : stations) {

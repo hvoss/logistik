@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ItemElement {
 
-	@XmlElement(name = "Name")
+	@XmlElement(name = "ProductId")
 	private Integer productId;
 	
 	@XmlElement(name = "Amount")
