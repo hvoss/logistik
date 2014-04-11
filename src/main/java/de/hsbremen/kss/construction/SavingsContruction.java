@@ -6,17 +6,20 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.hsbremen.kss.configuration.Configuration;
 import de.hsbremen.kss.configuration.Order;
+import de.hsbremen.kss.configuration.Vehicle;
 import de.hsbremen.kss.model.Plan;
 import de.hsbremen.kss.model.Saving;
 import de.hsbremen.kss.configuration.Station;
 
 /**
  * Realizes the sequential Savings-Algorithm
+ * Has still an error
  * 
  * @author david
  *
@@ -33,7 +36,8 @@ public class SavingsContruction implements Construction {
 		List<Saving> savingList = new ArrayList<Saving>();
 		List<Order> savingsOrderList = new ArrayList<Order>();
 		Set<Order> processedOrders = new HashSet<>();
-		Station depot = stationList.get(2);
+		Vehicle vehicle = CollectionUtils.get(configuration.getVehicles(), 0);
+		Station depot = vehicle.getSourceDepot();
 		
 		for (Order sourceOrder : orderList){
 			processedOrders.add(sourceOrder);
@@ -84,11 +88,10 @@ public class SavingsContruction implements Construction {
 		LOG.info("Route: ");
 		for (int i=0; i<savingsOrderList.size()-1;i++){
 			LOG.info(savingsOrderList.get(i).getSource().getName() + " => "
-					+ savingsOrderList.get(i+1).getSource().getName());
+					+ savingsOrderList.get(i+1).getSource().getName() + " (" 
+					+ Math.round(savingsOrderList.get(i).getSource().
+							distance(savingsOrderList.get(i+1).getSource())) +" km)");
 		}
-//		for (Order order : savingsOrderList){
-//			LOG.info(order.getSource().getName() + " - ");
-//		}
 		
 		return null;
 	}
