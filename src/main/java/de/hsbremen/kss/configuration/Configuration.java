@@ -39,23 +39,23 @@ public final class Configuration {
 		this.productGroups = Collections.unmodifiableSet(productGroups);
 	}
 
-	public Collection<Order> getOrders() {
+	public Set<Order> getOrders() {
 		return orders;
 	}
 
-	public Collection<Station> getStations() {
+	public Set<Station> getStations() {
 		return stations;
 	}
 
-	public Collection<Vehicle> getVehicles() {
+	public Set<Vehicle> getVehicles() {
 		return vehicles;
 	}
 
-	public Collection<Product> getProducts() {
+	public Set<Product> getProducts() {
 		return products;
 	}
 
-	public Collection<ProductGroup> getProductGroups() {
+	public Set<ProductGroup> getProductGroups() {
 		return productGroups;
 	}
 

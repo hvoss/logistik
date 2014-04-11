@@ -16,6 +16,7 @@ import de.hsbremen.kss.configuration.Station;
 import de.hsbremen.kss.construction.Construction;
 import de.hsbremen.kss.construction.NearestNeighbor;
 import de.hsbremen.kss.construction.SavingsContruction;
+import de.hsbremen.kss.construction.TestNearestNeighbor;
 import de.hsbremen.kss.model.Plan;
 import de.hsbremen.kss.validate.SimpleValidator;
 import de.hsbremen.kss.validate.Validator;
@@ -66,9 +67,11 @@ public class App {
 		
 		Construction nearestNeighbor = new NearestNeighbor();
 		Construction savingsContruction = new SavingsContruction();
+		TestNearestNeighbor testNearestNeighbor = new TestNearestNeighbor();
 
 		Plan plan1 = nearestNeighbor.constructPlan(configuration);
 		Plan plan2 = savingsContruction.constructPlan(configuration);
+		testNearestNeighbor.constructPlan(configuration);
 
 		Validator validator = new SimpleValidator();
 

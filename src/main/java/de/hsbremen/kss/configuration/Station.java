@@ -1,11 +1,13 @@
 package de.hsbremen.kss.configuration;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
+import org.apache.commons.math3.ml.distance.DistanceMeasure;
 
 /**
  * represents a station.
@@ -101,5 +103,33 @@ public final class Station {
 	@Override
 	public String toString() {
 		return this.name;
+	}
+	
+	public Station findNearestStation(Collection<Station> stations) {
+		Station nearestStation = null;
+		for (Station otherStation : stations) {
+			if (nearestStation == null || distance(nearestStation) > distance(otherStation)) {
+				nearestStation = otherStation;
+			}
+		}
+		return nearestStation;
+	}
+	
+	public Order findNearestSourceStation(Collection<Order> orders) {
+		Order nearestOrder = null;
+		
+		for (Order order : orders) {
+			if (nearestOrder == null) {
+				nearestOrder = order;
+			} else {
+				Station nearestStation = nearestOrder.getSource();
+				Station otherStation = order.getSource();
+				if (distance(nearestStation) > distance(otherStation)) {
+					nearestOrder = order;
+				}
+			}
+		}
+		
+		return nearestOrder;
 	}
 }
