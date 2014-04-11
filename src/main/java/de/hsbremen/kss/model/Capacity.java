@@ -75,4 +75,13 @@ public class Capacity {
 		
 		return false;
 	}
+	
+	@Override
+	public String toString() {
+		if (this.product != null) {
+			return "Capacity[Product: " + product.getName() + "]";
+		} else {
+			return "Capacity[ProductGroup: " + productGroup.getName() + "]";
+		}
+	}
 }

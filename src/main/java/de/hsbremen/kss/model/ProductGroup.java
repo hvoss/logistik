@@ -61,4 +61,8 @@ public class ProductGroup {
 		this.vehicles.add(vehicle);
 	}
 	
+	@Override
+	public String toString() {
+		return this.name;
+	}
 }

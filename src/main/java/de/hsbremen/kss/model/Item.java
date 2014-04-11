@@ -35,4 +35,9 @@ public class Item {
 		return order;
 	}
 	
+	@Override
+	public String toString() {
+		return "Item[" + product.getName() + "]";
+	}
+	
 }

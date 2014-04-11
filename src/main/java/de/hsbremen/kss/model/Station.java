@@ -93,4 +93,9 @@ public final class Station {
 		
 		return destinationProducts;
 	}
+	
+	@Override
+	public String toString() {
+		return this.name;
+	}
 }

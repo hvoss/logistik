@@ -51,5 +51,10 @@ public class Product {
 		Validate.notNull(vehicle);
 		this.vehicles.add(vehicle);
 	}
+	
+	@Override
+	public String toString() {
+		return this.name;
+	}
 
 }

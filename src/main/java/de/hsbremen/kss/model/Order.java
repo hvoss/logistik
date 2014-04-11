@@ -83,4 +83,9 @@ public final class Order {
 		
 		return products;
 	}
+	
+	@Override
+	public String toString() {
+		return this.name;
+	}
 }

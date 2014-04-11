@@ -46,18 +46,23 @@ public class App {
 		LOG.info("got " + configuration.getProductGroups().size()
 				+ " product groups");
 
+		LOG.info("stations: " + configuration.getStations());
+		LOG.info("vehicles: " + configuration.getVehicles());
+		LOG.info("orders: " + configuration.getOrders());
+		LOG.info("products: " + configuration.getProducts());
+		LOG.info("product groups: " + configuration.getProductGroups());
+
 		logDistancesBetweenStations(configuration.getStations());
 
 		for (Order order : configuration.getOrders()) {
 			LOG.info(order.getName() + ": " + order.getProducts());
 		}
-		
-		for (Product product : configuration.getProducts()) {
-			LOG.info("product: " + product.getName());
-		}
-		
+
 		for (Station station : configuration.getStations()) {
-			LOG.info(station.getName() +": " + station.getSourceProducts().toString());
+			if (!station.getSourceProducts().isEmpty()) {
+				LOG.info(station.getName() + ": "
+						+ station.getSourceProducts().toString());
+			}
 		}
 
 		Construction nearestNeighbor = new NearestNeighbor();
@@ -68,7 +73,6 @@ public class App {
 
 		Validator validator = new SimpleValidator();
 
-		
 		boolean test = validator.validate(configuration, plan1);
 
 	}

@@ -74,4 +74,9 @@ public final class Vehicle {
 		Validate.notNull(capacity);
 		this.capacities.add(capacity);
 	}
+	
+	@Override
+	public String toString() {
+		return this.name;
+	}
 }
