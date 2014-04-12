@@ -41,6 +41,10 @@
 			<Name>Noch ein Auftrag</Name>
 			<SourceStationId>6</SourceStationId>
 		</Order>
+		<Order id="6">
+			<Name>Noch ein Auftrag</Name>
+			<SourceStationId>2</SourceStationId>
+		</Order>
 	</Orders>
 	
 	<Stations>

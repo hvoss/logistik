@@ -7,7 +7,6 @@ import java.util.Set;
 
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
-import org.apache.commons.math3.ml.distance.DistanceMeasure;
 
 /**
  * represents a station.

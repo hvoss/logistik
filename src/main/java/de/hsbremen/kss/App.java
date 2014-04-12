@@ -15,6 +15,7 @@ import de.hsbremen.kss.configuration.Order;
 import de.hsbremen.kss.configuration.Station;
 import de.hsbremen.kss.construction.Construction;
 import de.hsbremen.kss.construction.NearestNeighbor;
+import de.hsbremen.kss.construction.RandomConstruction;
 import de.hsbremen.kss.construction.SavingsContruction;
 import de.hsbremen.kss.construction.TestNearestNeighbor;
 import de.hsbremen.kss.model.Plan;
@@ -68,11 +69,25 @@ public class App {
 		Construction nearestNeighbor = new NearestNeighbor();
 		Construction savingsContruction = new SavingsContruction();
 		TestNearestNeighbor testNearestNeighbor = new TestNearestNeighbor();
+		Construction randomConstruction = new RandomConstruction();
 
 		Plan plan1 = nearestNeighbor.constructPlan(configuration);
 		Plan plan2 = savingsContruction.constructPlan(configuration);
-		testNearestNeighbor.constructPlan(configuration);
-
+		Plan plan3 = testNearestNeighbor.constructPlan(configuration);
+		
+		LOG.info("NearestNeighbor length [km]: " + Math.round(plan3.length()));
+		plan3.logTours();
+		
+		Plan bestRandomPlan = null;
+		for (int i = 0; i < 2000; i++) {
+			Plan randomPlan = randomConstruction.constructPlan(configuration);
+			if (bestRandomPlan == null || bestRandomPlan.length() > randomPlan.length()) {
+				bestRandomPlan = randomPlan;
+			}
+		}
+		LOG.info("best random length [km]: " + Math.round(bestRandomPlan.length()));
+		bestRandomPlan.logTours();
+		
 		Validator validator = new SimpleValidator();
 
 		boolean test = validator.validate(configuration, plan1);
