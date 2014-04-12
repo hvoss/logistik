@@ -19,7 +19,7 @@ import de.hsbremen.kss.configuration.Station;
 
 /**
  * Realizes the sequential Savings-Algorithm
- * Has still an error
+ * Has a problem, when the depot is in one of the orders
  * 
  * @author david
  *
@@ -32,10 +32,9 @@ public class SavingsContruction implements Construction {
 	public Plan constructPlan(Configuration configuration) {
 		
 		List<Order> orderList = new ArrayList<Order>(configuration.getOrders());
-		List<Station> stationList = new ArrayList<Station>(configuration.getStations());
-		List<Saving> savingList = new ArrayList<Saving>();
-		List<Order> savingsOrderList = new ArrayList<Order>();
-		Set<Order> processedOrders = new HashSet<>();
+		List<Saving> savingList = new ArrayList<>();
+		List<Order> savingsOrderList = new ArrayList<>();
+		List<Order> processedOrders = new ArrayList<>();
 		Vehicle vehicle = CollectionUtils.get(configuration.getVehicles(), 0);
 		Station depot = vehicle.getSourceDepot();
 		
@@ -64,7 +63,7 @@ public class SavingsContruction implements Construction {
 		savingList.remove(0);
 				
 		while(savingsOrderList.size() < orderList.size()){
-			int indexNextPair = searchNextPair(savingList, savingsOrderList.get(0), savingsOrderList.get(savingsOrderList.size()-1));
+			int indexNextPair = searchNextPair(savingList, savingsOrderList);
 			LOG.info("Next Pair: " + savingList.get(indexNextPair).getSourceOrder().getSource().getName() + " " + 
 			savingList.get(indexNextPair).getDestinationOrder().getSource().getName());
 			
@@ -81,32 +80,44 @@ public class SavingsContruction implements Construction {
 					savingsOrderList.add(savingList.get(indexNextPair).getDestinationOrder());
 				}
 			}
-			
 			savingList.remove(indexNextPair);
 		}
 		
-		LOG.info("Route: ");
-		for (int i=0; i<savingsOrderList.size()-1;i++){
-			LOG.info(savingsOrderList.get(i).getSource().getName() + " => "
-					+ savingsOrderList.get(i+1).getSource().getName() + " (" 
-					+ Math.round(savingsOrderList.get(i).getSource().
-							distance(savingsOrderList.get(i+1).getSource())) +" km)");
-		}
+		logTravel(savingsOrderList, depot);
 		
 		return null;
 	}
 	
-	private int searchNextPair(List<Saving> savingList, Order firstElement, Order lastElement){
+	private int searchNextPair(List<Saving> savingList, List<Order> savingsOrderList){
 		int indexNextPair=-1;
+		Order firstElement = savingsOrderList.get(0);
+		Order lastElement = savingsOrderList.get(savingsOrderList.size()-1);
 		for (Saving saving : savingList){
-			if (saving.getSourceOrder().equals(firstElement) || saving.getSourceOrder().equals(lastElement) 
-					|| saving.getDestinationOrder().equals(firstElement) || saving.getDestinationOrder().
-					equals(lastElement)){
-				indexNextPair = savingList.indexOf(saving);
-				break;
+			if (!(savingsOrderList.contains(saving.getSourceOrder()) && savingsOrderList.contains(saving.getDestinationOrder()))){
+				if (saving.getSourceOrder().equals(firstElement) || saving.getSourceOrder().equals(lastElement) 
+						|| saving.getDestinationOrder().equals(firstElement) || saving.getDestinationOrder().
+						equals(lastElement)){
+					indexNextPair = savingList.indexOf(saving);
+					break;
+				}
 			}
 		}
 		return indexNextPair;
+	}
+	
+	private static void logTravel(List<Order> savingsOrderList, Station depot){
+		List<Station> stationRoute = new ArrayList<>();
+		for(Order order : savingsOrderList){
+			stationRoute.add(order.getSource());
+		}
+		LOG.info("Route: ");
+		stationRoute.add(0, depot);
+		stationRoute.add(depot);
+		for (int i=0; i<stationRoute.size()-1;i++){
+			LOG.info(stationRoute.get(i).getName() + " => "+ stationRoute.get(i+1).getName() 
+					+ " (" + Math.round(stationRoute.get(i).distance(stationRoute.get(i+1))) +" km)");
+		}
+		
 	}
 
 }
