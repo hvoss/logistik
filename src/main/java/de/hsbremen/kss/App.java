@@ -72,11 +72,8 @@ public class App {
 		Construction randomConstruction = new RandomConstruction();
 
 		Plan plan1 = nearestNeighbor.constructPlan(configuration);
-		Plan plan2 = savingsContruction.constructPlan(configuration);
-		Plan plan3 = testNearestNeighbor.constructPlan(configuration);
-		
-		LOG.info("NearestNeighbor length [km]: " + Math.round(plan3.length()));
-		plan3.logTours();
+		Plan savingsPlan = savingsContruction.constructPlan(configuration);
+		Plan nearestNeighborPlan = testNearestNeighbor.constructPlan(configuration);
 		
 		Plan bestRandomPlan = null;
 		for (int i = 0; i < 2000; i++) {
@@ -85,12 +82,14 @@ public class App {
 				bestRandomPlan = randomPlan;
 			}
 		}
-		LOG.info("best random length [km]: " + Math.round(bestRandomPlan.length()));
-		bestRandomPlan.logTours();
 		
-		Validator validator = new SimpleValidator();
-
-		boolean test = validator.validate(configuration, plan1);
+		bestRandomPlan.logPlan(RandomConstruction.class);
+		bestRandomPlan.logTours();
+		nearestNeighborPlan.logPlan(TestNearestNeighbor.class);
+		nearestNeighborPlan.logTours();
+		savingsPlan.logPlan(SavingsContruction.class);
+		savingsPlan.logTours();
+		
 
 	}
 

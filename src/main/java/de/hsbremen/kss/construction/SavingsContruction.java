@@ -2,9 +2,7 @@ package de.hsbremen.kss.construction;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
@@ -12,10 +10,11 @@ import org.slf4j.LoggerFactory;
 
 import de.hsbremen.kss.configuration.Configuration;
 import de.hsbremen.kss.configuration.Order;
+import de.hsbremen.kss.configuration.Station;
 import de.hsbremen.kss.configuration.Vehicle;
 import de.hsbremen.kss.model.Plan;
 import de.hsbremen.kss.model.Saving;
-import de.hsbremen.kss.configuration.Station;
+import de.hsbremen.kss.model.Tour;
 
 /**
  * Realizes the sequential Savings-Algorithm
@@ -30,13 +29,14 @@ public class SavingsContruction implements Construction {
 	
 	@Override
 	public Plan constructPlan(Configuration configuration) {
-		
+		Plan plan = new Plan();
 		List<Order> orderList = new ArrayList<Order>(configuration.getOrders());
 		List<Saving> savingList = new ArrayList<>();
 		List<Order> savingsOrderList = new ArrayList<>();
 		List<Order> processedOrders = new ArrayList<>();
 		Vehicle vehicle = CollectionUtils.get(configuration.getVehicles(), 0);
 		Station depot = vehicle.getSourceDepot();
+		Tour tour = new Tour(vehicle);
 		
 		for (Order sourceOrder : orderList){
 			processedOrders.add(sourceOrder);
@@ -83,9 +83,13 @@ public class SavingsContruction implements Construction {
 			savingList.remove(indexNextPair);
 		}
 		
-		logTravel(savingsOrderList, depot);
+		for (Order order : savingsOrderList) {
+			tour.addOrderAndStation(order, order.getSource());
+		}
 		
-		return null;
+		plan.addTour(tour);
+		
+		return plan;
 	}
 	
 	private int searchNextPair(List<Saving> savingList, List<Order> savingsOrderList){
@@ -103,21 +107,6 @@ public class SavingsContruction implements Construction {
 			}
 		}
 		return indexNextPair;
-	}
-	
-	private static void logTravel(List<Order> savingsOrderList, Station depot){
-		List<Station> stationRoute = new ArrayList<>();
-		for(Order order : savingsOrderList){
-			stationRoute.add(order.getSource());
-		}
-		LOG.info("Route: ");
-		stationRoute.add(0, depot);
-		stationRoute.add(depot);
-		for (int i=0; i<stationRoute.size()-1;i++){
-			LOG.info(stationRoute.get(i).getName() + " => "+ stationRoute.get(i+1).getName() 
-					+ " (" + Math.round(stationRoute.get(i).distance(stationRoute.get(i+1))) +" km)");
-		}
-		
 	}
 
 }

@@ -4,7 +4,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import de.hsbremen.kss.construction.Construction;
+
 public class Plan {
+	
+	private static final Logger LOG = LoggerFactory.getLogger(Plan.class);
 
 	private List<Tour> tours;
 	
@@ -35,4 +42,9 @@ public class Plan {
 			tour.logTour();
 		}
 	}
+	
+	public void logPlan(Class<? extends Construction> constructionClazz) {
+		LOG.info(constructionClazz.getSimpleName() + " length [km]: " + Math.round(length()));
+	}
+	
 }
