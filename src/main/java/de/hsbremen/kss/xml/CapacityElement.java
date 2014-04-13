@@ -6,54 +6,41 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlValue;
 
-
 @XmlRootElement(name = "Capacity")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class CapacityElement {
 
-	@XmlAttribute (name = "productId")
-	private Integer productId;
+    @XmlAttribute(name = "productId")
+    private Integer productId;
 
-	@XmlAttribute (name = "productGroupId")
-	private Integer productGroupId;
-	
-	@XmlAttribute(name = "miscible")
-	private Boolean miscible;
+    @XmlAttribute(name = "productGroupId")
+    private Integer productGroupId;
 
-	@XmlValue
-	private Integer capacity;
+    @XmlValue
+    private Integer capacity;
 
-	public Integer getProductId() {
-		return productId;
-	}
+    public Integer getProductId() {
+        return this.productId;
+    }
 
-	public void setProductId(Integer productId) {
-		this.productId = productId;
-	}
+    public void setProductId(final Integer productId) {
+        this.productId = productId;
+    }
 
-	public Integer getProductGroupId() {
-		return productGroupId;
-	}
+    public Integer getProductGroupId() {
+        return this.productGroupId;
+    }
 
-	public void setProductGroupId(Integer productGroupId) {
-		this.productGroupId = productGroupId;
-	}
+    public void setProductGroupId(final Integer productGroupId) {
+        this.productGroupId = productGroupId;
+    }
 
-	public Boolean getMiscible() {
-		return miscible;
-	}
+    public Integer getCapacity() {
+        return this.capacity;
+    }
 
-	public void setMiscible(Boolean miscible) {
-		this.miscible = miscible;
-	}
+    public void setCapacity(final Integer capacity) {
+        this.capacity = capacity;
+    }
 
-	public Integer getCapacity() {
-		return capacity;
-	}
-
-	public void setCapacity(Integer capacity) {
-		this.capacity = capacity;
-	}
-	
-	
 }

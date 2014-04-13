@@ -22,9 +22,17 @@ public final class Configuration {
 	/** a collection of all product groups */
 	private final Set<ProductGroup> productGroups;
 
-	Configuration(Set<Order> orders, Set<Station> stations,
-			Set<Vehicle> vehicles, Set<Product> products,
-			Set<ProductGroup> productGroups) {
+	/**
+	 * 
+	 * @param orders
+	 * @param stations
+	 * @param vehicles
+	 * @param products
+	 * @param productGroups
+	 */
+	Configuration(final Set<Order> orders, final Set<Station> stations,
+			final Set<Vehicle> vehicles, final Set<Product> products,
+			final Set<ProductGroup> productGroups) {
 		Validate.noNullElements(orders);
 		Validate.noNullElements(stations);
 		Validate.noNullElements(vehicles);
@@ -39,23 +47,23 @@ public final class Configuration {
 	}
 
 	public Set<Order> getOrders() {
-		return orders;
+		return this.orders;
 	}
 
 	public Set<Station> getStations() {
-		return stations;
+		return this.stations;
 	}
 
 	public Set<Vehicle> getVehicles() {
-		return vehicles;
+		return this.vehicles;
 	}
 
 	public Set<Product> getProducts() {
-		return products;
+		return this.products;
 	}
 
 	public Set<ProductGroup> getProductGroups() {
-		return productGroups;
+		return this.productGroups;
 	}
 
 }

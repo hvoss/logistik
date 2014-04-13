@@ -104,8 +104,8 @@
 			<SourceDepotId>6</SourceDepotId>
 			<DestinationDepotId>6</DestinationDepotId>
 			<Capacities>
-				<Capacity productId="4" miscible="false">500</Capacity>
-				<Capacity productGroupId="1" miscible="true">1000</Capacity>
+				<Capacity productId="4">500</Capacity>
+				<Capacity productGroupId="1">1000</Capacity>
 			</Capacities>
 		</Vehicle>
 	</Vehicles>
@@ -113,6 +113,7 @@
 	<ProductGroups>
 		<ProductGroup id="1">
 			<Name>Kleinteile</Name>
+			<Miscible>true</Miscible>
 			<Products>
 				<ProductId>1</ProductId>
 				<ProductId>2</ProductId>
@@ -121,6 +122,7 @@
 		</ProductGroup>
 		<ProductGroup id="2">
 			<Name>Treibstoff</Name>
+			<Miscible>false</Miscible>
 			<Products>
 				<ProductId>4</ProductId>
 				<ProductId>5</ProductId>

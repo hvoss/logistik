@@ -6,63 +6,70 @@ import java.util.Set;
 
 import org.apache.commons.lang3.Validate;
 
-public class ProductGroup {
+public final class ProductGroup {
 
-	/** the id */
-	private final Integer id;
-	
-	/** the name */
-	private final String name;
+    /** the id */
+    private final Integer id;
 
-	/** Products belonging to this product group */
-	private final Set<Product> products;
-	
-	private final Set<Vehicle> vehicles;
+    /** the name */
+    private final String name;
 
-	
-	ProductGroup(Integer id, String name) {
-		this.id = id;
-		this.name = name;
-		this.products = new HashSet<>();
-		this.vehicles = new HashSet<>();
-	}
+    /** Products belonging to this product group */
+    private final Set<Product> products;
 
+    /**
+     * indicates whether different products can be tranported in the same
+     * capacity
+     */
+    private final Boolean miscible;
 
-	public Integer getId() {
-		return id;
-	}
+    /** vehicles which can transport this product group */
+    private final Set<Vehicle> vehicles;
 
+    ProductGroup(final Integer id, final String name, final Boolean miscible) {
+        Validate.notNull(id, "id is null");
+        Validate.notNull(name, "name is null");
+        Validate.notNull(miscible, "miscible is null");
 
-	public String getName() {
-		return name;
-	}
+        this.id = id;
+        this.name = name;
+        this.miscible = miscible;
+        this.products = new HashSet<>();
+        this.vehicles = new HashSet<>();
+    }
 
+    public Integer getId() {
+        return this.id;
+    }
 
-	public Set<Product> getProducts() {
-		return Collections.unmodifiableSet(products);
-	}
+    public String getName() {
+        return this.name;
+    }
 
+    public Set<Product> getProducts() {
+        return Collections.unmodifiableSet(this.products);
+    }
 
-	public Set<Vehicle> getVehicles() {
-		return Collections.unmodifiableSet(vehicles);
-	}
-	
-	public boolean contains(Product product) {
-		return this.vehicles.contains(product);
-	}
-	
-	void addProduct(Product product) {
-		Validate.notNull(product);
-		this.products.add(product);
-	}
-	
-	void addVehicle(Vehicle vehicle) {
-		Validate.notNull(vehicle);
-		this.vehicles.add(vehicle);
-	}
-	
-	@Override
-	public String toString() {
-		return this.name;
-	}
+    public Set<Vehicle> getVehicles() {
+        return Collections.unmodifiableSet(this.vehicles);
+    }
+
+    public boolean contains(final Product product) {
+        return this.vehicles.contains(product);
+    }
+
+    void addProduct(final Product product) {
+        Validate.notNull(product);
+        this.products.add(product);
+    }
+
+    void addVehicle(final Vehicle vehicle) {
+        Validate.notNull(vehicle);
+        this.vehicles.add(vehicle);
+    }
+
+    @Override
+    public String toString() {
+        return this.name;
+    }
 }

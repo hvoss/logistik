@@ -48,12 +48,14 @@
 
 	<!-- Miscellaneous other checks. -->
 	<!-- See http://checkstyle.sf.net/config_misc.html -->
+	<!-- 
 	<module name="RegexpSingleline">
 		<property name="format" value="\s+$" />
 		<property name="minimum" value="0" />
 		<property name="maximum" value="0" />
 		<property name="message" value="Line has trailing spaces." />
 	</module>
+	 -->
 
 	<!-- Checks for Headers -->
 	<!-- See http://checkstyle.sf.net/config_header.html -->
@@ -138,7 +140,10 @@
 		<module name="AvoidInlineConditionals" />
 		<module name="EmptyStatement" />
 		<module name="EqualsHashCode" />
-		<module name="HiddenField" />
+		<module name="HiddenField">
+    		<property name="ignoreSetter" value="true"/>
+    		<property name="ignoreConstructorParameter" value="true"/>
+		</module>
 		<module name="IllegalInstantiation" />
 		<module name="InnerAssignment" />
 		<module name="MagicNumber" />

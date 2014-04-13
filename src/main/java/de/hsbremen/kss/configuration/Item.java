@@ -2,41 +2,48 @@ package de.hsbremen.kss.configuration;
 
 import org.apache.commons.lang3.Validate;
 
+/**
+ * represents a item of an order.
+ * 
+ * @author henrik
+ * 
+ */
+public final class Item {
 
-public class Item {
+    /** order belongs to this item */
+    private final Order order;
 
-	private final Order order;
-	
-	private final Product product;
-	
-	private final Integer amount;
-	
-	Item(Order order, Product product, Integer amount) {
-		Validate.notNull(order, "order is null");
-		Validate.notNull(product, "product is null");
-		Validate.notNull(amount, "amount is null");
-		
-		
-		this.order = order;
-		this.product = product;
-		this.amount = amount;
-	}
+    /** product to deliver */
+    private final Product product;
 
-	public Product getProduct() {
-		return product;
-	}
+    /** num of products to deliver */
+    private final Integer amount;
 
-	public Integer getAmount() {
-		return amount;
-	}
+    Item(final Order order, final Product product, final Integer amount) {
+        Validate.notNull(order, "order is null");
+        Validate.notNull(product, "product is null");
+        Validate.notNull(amount, "amount is null");
 
-	public Order getOrder() {
-		return order;
-	}
-	
-	@Override
-	public String toString() {
-		return "Item[" + product.getName() + "]";
-	}
-	
+        this.order = order;
+        this.product = product;
+        this.amount = amount;
+    }
+
+    public Product getProduct() {
+        return this.product;
+    }
+
+    public Integer getAmount() {
+        return this.amount;
+    }
+
+    public Order getOrder() {
+        return this.order;
+    }
+
+    @Override
+    public String toString() {
+        return "Item[" + this.product.getName() + "]";
+    }
+
 }

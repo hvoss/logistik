@@ -2,86 +2,124 @@ package de.hsbremen.kss.configuration;
 
 import org.apache.commons.lang3.Validate;
 
-public class Capacity {
+/**
+ * represents a capacity of an {@link Vehicle}.
+ * 
+ * a capacity can hold either a product or an product group.
+ * 
+ * @author henrik
+ * 
+ */
+public final class Capacity {
 
-	/** the product */
-	private final Product product;
+    /** the product */
+    private final Product product;
 
-	/** the product group */
-	private final ProductGroup productGroup;
+    /** the product group */
+    private final ProductGroup productGroup;
 
-	private final Boolean miscible;
+    /** the actual capacity */
+    private final Integer capacity;
 
-	private final Integer capacity;
-	
-	private final Vehicle vehicle;
+    /** vehicle the capacity belongs to */
+    private final Vehicle vehicle;
 
-	Capacity(Product product, Vehicle vehicle, Boolean miscible, Integer capacity) {
-		this(product, null, vehicle, miscible, capacity);
-	}
+    /**
+     * ctor for a product.
+     * 
+     * @param product
+     *            product the capacity belongs to
+     * @param vehicle
+     *            vehicle the capacity belongs to
+     * @param capacity
+     *            the actual capacity
+     */
+    Capacity(final Product product, final Vehicle vehicle, final Integer capacity) {
+        this(product, null, vehicle, capacity);
+    }
 
-	Capacity(ProductGroup productGroup, Vehicle vehicle, Boolean miscible,
-			Integer capacity) {
-		this(null, productGroup, vehicle, miscible, capacity);
-	}
+    /**
+     * ctor for a product group.
+     * 
+     * @param productGroup
+     *            product group the capacity belongs to
+     * @param vehicle
+     *            vehicle the capacity belongs to
+     * @param capacity
+     *            the actual capacity
+     */
+    Capacity(final ProductGroup productGroup, final Vehicle vehicle, final Integer capacity) {
+        this(null, productGroup, vehicle, capacity);
+    }
 
-	private Capacity(Product product, ProductGroup productGroup,
-			Vehicle vehicle, Boolean miscible, Integer capacity) {
-		Validate.notNull(miscible, "miscible is null");
-		Validate.notNull(capacity, "capacity is null");
-		Validate.notNull(vehicle);
-		Validate.isTrue(product != null || productGroup != null,
-				"product and product group is null");
+    /**
+     * private ctor.
+     * 
+     * @param product
+     *            product the capacity belongs to
+     * @param productGroup
+     *            product group the capacity belongs to
+     * @param vehicle
+     *            vehicle the capacity belongs to
+     * @param capacity
+     *            the actual capacity
+     */
+    private Capacity(final Product product, final ProductGroup productGroup, final Vehicle vehicle, final Integer capacity) {
+        Validate.notNull(capacity, "capacity is null");
+        Validate.notNull(vehicle);
+        Validate.isTrue(product != null || productGroup != null, "product and product group is null");
 
-		this.product = product;
-		this.productGroup = productGroup;
-		this.miscible = miscible;
-		this.capacity = capacity;
-		this.vehicle = vehicle;
-	}
+        this.product = product;
+        this.productGroup = productGroup;
+        this.capacity = capacity;
+        this.vehicle = vehicle;
+    }
 
-	public Product getProduct() {
-		return product;
-	}
+    public Product getProduct() {
+        return this.product;
+    }
 
-	public ProductGroup getProductGroup() {
-		return productGroup;
-	}
+    public ProductGroup getProductGroup() {
+        return this.productGroup;
+    }
 
-	public Boolean getMiscible() {
-		return miscible;
-	}
+    public Integer getCapacity() {
+        return this.capacity;
+    }
 
-	public Integer getCapacity() {
-		return capacity;
-	}
+    public Vehicle getVehicle() {
+        return this.vehicle;
+    }
 
-	public Vehicle getVehicle() {
-		return vehicle;
-	}
+    /**
+     * verifies that the product belongs to the capacity.
+     * 
+     * @param checkProduct
+     *            product to check.
+     * @return true: the product belongs to the capacity; false: otherwise
+     */
+    public boolean contains(final Product checkProduct) {
+        if (checkProduct == null) {
+            return false;
+        }
 
-	public boolean contains(Product product) {
-		if (product == null) {
-			return false;
-		}
-		
-		if (product.equals(this.product)) {
-			return true;
-		}
-		
-		if (this.productGroup != null) {
-			return this.productGroup.contains(product);
-		}
-		
-		return false;
-	}
-	
-	@Override
-	public String toString() {
-		if (this.product != null) {
-			return "Capacity[Product: " + product.getName() + "]";
-		} else {
-			return "Capacity[ProductGroup: " + productGroup.getName() + "]";
-		}
-	}
+        if (checkProduct.equals(this.product)) {
+            return true;
+        }
+
+        if (this.productGroup != null) {
+            return this.productGroup.contains(checkProduct);
+        }
+
+        return false;
+    }
+
+    @Override
+    public String toString() {
+        if (this.product != null) {
+            return "Capacity[Product: " + this.product.getName() + "]";
+        } else {
+            return "Capacity[ProductGroup: " + this.productGroup.getName() + "]";
+        }
+    }
 }
