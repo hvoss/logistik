@@ -15,6 +15,7 @@ import de.hsbremen.kss.configuration.Order;
 import de.hsbremen.kss.configuration.Station;
 import de.hsbremen.kss.construction.Construction;
 import de.hsbremen.kss.construction.NearestNeighbor;
+import de.hsbremen.kss.construction.RadialConstruction;
 import de.hsbremen.kss.construction.RandomConstruction;
 import de.hsbremen.kss.construction.SavingsContruction;
 import de.hsbremen.kss.construction.TestNearestNeighbor;
@@ -65,31 +66,36 @@ public class App {
 						+ station.getSourceProducts().toString());
 			}
 		}
-		
+
 		Construction nearestNeighbor = new NearestNeighbor();
 		Construction savingsContruction = new SavingsContruction();
-		TestNearestNeighbor testNearestNeighbor = new TestNearestNeighbor();
+		Construction testNearestNeighbor = new TestNearestNeighbor();
 		Construction randomConstruction = new RandomConstruction();
+		Construction radialConstruction = new RadialConstruction();
 
 		Plan plan1 = nearestNeighbor.constructPlan(configuration);
 		Plan savingsPlan = savingsContruction.constructPlan(configuration);
-		Plan nearestNeighborPlan = testNearestNeighbor.constructPlan(configuration);
-		
+		Plan nearestNeighborPlan = testNearestNeighbor
+				.constructPlan(configuration);
+		Plan radialPlan = radialConstruction.constructPlan(configuration);
+
 		Plan bestRandomPlan = null;
 		for (int i = 0; i < 2000; i++) {
 			Plan randomPlan = randomConstruction.constructPlan(configuration);
-			if (bestRandomPlan == null || bestRandomPlan.length() > randomPlan.length()) {
+			if (bestRandomPlan == null
+					|| bestRandomPlan.length() > randomPlan.length()) {
 				bestRandomPlan = randomPlan;
 			}
 		}
-		
+
 		bestRandomPlan.logPlan(RandomConstruction.class);
 		bestRandomPlan.logTours();
 		nearestNeighborPlan.logPlan(TestNearestNeighbor.class);
 		nearestNeighborPlan.logTours();
 		savingsPlan.logPlan(SavingsContruction.class);
 		savingsPlan.logTours();
-		
+		radialPlan.logPlan(RadialConstruction.class);
+		radialPlan.logTours();
 
 	}
 

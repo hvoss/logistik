@@ -65,6 +65,12 @@ public final class Station {
 	
 	public double distance(Station station) {
 		return station.coordinates.distance(this.coordinates);
+		
+	}
+	
+	public double angle(Station station) {
+		Vector2D localVec = station.coordinates.subtract(this.coordinates);
+		return Math.atan2(localVec.getY(), localVec.getX());
 	}
 	
 	public Set<Product> getSourceProducts() {

@@ -1,5 +1,6 @@
 package de.hsbremen.kss.configuration;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -83,5 +84,15 @@ public final class Order {
 	@Override
 	public String toString() {
 		return this.name;
+	}
+	
+	public static Set<Station> getAllSourceStations(Collection<Order> orders) {
+		Set<Station> stations = new HashSet<>(orders.size());
+		
+		for (Order order : orders) {
+			stations.add(order.getSource());
+		}
+		
+		return stations;
 	}
 }
