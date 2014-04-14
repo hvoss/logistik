@@ -33,6 +33,16 @@ public final class SimpleValidator implements Validator {
      */
     protected boolean allStationsReached(final Configuration configuration, final Plan plan) {
         final Set<Station> allSourceStations = Order.getAllSourceStations(configuration.getOrders());
-        return plan.getStations().containsAll(allSourceStations);
+        final Set<Station> allDestinationStations = Order.getAllDestinationStations(configuration.getOrders());
+
+        if (!plan.getStations().containsAll(allSourceStations)) {
+            return false;
+        }
+
+        if (!plan.getStations().containsAll(allDestinationStations)) {
+            return false;
+        }
+
+        return true;
     }
 }
