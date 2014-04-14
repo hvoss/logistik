@@ -14,22 +14,22 @@ import de.hsbremen.kss.model.Tour;
 
 public class RandomConstruction implements Construction {
 
-	@Override
-	public Plan constructPlan(Configuration configuration) {
-		Plan plan = new Plan();
-		Vehicle vehicle = CollectionUtils.get(configuration.getVehicles(), 0);
+    @Override
+    public Plan constructPlan(final Configuration configuration) {
+        final Plan plan = new Plan(RandomConstruction.class);
+        final Vehicle vehicle = CollectionUtils.get(configuration.getVehicles(), 0);
 
-		List<Order> orders = new ArrayList<>(configuration.getOrders());
-		Collections.shuffle(orders); // TODO fix start value
-		Tour tour = new Tour(vehicle);
-		
-		for (Order order : orders) {
-			tour.addOrderAndStation(order, order.getSource());
-		}
-		
-		plan.addTour(tour);
-		
-		return plan;
-	}
+        final List<Order> orders = new ArrayList<>(configuration.getOrders());
+        Collections.shuffle(orders); // TODO fix start value
+        final Tour tour = new Tour(vehicle);
+
+        for (final Order order : orders) {
+            tour.addOrderAndStation(order, order.getSource());
+        }
+
+        plan.addTour(tour);
+
+        return plan;
+    }
 
 }

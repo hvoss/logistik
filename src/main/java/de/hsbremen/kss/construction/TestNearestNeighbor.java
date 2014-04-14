@@ -16,32 +16,29 @@ import de.hsbremen.kss.model.Tour;
 
 public class TestNearestNeighbor implements Construction {
 
-	@SuppressWarnings("unused")
-	private static final Logger LOG = LoggerFactory
-			.getLogger(TestNearestNeighbor.class);
+    @SuppressWarnings("unused")
+    private static final Logger LOG = LoggerFactory.getLogger(TestNearestNeighbor.class);
 
-	@Override
-	public Plan constructPlan(Configuration configuration) {
-		Plan plan = new Plan();
-		Vehicle vehicle = CollectionUtils.get(configuration.getVehicles(), 0);
+    @Override
+    public Plan constructPlan(final Configuration configuration) {
+        final Plan plan = new Plan(TestNearestNeighbor.class);
+        final Vehicle vehicle = CollectionUtils.get(configuration.getVehicles(), 0);
 
-		Set<Order> orders = new HashSet<>(configuration.getOrders());
-		Station actualStation = vehicle.getSourceDepot();
-		Tour tour = new Tour(vehicle);
+        final Set<Order> orders = new HashSet<>(configuration.getOrders());
+        Station actualStation = vehicle.getSourceDepot();
+        final Tour tour = new Tour(vehicle);
 
-		while (!orders.isEmpty()) {
-			Order nearestOrder = actualStation.findNearestSourceStation(orders);
-			Station nearestStation = nearestOrder.getSource();
-			tour.addOrderAndStation(nearestOrder, nearestStation);
-			actualStation = nearestStation;
-			orders.remove(nearestOrder);
-		}
-		
-		plan.addTour(tour);
-		
-		return plan;
-	}
-	
-	
+        while (!orders.isEmpty()) {
+            final Order nearestOrder = actualStation.findNearestSourceStation(orders);
+            final Station nearestStation = nearestOrder.getSource();
+            tour.addOrderAndStation(nearestOrder, nearestStation);
+            actualStation = nearestStation;
+            orders.remove(nearestOrder);
+        }
+
+        plan.addTour(tour);
+
+        return plan;
+    }
 
 }

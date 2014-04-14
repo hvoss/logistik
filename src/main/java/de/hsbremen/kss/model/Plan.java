@@ -1,13 +1,16 @@
 package de.hsbremen.kss.model;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
 import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.hsbremen.kss.configuration.Station;
 import de.hsbremen.kss.construction.Construction;
 
 /**
@@ -18,13 +21,20 @@ public final class Plan {
     /** logging interface. */
     private static final Logger LOG = LoggerFactory.getLogger(Plan.class);
 
+    /** the implementation which generates the plan */
+    private final Class<? extends Construction> constructionClazz;
+
     /** The tours. */
     private final List<Tour> tours;
 
     /**
      * Instantiates a new plan.
+     * 
+     * @param constructionClazz
+     *            the implementation which generates the plan
      */
-    public Plan() {
+    public Plan(final Class<? extends Construction> constructionClazz) {
+        this.constructionClazz = constructionClazz;
         this.tours = new ArrayList<>();
     }
 
@@ -67,19 +77,32 @@ public final class Plan {
      * log all tours.
      */
     public void logTours() {
+        Plan.LOG.info(this.constructionClazz.getSimpleName() + " plan:");
         for (final Tour tour : this.tours) {
             tour.logTour();
         }
     }
 
     /**
-     * logs the tour.
+     * returns a set of all reached stations
      * 
-     * @param constructionClazz
-     *            algorithm which used for generating
+     * @return a set of all reached stations
      */
-    public void logPlan(final Class<? extends Construction> constructionClazz) {
-        Plan.LOG.info(constructionClazz.getSimpleName() + " length [km]: " + Math.round(length()));
+    public Collection<Station> getStations() {
+        final Collection<Station> allReachedStations = new HashSet<>();
+
+        for (final Tour tour : this.tours) {
+            allReachedStations.addAll(tour.getStations());
+        }
+
+        return allReachedStations;
+    }
+
+    /**
+     * logs the tour.
+     */
+    public void logPlan() {
+        Plan.LOG.info(this.constructionClazz.getSimpleName() + " length [km]: " + Math.round(length()));
     }
 
 }

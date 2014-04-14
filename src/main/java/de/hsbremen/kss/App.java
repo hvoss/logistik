@@ -1,9 +1,8 @@
 package de.hsbremen.kss;
 
 import java.io.File;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Arrays;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,90 +26,88 @@ import de.hsbremen.kss.validate.Validator;
  * Hello world!
  * 
  */
-public class App {
+public final class App {
 
-	/** logging interface */
-	private final static Logger LOG = LoggerFactory.getLogger(App.class);
+    /** logging interface */
+    private static final Logger LOG = LoggerFactory.getLogger(App.class);
 
-	public static void main(String[] args) {
-		LOG.info("App started");
+    /** number of random plans to generate. */
+    private static final int NUM_OF_RANDOM_PLANS = 2000;
 
-		ConfigurationParser confParser = new JAXBConfigurationParserImpl();
+    /**
+     * static class
+     */
+    private App() {
 
-		File file = new File("conf.xml");
+    }
 
-		Configuration configuration = confParser.parseConfiguration(file);
+    /**
+     * the main functions
+     * 
+     * @param args
+     *            the arguments
+     */
+    public static void main(final String[] args) {
+        App.LOG.info("App started");
 
-		LOG.info("got " + configuration.getStations().size() + " stations");
-		LOG.info("got " + configuration.getVehicles().size() + " vehicles");
-		LOG.info("got " + configuration.getOrders().size() + " orders");
-		LOG.info("got " + configuration.getProducts().size() + " products");
-		LOG.info("got " + configuration.getProductGroups().size()
-				+ " product groups");
+        final ConfigurationParser confParser = new JAXBConfigurationParserImpl();
 
-		LOG.info("stations: " + configuration.getStations());
-		LOG.info("vehicles: " + configuration.getVehicles());
-		LOG.info("orders: " + configuration.getOrders());
-		LOG.info("products: " + configuration.getProducts());
-		LOG.info("product groups: " + configuration.getProductGroups());
+        final File file = new File("conf.xml");
 
-		logDistancesBetweenStations(configuration.getStations());
+        final Configuration configuration = confParser.parseConfiguration(file);
 
-		for (Order order : configuration.getOrders()) {
-			LOG.info(order.getName() + ": " + order.getProducts());
-		}
+        App.LOG.info("got " + configuration.getStations().size() + " stations");
+        App.LOG.info("got " + configuration.getVehicles().size() + " vehicles");
+        App.LOG.info("got " + configuration.getOrders().size() + " orders");
+        App.LOG.info("got " + configuration.getProducts().size() + " products");
+        App.LOG.info("got " + configuration.getProductGroups().size() + " product groups");
 
-		for (Station station : configuration.getStations()) {
-			if (!station.getSourceProducts().isEmpty()) {
-				LOG.info(station.getName() + ": "
-						+ station.getSourceProducts().toString());
-			}
-		}
+        App.LOG.info("stations: " + configuration.getStations());
+        App.LOG.info("vehicles: " + configuration.getVehicles());
+        App.LOG.info("orders: " + configuration.getOrders());
+        App.LOG.info("products: " + configuration.getProducts());
+        App.LOG.info("product groups: " + configuration.getProductGroups());
 
-		Construction nearestNeighbor = new NearestNeighbor();
-		Construction savingsContruction = new SavingsContruction();
-		Construction testNearestNeighbor = new TestNearestNeighbor();
-		Construction randomConstruction = new RandomConstruction();
-		Construction radialConstruction = new RadialConstruction();
+        Station.logDistancesBetweenStations(configuration.getStations());
 
-		Plan plan1 = nearestNeighbor.constructPlan(configuration);
-		Plan savingsPlan = savingsContruction.constructPlan(configuration);
-		Plan nearestNeighborPlan = testNearestNeighbor
-				.constructPlan(configuration);
-		Plan radialPlan = radialConstruction.constructPlan(configuration);
+        for (final Order order : configuration.getOrders()) {
+            App.LOG.info(order.getName() + ": " + order.getProducts());
+        }
 
-		Plan bestRandomPlan = null;
-		for (int i = 0; i < 2000; i++) {
-			Plan randomPlan = randomConstruction.constructPlan(configuration);
-			if (bestRandomPlan == null
-					|| bestRandomPlan.length() > randomPlan.length()) {
-				bestRandomPlan = randomPlan;
-			}
-		}
+        for (final Station station : configuration.getStations()) {
+            if (!station.getSourceProducts().isEmpty()) {
+                App.LOG.info(station.getName() + ": " + station.getSourceProducts().toString());
+            }
+        }
 
-		bestRandomPlan.logPlan(RandomConstruction.class);
-		bestRandomPlan.logTours();
-		nearestNeighborPlan.logPlan(TestNearestNeighbor.class);
-		nearestNeighborPlan.logTours();
-		savingsPlan.logPlan(SavingsContruction.class);
-		savingsPlan.logTours();
-		radialPlan.logPlan(RadialConstruction.class);
-		radialPlan.logTours();
+        final Construction nearestNeighbor = new NearestNeighbor();
+        final Construction savingsContruction = new SavingsContruction();
+        final Construction testNearestNeighbor = new TestNearestNeighbor();
+        final Construction randomConstruction = new RandomConstruction();
+        final Construction radialConstruction = new RadialConstruction();
 
-	}
+        final Plan plan1 = nearestNeighbor.constructPlan(configuration);
+        final Plan savingsPlan = savingsContruction.constructPlan(configuration);
+        final Plan nearestNeighborPlan = testNearestNeighbor.constructPlan(configuration);
+        final Plan radialPlan = radialConstruction.constructPlan(configuration);
+        final List<Plan> allPlans = Arrays.asList(savingsPlan, nearestNeighborPlan, radialPlan);
 
-	private static void logDistancesBetweenStations(Collection<Station> stations) {
-		Set<Station> processedStations = new HashSet<>();
-		for (Station station : stations) {
-			processedStations.add(station);
-			for (Station otherStation : stations) {
-				if (!processedStations.contains(otherStation)) {
-					LOG.debug("distance between " + station.getName() + " and "
-							+ otherStation.getName() + ": "
-							+ Math.round(station.distance(otherStation))
-							+ " km");
-				}
-			}
-		}
-	}
+        Plan bestRandomPlan = null;
+        for (int i = 0; i < App.NUM_OF_RANDOM_PLANS; i++) {
+            final Plan randomPlan = randomConstruction.constructPlan(configuration);
+            if (bestRandomPlan == null || bestRandomPlan.length() > randomPlan.length()) {
+                bestRandomPlan = randomPlan;
+            }
+        }
+
+        final Validator validator = new SimpleValidator();
+
+        for (final Plan plan : allPlans) {
+            plan.logPlan();
+            App.LOG.info("plan is valid: " + validator.validate(configuration, plan));
+            plan.logTours();
+        }
+
+    }
+
 }

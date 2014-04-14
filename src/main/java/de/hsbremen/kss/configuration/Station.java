@@ -7,6 +7,8 @@ import java.util.Set;
 
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * represents a station.
@@ -15,6 +17,9 @@ import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
  * 
  */
 public final class Station {
+
+    /** logging interface */
+    private static final Logger LOG = LoggerFactory.getLogger(Station.class);
 
     /** the id. */
     private final Integer id;
@@ -233,5 +238,24 @@ public final class Station {
         }
 
         return nearestOrder;
+    }
+
+    /**
+     * logs the distance between all given stations.
+     * 
+     * @param stations
+     *            stations to log.
+     */
+    public static void logDistancesBetweenStations(final Collection<Station> stations) {
+        final Set<Station> processedStations = new HashSet<>();
+        for (final Station station : stations) {
+            processedStations.add(station);
+            for (final Station otherStation : stations) {
+                if (!processedStations.contains(otherStation)) {
+                    Station.LOG.debug("distance between " + station.getName() + " and " + otherStation.getName() + ": "
+                            + Math.round(station.distance(otherStation)) + " km");
+                }
+            }
+        }
     }
 }
