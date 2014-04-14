@@ -12,16 +12,16 @@ import org.apache.commons.lang3.Validate;
  */
 public final class Capacity {
 
-    /** the product */
+    /** the product. */
     private final Product product;
 
-    /** the product group */
+    /** the product group. */
     private final ProductGroup productGroup;
 
-    /** the actual capacity */
+    /** the actual capacity. */
     private final Integer capacity;
 
-    /** vehicle the capacity belongs to */
+    /** vehicle the capacity belongs to. */
     private final Vehicle vehicle;
 
     /**
@@ -75,18 +75,38 @@ public final class Capacity {
         this.vehicle = vehicle;
     }
 
+    /**
+     * Gets the product.
+     * 
+     * @return the product
+     */
     public Product getProduct() {
         return this.product;
     }
 
+    /**
+     * Gets the product group.
+     * 
+     * @return the product group
+     */
     public ProductGroup getProductGroup() {
         return this.productGroup;
     }
 
+    /**
+     * Gets the actual capacity.
+     * 
+     * @return the actual capacity
+     */
     public Integer getCapacity() {
         return this.capacity;
     }
 
+    /**
+     * Gets the vehicle the capacity belongs to.
+     * 
+     * @return the vehicle the capacity belongs to
+     */
     public Vehicle getVehicle() {
         return this.vehicle;
     }

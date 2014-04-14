@@ -15,84 +15,149 @@ import org.apache.commons.lang3.Validate;
  */
 public final class Order {
 
-	/** the id */
-	private final Integer id;
+    /** the id. */
+    private final Integer id;
 
-	/** the name */
-	private final String name;
+    /** the name. */
+    private final String name;
 
-	/** the source station */
-	private final Station source;
+    /** the source station. */
+    private final Station source;
 
-	/** the destination station. could be null */
-	private final Station destination;
-	
-	/** all items */ 
-	private Set<Item> items;
-	
-	Order(Integer id, String name, Station source) {
-		this(id, name, source, null);
-	}
+    /** the destination station. could be null */
+    private final Station destination;
 
-	Order(Integer id, String name, Station source, Station destination) {
-		Validate.notNull(id, "id is null");
-		Validate.notNull(name, "name is null");
-		Validate.notNull(source, "source station is null");
+    /** all items. */
+    private final Set<Item> items;
 
-		this.id = id;
-		this.name = name;
-		this.source = source;
-		this.destination = destination;
-		this.items = new HashSet<>();
-	}
+    /**
+     * Instantiates a new order.
+     * 
+     * @param id
+     *            the id
+     * @param name
+     *            the name
+     * @param source
+     *            the source
+     */
+    Order(final Integer id, final String name, final Station source) {
+        this(id, name, source, null);
+    }
 
-	public int getId() {
-		return id;
-	}
+    /**
+     * Instantiates a new order.
+     * 
+     * @param id
+     *            the id
+     * @param name
+     *            the name
+     * @param source
+     *            the source
+     * @param destination
+     *            the destination
+     */
+    Order(final Integer id, final String name, final Station source, final Station destination) {
+        Validate.notNull(id, "id is null");
+        Validate.notNull(name, "name is null");
+        Validate.notNull(source, "source station is null");
 
-	public String getName() {
-		return name;
-	}
+        this.id = id;
+        this.name = name;
+        this.source = source;
+        this.destination = destination;
+        this.items = new HashSet<>();
+    }
 
-	public Station getSource() {
-		return source;
-	}
+    /**
+     * Gets the id.
+     * 
+     * @return the id
+     */
+    public int getId() {
+        return this.id;
+    }
 
-	public Station getDestination() {
-		return destination;
-	}
+    /**
+     * Gets the name.
+     * 
+     * @return the name
+     */
+    public String getName() {
+        return this.name;
+    }
 
-	public Set<Item> getItems() {
-		return Collections.unmodifiableSet(items);
-	}
-	
-	void addItem(Item item) {
-		Validate.notNull(item, "item is null");
-		this.items.add(item);
-	}
-	
-	public Set<Product> getProducts() {
-		Set<Product> products = new HashSet<>(this.items.size());
-		
-		for (Item item : this.items) {
-			products.add(item.getProduct());
-		}
-		
-		return products;
-	}
-	
-	@Override
-	public String toString() {
-		return this.name;
-	}
-	
-	public static Set<Station> getAllSourceStations(Collection<Order> orders) {
-		Set<Station> stations = new HashSet<>(orders.size());
-		
-		for (Order order : orders) {
-			stations.add(order.getSource());
-		}
-		
-		return stations;
-	}
+    /**
+     * Gets the source station.
+     * 
+     * @return the source station
+     */
+    public Station getSource() {
+        return this.source;
+    }
+
+    /**
+     * Gets the destination station.
+     * 
+     * @return the destination station
+     */
+    public Station getDestination() {
+        return this.destination;
+    }
+
+    /**
+     * Gets the all items.
+     * 
+     * @return the all items
+     */
+    public Set<Item> getItems() {
+        return Collections.unmodifiableSet(this.items);
+    }
+
+    /**
+     * adds a item to the order.
+     * 
+     * @param item
+     *            item to add
+     */
+    void addItem(final Item item) {
+        Validate.notNull(item, "item is null");
+        this.items.add(item);
+    }
+
+    /**
+     * Gets the products.
+     * 
+     * @return the products
+     */
+    public Set<Product> getProducts() {
+        final Set<Product> products = new HashSet<>(this.items.size());
+
+        for (final Item item : this.items) {
+            products.add(item.getProduct());
+        }
+
+        return products;
+    }
+
+    @Override
+    public String toString() {
+        return this.name;
+    }
+
+    /**
+     * extracts all source stations of a collection of {@link Order}s.
+     * 
+     * @param orders
+     *            collection of orders to check
+     * @return a set of all source stations
+     */
+    public static Set<Station> getAllSourceStations(final Collection<Order> orders) {
+        final Set<Station> stations = new HashSet<>(orders.size());
+
+        for (final Order order : orders) {
+            stations.add(order.getSource());
+        }
+
+        return stations;
+    }
 }

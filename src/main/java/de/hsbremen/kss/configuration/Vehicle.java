@@ -6,23 +6,38 @@ import java.util.Set;
 
 import org.apache.commons.lang3.Validate;
 
+/**
+ * The Class Vehicle.
+ */
 public final class Vehicle {
 
-    /** the id */
+    /** the id. */
     private final Integer id;
 
-    /** the name */
+    /** the name. */
     private final String name;
 
-    /** the source depot (station) */
+    /** the source depot (station). */
     private final Station sourceDepot;
 
-    /** the destination depot (station) */
+    /** the destination depot (station). */
     private final Station destinationDepot;
 
-    /** the capacities */
+    /** the capacities. */
     private final Set<Capacity> capacities;
 
+    /**
+     * Instantiates a new vehicle.
+     * 
+     * @param id
+     *            the id
+     * @param name
+     *            the name
+     * @param sourceDepot
+     *            the source depot
+     * @param destinationDepot
+     *            the destination depot
+     */
     Vehicle(final Integer id, final String name, final Station sourceDepot, final Station destinationDepot) {
         Validate.notNull(id, "id is null");
         Validate.notNull(name, "name is null");
@@ -36,22 +51,47 @@ public final class Vehicle {
         this.capacities = new HashSet<>();
     }
 
+    /**
+     * Gets the id.
+     * 
+     * @return the id
+     */
     public Integer getId() {
         return this.id;
     }
 
+    /**
+     * Gets the name.
+     * 
+     * @return the name
+     */
     public String getName() {
         return this.name;
     }
 
+    /**
+     * Gets the source depot (station).
+     * 
+     * @return the source depot (station)
+     */
     public Station getSourceDepot() {
         return this.sourceDepot;
     }
 
+    /**
+     * Gets the destination depot (station).
+     * 
+     * @return the destination depot (station)
+     */
     public Station getDestinationDepot() {
         return this.destinationDepot;
     }
 
+    /**
+     * Gets the capacities.
+     * 
+     * @return the capacities
+     */
     public Set<Capacity> getCapacities() {
         return Collections.unmodifiableSet(this.capacities);
     }
@@ -73,6 +113,12 @@ public final class Vehicle {
         return false;
     }
 
+    /**
+     * adds a capacity
+     * 
+     * @param capacity
+     *            capacity to add
+     */
     public void addCapacity(final Capacity capacity) {
         Validate.notNull(capacity);
         this.capacities.add(capacity);

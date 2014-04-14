@@ -6,55 +6,99 @@ import java.util.Set;
 
 import org.apache.commons.lang3.Validate;
 
-public class Product {
+/**
+ * The Class Product.
+ */
+public final class Product {
 
-	/** the id */
-	private final Integer id;
+    /** the id. */
+    private final Integer id;
 
-	/** the name */
-	private final String name;
-	
-	private final Set<Vehicle> vehicles;
+    /** the name. */
+    private final String name;
 
-	/** Product groups to which the product belongs */
-	private final Set<ProductGroup> productGroups;
+    /** vehicles which can transport this product. */
+    private final Set<Vehicle> vehicles;
 
-	Product(Integer id, String name) {
-		this.id = id;
-		this.name = name;
-		this.productGroups = new HashSet<>();
-		this.vehicles = new HashSet<>();
-	}
+    /** Product groups to which the product belongs. */
+    private final Set<ProductGroup> productGroups;
 
-	public Integer getId() {
-		return id;
-	}
+    /**
+     * Instantiates a new product.
+     * 
+     * @param id
+     *            the id
+     * @param name
+     *            the name
+     */
+    Product(final Integer id, final String name) {
+        this.id = id;
+        this.name = name;
+        this.productGroups = new HashSet<>();
+        this.vehicles = new HashSet<>();
+    }
 
-	public String getName() {
-		return name;
-	}
+    /**
+     * Gets the id.
+     * 
+     * @return the id
+     */
+    public Integer getId() {
+        return this.id;
+    }
 
-	public Set<ProductGroup> getProductGroups() {
-		return Collections.unmodifiableSet(productGroups);
-	}
+    /**
+     * Gets the name.
+     * 
+     * @return the name
+     */
+    public String getName() {
+        return this.name;
+    }
 
-	public Set<Vehicle> getVehicles() {
-		return Collections.unmodifiableSet(vehicles);
-	}
-	
-	void addProductGroup(ProductGroup productGroup) {
-		Validate.notNull(productGroup);
-		this.productGroups.add(productGroup);
-	}
-	
-	void addVehicle(Vehicle vehicle) {
-		Validate.notNull(vehicle);
-		this.vehicles.add(vehicle);
-	}
-	
-	@Override
-	public String toString() {
-		return this.name;
-	}
+    /**
+     * Gets the product groups to which the product belongs.
+     * 
+     * @return the product groups to which the product belongs
+     */
+    public Set<ProductGroup> getProductGroups() {
+        return Collections.unmodifiableSet(this.productGroups);
+    }
+
+    /**
+     * Gets the vehicles which can transport this product.
+     * 
+     * @return the vehicles which can transport this product
+     */
+    public Set<Vehicle> getVehicles() {
+        return Collections.unmodifiableSet(this.vehicles);
+    }
+
+    /**
+     * adds a product group to which the product belongs.
+     * 
+     * @param productGroup
+     *            product group to which the product belongs
+     */
+    void addProductGroup(final ProductGroup productGroup) {
+        Validate.notNull(productGroup);
+        this.productGroups.add(productGroup);
+    }
+
+    /**
+     * adds vehicle which can transport this product.
+     * 
+     * @param vehicle
+     *            vehicle which can transport this product
+     */
+    void addVehicle(final Vehicle vehicle) {
+        Validate.notNull(vehicle);
+        this.vehicles.add(vehicle);
+    }
+
+    @Override
+    public String toString() {
+        return this.name;
+    }
 
 }
