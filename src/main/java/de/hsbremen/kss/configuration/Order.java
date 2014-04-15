@@ -30,6 +30,9 @@ public final class Order {
     /** all items. */
     private final Set<Item> items;
 
+    /** all items wrapped by a {@link Collections#unmodifiableSet(Set)} */
+    private final Set<Item> umItems;
+
     /**
      * Instantiates a new order.
      * 
@@ -66,6 +69,7 @@ public final class Order {
         this.source = source;
         this.destination = destination;
         this.items = new HashSet<>();
+        this.umItems = Collections.unmodifiableSet(this.items);
     }
 
     /**
@@ -110,7 +114,7 @@ public final class Order {
      * @return the all items
      */
     public Set<Item> getItems() {
-        return Collections.unmodifiableSet(this.items);
+        return this.umItems;
     }
 
     /**

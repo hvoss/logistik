@@ -36,11 +36,17 @@ public final class Station {
      */
     private final Set<Order> sourceOrders;
 
+    /** source orders wrapped by a {@link Collections#unmodifiableSet(Set)} */
+    private final Set<Order> umSourceOrders;
+
     /**
      * a list of orders for which this station is assigned as the destination
      * station.
      */
     private final Set<Order> destinationOrders;
+
+    /** destination orders wrapped by a {@link Collections#unmodifiableSet(Set)} */
+    private final Set<Order> umDestinationOrders;
 
     /**
      * Instantiates a new station.
@@ -62,6 +68,9 @@ public final class Station {
         this.coordinates = coordinates;
         this.sourceOrders = new HashSet<>();
         this.destinationOrders = new HashSet<Order>();
+
+        this.umDestinationOrders = Collections.unmodifiableSet(this.destinationOrders);
+        this.umSourceOrders = Collections.unmodifiableSet(this.sourceOrders);
     }
 
     /**
@@ -99,7 +108,7 @@ public final class Station {
      *         source station
      */
     public Set<Order> getSourceOrders() {
-        return Collections.unmodifiableSet(this.sourceOrders);
+        return this.umSourceOrders;
     }
 
     /**
@@ -110,7 +119,7 @@ public final class Station {
      *         destination station
      */
     public Set<Order> getDestinationOrders() {
-        return Collections.unmodifiableSet(this.destinationOrders);
+        return this.umDestinationOrders;
     }
 
     /**

@@ -20,8 +20,14 @@ public final class Product {
     /** vehicles which can transport this product. */
     private final Set<Vehicle> vehicles;
 
+    /** vehicles wrapped by a {@link Collections#unmodifiableSet(Set)} */
+    private final Set<Vehicle> umVehicles;
+
     /** Product groups to which the product belongs. */
     private final Set<ProductGroup> productGroups;
+
+    /** product groups wrapped by a {@link Collections#unmodifiableSet(Set)} */
+    private final Set<ProductGroup> umProductGroups;
 
     /**
      * Instantiates a new product.
@@ -36,6 +42,9 @@ public final class Product {
         this.name = name;
         this.productGroups = new HashSet<>();
         this.vehicles = new HashSet<>();
+
+        this.umProductGroups = Collections.unmodifiableSet(this.productGroups);
+        this.umVehicles = Collections.unmodifiableSet(this.vehicles);
     }
 
     /**
@@ -62,7 +71,7 @@ public final class Product {
      * @return the product groups to which the product belongs
      */
     public Set<ProductGroup> getProductGroups() {
-        return Collections.unmodifiableSet(this.productGroups);
+        return this.umProductGroups;
     }
 
     /**
@@ -71,7 +80,7 @@ public final class Product {
      * @return the vehicles which can transport this product
      */
     public Set<Vehicle> getVehicles() {
-        return Collections.unmodifiableSet(this.vehicles);
+        return this.umVehicles;
     }
 
     /**

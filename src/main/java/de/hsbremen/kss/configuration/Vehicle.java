@@ -26,6 +26,9 @@ public final class Vehicle {
     /** the capacities. */
     private final Set<Capacity> capacities;
 
+    /** capacities wrapped by a {@link Collections#unmodifiableSet(Set)} */
+    private final Set<Capacity> umCapacities;
+
     /**
      * Instantiates a new vehicle.
      * 
@@ -49,6 +52,8 @@ public final class Vehicle {
         this.sourceDepot = sourceDepot;
         this.destinationDepot = destinationDepot;
         this.capacities = new HashSet<>();
+
+        this.umCapacities = Collections.unmodifiableSet(this.capacities);
     }
 
     /**
@@ -93,7 +98,7 @@ public final class Vehicle {
      * @return the capacities
      */
     public Set<Capacity> getCapacities() {
-        return Collections.unmodifiableSet(this.capacities);
+        return this.umCapacities;
     }
 
     /**

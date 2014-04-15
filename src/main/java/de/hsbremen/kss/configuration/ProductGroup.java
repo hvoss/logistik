@@ -20,6 +20,9 @@ public final class ProductGroup {
     /** Products belonging to this product group. */
     private final Set<Product> products;
 
+    /** products wrapped by a {@link Collections#unmodifiableSet(Set)} */
+    private final Set<Product> umProducts;
+
     /**
      * indicates whether different products can be tranported in the same
      * capacity.
@@ -28,6 +31,9 @@ public final class ProductGroup {
 
     /** vehicles which can transport this product group. */
     private final Set<Vehicle> vehicles;
+
+    /** vehicles wrapped by a {@link Collections#unmodifiableSet(Set)} */
+    private final Set<Vehicle> unVehicles;
 
     /**
      * Instantiates a new product group.
@@ -49,6 +55,9 @@ public final class ProductGroup {
         this.miscible = miscible;
         this.products = new HashSet<>();
         this.vehicles = new HashSet<>();
+
+        this.umProducts = Collections.unmodifiableSet(this.products);
+        this.unVehicles = Collections.unmodifiableSet(this.vehicles);
     }
 
     /**
@@ -75,7 +84,7 @@ public final class ProductGroup {
      * @return the products belonging to this product group
      */
     public Set<Product> getProducts() {
-        return Collections.unmodifiableSet(this.products);
+        return this.umProducts;
     }
 
     /**
@@ -84,7 +93,7 @@ public final class ProductGroup {
      * @return the vehicles which can transport this product group
      */
     public Set<Vehicle> getVehicles() {
-        return Collections.unmodifiableSet(this.vehicles);
+        return this.unVehicles;
     }
 
     /**
