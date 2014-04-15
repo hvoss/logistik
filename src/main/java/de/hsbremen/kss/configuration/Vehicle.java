@@ -109,6 +109,7 @@ public final class Vehicle {
      * @return true: product can be transported; false: otherwise
      */
     public boolean canBeTransported(final Product checkProduct) {
+        // XXX maybe cache?
         for (final Capacity capacity : this.capacities) {
             if (capacity.contains(checkProduct)) {
                 return true;

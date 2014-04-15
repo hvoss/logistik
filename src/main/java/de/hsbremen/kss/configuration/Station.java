@@ -56,6 +56,12 @@ public final class Station {
     /** cached angles to other stations */
     private final Map<Station, Double> angles;
 
+    /** cached source products */
+    private final CollectionCache<Set<Product>, Product> sourceProductsCache;
+
+    /** cached destination products */
+    private final CollectionCache<Set<Product>, Product> destinationProductsCache;
+
     /**
      * Instantiates a new station.
      * 
@@ -82,6 +88,9 @@ public final class Station {
 
         this.distances = new HashMap<>();
         this.angles = new HashMap<>();
+
+        this.sourceProductsCache = new CollectionCache<>();
+        this.destinationProductsCache = new CollectionCache<>();
     }
 
     /**
@@ -177,14 +186,18 @@ public final class Station {
      * @return the source products
      */
     public Set<Product> getSourceProducts() {
-        final Set<Product> sourceProducts = new HashSet<>();
+        if (!this.sourceProductsCache.isValid()) {
+            final Set<Product> sourceProducts = new HashSet<>();
 
-        for (final Order order : this.sourceOrders) {
-            final Set<Product> products = order.getProducts();
-            sourceProducts.addAll(products);
+            for (final Order order : this.sourceOrders) {
+                final Set<Product> products = order.getProducts();
+                sourceProducts.addAll(products);
+            }
+
+            this.sourceProductsCache.setCollection(sourceProducts);
         }
 
-        return sourceProducts;
+        return this.sourceProductsCache.getCollection();
     }
 
     /**
@@ -193,14 +206,17 @@ public final class Station {
      * @return the destination products
      */
     public Set<Product> getDestinationProducts() {
-        final Set<Product> destinationProducts = new HashSet<>();
+        if (!this.destinationProductsCache.isValid()) {
+            final Set<Product> destinationProducts = new HashSet<>();
 
-        for (final Order order : this.destinationOrders) {
-            final Set<Product> products = order.getProducts();
-            destinationProducts.addAll(products);
+            for (final Order order : this.destinationOrders) {
+                final Set<Product> products = order.getProducts();
+                destinationProducts.addAll(products);
+            }
+            this.destinationProductsCache.setCollection(destinationProducts);
         }
 
-        return destinationProducts;
+        return this.destinationProductsCache.getCollection();
     }
 
     /**
@@ -214,6 +230,7 @@ public final class Station {
         if (!this.sourceOrders.add(order)) {
             throw new IllegalStateException("station " + this.name + " already contain the given source order: " + order);
         }
+        this.sourceProductsCache.clearCache();
     }
 
     /**
@@ -229,6 +246,7 @@ public final class Station {
         if (!this.destinationOrders.add(order)) {
             throw new IllegalStateException("station " + this.name + " already contain the given destination order: " + order);
         }
+        this.destinationProductsCache.clearCache();
     }
 
     @Override

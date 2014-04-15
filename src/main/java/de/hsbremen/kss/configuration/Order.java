@@ -33,6 +33,9 @@ public final class Order {
     /** all items wrapped by a {@link Collections#unmodifiableSet(Set)} */
     private final Set<Item> umItems;
 
+    /** a cache of the products */
+    private final CollectionCache<Set<Product>, Product> productsCache;
+
     /**
      * Instantiates a new order.
      * 
@@ -70,6 +73,8 @@ public final class Order {
         this.destination = destination;
         this.items = new HashSet<>();
         this.umItems = Collections.unmodifiableSet(this.items);
+
+        this.productsCache = new CollectionCache<Set<Product>, Product>();
     }
 
     /**
@@ -128,6 +133,7 @@ public final class Order {
         if (!this.items.add(item)) {
             throw new IllegalStateException("order " + this.name + " already contain the given item: " + item);
         }
+        this.productsCache.clearCache();
     }
 
     /**
@@ -136,13 +142,17 @@ public final class Order {
      * @return the products
      */
     public Set<Product> getProducts() {
-        final Set<Product> products = new HashSet<>(this.items.size());
+        if (!this.productsCache.isValid()) {
+            final Set<Product> products = new HashSet<>(this.items.size());
 
-        for (final Item item : this.items) {
-            products.add(item.getProduct());
+            for (final Item item : this.items) {
+                products.add(item.getProduct());
+            }
+
+            this.productsCache.setCollection(products);
         }
 
-        return products;
+        return this.productsCache.getCollection();
     }
 
     @Override
