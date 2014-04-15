@@ -80,6 +80,8 @@ public final class App {
             }
         }
 
+        final Validator validator = new SimpleValidator();
+
         final Construction nearestNeighbor = new NearestNeighbor();
         final Construction savingsContruction = new SavingsContruction();
         final Construction testNearestNeighbor = new TestNearestNeighbor();
@@ -90,7 +92,6 @@ public final class App {
         final Plan savingsPlan = savingsContruction.constructPlan(configuration);
         final Plan nearestNeighborPlan = testNearestNeighbor.constructPlan(configuration);
         final Plan radialPlan = radialConstruction.constructPlan(configuration);
-        final List<Plan> allPlans = Arrays.asList(savingsPlan, nearestNeighborPlan, radialPlan);
 
         Plan bestRandomPlan = null;
         for (int i = 0; i < App.NUM_OF_RANDOM_PLANS; i++) {
@@ -99,8 +100,7 @@ public final class App {
                 bestRandomPlan = randomPlan;
             }
         }
-
-        final Validator validator = new SimpleValidator();
+        final List<Plan> allPlans = Arrays.asList(savingsPlan, nearestNeighborPlan, radialPlan, bestRandomPlan);
 
         for (final Plan plan : allPlans) {
             plan.logPlan();

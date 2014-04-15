@@ -180,4 +180,26 @@ public final class Order {
 
         return stations;
     }
+
+    /**
+     * extracts all stations of a collection of {@link Order}s.
+     * 
+     * @param orders
+     *            collection of orders to check
+     * @return a set of all stations
+     */
+    public static Set<Station> getAllStations(final Collection<Order> orders) {
+        final Set<Station> stations = new HashSet<>(orders.size() * 2);
+
+        for (final Order order : orders) {
+            final Station dest = order.getDestination();
+
+            stations.add(order.getSource());
+            if (dest != null) {
+                stations.add(dest);
+            }
+        }
+
+        return stations;
+    }
 }

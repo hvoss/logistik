@@ -1,11 +1,17 @@
 package de.hsbremen.kss.validate;
 
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import de.hsbremen.kss.configuration.Configuration;
 import de.hsbremen.kss.configuration.Order;
 import de.hsbremen.kss.configuration.Station;
 import de.hsbremen.kss.model.Plan;
+import de.hsbremen.kss.model.Tour;
 
 /**
  * A simple validator.
@@ -17,32 +23,42 @@ import de.hsbremen.kss.model.Plan;
  */
 public final class SimpleValidator implements Validator {
 
+    /** logging interface */
+    private static final Logger LOG = LoggerFactory.getLogger(SimpleValidator.class);
+
     @Override
     public boolean validate(final Configuration configuration, final Plan plan) {
-        return allStationsReached(configuration, plan);
-    }
+        final Set<Order> orders = new HashSet<>(configuration.getOrders());
 
-    /**
-     * checks if all source stations reached.
-     * 
-     * @param configuration
-     *            the given configuration
-     * @param plan
-     *            the plan of the construction algorithm
-     * @return true: all source stations reached; false: otherwise
-     */
-    protected boolean allStationsReached(final Configuration configuration, final Plan plan) {
-        final Set<Station> allSourceStations = Order.getAllSourceStations(configuration.getOrders());
-        final Set<Station> allDestinationStations = Order.getAllDestinationStations(configuration.getOrders());
+        for (final Tour tour : plan.getTours()) {
+            final List<Station> stations = tour.getStations();
+            for (final Order order : tour.getOrders()) {
+                final Station source = order.getSource();
+                final Station destination = order.getDestination();
 
-        if (!plan.getStations().containsAll(allSourceStations)) {
-            return false;
+                final int sourceIndex = stations.indexOf(source);
+
+                if (sourceIndex > -1) {
+                    if (destination != null) {
+                        final int destinationIndex = stations.lastIndexOf(destination);
+
+                        if (destinationIndex >= sourceIndex) {
+                            orders.remove(order);
+                        } else if (destinationIndex == -1) {
+                            SimpleValidator.LOG.warn("destination(" + destination + ") not visit on order: " + order);
+                        } else {
+                            SimpleValidator.LOG.warn("destination(" + destination + ", " + destinationIndex + ") visited before source(" + source
+                                    + ", " + sourceIndex + ") on order: " + order);
+                        }
+                    } else {
+                        orders.remove(order);
+                    }
+                } else {
+                    SimpleValidator.LOG.warn("source(" + source + ") not visit on order: " + order);
+                }
+            }
         }
 
-        if (!plan.getStations().containsAll(allDestinationStations)) {
-            return false;
-        }
-
-        return true;
+        return orders.isEmpty();
     }
 }
