@@ -14,7 +14,7 @@ import de.hsbremen.kss.configuration.Vehicle;
 import de.hsbremen.kss.model.Plan;
 import de.hsbremen.kss.model.Tour;
 
-public class TestNearestNeighbor implements Construction {
+public final class TestNearestNeighbor implements Construction {
 
     @SuppressWarnings("unused")
     private static final Logger LOG = LoggerFactory.getLogger(TestNearestNeighbor.class);

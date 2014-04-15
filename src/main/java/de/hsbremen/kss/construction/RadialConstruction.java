@@ -14,8 +14,9 @@ import de.hsbremen.kss.configuration.Vehicle;
 import de.hsbremen.kss.model.Plan;
 import de.hsbremen.kss.model.Tour;
 
-public class RadialConstruction implements Construction {
+public final class RadialConstruction implements Construction {
 
+    /** logging interface */
     private static final Logger LOG = LoggerFactory.getLogger(RadialConstruction.class);
 
     @Override
