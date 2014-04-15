@@ -142,4 +142,50 @@ public final class Capacity {
             return "Capacity[ProductGroup: " + this.productGroup.getName() + "]";
         }
     }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((this.product == null) ? 0 : this.product.hashCode());
+        result = prime * result + ((this.productGroup == null) ? 0 : this.productGroup.hashCode());
+        result = prime * result + ((this.vehicle == null) ? 0 : this.vehicle.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(final Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Capacity other = (Capacity) obj;
+        if (this.product == null) {
+            if (other.product != null) {
+                return false;
+            }
+        } else if (!this.product.equals(other.product)) {
+            return false;
+        }
+        if (this.productGroup == null) {
+            if (other.productGroup != null) {
+                return false;
+            }
+        } else if (!this.productGroup.equals(other.productGroup)) {
+            return false;
+        }
+        if (this.vehicle == null) {
+            if (other.vehicle != null) {
+                return false;
+            }
+        } else if (!this.vehicle.equals(other.vehicle)) {
+            return false;
+        }
+        return true;
+    }
 }

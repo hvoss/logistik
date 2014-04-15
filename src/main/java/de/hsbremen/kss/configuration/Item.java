@@ -71,4 +71,50 @@ public final class Item {
         return "Item[" + this.product.getName() + "]";
     }
 
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((this.amount == null) ? 0 : this.amount.hashCode());
+        result = prime * result + ((this.order == null) ? 0 : this.order.hashCode());
+        result = prime * result + ((this.product == null) ? 0 : this.product.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(final Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Item other = (Item) obj;
+        if (this.amount == null) {
+            if (other.amount != null) {
+                return false;
+            }
+        } else if (!this.amount.equals(other.amount)) {
+            return false;
+        }
+        if (this.order == null) {
+            if (other.order != null) {
+                return false;
+            }
+        } else if (!this.order.equals(other.order)) {
+            return false;
+        }
+        if (this.product == null) {
+            if (other.product != null) {
+                return false;
+            }
+        } else if (!this.product.equals(other.product)) {
+            return false;
+        }
+        return true;
+    }
+
 }
