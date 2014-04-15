@@ -2,7 +2,9 @@ package de.hsbremen.kss.configuration;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang3.Validate;
@@ -48,6 +50,12 @@ public final class Station {
     /** destination orders wrapped by a {@link Collections#unmodifiableSet(Set)} */
     private final Set<Order> umDestinationOrders;
 
+    /** cached distances to other stations */
+    private final Map<Station, Double> distances;
+
+    /** cached angles to other stations */
+    private final Map<Station, Double> angles;
+
     /**
      * Instantiates a new station.
      * 
@@ -71,6 +79,9 @@ public final class Station {
 
         this.umDestinationOrders = Collections.unmodifiableSet(this.destinationOrders);
         this.umSourceOrders = Collections.unmodifiableSet(this.sourceOrders);
+
+        this.distances = new HashMap<>();
+        this.angles = new HashMap<>();
     }
 
     /**
@@ -130,8 +141,14 @@ public final class Station {
      * @return the distance
      */
     public double distance(final Station station) {
-        return station.coordinates.distance(this.coordinates);
+        Double distance = this.distances.get(station);
+        if (distance == null) {
+            distance = station.coordinates.distance(this.coordinates);
+            this.distances.put(station, distance);
+            station.distances.put(this, distance);
+        }
 
+        return distance;
     }
 
     /**
@@ -142,8 +159,16 @@ public final class Station {
      * @return the angle (rad) to another station.
      */
     public double angle(final Station station) {
-        final Vector2D localVec = station.coordinates.subtract(this.coordinates);
-        return Math.atan2(localVec.getY(), localVec.getX());
+        Double angle = this.angles.get(station);
+
+        if (angle == null) {
+            final Vector2D localVec = station.coordinates.subtract(this.coordinates);
+            angle = Math.atan2(localVec.getY(), localVec.getX());
+            this.angles.put(station, angle);
+            // XXX calculate the angle of the other station
+        }
+
+        return angle;
     }
 
     /**
