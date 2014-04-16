@@ -41,4 +41,8 @@ public final class ConstructionTimeMeasuring extends TimeMeasuring {
     public Plan getPlan() {
         return this.plan;
     }
+
+    public Construction getConstruction() {
+        return this.construction;
+    }
 }

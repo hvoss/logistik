@@ -114,7 +114,8 @@ public final class App {
         for (final ConstructionTimeMeasuring timeMeasuring : timeMeasuringTasks) {
             App.LOG.info("");
             final Plan plan = timeMeasuring.getPlan();
-            plan.logPlan();
+            timeMeasuring.getPlan().logPlan();
+            timeMeasuring.getConstruction().logStatistic();
             App.LOG.info("construction took " + timeMeasuring.duration() + " ms");
             App.LOG.info("plan is valid: " + validator.validate(configuration, plan));
             plan.logTours();

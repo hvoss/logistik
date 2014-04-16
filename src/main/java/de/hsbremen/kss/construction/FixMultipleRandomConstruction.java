@@ -1,5 +1,8 @@
 package de.hsbremen.kss.construction;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import de.hsbremen.kss.configuration.Configuration;
 import de.hsbremen.kss.model.Plan;
 
@@ -11,11 +14,17 @@ import de.hsbremen.kss.model.Plan;
  */
 public final class FixMultipleRandomConstruction implements Construction {
 
+    /** logging interface */
+    private static final Logger LOG = LoggerFactory.getLogger(FixMultipleRandomConstruction.class);
+
     /** construction method which is used */
     private final Construction construction;
 
     /** number of constructions tries */
     private final int numOfRandomPlans;
+
+    /** stores number of the iteration in which the best plan was found */
+    private int planFoundInIteration;
 
     /**
      * ctor.
@@ -37,6 +46,7 @@ public final class FixMultipleRandomConstruction implements Construction {
             final Plan randomPlan = this.construction.constructPlan(configuration);
             if (bestRandomPlan == null || bestRandomPlan.length() > randomPlan.length()) {
                 bestRandomPlan = randomPlan;
+                this.planFoundInIteration = i;
             }
         }
         return new Plan(FixMultipleRandomConstruction.class, bestRandomPlan);
@@ -44,8 +54,7 @@ public final class FixMultipleRandomConstruction implements Construction {
 
     @Override
     public void logStatistic() {
-        // TODO Auto-generated method stub
-
+        FixMultipleRandomConstruction.LOG.info("best plan was found in iteration " + this.planFoundInIteration + " of " + this.numOfRandomPlans);
     }
 
 }
