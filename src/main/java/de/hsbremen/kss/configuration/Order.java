@@ -45,20 +45,6 @@ public final class Order {
      *            the name
      * @param source
      *            the source
-     */
-    Order(final Integer id, final String name, final Station source) {
-        this(id, name, source, null);
-    }
-
-    /**
-     * Instantiates a new order.
-     * 
-     * @param id
-     *            the id
-     * @param name
-     *            the name
-     * @param source
-     *            the source
      * @param destination
      *            the destination
      */
@@ -66,6 +52,7 @@ public final class Order {
         Validate.notNull(id, "id is null");
         Validate.notNull(name, "name is null");
         Validate.notNull(source, "source station is null");
+        Validate.notNull(destination, "destination station is null");
 
         this.id = id;
         this.name = name;

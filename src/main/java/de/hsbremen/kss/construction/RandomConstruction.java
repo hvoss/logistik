@@ -41,10 +41,11 @@ public final class RandomConstruction implements Construction {
         final Vehicle vehicle = CollectionUtils.get(configuration.getVehicles(), 0);
         final Tour tour = new Tour(vehicle);
 
-        final Set<Station> stations = Order.getAllSourceStations(configuration.getOrders());
+        final Set<Order> orders = configuration.getOrders();
+        final Set<Station> stations = Order.getAllSourceStations(orders);
 
-        final Set<Order> visitedSourceOrder = new HashSet<>();
-        final Set<Order> visitedDestinationOrder = new HashSet<>();
+        final Set<Order> visitedSourceOrder = new HashSet<>(orders.size());
+        final Set<Order> visitedDestinationOrder = new HashSet<>(orders.size());
 
         while (!stations.isEmpty()) {
             final Station rElement = RandomUtils.randomElement(stations);
@@ -66,7 +67,7 @@ public final class RandomConstruction implements Construction {
             stations.addAll(Order.getAllDestinationStations(sourceOrders));
         }
 
-        tour.addOrders(configuration.getOrders());
+        tour.addOrders(orders);
 
         plan.addTour(tour);
 

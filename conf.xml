@@ -4,7 +4,7 @@
 		<Order id="1">
 			<Name>Test Auftrag</Name>
 			<SourceStationId>1</SourceStationId>
-			<DestinationStationId>2R</DestinationStationId>
+			<DestinationStationId>2</DestinationStationId>
 			<Items>
 				<Item>
 					<ProductId>1</ProductId>
