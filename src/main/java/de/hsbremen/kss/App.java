@@ -97,8 +97,8 @@ public final class App {
         final Construction savingsContruction = new SavingsContruction();
         final Construction randomConstruction = new RandomConstruction();
         final Construction radialConstruction = new RadialConstruction();
-        final Construction multipleRandomConstruction = new MultipleRandomConstruction(App.NUM_OF_RANDOM_PLANS);
-        final Construction betterMultipleRandomConstruction = new BetterMultipleRandomConstruction(App.MAX_MISSES);
+        final Construction multipleRandomConstruction = new MultipleRandomConstruction(randomConstruction, App.NUM_OF_RANDOM_PLANS);
+        final Construction betterMultipleRandomConstruction = new BetterMultipleRandomConstruction(randomConstruction, App.MAX_MISSES);
 
         final List<Construction> allConstructions = Arrays.asList(savingsContruction, radialConstruction, randomConstruction,
                 betterMultipleRandomConstruction, multipleRandomConstruction, nearestNeighbor);

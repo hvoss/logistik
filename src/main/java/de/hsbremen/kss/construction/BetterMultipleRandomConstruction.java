@@ -3,13 +3,30 @@ package de.hsbremen.kss.construction;
 import de.hsbremen.kss.configuration.Configuration;
 import de.hsbremen.kss.model.Plan;
 
+/**
+ * calls a other construction method multiple times and returns the best result.
+ * 
+ * @author henrik
+ * 
+ */
 public final class BetterMultipleRandomConstruction implements Construction {
 
-    private final Construction randomConstruction = new RandomConstruction();
+    /** construction method which is used */
+    private final Construction construction;
 
+    /** number of constructions tries */
     private final int numOfRandomPlans;
 
-    public BetterMultipleRandomConstruction(final int numOfRandomPlans) {
+    /**
+     * ctor.
+     * 
+     * @param construction
+     *            construction method which is used
+     * @param numOfRandomPlans
+     *            number of constructions tries
+     */
+    public BetterMultipleRandomConstruction(final Construction construction, final int numOfRandomPlans) {
+        this.construction = construction;
         this.numOfRandomPlans = numOfRandomPlans;
     }
 
@@ -17,12 +34,12 @@ public final class BetterMultipleRandomConstruction implements Construction {
     public Plan constructPlan(final Configuration configuration) {
         Plan bestRandomPlan = null;
         for (int i = 0; i < this.numOfRandomPlans; i++) {
-            final Plan randomPlan = this.randomConstruction.constructPlan(configuration);
+            final Plan randomPlan = this.construction.constructPlan(configuration);
             if (bestRandomPlan == null || bestRandomPlan.length() > randomPlan.length()) {
                 bestRandomPlan = randomPlan;
             }
         }
-        return bestRandomPlan;
+        return new Plan(BetterMultipleRandomConstruction.class, bestRandomPlan);
     }
 
 }
