@@ -47,4 +47,10 @@ public final class MissAbortMultipleRandomConstruction implements Construction {
         return new Plan(MissAbortMultipleRandomConstruction.class, bestRandomPlan);
     }
 
+    @Override
+    public void logStatistic() {
+        // TODO Auto-generated method stub
+
+    }
+
 }

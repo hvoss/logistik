@@ -46,4 +46,10 @@ public final class RadialConstruction implements Construction {
         return plan;
     }
 
+    @Override
+    public void logStatistic() {
+        // TODO Auto-generated method stub
+
+    }
+
 }

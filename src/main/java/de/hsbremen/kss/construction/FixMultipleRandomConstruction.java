@@ -42,4 +42,10 @@ public final class FixMultipleRandomConstruction implements Construction {
         return new Plan(FixMultipleRandomConstruction.class, bestRandomPlan);
     }
 
+    @Override
+    public void logStatistic() {
+        // TODO Auto-generated method stub
+
+    }
+
 }

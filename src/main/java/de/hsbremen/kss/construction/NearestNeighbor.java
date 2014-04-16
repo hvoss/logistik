@@ -15,52 +15,57 @@ import de.hsbremen.kss.model.Plan;
 import de.hsbremen.kss.model.Tour;
 
 public class NearestNeighbor implements Construction {
-	
-	@SuppressWarnings("unused")
-	private static final Logger LOG = LoggerFactory
-			.getLogger(NearestNeighbor.class);
 
-	@Override
-	public Plan constructPlan(Configuration configuration) {
-		Plan plan = new Plan(NearestNeighbor.class);
-		Vehicle vehicle = CollectionUtils.get(configuration.getVehicles(), 0);
-		List<Order> orders = new ArrayList<>(configuration.getOrders());
-		List<Station> stations = new ArrayList<>(configuration.getStations());
-		
-		Station startStation = vehicle.getSourceDepot();
-		stations.remove(startStation);
-		Tour tour = new Tour(vehicle);
+    @SuppressWarnings("unused")
+    private static final Logger LOG = LoggerFactory.getLogger(NearestNeighbor.class);
 
-		while (!stations.isEmpty()) {
-			//Order nearestOrder = startStation.findNearestSourceStation(orders);
-			Station nearestStation = startStation.findNearestStation(stations);
-			List<Station> tempStations = new ArrayList<>(stations);
-			List<Order> tempOrders = new ArrayList<>(orders);
+    @Override
+    public Plan constructPlan(final Configuration configuration) {
+        final Plan plan = new Plan(NearestNeighbor.class);
+        final Vehicle vehicle = CollectionUtils.get(configuration.getVehicles(), 0);
+        final List<Order> orders = new ArrayList<>(configuration.getOrders());
+        final List<Station> stations = new ArrayList<>(configuration.getStations());
 
-			for (Order order : tempOrders) {
-				if (order.getDestination() == nearestStation && !tour.getStations().contains(order.getSource())) {
-					tempStations.remove(order.getDestination());
-					nearestStation = startStation
-							.findNearestStation(tempStations);
-					tempOrders = new ArrayList<>(orders);
-				}
-			}
+        Station startStation = vehicle.getSourceDepot();
+        stations.remove(startStation);
+        final Tour tour = new Tour(vehicle);
 
-			if (nearestStation != null) {
-				tour.addStation(nearestStation);
-				startStation = nearestStation;
-				stations.remove(startStation);
-				//orders.remove(nearestOrder);	
-			} else {
-				break;
-			}
-		}
-		
-		tour.addOrders(configuration.getOrders());
+        while (!stations.isEmpty()) {
+            // Order nearestOrder =
+            // startStation.findNearestSourceStation(orders);
+            Station nearestStation = startStation.findNearestStation(stations);
+            final List<Station> tempStations = new ArrayList<>(stations);
+            List<Order> tempOrders = new ArrayList<>(orders);
 
-		plan.addTour(tour);
-		
-		return plan;
-	}
+            for (final Order order : tempOrders) {
+                if (order.getDestination() == nearestStation && !tour.getStations().contains(order.getSource())) {
+                    tempStations.remove(order.getDestination());
+                    nearestStation = startStation.findNearestStation(tempStations);
+                    tempOrders = new ArrayList<>(orders);
+                }
+            }
+
+            if (nearestStation != null) {
+                tour.addStation(nearestStation);
+                startStation = nearestStation;
+                stations.remove(startStation);
+                // orders.remove(nearestOrder);
+            } else {
+                break;
+            }
+        }
+
+        tour.addOrders(configuration.getOrders());
+
+        plan.addTour(tour);
+
+        return plan;
+    }
+
+    @Override
+    public void logStatistic() {
+        // TODO Auto-generated method stub
+
+    }
 
 }
