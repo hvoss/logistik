@@ -3,8 +3,8 @@
 	<Orders>
 		<Order id="1">
 			<Name>Test Auftrag</Name>
-			<SourceStationId>4</SourceStationId>
-			<DestinationStationId>8</DestinationStationId>
+			<SourceStationId>1</SourceStationId>
+			<DestinationStationId>2R</DestinationStationId>
 			<Items>
 				<Item>
 					<ProductId>1</ProductId>
@@ -23,6 +23,7 @@
 		<Order id="2">
 			<Name>Noch ein Auftrag</Name>
 			<SourceStationId>5</SourceStationId>
+			<DestinationStationId>8</DestinationStationId>
 			<Items>
 				<Item>
 					<ProductId>4</ProductId>
@@ -32,20 +33,24 @@
 		</Order>
 		<Order id="3">
 			<Name>Noch ein Auftrag</Name>
+			<Name>Hannover als Ziel</Name>
 			<SourceStationId>8</SourceStationId>
+			<DestinationStationId>3</DestinationStationId>
 		</Order>
 		<Order id="4">
 			<Name>Noch ein Auftrag</Name>
 			<SourceStationId>7</SourceStationId>
+			<DestinationStationId>1</DestinationStationId>
 		</Order>
 		<Order id="5">
 			<Name>Noch ein Auftrag</Name>
 			<SourceStationId>4</SourceStationId>
+			<DestinationStationId>2</DestinationStationId>
 		</Order>
 		<Order id="6">
 			<Name>Noch ein Auftrag</Name>
-			<SourceStationId>1</SourceStationId>
-			<DestinationStationId>3</DestinationStationId>
+			<SourceStationId>2</SourceStationId>
+			<DestinationStationId>4</DestinationStationId>
 		</Order>
 	</Orders>
 		

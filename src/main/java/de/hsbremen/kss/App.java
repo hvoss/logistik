@@ -1,10 +1,12 @@
 package de.hsbremen.kss;
 
 import java.io.File;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
+import org.joda.time.Instant;
+import org.joda.time.Interval;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,13 +15,16 @@ import de.hsbremen.kss.configuration.ConfigurationParser;
 import de.hsbremen.kss.configuration.JAXBConfigurationParserImpl;
 import de.hsbremen.kss.configuration.Order;
 import de.hsbremen.kss.configuration.Station;
+import de.hsbremen.kss.construction.BetterMultipleRandomConstruction;
 import de.hsbremen.kss.construction.Construction;
+import de.hsbremen.kss.construction.MultipleRandomConstruction;
 import de.hsbremen.kss.construction.NearestNeighbor;
 import de.hsbremen.kss.construction.RadialConstruction;
 import de.hsbremen.kss.construction.RandomConstruction;
 import de.hsbremen.kss.construction.SavingsContruction;
-import de.hsbremen.kss.construction.NearestNeighbor;
+import de.hsbremen.kss.construction.TestNearestNeighbor;
 import de.hsbremen.kss.model.Plan;
+import de.hsbremen.kss.timing.ConstructionTimeMeasuring;
 import de.hsbremen.kss.validate.SimpleValidator;
 import de.hsbremen.kss.validate.Validator;
 
@@ -27,88 +32,95 @@ import de.hsbremen.kss.validate.Validator;
  * Hello world!
  * 
  */
-public class App {
+public final class App {
 
-	/** logging interface */
-	private final static Logger LOG = LoggerFactory.getLogger(App.class);
+    /** logging interface */
+    private static final Logger LOG = LoggerFactory.getLogger(App.class);
 
-	public static void main(String[] args) {
-		LOG.info("App started");
+    /** number of random plans to generate. */
+    private static final int NUM_OF_RANDOM_PLANS = 2000;
 
-		ConfigurationParser confParser = new JAXBConfigurationParserImpl();
+    /** number of random plans to generate. */
+    private static final int MAX_MISSES = 50;
 
-		File file = new File("conf.xml");
+    /**
+     * static class
+     */
+    private App() {
 
-		Configuration configuration = confParser.parseConfiguration(file);
+    }
 
-		LOG.info("got " + configuration.getStations().size() + " stations");
-		LOG.info("got " + configuration.getVehicles().size() + " vehicles");
-		LOG.info("got " + configuration.getOrders().size() + " orders");
-		LOG.info("got " + configuration.getProducts().size() + " products");
-		LOG.info("got " + configuration.getProductGroups().size()
-				+ " product groups");
+    /**
+     * the main functions
+     * 
+     * @param args
+     *            the arguments
+     */
+    public static void main(final String[] args) {
+        App.LOG.info("App started");
 
-		LOG.info("stations: " + configuration.getStations());
-		LOG.info("vehicles: " + configuration.getVehicles());
-		LOG.info("orders: " + configuration.getOrders());
-		LOG.info("products: " + configuration.getProducts());
-		LOG.info("product groups: " + configuration.getProductGroups());
+        final ConfigurationParser confParser = new JAXBConfigurationParserImpl();
 
-		logDistancesBetweenStations(configuration.getStations());
+        final File file = new File("conf.xml");
 
-		for (Order order : configuration.getOrders()) {
-			LOG.info(order.getName() + ": " + order.getProducts());
-		}
+        final Instant start = new Instant();
+        final Configuration configuration = confParser.parseConfiguration(file);
+        final long durationMillis = new Interval(start, new Instant()).toDurationMillis();
+        App.LOG.info("configuration parsing took " + durationMillis + " ms");
 
-		for (Station station : configuration.getStations()) {
-			if (!station.getSourceProducts().isEmpty()) {
-				LOG.info(station.getName() + ": "
-						+ station.getSourceProducts().toString());
-			}
-		}
+        App.LOG.info("got " + configuration.getStations().size() + " stations");
+        App.LOG.info("got " + configuration.getVehicles().size() + " vehicles");
+        App.LOG.info("got " + configuration.getOrders().size() + " orders");
+        App.LOG.info("got " + configuration.getProducts().size() + " products");
+        App.LOG.info("got " + configuration.getProductGroups().size() + " product groups");
 
-		Construction savingsContruction = new SavingsContruction();
-		Construction nearestNeighbor = new NearestNeighbor();
-		Construction randomConstruction = new RandomConstruction();
-		Construction radialConstruction = new RadialConstruction();
+        App.LOG.info("stations: " + configuration.getStations());
+        App.LOG.info("vehicles: " + configuration.getVehicles());
+        App.LOG.info("orders: " + configuration.getOrders());
+        App.LOG.info("products: " + configuration.getProducts());
+        App.LOG.info("product groups: " + configuration.getProductGroups());
 
-		Plan savingsPlan = savingsContruction.constructPlan(configuration);
-		Plan nearestNeighborPlan = nearestNeighbor
-				.constructPlan(configuration);
-		Plan radialPlan = radialConstruction.constructPlan(configuration);
+        Station.logDistancesBetweenStations(configuration.getStations());
 
-		Plan bestRandomPlan = null;
-		for (int i = 0; i < 2000; i++) {
-			Plan randomPlan = randomConstruction.constructPlan(configuration);
-			if (bestRandomPlan == null
-					|| bestRandomPlan.length() > randomPlan.length()) {
-				bestRandomPlan = randomPlan;
-			}
-		}
+        for (final Order order : configuration.getOrders()) {
+            App.LOG.info(order.getName() + ": " + order.getProducts());
+        }
 
-		bestRandomPlan.logPlan(RandomConstruction.class);
-		bestRandomPlan.logTours();
-		nearestNeighborPlan.logPlan(NearestNeighbor.class);
-		nearestNeighborPlan.logTours();
-		savingsPlan.logPlan(SavingsContruction.class);
-		savingsPlan.logTours();
-		radialPlan.logPlan(RadialConstruction.class);
-		radialPlan.logTours();
+        for (final Station station : configuration.getStations()) {
+            if (!station.getSourceProducts().isEmpty()) {
+                App.LOG.info(station.getName() + ": " + station.getSourceProducts().toString());
+            }
+        }
 
-	}
+        final Validator validator = new SimpleValidator();
 
-	private static void logDistancesBetweenStations(Collection<Station> stations) {
-		Set<Station> processedStations = new HashSet<>();
-		for (Station station : stations) {
-			processedStations.add(station);
-			for (Station otherStation : stations) {
-				if (!processedStations.contains(otherStation)) {
-					LOG.debug("distance between " + station.getName() + " and "
-							+ otherStation.getName() + ": "
-							+ Math.round(station.distance(otherStation))
-							+ " km");
-				}
-			}
-		}
-	}
+        final Construction nearestNeighbor = new NearestNeighbor();
+        final Construction savingsContruction = new SavingsContruction();
+        final Construction testNearestNeighbor = new TestNearestNeighbor();
+        final Construction randomConstruction = new RandomConstruction();
+        final Construction radialConstruction = new RadialConstruction();
+        final Construction multipleRandomConstruction = new MultipleRandomConstruction(App.NUM_OF_RANDOM_PLANS);
+        final Construction betterMultipleRandomConstruction = new BetterMultipleRandomConstruction(App.MAX_MISSES);
+
+        final List<Construction> allConstructions = Arrays.asList(savingsContruction, testNearestNeighbor, radialConstruction, randomConstruction,
+                betterMultipleRandomConstruction, multipleRandomConstruction);
+
+        final ArrayList<ConstructionTimeMeasuring> timeMeasuringTasks = new ArrayList<>(allConstructions.size());
+
+        for (final Construction construction : allConstructions) {
+            final ConstructionTimeMeasuring timeMeasuring = new ConstructionTimeMeasuring(construction, configuration);
+            timeMeasuring.runTask();
+            timeMeasuringTasks.add(timeMeasuring);
+        }
+
+        for (final ConstructionTimeMeasuring timeMeasuring : timeMeasuringTasks) {
+            App.LOG.info("");
+            final Plan plan = timeMeasuring.getPlan();
+            plan.logPlan();
+            App.LOG.info("construction took " + timeMeasuring.duration() + " ms");
+            App.LOG.info("plan is valid: " + validator.validate(configuration, plan));
+            plan.logTours();
+        }
+
+    }
 }

@@ -12,16 +12,16 @@ import org.apache.commons.lang3.Validate;
  */
 public final class Capacity {
 
-    /** the product */
+    /** the product. */
     private final Product product;
 
-    /** the product group */
+    /** the product group. */
     private final ProductGroup productGroup;
 
-    /** the actual capacity */
+    /** the actual capacity. */
     private final Integer capacity;
 
-    /** vehicle the capacity belongs to */
+    /** vehicle the capacity belongs to. */
     private final Vehicle vehicle;
 
     /**
@@ -75,18 +75,38 @@ public final class Capacity {
         this.vehicle = vehicle;
     }
 
+    /**
+     * Gets the product.
+     * 
+     * @return the product
+     */
     public Product getProduct() {
         return this.product;
     }
 
+    /**
+     * Gets the product group.
+     * 
+     * @return the product group
+     */
     public ProductGroup getProductGroup() {
         return this.productGroup;
     }
 
+    /**
+     * Gets the actual capacity.
+     * 
+     * @return the actual capacity
+     */
     public Integer getCapacity() {
         return this.capacity;
     }
 
+    /**
+     * Gets the vehicle the capacity belongs to.
+     * 
+     * @return the vehicle the capacity belongs to
+     */
     public Vehicle getVehicle() {
         return this.vehicle;
     }
@@ -121,5 +141,51 @@ public final class Capacity {
         } else {
             return "Capacity[ProductGroup: " + this.productGroup.getName() + "]";
         }
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((this.product == null) ? 0 : this.product.hashCode());
+        result = prime * result + ((this.productGroup == null) ? 0 : this.productGroup.hashCode());
+        result = prime * result + ((this.vehicle == null) ? 0 : this.vehicle.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(final Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Capacity other = (Capacity) obj;
+        if (this.product == null) {
+            if (other.product != null) {
+                return false;
+            }
+        } else if (!this.product.equals(other.product)) {
+            return false;
+        }
+        if (this.productGroup == null) {
+            if (other.productGroup != null) {
+                return false;
+            }
+        } else if (!this.productGroup.equals(other.productGroup)) {
+            return false;
+        }
+        if (this.vehicle == null) {
+            if (other.vehicle != null) {
+                return false;
+            }
+        } else if (!this.vehicle.equals(other.vehicle)) {
+            return false;
+        }
+        return true;
     }
 }

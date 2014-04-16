@@ -1,50 +1,108 @@
 package de.hsbremen.kss.model;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
+import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.hsbremen.kss.configuration.Station;
 import de.hsbremen.kss.construction.Construction;
 
-public class Plan {
-	
-	private static final Logger LOG = LoggerFactory.getLogger(Plan.class);
+/**
+ * The Class Plan.
+ */
+public final class Plan {
 
-	private List<Tour> tours;
-	
-	public Plan() {
-		this.tours = new ArrayList<>();
-	}
-	
-	public void addTour(Tour tour) {
-		this.tours.add(tour);
-	}
-	
-	public List<Tour> getTours() {
-		return Collections.unmodifiableList(tours);
-	}
-	
-	public double length() {
-		double length = 0;
-		
-		for (Tour tour : this.tours) {
-			length += tour.length();
-		}
-		
-		return length;
-	}
-	
-	public void logTours() {
-		for (Tour tour : this.tours) {
-			tour.logTour();
-		}
-	}
-	
-	public void logPlan(Class<? extends Construction> constructionClazz) {
-		LOG.info(constructionClazz.getSimpleName() + " length [km]: " + Math.round(length()));
-	}
-	
+    /** logging interface. */
+    private static final Logger LOG = LoggerFactory.getLogger(Plan.class);
+
+    /** the implementation which generates the plan */
+    private final Class<? extends Construction> constructionClazz;
+
+    /** The tours. */
+    private final List<Tour> tours;
+
+    /**
+     * Instantiates a new plan.
+     * 
+     * @param constructionClazz
+     *            the implementation which generates the plan
+     */
+    public Plan(final Class<? extends Construction> constructionClazz) {
+        this.constructionClazz = constructionClazz;
+        this.tours = new ArrayList<>();
+    }
+
+    /**
+     * adds a tour.
+     * 
+     * @param tour
+     *            tour to add.
+     */
+    public void addTour(final Tour tour) {
+        Validate.notNull(tour, "tour is null");
+        this.tours.add(tour);
+    }
+
+    /**
+     * Gets the tours.
+     * 
+     * @return the tours
+     */
+    public List<Tour> getTours() {
+        return Collections.unmodifiableList(this.tours);
+    }
+
+    /**
+     * calculates the length of the plan.
+     * 
+     * @return length of the plan.
+     */
+    public double length() {
+        double length = 0;
+
+        for (final Tour tour : this.tours) {
+            length += tour.length();
+        }
+
+        return length;
+    }
+
+    /**
+     * log all tours.
+     */
+    public void logTours() {
+        Plan.LOG.info(this.constructionClazz.getSimpleName() + " plan:");
+        for (final Tour tour : this.tours) {
+            tour.logTour();
+        }
+    }
+
+    /**
+     * returns a set of all reached stations
+     * 
+     * @return a set of all reached stations
+     */
+    public Collection<Station> getStations() {
+        final Collection<Station> allReachedStations = new HashSet<>();
+
+        for (final Tour tour : this.tours) {
+            allReachedStations.addAll(tour.getStations());
+        }
+
+        return allReachedStations;
+    }
+
+    /**
+     * logs the tour.
+     */
+    public void logPlan() {
+        Plan.LOG.info(this.constructionClazz.getSimpleName() + " length [km]: " + Math.round(length()));
+    }
+
 }
