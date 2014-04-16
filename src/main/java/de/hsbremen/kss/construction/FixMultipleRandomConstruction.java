@@ -9,7 +9,7 @@ import de.hsbremen.kss.model.Plan;
  * @author henrik
  * 
  */
-public final class BetterMultipleRandomConstruction implements Construction {
+public final class FixMultipleRandomConstruction implements Construction {
 
     /** construction method which is used */
     private final Construction construction;
@@ -25,7 +25,7 @@ public final class BetterMultipleRandomConstruction implements Construction {
      * @param numOfRandomPlans
      *            number of constructions tries
      */
-    public BetterMultipleRandomConstruction(final Construction construction, final int numOfRandomPlans) {
+    public FixMultipleRandomConstruction(final Construction construction, final int numOfRandomPlans) {
         this.construction = construction;
         this.numOfRandomPlans = numOfRandomPlans;
     }
@@ -39,7 +39,7 @@ public final class BetterMultipleRandomConstruction implements Construction {
                 bestRandomPlan = randomPlan;
             }
         }
-        return new Plan(BetterMultipleRandomConstruction.class, bestRandomPlan);
+        return new Plan(FixMultipleRandomConstruction.class, bestRandomPlan);
     }
 
 }

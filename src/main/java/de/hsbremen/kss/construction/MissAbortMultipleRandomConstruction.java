@@ -9,7 +9,7 @@ import de.hsbremen.kss.model.Plan;
  * @author henrik
  * 
  */
-public final class MultipleRandomConstruction implements Construction {
+public final class MissAbortMultipleRandomConstruction implements Construction {
 
     /** construction method which is used */
     private final Construction construction;
@@ -25,7 +25,7 @@ public final class MultipleRandomConstruction implements Construction {
      * @param maxMisses
      *            number of misses to abort
      */
-    public MultipleRandomConstruction(final Construction construction, final int maxMisses) {
+    public MissAbortMultipleRandomConstruction(final Construction construction, final int maxMisses) {
         this.construction = construction;
         this.maxMisses = maxMisses;
     }
@@ -44,7 +44,7 @@ public final class MultipleRandomConstruction implements Construction {
             }
 
         }
-        return new Plan(MultipleRandomConstruction.class, bestRandomPlan);
+        return new Plan(MissAbortMultipleRandomConstruction.class, bestRandomPlan);
     }
 
 }
