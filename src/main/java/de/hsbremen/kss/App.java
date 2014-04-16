@@ -18,7 +18,7 @@ import de.hsbremen.kss.construction.NearestNeighbor;
 import de.hsbremen.kss.construction.RadialConstruction;
 import de.hsbremen.kss.construction.RandomConstruction;
 import de.hsbremen.kss.construction.SavingsContruction;
-import de.hsbremen.kss.construction.TestNearestNeighbor;
+import de.hsbremen.kss.construction.NearestNeighbor;
 import de.hsbremen.kss.model.Plan;
 import de.hsbremen.kss.validate.SimpleValidator;
 import de.hsbremen.kss.validate.Validator;
@@ -67,15 +67,13 @@ public class App {
 			}
 		}
 
-		Construction nearestNeighbor = new NearestNeighbor();
 		Construction savingsContruction = new SavingsContruction();
-		Construction testNearestNeighbor = new TestNearestNeighbor();
+		Construction nearestNeighbor = new NearestNeighbor();
 		Construction randomConstruction = new RandomConstruction();
 		Construction radialConstruction = new RadialConstruction();
 
-		Plan plan1 = nearestNeighbor.constructPlan(configuration);
 		Plan savingsPlan = savingsContruction.constructPlan(configuration);
-		Plan nearestNeighborPlan = testNearestNeighbor
+		Plan nearestNeighborPlan = nearestNeighbor
 				.constructPlan(configuration);
 		Plan radialPlan = radialConstruction.constructPlan(configuration);
 
@@ -90,7 +88,7 @@ public class App {
 
 		bestRandomPlan.logPlan(RandomConstruction.class);
 		bestRandomPlan.logTours();
-		nearestNeighborPlan.logPlan(TestNearestNeighbor.class);
+		nearestNeighborPlan.logPlan(NearestNeighbor.class);
 		nearestNeighborPlan.logTours();
 		savingsPlan.logPlan(SavingsContruction.class);
 		savingsPlan.logTours();

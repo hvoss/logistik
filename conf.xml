@@ -3,7 +3,8 @@
 	<Orders>
 		<Order id="1">
 			<Name>Test Auftrag</Name>
-			<SourceStationId>1</SourceStationId>
+			<SourceStationId>4</SourceStationId>
+			<DestinationStationId>8</DestinationStationId>
 			<Items>
 				<Item>
 					<ProductId>1</ProductId>
@@ -43,7 +44,8 @@
 		</Order>
 		<Order id="6">
 			<Name>Noch ein Auftrag</Name>
-			<SourceStationId>2</SourceStationId>
+			<SourceStationId>1</SourceStationId>
+			<DestinationStationId>3</DestinationStationId>
 		</Order>
 	</Orders>
 		
