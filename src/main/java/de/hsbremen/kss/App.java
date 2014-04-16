@@ -22,7 +22,6 @@ import de.hsbremen.kss.construction.NearestNeighbor;
 import de.hsbremen.kss.construction.RadialConstruction;
 import de.hsbremen.kss.construction.RandomConstruction;
 import de.hsbremen.kss.construction.SavingsContruction;
-import de.hsbremen.kss.construction.TestNearestNeighbor;
 import de.hsbremen.kss.model.Plan;
 import de.hsbremen.kss.timing.ConstructionTimeMeasuring;
 import de.hsbremen.kss.validate.SimpleValidator;
@@ -96,14 +95,13 @@ public final class App {
 
         final Construction nearestNeighbor = new NearestNeighbor();
         final Construction savingsContruction = new SavingsContruction();
-        final Construction testNearestNeighbor = new TestNearestNeighbor();
         final Construction randomConstruction = new RandomConstruction();
         final Construction radialConstruction = new RadialConstruction();
         final Construction multipleRandomConstruction = new MultipleRandomConstruction(App.NUM_OF_RANDOM_PLANS);
         final Construction betterMultipleRandomConstruction = new BetterMultipleRandomConstruction(App.MAX_MISSES);
 
-        final List<Construction> allConstructions = Arrays.asList(savingsContruction, testNearestNeighbor, radialConstruction, randomConstruction,
-                betterMultipleRandomConstruction, multipleRandomConstruction);
+        final List<Construction> allConstructions = Arrays.asList(savingsContruction, radialConstruction, randomConstruction,
+                betterMultipleRandomConstruction, multipleRandomConstruction, nearestNeighbor);
 
         final ArrayList<ConstructionTimeMeasuring> timeMeasuringTasks = new ArrayList<>(allConstructions.size());
 

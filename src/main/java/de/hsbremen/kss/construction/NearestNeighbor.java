@@ -22,7 +22,7 @@ public class NearestNeighbor implements Construction {
 
 	@Override
 	public Plan constructPlan(Configuration configuration) {
-		Plan plan = new Plan();
+		Plan plan = new Plan(NearestNeighbor.class);
 		Vehicle vehicle = CollectionUtils.get(configuration.getVehicles(), 0);
 		List<Order> orders = new ArrayList<>(configuration.getOrders());
 		List<Station> stations = new ArrayList<>(configuration.getStations());
@@ -55,6 +55,8 @@ public class NearestNeighbor implements Construction {
 				break;
 			}
 		}
+		
+		tour.addOrders(configuration.getOrders());
 
 		plan.addTour(tour);
 		
