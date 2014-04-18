@@ -44,30 +44,33 @@ public final class RandomConstruction implements Construction {
         final Set<Order> orders = configuration.getOrders();
         final Set<Station> stations = Order.getAllSourceStations(orders);
 
-        final Set<Order> visitedSourceOrder = new HashSet<>(orders.size());
-        final Set<Order> visitedDestinationOrder = new HashSet<>(orders.size());
+        final Set<Order> visitedSourceOrders = new HashSet<>(orders.size());
+        final Set<Order> visitedDestinationOrders = new HashSet<>(orders.size());
 
         while (!stations.isEmpty()) {
             final Station rElement = RandomUtils.randomElement(stations);
-            tour.addStation(rElement);
             stations.remove(rElement);
 
-            final Set<Order> sourceOrders = new HashSet<>(rElement.getSourceOrders());
-            final Set<Order> destinationOrders = new HashSet<>(rElement.getDestinationOrders());
+            final Set<Order> newSourceOrders = new HashSet<>(rElement.getSourceOrders());
+            final Set<Order> newDestinationOrders = new HashSet<>(rElement.getDestinationOrders());
+            newSourceOrders.removeAll(visitedSourceOrders);
+            newDestinationOrders.removeAll(visitedDestinationOrders);
+
+            tour.addSourceOrders(newSourceOrders);
 
             // order where the source station reached
-            visitedSourceOrder.addAll(sourceOrders);
+            visitedSourceOrders.addAll(newSourceOrders);
 
             // orders where the destination station reached
-            final Collection<Order> destinationStationReached = CollectionUtils.intersection(visitedSourceOrder, destinationOrders);
-            visitedDestinationOrder.addAll(destinationStationReached);
+            final Collection<Order> destinationStationReached = CollectionUtils.intersection(visitedSourceOrders, newDestinationOrders);
+            visitedDestinationOrders.addAll(destinationStationReached);
+
+            tour.addDestinationOrders(destinationStationReached);
 
             // add new stations
-            sourceOrders.removeAll(visitedDestinationOrder);
-            stations.addAll(Order.getAllDestinationStations(sourceOrders));
+            newSourceOrders.removeAll(visitedDestinationOrders);
+            stations.addAll(Order.getAllDestinationStations(newSourceOrders));
         }
-
-        tour.addOrders(orders);
 
         plan.addTour(tour);
 

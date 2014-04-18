@@ -1,9 +1,9 @@
 package de.hsbremen.kss.model;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -26,11 +26,8 @@ public final class Tour {
     /** the vehicle which performed the tour. */
     private final Vehicle vehicle;
 
-    /** visited stations in order. */
-    private final List<Station> stations;
-
-    /** the orders. */
-    private final Set<Order> orders;
+    /** actions performed within the tour. */
+    private final List<Action> actions;
 
     /**
      * Instantiates a new tour.
@@ -40,11 +37,10 @@ public final class Tour {
      */
     public Tour(final Vehicle vehicle) {
         this.vehicle = vehicle;
-        this.stations = new ArrayList<Station>();
-        this.orders = new HashSet<Order>();
 
-        this.stations.add(this.vehicle.getSourceDepot());
-        this.stations.add(this.vehicle.getDestinationDepot());
+        this.actions = new LinkedList<>();
+        this.actions.add(new FromDepotAction(this.vehicle.getSourceDepot()));
+        this.actions.add(new ToDepotAction(this.vehicle.getDestinationDepot()));
     }
 
     /**
@@ -61,8 +57,16 @@ public final class Tour {
      * 
      * @return the visited stations in order
      */
-    public List<Station> getStations() {
-        return Collections.unmodifiableList(this.stations);
+    public Set<Station> getStations() {
+        final Set<Station> stations = new HashSet<>();
+
+        // XXX cache
+
+        for (final Action action : this.actions) {
+            stations.add(action.getStation());
+        }
+
+        return stations;
     }
 
     /**
@@ -71,7 +75,26 @@ public final class Tour {
      * @return the orders
      */
     public Set<Order> getOrders() {
-        return Collections.unmodifiableSet(this.orders);
+        final Set<Order> orders = new HashSet<>();
+
+        // XXX cache
+
+        for (final Action action : this.actions) {
+            if (action instanceof OrderAction) {
+                orders.add(((OrderAction) action).getOrder());
+            }
+        }
+
+        return orders;
+    }
+
+    /**
+     * Gets the actions performed within the tour.
+     * 
+     * @return the actions performed within the tour
+     */
+    public List<Action> getActions() {
+        return Collections.unmodifiableList(this.actions);
     }
 
     /**
@@ -79,11 +102,13 @@ public final class Tour {
      * 
      * @param station
      *            station to add
+     * @deprecated use {@link Tour#addSourceOrder(Order)} or
+     *             {@link Tour#addDestinationOrder(Order)} or
+     *             {@link Tour#addSourceOrders(Collection)} or
+     *             {@link Tour#addDestinationOrders(Collection)} instead
      */
+    @Deprecated
     public void addStation(final Station station) {
-        Validate.notNull(station);
-        final int index = this.stations.size() - 1;
-        this.stations.add(index, station);
     }
 
     /**
@@ -91,10 +116,11 @@ public final class Tour {
      * 
      * @param order
      *            order to add
+     * @deprecated use {@link Tour#addSourceOrder(Order)} or
+     *             {@link Tour#addDestinationOrder(Order)} instead
      */
+    @Deprecated
     public void addOrder(final Order order) {
-        Validate.notNull(order);
-        this.orders.add(order);
     }
 
     /**
@@ -102,11 +128,75 @@ public final class Tour {
      * 
      * @param ordersToAdd
      *            orders to add
+     * @deprecated use {@link Tour#addSourceOrders(Collection)} or
+     *             {@link Tour#addDestinationOrders(Collection)} instead
      */
+    @Deprecated
     public void addOrders(final Collection<Order> ordersToAdd) {
         for (final Order order : ordersToAdd) {
             addOrder(order);
         }
+    }
+
+    /**
+     * adds a visited source order.
+     * 
+     * @param sourceOrder
+     *            source order to add
+     */
+    public void addSourceOrder(final Order sourceOrder) {
+        Validate.notNull(sourceOrder, "source order is null");
+        final OrderLoadAction unloadAction = new OrderLoadAction(sourceOrder);
+        addAction(unloadAction);
+
+    }
+
+    /**
+     * adds a collection of visited source orders.
+     * 
+     * @param sourceOrders
+     *            collection to add
+     */
+    public void addSourceOrders(final Collection<Order> sourceOrders) {
+        for (final Order sourceOrder : sourceOrders) {
+            addSourceOrder(sourceOrder);
+        }
+    }
+
+    /**
+     * adds a visited destination order.
+     * 
+     * @param destinationOrder
+     *            destination order to add
+     */
+    public void addDestinationOrder(final Order destinationOrder) {
+        Validate.notNull(destinationOrder, "destination order is null");
+        final OrderUnloadAction unloadAction = new OrderUnloadAction(destinationOrder);
+        addAction(unloadAction);
+    }
+
+    /**
+     * adds a collection of visited destination orders.
+     * 
+     * @param destinationOrders
+     *            collection to add
+     */
+    public void addDestinationOrders(final Collection<Order> destinationOrders) {
+        for (final Order destinationOrder : destinationOrders) {
+            addDestinationOrder(destinationOrder);
+        }
+    }
+
+    /**
+     * adds a action to the tour.
+     * 
+     * @param action
+     *            action to add
+     */
+    private void addAction(final Action action) {
+        Validate.notNull(action, "action is null");
+        final int index = this.actions.size() - 1;
+        this.actions.add(index, action);
     }
 
     /**
@@ -116,7 +206,12 @@ public final class Tour {
      *            order to add
      * @param station
      *            station to add
+     * @deprecated use {@link Tour#addSourceOrder(Order)} or
+     *             {@link Tour#addDestinationOrder(Order)} or
+     *             {@link Tour#addSourceOrders(Collection)} or
+     *             {@link Tour#addDestinationOrders(Collection)} instead
      */
+    @Deprecated
     public void addOrderAndStation(final Order order, final Station station) {
         addOrder(order);
         addStation(station);
@@ -126,11 +221,17 @@ public final class Tour {
      * Logs the tour on the logging interface.
      */
     public void logTour() {
-        Station source = this.stations.get(0);
-        for (int i = 1; i < this.stations.size(); i++) {
-            final Station destination = this.stations.get(i);
-            Tour.LOG.info(source.getName() + " => " + destination.getName() + " (" + Math.round(source.distance(destination)) + " km)");
-            source = destination;
+        Action lastAction = null;
+        for (final Action action : this.actions) {
+            if (lastAction != null) {
+                final Station source = lastAction.getStation();
+                final Station destination = action.getStation();
+                if (!source.equals(destination)) {
+                    Tour.LOG.info(source.getName() + " => " + destination.getName() + " (" + Math.round(source.distance(destination)) + " km)");
+                }
+            }
+            Tour.LOG.info(action.toString());
+            lastAction = action;
         }
     }
 
@@ -140,14 +241,22 @@ public final class Tour {
      * @return the length of the tour
      */
     public double length() {
-        // XXX cache length
         double length = 0;
-        Station source = this.stations.get(0);
-        for (int i = 1; i < this.stations.size(); i++) {
-            final Station destination = this.stations.get(i);
-            length += source.distance(destination);
-            source = destination;
+
+        // XXX cache length
+        Action lastAction = null;
+        for (final Action action : this.actions) {
+            if (lastAction != null) {
+                final Station source = lastAction.getStation();
+                final Station destination = action.getStation();
+                if (!source.equals(destination)) {
+                    length += source.distance(destination);
+
+                }
+            }
+            lastAction = action;
         }
+
         return length;
     }
 }

@@ -9,8 +9,12 @@ import org.slf4j.LoggerFactory;
 
 import de.hsbremen.kss.configuration.Configuration;
 import de.hsbremen.kss.configuration.Order;
-import de.hsbremen.kss.configuration.Station;
+import de.hsbremen.kss.model.Action;
+import de.hsbremen.kss.model.FromDepotAction;
+import de.hsbremen.kss.model.OrderLoadAction;
+import de.hsbremen.kss.model.OrderUnloadAction;
 import de.hsbremen.kss.model.Plan;
+import de.hsbremen.kss.model.ToDepotAction;
 import de.hsbremen.kss.model.Tour;
 
 /**
@@ -28,37 +32,72 @@ public final class SimpleValidator implements Validator {
 
     @Override
     public boolean validate(final Configuration configuration, final Plan plan) {
-        final Set<Order> orders = new HashSet<>(configuration.getOrders());
+        final Set<Order> notVisitedSourceOrders = new HashSet<>(configuration.getOrders());
+        final Set<Order> notVisitedDestinationOrders = new HashSet<>(configuration.getOrders());
+
+        final Set<Order> visitedSourceOrders = new HashSet<>();
+        final Set<Order> visitedDestinationOrders = new HashSet<>();
+
+        boolean allRight = true;
 
         for (final Tour tour : plan.getTours()) {
-            final List<Station> stations = tour.getStations();
-            for (final Order order : tour.getOrders()) {
-                final Station source = order.getSource();
-                final Station destination = order.getDestination();
+            final List<Action> actions = tour.getActions();
 
-                final int sourceIndex = stations.indexOf(source);
-
-                if (sourceIndex > -1) {
-                    if (destination != null) {
-                        final int destinationIndex = stations.lastIndexOf(destination);
-
-                        if (destinationIndex >= sourceIndex) {
-                            orders.remove(order);
-                        } else if (destinationIndex == -1) {
-                            SimpleValidator.LOG.warn("destination(" + destination + ") not visit on order: " + order);
-                        } else {
-                            SimpleValidator.LOG.warn("destination(" + destination + ", " + destinationIndex + ") visited before source(" + source
-                                    + ", " + sourceIndex + ") on order: " + order);
-                        }
-                    } else {
-                        orders.remove(order);
+            for (int i = 0; i < actions.size(); i++) {
+                final Action action = actions.get(i);
+                if (action instanceof FromDepotAction) {
+                    final FromDepotAction fromDepotAction = (FromDepotAction) action;
+                    if (i > 0) {
+                        SimpleValidator.LOG.warn(fromDepotAction + " is not the first action, it is action no: " + i);
+                        allRight = false;
                     }
+
+                } else if (action instanceof ToDepotAction) {
+                    final ToDepotAction toDepotAction = (ToDepotAction) action;
+                    if (i - 1 == actions.size()) {
+                        SimpleValidator.LOG.warn(toDepotAction + " is not the last action, it is action no: " + i);
+                        allRight = false;
+                    }
+
+                } else if (action instanceof OrderLoadAction) {
+                    final OrderLoadAction orderLoadAction = (OrderLoadAction) action;
+                    if (!visitedSourceOrders.add(orderLoadAction.getOrder())) {
+                        SimpleValidator.LOG.warn(orderLoadAction + " performed multiple times");
+                        allRight = false;
+                    }
+
+                } else if (action instanceof OrderUnloadAction) {
+                    final OrderUnloadAction orderUnloadAction = (OrderUnloadAction) action;
+
+                    if (!visitedSourceOrders.contains(orderUnloadAction.getOrder())) {
+                        SimpleValidator.LOG.warn(orderUnloadAction + " performed before " + OrderLoadAction.class.getSimpleName());
+                        allRight = false;
+                    }
+
+                    if (!visitedDestinationOrders.add(orderUnloadAction.getOrder())) {
+                        SimpleValidator.LOG.warn(orderUnloadAction + " performed multiple times");
+                        allRight = false;
+                    }
+
                 } else {
-                    SimpleValidator.LOG.warn("source(" + source + ") not visit on order: " + order);
+                    throw new IllegalStateException("unknown action type: " + action.getClass());
                 }
             }
         }
 
-        return orders.isEmpty();
+        notVisitedSourceOrders.removeAll(visitedSourceOrders);
+        notVisitedDestinationOrders.removeAll(visitedDestinationOrders);
+
+        for (final Order order : notVisitedSourceOrders) {
+            SimpleValidator.LOG.warn("source order \"" + order + "\" not visited");
+            allRight = false;
+        }
+
+        for (final Order order : notVisitedDestinationOrders) {
+            SimpleValidator.LOG.warn("destination order \"" + order + "\" not visited");
+            allRight = false;
+        }
+
+        return allRight;
     }
 }
