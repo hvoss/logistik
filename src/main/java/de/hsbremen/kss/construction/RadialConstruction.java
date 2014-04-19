@@ -1,10 +1,9 @@
 package de.hsbremen.kss.construction;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
@@ -29,29 +28,42 @@ public final class RadialConstruction implements Construction {
 
     @Override
     public Plan constructPlan(final Configuration configuration) {
+        return constructPlan(configuration, null, true);
+    }
+
+    public Plan constructPlan(final Configuration configuration, final Station startStation, final boolean forward) {
         final Plan plan = new Plan(RadialConstruction.class);
 
         final Vehicle vehicle = CollectionUtils.get(configuration.getVehicles(), 0);
         final Tour tour = new Tour(vehicle);
         final Station sourceDepot = vehicle.getSourceDepot();
 
-        final Set<Station> allSourceStations = Order.getAllSourceStations(configuration.getOrders());
-
-        final StationAngleComparator angleComparator = new StationAngleComparator(sourceDepot);
-
-        final SortedSet<Station> sortedStations = new TreeSet<>(angleComparator);
+        final Set<Station> stations = Order.getAllSourceStations(configuration.getOrders());
 
         final Set<Order> visitedSourceOrders = new HashSet<>();
         final Set<Order> visitedDestinationOrders = new HashSet<>();
 
-        sortedStations.addAll(allSourceStations);
+        Station actualStation;
+        if (startStation != null) {
+            actualStation = startStation;
+        } else {
+            final StationAngleComparator comparator = new StationAngleComparator(sourceDepot, sourceDepot, forward);
+            actualStation = Collections.min(stations, comparator);
+        }
 
-        while (!sortedStations.isEmpty()) {
-            final Station station = sortedStations.first();
-            sortedStations.remove(station);
+        for (final Station station : configuration.getStations()) {
+            if (sourceDepot != station) {
+                RadialConstruction.LOG.info(sourceDepot + " -> " + station + " : " + sourceDepot.angle(station));
+            }
+        }
 
-            final Set<Order> newSourceOrders = new HashSet<>(station.getSourceOrders());
-            final Set<Order> newDestinationOrders = new HashSet<>(station.getDestinationOrders());
+        while (!stations.isEmpty()) {
+            final StationAngleComparator comparator = new StationAngleComparator(sourceDepot, actualStation, forward);
+            actualStation = Collections.min(stations, comparator);
+            stations.remove(actualStation);
+
+            final Set<Order> newSourceOrders = new HashSet<>(actualStation.getSourceOrders());
+            final Set<Order> newDestinationOrders = new HashSet<>(actualStation.getDestinationOrders());
             newSourceOrders.removeAll(visitedSourceOrders);
             newDestinationOrders.removeAll(visitedDestinationOrders);
 
@@ -68,7 +80,7 @@ public final class RadialConstruction implements Construction {
 
             // add new stations
             newSourceOrders.removeAll(visitedDestinationOrders);
-            sortedStations.addAll(Order.getAllDestinationStations(newSourceOrders));
+            stations.addAll(Order.getAllDestinationStations(newSourceOrders));
         }
 
         plan.addTour(tour);

@@ -168,11 +168,16 @@ public final class Station {
      * @return the angle (rad) to another station.
      */
     public double angle(final Station station) {
+        Validate.isTrue(!this.coordinates.equals(station.coordinates), "can't calculate angle of the same coordinates");
+
         Double angle = this.angles.get(station);
 
         if (angle == null) {
             final Vector2D localVec = station.coordinates.subtract(this.coordinates);
             angle = Math.atan2(localVec.getY(), localVec.getX());
+            if (angle < 0) {
+                angle += Math.PI * 2;
+            }
             this.angles.put(station, angle);
             // XXX calculate the angle of the other station
         }

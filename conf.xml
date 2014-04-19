@@ -56,43 +56,43 @@
 	<Stations>
 		<Station id="1">
 			<Name>Bremen</Name>
-			<XCoordinate>432</XCoordinate>
-			<YCoordinate>222</YCoordinate>
+			<XCoordinate>200</XCoordinate>
+			<YCoordinate>654</YCoordinate>
 		</Station>
 		<Station id="2">
 			<Name>Hamburg</Name>
-			<XCoordinate>350</XCoordinate>
-			<YCoordinate>169</YCoordinate>
+			<XCoordinate>282</XCoordinate>
+			<YCoordinate>707</YCoordinate>
 		</Station>
 		<Station id="3">
 			<Name>Hannover</Name>
-			<XCoordinate>367</XCoordinate>
-			<YCoordinate>301</YCoordinate>
+			<XCoordinate>265</XCoordinate>
+			<YCoordinate>575</YCoordinate>
 		</Station>
 		<Station id="4">
 			<Name>München</Name>
-			<XCoordinate>240</XCoordinate>
-			<YCoordinate>778</YCoordinate>
+			<XCoordinate>392</XCoordinate>
+			<YCoordinate>98</YCoordinate>
 		</Station>
 		<Station id="5">
 			<Name>Osnabrück</Name>
-			<XCoordinate>485</XCoordinate>
-			<YCoordinate>312</YCoordinate>
+			<XCoordinate>147</XCoordinate>
+			<YCoordinate>564</YCoordinate>
 		</Station>
 		<Station id="6">
 			<Name>Berlin</Name>
-			<XCoordinate>113</XCoordinate>
-			<YCoordinate>285</YCoordinate>
+			<XCoordinate>519</XCoordinate>
+			<YCoordinate>591</YCoordinate>
 		</Station>
 		<Station id="7">
 			<Name>Ellenbogen</Name>
-			<XCoordinate>459</XCoordinate>
-			<YCoordinate>0</YCoordinate>
+			<XCoordinate>173</XCoordinate>
+			<YCoordinate>876</YCoordinate>
 		</Station>
 		<Station id="8">
 			<Name>Neißeaue</Name>
-			<XCoordinate>5</XCoordinate>
-			<YCoordinate>428</YCoordinate>
+			<XCoordinate>627</XCoordinate>
+			<YCoordinate>448</YCoordinate>
 		</Station>
 	</Stations>
 	
