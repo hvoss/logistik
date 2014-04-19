@@ -353,7 +353,7 @@ public final class JAXBConfigurationParserImpl implements ConfigurationParser {
      * @return converted {@link Order}
      */
     private Product convert(final ProductElement element) {
-        return new Product(element.getId(), element.getName());
+        return new Product(element.getId(), element.getName(), element.getWeight());
     }
 
     /**

@@ -17,6 +17,9 @@ public final class Product {
     /** the name. */
     private final String name;
 
+    /** the weight */
+    private final Integer weight;
+
     /** vehicles which can transport this product. */
     private final Set<Vehicle> vehicles;
 
@@ -36,10 +39,18 @@ public final class Product {
      *            the id
      * @param name
      *            the name
+     * @param weight
+     *            the weight
      */
-    Product(final Integer id, final String name) {
+    Product(final Integer id, final String name, final Integer weight) {
+        Validate.notNull(id, "id is null");
+        Validate.notNull(name, "name is null");
+        Validate.notNull(weight, "weight is null");
+
         this.id = id;
         this.name = name;
+        this.weight = weight;
+
         this.productGroups = new HashSet<>();
         this.vehicles = new HashSet<>();
 
@@ -63,6 +74,15 @@ public final class Product {
      */
     public String getName() {
         return this.name;
+    }
+
+    /**
+     * Gets the weight.
+     * 
+     * @return the weight
+     */
+    public Integer getWeight() {
+        return this.weight;
     }
 
     /**
