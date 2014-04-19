@@ -142,6 +142,15 @@ public final class Order {
         return this.productsCache.getCollection();
     }
 
+    /**
+     * returns the weight of all products.
+     * 
+     * @return weight of all products.
+     */
+    public Integer weightOfProducts() {
+        return Item.aggregateWeight(this.items);
+    }
+
     @Override
     public String toString() {
         return this.name;
