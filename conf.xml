@@ -7,7 +7,7 @@
 			<DestinationStationId>2</DestinationStationId>
 			<Items>
 				<Item>
-					<ProductId>4</ProductId>
+					<ProductId>1</ProductId>
 					<Amount>200</Amount>
 				</Item>
 			</Items>
@@ -18,8 +18,8 @@
 			<DestinationStationId>8</DestinationStationId>
 			<Items>
 				<Item>
-					<ProductId>4</ProductId>
-					<Amount>200</Amount>
+					<ProductId>2</ProductId>
+					<Amount>250</Amount>
 				</Item>
 			</Items>
 		</Order>
@@ -29,8 +29,8 @@
 			<DestinationStationId>3</DestinationStationId>
 			<Items>
 				<Item>
-					<ProductId>4</ProductId>
-					<Amount>200</Amount>
+					<ProductId>3</ProductId>
+					<Amount>500</Amount>
 				</Item>
 			</Items>
 		</Order>
@@ -41,7 +41,7 @@
 			<Items>
 				<Item>
 					<ProductId>4</ProductId>
-					<Amount>200</Amount>
+					<Amount>50</Amount>
 				</Item>
 			</Items>
 		</Order>
@@ -51,8 +51,8 @@
 			<DestinationStationId>2</DestinationStationId>
 			<Items>
 				<Item>
-					<ProductId>4</ProductId>
-					<Amount>200</Amount>
+					<ProductId>5</ProductId>
+					<Amount>100</Amount>
 				</Item>
 			</Items>
 		</Order>
@@ -62,8 +62,16 @@
 			<DestinationStationId>4</DestinationStationId>
 			<Items>
 				<Item>
-					<ProductId>4</ProductId>
-					<Amount>200</Amount>
+					<ProductId>1</ProductId>
+					<Amount>75</Amount>
+				</Item>
+				<Item>
+					<ProductId>2</ProductId>
+					<Amount>125</Amount>
+				</Item>
+				<Item>
+					<ProductId>3</ProductId>
+					<Amount>150</Amount>
 				</Item>
 			</Items>
 		</Order>
@@ -119,7 +127,7 @@
 			<DestinationDepotId>3</DestinationDepotId>
 			<Capacities>
 				<Capacity>
-					<CapacityWeight>400</CapacityWeight>
+					<CapacityWeight>2500</CapacityWeight>
 					<Miscible>true</Miscible>
 					<Products>
 						<ProductId>1</ProductId>
@@ -129,6 +137,7 @@
 				</Capacity>
 			</Capacities>
 		</Vehicle>
+		<!-- 
 		<Vehicle id="2">
 			<Name>Tankwagen mit Anhänger</Name>
 			<SourceDepotId>6</SourceDepotId>
@@ -153,6 +162,7 @@
 				</Capacity>
 			</Capacities>
 		</Vehicle>
+		 -->
 	</Vehicles>
 
 	<Products>
