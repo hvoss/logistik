@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import de.hsbremen.kss.configuration.Configuration;
 import de.hsbremen.kss.configuration.Order;
+import de.hsbremen.kss.configuration.Vehicle;
 import de.hsbremen.kss.model.Action;
 import de.hsbremen.kss.model.FromDepotAction;
 import de.hsbremen.kss.model.OrderLoadAction;
@@ -41,7 +42,9 @@ public final class SimpleValidator implements Validator {
         boolean allRight = true;
 
         for (final Tour tour : plan.getTours()) {
+            final Vehicle vehicle = tour.getVehicle();
             final List<Action> actions = tour.getActions();
+            int weight = 0;
 
             for (int i = 0; i < actions.size(); i++) {
                 final Action action = actions.get(i);
@@ -66,8 +69,17 @@ public final class SimpleValidator implements Validator {
                         allRight = false;
                     }
 
+                    weight += orderLoadAction.getOrder().weightOfProducts();
+                    if (weight > vehicle.maxCapacityWeight()) {
+                        SimpleValidator.LOG.warn("vehicle " + vehicle + " overloaded (weight: " + weight + ", max: " + vehicle.maxCapacityWeight()
+                                + ") on " + orderLoadAction);
+                        allRight = false;
+                    }
+
                 } else if (action instanceof OrderUnloadAction) {
                     final OrderUnloadAction orderUnloadAction = (OrderUnloadAction) action;
+
+                    weight -= orderUnloadAction.getOrder().weightOfProducts();
 
                     if (!visitedSourceOrders.contains(orderUnloadAction.getOrder())) {
                         SimpleValidator.LOG.warn(orderUnloadAction + " performed before " + OrderLoadAction.class.getSimpleName());
