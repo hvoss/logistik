@@ -7,16 +7,8 @@
 			<DestinationStationId>2</DestinationStationId>
 			<Items>
 				<Item>
-					<ProductId>1</ProductId>
-					<Amount>50</Amount>
-				</Item>
-				<Item>
-					<ProductId>2</ProductId>
-					<Amount>100</Amount>
-				</Item>
-				<Item>
-					<ProductId>3</ProductId>
-					<Amount>75</Amount>
+					<ProductId>4</ProductId>
+					<Amount>200</Amount>
 				</Item>
 			</Items>
 		</Order>
@@ -35,21 +27,45 @@
 			<Name>Neißeaue nach Hannover</Name>
 			<SourceStationId>8</SourceStationId>
 			<DestinationStationId>3</DestinationStationId>
+			<Items>
+				<Item>
+					<ProductId>4</ProductId>
+					<Amount>200</Amount>
+				</Item>
+			</Items>
 		</Order>
 		<Order id="4">
 			<Name>Ellenbogen nach Bremen</Name>
 			<SourceStationId>7</SourceStationId>
 			<DestinationStationId>1</DestinationStationId>
+			<Items>
+				<Item>
+					<ProductId>4</ProductId>
+					<Amount>200</Amount>
+				</Item>
+			</Items>
 		</Order>
 		<Order id="5">
 			<Name>München nach Hamburg</Name>
 			<SourceStationId>4</SourceStationId>
 			<DestinationStationId>2</DestinationStationId>
+			<Items>
+				<Item>
+					<ProductId>4</ProductId>
+					<Amount>200</Amount>
+				</Item>
+			</Items>
 		</Order>
 		<Order id="6">
 			<Name>Hamburg nach München</Name>
 			<SourceStationId>2</SourceStationId>
 			<DestinationStationId>4</DestinationStationId>
+			<Items>
+				<Item>
+					<ProductId>4</ProductId>
+					<Amount>200</Amount>
+				</Item>
+			</Items>
 		</Order>
 	</Orders>
 		
@@ -102,7 +118,15 @@
 			<SourceDepotId>3</SourceDepotId>
 			<DestinationDepotId>3</DestinationDepotId>
 			<Capacities>
-				<Capacity productGroupId="1" miscible="true">100</Capacity>
+				<Capacity>
+					<CapacityWeight>400</CapacityWeight>
+					<Miscible>true</Miscible>
+					<Products>
+						<ProductId>1</ProductId>
+						<ProductId>2</ProductId>
+						<ProductId>3</ProductId>
+					</Products>
+				</Capacity>
 			</Capacities>
 		</Vehicle>
 		<Vehicle id="2">
@@ -110,32 +134,27 @@
 			<SourceDepotId>6</SourceDepotId>
 			<DestinationDepotId>6</DestinationDepotId>
 			<Capacities>
-				<Capacity productId="4">500</Capacity>
-				<Capacity productGroupId="1">1000</Capacity>
+				<Capacity>
+					<CapacityWeight>1000</CapacityWeight>
+					<Miscible>true</Miscible>
+					<Products>
+						<ProductId>1</ProductId>
+						<ProductId>2</ProductId>
+						<ProductId>3</ProductId>
+					</Products>
+				</Capacity>
+				<Capacity>
+					<CapacityWeight>400</CapacityWeight>
+					<Miscible>false</Miscible>
+					<Products>
+						<ProductId>4</ProductId>
+						<ProductId>5</ProductId>
+					</Products>
+				</Capacity>
 			</Capacities>
 		</Vehicle>
 	</Vehicles>
-	
-	<ProductGroups>
-		<ProductGroup id="1">
-			<Name>Kleinteile</Name>
-			<Miscible>true</Miscible>
-			<Products>
-				<ProductId>1</ProductId>
-				<ProductId>2</ProductId>
-				<ProductId>3</ProductId>
-			</Products>
-		</ProductGroup>
-		<ProductGroup id="2">
-			<Name>Treibstoff</Name>
-			<Miscible>false</Miscible>
-			<Products>
-				<ProductId>4</ProductId>
-				<ProductId>5</ProductId>
-			</Products>
-		</ProductGroup>
-	</ProductGroups>
-	
+
 	<Products>
 		<Product id="1">
 			<Name>Snickers</Name>

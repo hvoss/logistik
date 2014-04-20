@@ -153,7 +153,7 @@ public final class Order {
 
     @Override
     public String toString() {
-        return this.name;
+        return this.name + " (id: " + this.id + ", weight: " + weightOfProducts() + ")";
     }
 
     /**

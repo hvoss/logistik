@@ -72,13 +72,11 @@ public final class App {
         App.LOG.info("got " + configuration.getVehicles().size() + " vehicles");
         App.LOG.info("got " + configuration.getOrders().size() + " orders");
         App.LOG.info("got " + configuration.getProducts().size() + " products");
-        App.LOG.info("got " + configuration.getProductGroups().size() + " product groups");
 
         App.LOG.info("stations: " + configuration.getStations());
         App.LOG.info("vehicles: " + configuration.getVehicles());
         App.LOG.info("orders: " + configuration.getOrders());
         App.LOG.info("products: " + configuration.getProducts());
-        App.LOG.info("product groups: " + configuration.getProductGroups());
 
         Station.logDistancesBetweenStations(configuration.getStations());
 

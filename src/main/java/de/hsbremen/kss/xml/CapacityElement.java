@@ -1,46 +1,54 @@
 package de.hsbremen.kss.xml;
 
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlValue;
 
 @XmlRootElement(name = "Capacity")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class CapacityElement {
 
-    @XmlAttribute(name = "productId")
-    private Integer productId;
+    @XmlElementWrapper(name = "Products")
+    @XmlElement(name = "ProductId")
+    private List<Integer> products;
 
-    @XmlAttribute(name = "productGroupId")
-    private Integer productGroupId;
+    @XmlElement(name = "CapacityWeight")
+    private Integer capacityWeight;
 
-    @XmlValue
-    private Integer capacity;
+    /**
+     * indicates whether different products can be tranported in the same
+     * capacity.
+     */
 
-    public Integer getProductId() {
-        return this.productId;
+    @XmlElement(name = "Miscible")
+    private Boolean miscible;
+
+    public Integer getCapacityWeight() {
+        return this.capacityWeight;
     }
 
-    public void setProductId(final Integer productId) {
-        this.productId = productId;
+    public void setCapacityWeight(final Integer capacityWeight) {
+        this.capacityWeight = capacityWeight;
     }
 
-    public Integer getProductGroupId() {
-        return this.productGroupId;
+    public List<Integer> getProducts() {
+        return this.products;
     }
 
-    public void setProductGroupId(final Integer productGroupId) {
-        this.productGroupId = productGroupId;
+    public void setProducts(final List<Integer> products) {
+        this.products = products;
     }
 
-    public Integer getCapacity() {
-        return this.capacity;
+    public Boolean getMiscible() {
+        return this.miscible;
     }
 
-    public void setCapacity(final Integer capacity) {
-        this.capacity = capacity;
+    public void setMiscible(final Boolean miscible) {
+        this.miscible = miscible;
     }
 
 }

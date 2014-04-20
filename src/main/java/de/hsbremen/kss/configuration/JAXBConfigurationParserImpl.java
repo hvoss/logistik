@@ -22,7 +22,6 @@ import de.hsbremen.kss.xml.ConfigurationElement;
 import de.hsbremen.kss.xml.ItemElement;
 import de.hsbremen.kss.xml.OrderElement;
 import de.hsbremen.kss.xml.ProductElement;
-import de.hsbremen.kss.xml.ProductGroupElement;
 import de.hsbremen.kss.xml.StationElement;
 import de.hsbremen.kss.xml.VehicleElement;
 
@@ -45,9 +44,6 @@ public final class JAXBConfigurationParserImpl implements ConfigurationParser {
 
     /** map of all vehicles (key: id, value: vehicle) */
     private Map<Integer, Vehicle> vehicleMap;
-
-    /** map of all product groups (key: id, value: product group) */
-    private Map<Integer, ProductGroup> productGroupMap;
 
     /** map of all products (key: id, value: product) */
     private Map<Integer, Product> productMap;
@@ -75,7 +71,6 @@ public final class JAXBConfigurationParserImpl implements ConfigurationParser {
 
             convertStations(configuration.getStations());
             convertProducts(configuration.getProducts());
-            convertProductGroups(configuration.getProductGroups());
             convertVehicles(configuration.getVehicles());
             convertOrders(configuration.getOrders());
 
@@ -96,7 +91,6 @@ public final class JAXBConfigurationParserImpl implements ConfigurationParser {
         this.stationMap = new HashMap<>(configuration.getStations().size());
         this.orderMap = new HashMap<>(configuration.getOrders().size());
         this.vehicleMap = new HashMap<>(configuration.getVehicles().size());
-        this.productGroupMap = new HashMap<>(configuration.getProductGroups().size());
         this.productMap = new HashMap<>(configuration.getProducts().size());
     }
 
@@ -110,9 +104,8 @@ public final class JAXBConfigurationParserImpl implements ConfigurationParser {
         final Set<Station> stations = new HashSet<>(this.stationMap.values());
         final Set<Vehicle> vehicles = new HashSet<>(this.vehicleMap.values());
         final Set<Product> products = new HashSet<>(this.productMap.values());
-        final Set<ProductGroup> productGroups = new HashSet<>(this.productGroupMap.values());
 
-        return new Configuration(orders, stations, vehicles, products, productGroups);
+        return new Configuration(orders, stations, vehicles, products);
     }
 
     /**
@@ -155,25 +148,6 @@ public final class JAXBConfigurationParserImpl implements ConfigurationParser {
         for (final CapacityElement capacityElement : capacities) {
             final Capacity capacity = convert(capacityElement, vehicle);
             vehicle.addCapacity(capacity);
-        }
-    }
-
-    /**
-     * converts the XML product groups.
-     * 
-     * @param productGroups
-     *            the XML-product groups.
-     */
-    private void convertProductGroups(final Collection<ProductGroupElement> productGroups) {
-        for (final ProductGroupElement element : productGroups) {
-            final ProductGroup productGroup = convert(element);
-            addProductGroup(productGroup);
-
-            for (final Integer productId : element.getProductIds()) {
-                final Product product = this.productMap.get(productId);
-                product.addProductGroup(productGroup);
-                productGroup.addProduct(product);
-            }
         }
     }
 
@@ -230,19 +204,6 @@ public final class JAXBConfigurationParserImpl implements ConfigurationParser {
     }
 
     /**
-     * adds a productGroup to the map.
-     * 
-     * @param productGroup
-     *            productGroup to add.
-     */
-    private void addProductGroup(final ProductGroup productGroup) {
-        final ProductGroup oldProductGroup = this.productGroupMap.put(productGroup.getId(), productGroup);
-        if (oldProductGroup != null) {
-            throw new DuplicateIdException(ProductGroupElement.class, oldProductGroup, productGroup);
-        }
-    }
-
-    /**
      * adds a station to the map.
      * 
      * @param station
@@ -286,6 +247,9 @@ public final class JAXBConfigurationParserImpl implements ConfigurationParser {
         }
 
         final Order order = new Order(element.getId(), element.getName(), sourceStation, destinationStation);
+
+        Validate.notNull(element.getItems(), "no items, order: " + order);
+        Validate.isTrue(!element.getItems().isEmpty(), "no items, order: " + order);
 
         if (element.getItems() != null) {
             for (final ItemElement itemElement : element.getItems()) {
@@ -357,17 +321,6 @@ public final class JAXBConfigurationParserImpl implements ConfigurationParser {
     }
 
     /**
-     * converts an {@link OrderElement} into a {@link Order}.
-     * 
-     * @param element
-     *            XML-element to convert
-     * @return converted {@link Order}
-     */
-    private ProductGroup convert(final ProductGroupElement element) {
-        return new ProductGroup(element.getId(), element.getName(), element.getMiscible());
-    }
-
-    /**
      * converts an {@link CapacityElement} into a {@link Capacity}.
      * 
      * @param element
@@ -377,22 +330,10 @@ public final class JAXBConfigurationParserImpl implements ConfigurationParser {
      * @return converted {@link Capacity}
      */
     private Capacity convert(final CapacityElement element, final Vehicle vehicle) {
-        final Integer productGroupId = element.getProductGroupId();
-        final Integer productId = element.getProductId();
-        final Integer capacity = element.getCapacity();
+        final Integer capacity = element.getCapacityWeight();
+        final Boolean miscible = element.getMiscible();
 
-        Validate.isTrue(productId == null ^ productGroupId == null, "only productId xor productGroupId must be defined. productId: " + productId
-                + ", productGroupId: " + productGroupId);
-
-        if (productId != null) {
-            final Product product = getProduct(productId);
-            product.addVehicle(vehicle);
-            return new Capacity(product, vehicle, capacity);
-        } else {
-            final ProductGroup productGroup = getProductGroup(productGroupId);
-            productGroup.addVehicle(vehicle);
-            return new Capacity(productGroup, vehicle, capacity);
-        }
+        return new Capacity(vehicle, capacity, miscible);
     }
 
     /**
@@ -406,19 +347,6 @@ public final class JAXBConfigurationParserImpl implements ConfigurationParser {
         final Product product = this.productMap.get(productId);
         Validate.notNull(product, "product with id \"" + productId + "\" not found");
         return product;
-    }
-
-    /**
-     * gets a {@link ProductGroup} from the map.
-     * 
-     * @param productGroupId
-     *            id of {@link ProductGroup}.
-     * @return the {@link ProductGroup} with the given id.
-     */
-    private ProductGroup getProductGroup(final Integer productGroupId) {
-        final ProductGroup productGroup = this.productGroupMap.get(productGroupId);
-        Validate.notNull(productGroup, "product with id \"" + productGroupId + "\" not found");
-        return productGroup;
     }
 
     /**

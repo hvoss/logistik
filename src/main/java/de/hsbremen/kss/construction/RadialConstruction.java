@@ -51,12 +51,6 @@ public final class RadialConstruction implements Construction {
             actualStation = Collections.min(stations, comparator);
         }
 
-        for (final Station station : configuration.getStations()) {
-            if (sourceDepot != station) {
-                RadialConstruction.LOG.info(sourceDepot + " -> " + station + " : " + sourceDepot.angle(station));
-            }
-        }
-
         while (!stations.isEmpty()) {
             final StationAngleComparator comparator = new StationAngleComparator(sourceDepot, actualStation, forward);
             actualStation = Collections.min(stations, comparator);

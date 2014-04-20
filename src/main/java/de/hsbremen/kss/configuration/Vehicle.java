@@ -102,24 +102,6 @@ public final class Vehicle {
     }
 
     /**
-     * verifies that the product can be transported by this vehicle.
-     * 
-     * @param checkProduct
-     *            product to check.
-     * @return true: product can be transported; false: otherwise
-     */
-    public boolean canBeTransported(final Product checkProduct) {
-        // XXX maybe cache?
-        for (final Capacity capacity : this.capacities) {
-            if (capacity.contains(checkProduct)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
      * adds a capacity
      * 
      * @param capacity
@@ -130,6 +112,21 @@ public final class Vehicle {
         if (!this.capacities.add(capacity)) {
             throw new IllegalStateException("vehicle " + this.name + " already contain the given capacity: " + capacity);
         }
+    }
+
+    /**
+     * returns the maximum capacity weight of the whole vehicle.
+     * 
+     * @return the maximum capacity weight of the whole vehicle
+     */
+    public Integer maxCapacityWeight() {
+        int maxWeight = 0;
+
+        for (final Capacity capacity : this.capacities) {
+            maxWeight += capacity.getCapacityWeight();
+        }
+
+        return maxWeight;
     }
 
     @Override
