@@ -215,6 +215,27 @@ public final class Order {
         return stations;
     }
 
+    /**
+     * filters the given orders by a maximum weight
+     * 
+     * @param orderToFilter
+     *            orders to filter
+     * @param maxWeight
+     *            maximum weight (inclusive) of an order.
+     * @return a set of orders with the maximum given weight
+     */
+    public static Set<Order> filterOrderByWeight(final Collection<Order> orderToFilter, final Integer maxWeight) {
+        final Set<Order> filteredOrders = new HashSet<>();
+
+        for (final Order order : orderToFilter) {
+            if (order.weightOfProducts() <= maxWeight) {
+                filteredOrders.add(order);
+            }
+        }
+
+        return filteredOrders;
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;

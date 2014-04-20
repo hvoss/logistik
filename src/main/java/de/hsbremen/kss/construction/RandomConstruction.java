@@ -42,39 +42,61 @@ public final class RandomConstruction implements Construction {
         final Tour tour = new Tour(vehicle);
 
         final Set<Order> orders = configuration.getOrders();
-        final Set<Station> stations = Order.getAllSourceStations(orders);
 
         final Set<Order> visitedSourceOrders = new HashSet<>(orders.size());
         final Set<Order> visitedDestinationOrders = new HashSet<>(orders.size());
 
-        while (!stations.isEmpty()) {
-            final Station rElement = RandomUtils.randomElement(stations);
-            stations.remove(rElement);
+        while (true) {
+            final Set<Station> processableOrders = processableOrders(configuration.getOrders(), visitedSourceOrders, visitedDestinationOrders, tour);
+            if (processableOrders.isEmpty()) {
+                break;
+            }
+            final Station rElement = RandomUtils.randomElement(processableOrders);
 
             final Set<Order> newSourceOrders = new HashSet<>(rElement.getSourceOrders());
             final Set<Order> newDestinationOrders = new HashSet<>(rElement.getDestinationOrders());
             newSourceOrders.removeAll(visitedSourceOrders);
             newDestinationOrders.removeAll(visitedDestinationOrders);
 
-            tour.addSourceOrders(newSourceOrders);
-
-            // order where the source station reached
-            visitedSourceOrders.addAll(newSourceOrders);
-
-            // orders where the destination station reached
+            // unload orders
             final Collection<Order> destinationStationReached = CollectionUtils.intersection(visitedSourceOrders, newDestinationOrders);
             visitedDestinationOrders.addAll(destinationStationReached);
 
             tour.addDestinationOrders(destinationStationReached);
 
-            // add new stations
-            newSourceOrders.removeAll(visitedDestinationOrders);
-            stations.addAll(Order.getAllDestinationStations(newSourceOrders));
+            // Load new orders
+            for (final Order newSourceOrder : newSourceOrders) {
+                if (tour.freeSpace() >= newSourceOrder.weightOfProducts()) {
+                    tour.addSourceOrder(newSourceOrder);
+
+                    // order where the source station reached
+                    visitedSourceOrders.add(newSourceOrder);
+                }
+            }
+
         }
 
         plan.addTour(tour);
 
         return plan;
+    }
+
+    private static Set<Station> processableOrders(final Set<Order> allOrders, final Set<Order> visitedSourceOrders,
+            final Set<Order> visitedDestinationOrders, final Tour tourSoFar) {
+        final Set<Station> processableOrders = new HashSet<>();
+
+        final Set<Order> notVisitedSourceOrders = new HashSet<>(allOrders);
+        final Set<Order> notVisitedDestinationOrders = new HashSet<>(allOrders);
+        notVisitedSourceOrders.removeAll(visitedSourceOrders);
+        notVisitedDestinationOrders.removeAll(visitedDestinationOrders);
+
+        final Set<Order> processableSourceOrders = Order.filterOrderByWeight(notVisitedSourceOrders, tourSoFar.freeSpace());
+        final Collection<Order> processableDestinationOrders = CollectionUtils.intersection(visitedSourceOrders, notVisitedDestinationOrders);
+
+        processableOrders.addAll(Order.getAllSourceStations(processableSourceOrders));
+        processableOrders.addAll(Order.getAllDestinationStations(processableDestinationOrders));
+
+        return processableOrders;
     }
 
     @Override

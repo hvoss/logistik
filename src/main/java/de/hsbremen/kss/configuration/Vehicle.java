@@ -9,7 +9,7 @@ import org.apache.commons.lang3.Validate;
 /**
  * The Class Vehicle.
  */
-public final class Vehicle {
+public class Vehicle {
 
     /** the id. */
     private final Integer id;
@@ -57,11 +57,26 @@ public final class Vehicle {
     }
 
     /**
+     * copy ctor.
+     * 
+     * @param vehicle
+     *            vehicle to copy
+     */
+    public Vehicle(final Vehicle vehicle) {
+        this.id = vehicle.id;
+        this.name = vehicle.name;
+        this.sourceDepot = vehicle.sourceDepot;
+        this.destinationDepot = vehicle.destinationDepot;
+        this.capacities = new HashSet<>(vehicle.capacities);
+        this.umCapacities = Collections.unmodifiableSet(this.capacities);
+    }
+
+    /**
      * Gets the id.
      * 
      * @return the id
      */
-    public Integer getId() {
+    public final Integer getId() {
         return this.id;
     }
 
@@ -70,7 +85,7 @@ public final class Vehicle {
      * 
      * @return the name
      */
-    public String getName() {
+    public final String getName() {
         return this.name;
     }
 
@@ -79,7 +94,7 @@ public final class Vehicle {
      * 
      * @return the source depot (station)
      */
-    public Station getSourceDepot() {
+    public final Station getSourceDepot() {
         return this.sourceDepot;
     }
 
@@ -88,7 +103,7 @@ public final class Vehicle {
      * 
      * @return the destination depot (station)
      */
-    public Station getDestinationDepot() {
+    public final Station getDestinationDepot() {
         return this.destinationDepot;
     }
 
@@ -97,7 +112,7 @@ public final class Vehicle {
      * 
      * @return the capacities
      */
-    public Set<Capacity> getCapacities() {
+    public final Set<Capacity> getCapacities() {
         return this.umCapacities;
     }
 
@@ -107,7 +122,7 @@ public final class Vehicle {
      * @param capacity
      *            capacity to add
      */
-    public void addCapacity(final Capacity capacity) {
+    public final void addCapacity(final Capacity capacity) {
         Validate.notNull(capacity);
         if (!this.capacities.add(capacity)) {
             throw new IllegalStateException("vehicle " + this.name + " already contain the given capacity: " + capacity);
@@ -119,7 +134,7 @@ public final class Vehicle {
      * 
      * @return the maximum capacity weight of the whole vehicle
      */
-    public Integer maxCapacityWeight() {
+    public final Integer maxCapacityWeight() {
         int maxWeight = 0;
 
         for (final Capacity capacity : this.capacities) {
@@ -143,7 +158,7 @@ public final class Vehicle {
     }
 
     @Override
-    public boolean equals(final Object obj) {
+    public final boolean equals(final Object obj) {
         if (this == obj) {
             return true;
         }

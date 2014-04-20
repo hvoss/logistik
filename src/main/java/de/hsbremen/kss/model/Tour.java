@@ -29,6 +29,9 @@ public final class Tour {
     /** actions performed within the tour. */
     private final List<Action> actions;
 
+    /** The actual loading weight. */
+    private Integer actualLoadingWeight = 0;
+
     /**
      * Instantiates a new tour.
      * 
@@ -147,6 +150,7 @@ public final class Tour {
     public void addSourceOrder(final Order sourceOrder) {
         Validate.notNull(sourceOrder, "source order is null");
         final OrderLoadAction unloadAction = new OrderLoadAction(sourceOrder);
+        this.actualLoadingWeight += sourceOrder.weightOfProducts();
         addAction(unloadAction);
 
     }
@@ -172,6 +176,7 @@ public final class Tour {
     public void addDestinationOrder(final Order destinationOrder) {
         Validate.notNull(destinationOrder, "destination order is null");
         final OrderUnloadAction unloadAction = new OrderUnloadAction(destinationOrder);
+        this.actualLoadingWeight -= destinationOrder.weightOfProducts();
         addAction(unloadAction);
     }
 
@@ -258,5 +263,23 @@ public final class Tour {
         }
 
         return length;
+    }
+
+    /**
+     * Gets the actual loading weight.
+     * 
+     * @return the actual loading weight
+     */
+    public Integer getActualLoadingWeight() {
+        return this.actualLoadingWeight;
+    }
+
+    /**
+     * Free space.
+     * 
+     * @return the integer
+     */
+    public Integer freeSpace() {
+        return this.vehicle.maxCapacityWeight() - this.actualLoadingWeight;
     }
 }
