@@ -41,7 +41,7 @@ public final class App {
     private static final int NUM_OF_RANDOM_PLANS = 2000;
 
     /** number of random plans to generate. */
-    private static final int MAX_MISSES = 50;
+    private static final int MAX_MISSES = 2000;
 
     /**
      * static class

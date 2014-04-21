@@ -16,6 +16,7 @@ import de.hsbremen.kss.configuration.StationAngleComparator;
 import de.hsbremen.kss.configuration.Vehicle;
 import de.hsbremen.kss.model.Plan;
 import de.hsbremen.kss.model.Tour;
+import de.hsbremen.kss.util.ConstructionUtils;
 
 /**
  * The Class RadialConstruction.
@@ -38,8 +39,6 @@ public final class RadialConstruction implements Construction {
         final Tour tour = new Tour(vehicle);
         final Station sourceDepot = vehicle.getSourceDepot();
 
-        final Set<Station> stations = Order.getAllSourceStations(configuration.getOrders());
-
         final Set<Order> visitedSourceOrders = new HashSet<>();
         final Set<Order> visitedDestinationOrders = new HashSet<>();
 
@@ -48,33 +47,39 @@ public final class RadialConstruction implements Construction {
             actualStation = startStation;
         } else {
             final StationAngleComparator comparator = new StationAngleComparator(sourceDepot, sourceDepot, forward);
+            final Set<Station> stations = Order.getAllSourceStations(configuration.getOrders());
             actualStation = Collections.min(stations, comparator);
         }
 
-        while (!stations.isEmpty()) {
+        while (true) {
+            final Set<Station> processableStations = ConstructionUtils.processableStations(configuration.getOrders(), visitedSourceOrders,
+                    visitedDestinationOrders, tour);
+            if (processableStations.isEmpty()) {
+                break;
+            }
             final StationAngleComparator comparator = new StationAngleComparator(sourceDepot, actualStation, forward);
-            actualStation = Collections.min(stations, comparator);
-            stations.remove(actualStation);
+            actualStation = Collections.min(processableStations, comparator);
 
             final Set<Order> newSourceOrders = new HashSet<>(actualStation.getSourceOrders());
             final Set<Order> newDestinationOrders = new HashSet<>(actualStation.getDestinationOrders());
             newSourceOrders.removeAll(visitedSourceOrders);
             newDestinationOrders.removeAll(visitedDestinationOrders);
 
-            tour.addSourceOrders(newSourceOrders);
-
-            // order where the source station reached
-            visitedSourceOrders.addAll(newSourceOrders);
-
-            // orders where the destination station reached
+            // unload orders
             final Collection<Order> destinationStationReached = CollectionUtils.intersection(visitedSourceOrders, newDestinationOrders);
             visitedDestinationOrders.addAll(destinationStationReached);
-
             tour.addDestinationOrders(destinationStationReached);
 
-            // add new stations
-            newSourceOrders.removeAll(visitedDestinationOrders);
-            stations.addAll(Order.getAllDestinationStations(newSourceOrders));
+            // Load new orders
+            for (final Order newSourceOrder : newSourceOrders) {
+                if (tour.freeSpace() >= newSourceOrder.weightOfProducts()) {
+                    tour.addSourceOrder(newSourceOrder);
+
+                    // order where the source station reached
+                    visitedSourceOrders.add(newSourceOrder);
+                }
+            }
+
         }
 
         plan.addTour(tour);
