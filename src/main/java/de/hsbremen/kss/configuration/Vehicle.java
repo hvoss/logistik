@@ -9,7 +9,7 @@ import org.apache.commons.lang3.Validate;
 /**
  * The Class Vehicle.
  */
-public class Vehicle {
+public final class Vehicle {
 
     /** the id. */
     private final Integer id;
@@ -76,7 +76,7 @@ public class Vehicle {
      * 
      * @return the id
      */
-    public final Integer getId() {
+    public Integer getId() {
         return this.id;
     }
 
@@ -85,7 +85,7 @@ public class Vehicle {
      * 
      * @return the name
      */
-    public final String getName() {
+    public String getName() {
         return this.name;
     }
 
@@ -94,7 +94,7 @@ public class Vehicle {
      * 
      * @return the source depot (station)
      */
-    public final Station getSourceDepot() {
+    public Station getSourceDepot() {
         return this.sourceDepot;
     }
 
@@ -103,7 +103,7 @@ public class Vehicle {
      * 
      * @return the destination depot (station)
      */
-    public final Station getDestinationDepot() {
+    public Station getDestinationDepot() {
         return this.destinationDepot;
     }
 
@@ -112,7 +112,7 @@ public class Vehicle {
      * 
      * @return the capacities
      */
-    public final Set<Capacity> getCapacities() {
+    public Set<Capacity> getCapacities() {
         return this.umCapacities;
     }
 
@@ -122,7 +122,7 @@ public class Vehicle {
      * @param capacity
      *            capacity to add
      */
-    public final void addCapacity(final Capacity capacity) {
+    public void addCapacity(final Capacity capacity) {
         Validate.notNull(capacity);
         if (!this.capacities.add(capacity)) {
             throw new IllegalStateException("vehicle " + this.name + " already contain the given capacity: " + capacity);
@@ -134,7 +134,7 @@ public class Vehicle {
      * 
      * @return the maximum capacity weight of the whole vehicle
      */
-    public final Integer maxCapacityWeight() {
+    public Integer maxCapacityWeight() {
         int maxWeight = 0;
 
         for (final Capacity capacity : this.capacities) {
@@ -158,7 +158,7 @@ public class Vehicle {
     }
 
     @Override
-    public final boolean equals(final Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj) {
             return true;
         }

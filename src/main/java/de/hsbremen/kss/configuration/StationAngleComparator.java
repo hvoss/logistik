@@ -10,13 +10,13 @@ import java.util.Comparator;
  */
 public final class StationAngleComparator implements Comparator<Station> {
 
-    /**
-     * center station
-     */
+    /** center station */
     private final Station center;
 
+    /** start angle */
     private final Double startAngle;
 
+    /** direction */
     private final boolean forward;
 
     /**
@@ -24,6 +24,10 @@ public final class StationAngleComparator implements Comparator<Station> {
      * 
      * @param center
      *            center station
+     * @param startStation
+     *            start station
+     * @param forward
+     *            direction
      */
     public StationAngleComparator(final Station center, final Station startStation, final boolean forward) {
         this.center = center;
@@ -39,25 +43,29 @@ public final class StationAngleComparator implements Comparator<Station> {
 
     @Override
     public int compare(final Station o1, final Station o2) {
-        Double angle1 = Math.PI * 3;
-        Double angle2 = Math.PI * 3;
-        try {
+        Double angle1;
+        Double angle2;
+
+        if (!this.center.equals(o1)) {
             angle1 = Double.valueOf(this.center.angle(o1));
             angle1 -= this.startAngle;
             if (angle1 < 0) {
                 angle1 += Math.PI * 2;
             }
-        } catch (final IllegalArgumentException iae) {
+        } else {
+            angle1 = 0d;
         }
-        try {
+
+        if (!this.center.equals(o2)) {
             angle2 = Double.valueOf(this.center.angle(o2));
             angle2 -= this.startAngle;
             if (angle2 < 0) {
                 angle2 += Math.PI * 2;
             }
-        } catch (final IllegalArgumentException iae) {
-
+        } else {
+            angle2 = 0d;
         }
+
         if (this.forward) {
             return angle1.compareTo(angle2);
         } else {
