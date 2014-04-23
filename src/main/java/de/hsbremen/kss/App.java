@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.swing.SwingUtilities;
+
 import org.joda.time.Instant;
 import org.joda.time.Interval;
 import org.slf4j.Logger;
@@ -23,6 +25,7 @@ import de.hsbremen.kss.construction.NearestNeighbor;
 import de.hsbremen.kss.construction.RadialConstruction;
 import de.hsbremen.kss.construction.RandomConstruction;
 import de.hsbremen.kss.construction.SavingsContruction;
+import de.hsbremen.kss.gui.MainFrame;
 import de.hsbremen.kss.model.Plan;
 import de.hsbremen.kss.timing.ConstructionTimeMeasuring;
 import de.hsbremen.kss.validate.SimpleValidator;
@@ -41,7 +44,7 @@ public final class App {
     private static final int NUM_OF_RANDOM_PLANS = 2000;
 
     /** number of random plans to generate. */
-    private static final int MAX_MISSES = 2000;
+    private static final int MAX_MISSES = 50;
 
     /**
      * static class
@@ -120,6 +123,13 @@ public final class App {
             App.LOG.info("plan is valid: " + validator.validate(configuration, plan));
             plan.logTours();
         }
+
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new MainFrame(configuration);
+            }
+        });
 
     }
 }
