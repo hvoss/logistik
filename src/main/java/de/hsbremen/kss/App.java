@@ -33,8 +33,9 @@ import de.hsbremen.kss.validate.SimpleValidator;
 import de.hsbremen.kss.validate.Validator;
 
 /**
- * Hello world!
+ * Starts the program
  * 
+ * @author henrik
  */
 public final class App {
 
@@ -46,6 +47,8 @@ public final class App {
 
     /** number of random plans to generate. */
     private static final int MAX_MISSES = 50;
+
+    private static MainFrame mainFrame;
 
     /**
      * static class
@@ -63,14 +66,38 @@ public final class App {
     public static void main(final String[] args) {
         App.LOG.info("App started");
 
-        final ConfigurationParser confParser = new JAXBConfigurationParserImpl();
+        final Configuration configuration = loadConfiguration();
 
-        final File file = new File("conf.xml");
+        final Plan plan = startAlgorithms(configuration);
 
-        final Instant start = new Instant();
-        final Configuration configuration = confParser.parseConfiguration(file);
-        final long durationMillis = new Interval(start, new Instant()).toDurationMillis();
-        App.LOG.info("configuration parsing took " + durationMillis + " ms");
+        startGUI(configuration, plan);
+
+    }
+
+    /**
+     * starts the GUI.
+     * 
+     * @param configuration
+     *            parsed configuration
+     */
+    private static void startGUI(final Configuration configuration, final Plan plan) {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                App.mainFrame = new MainFrame(configuration, plan);
+            }
+        });
+    }
+
+    /**
+     * start the algorithms.
+     * 
+     * @param configuration
+     *            parsed configuration
+     * @return the best plan
+     */
+    private static Plan startAlgorithms(final Configuration configuration) {
+        Plan bestPlan = null;
 
         App.LOG.info("got " + configuration.getStations().size() + " stations");
         App.LOG.info("got " + configuration.getVehicles().size() + " vehicles");
@@ -120,19 +147,35 @@ public final class App {
         for (final ConstructionTimeMeasuring timeMeasuring : timeMeasuringTasks) {
             App.LOG.info("");
             final Plan plan = timeMeasuring.getPlan();
-            timeMeasuring.getPlan().logPlan();
+            plan.logPlan();
             timeMeasuring.getConstruction().logStatistic();
             App.LOG.info("construction took " + timeMeasuring.duration() + " ms");
-            App.LOG.info("plan is valid: " + validator.validate(configuration, plan));
+            final boolean valid = validator.validate(configuration, plan);
+            App.LOG.info("plan is valid: " + valid);
             plan.logTours();
+
+            if (valid && (bestPlan == null || bestPlan.length() > plan.length())) {
+                bestPlan = plan;
+            }
         }
 
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new MainFrame(configuration);
-            }
-        });
+        return bestPlan;
+    }
 
+    /**
+     * loads the configuration from a XML-file.
+     * 
+     * @return parsed configuration
+     */
+    private static Configuration loadConfiguration() {
+        final ConfigurationParser confParser = new JAXBConfigurationParserImpl();
+
+        final File file = new File("conf.xml");
+
+        final Instant start = new Instant();
+        final Configuration configuration = confParser.parseConfiguration(file);
+        final long durationMillis = new Interval(start, new Instant()).toDurationMillis();
+        App.LOG.info("configuration parsing took " + durationMillis + " ms");
+        return configuration;
     }
 }
