@@ -25,6 +25,7 @@ import de.hsbremen.kss.construction.NearestNeighbor;
 import de.hsbremen.kss.construction.RadialConstruction;
 import de.hsbremen.kss.construction.RandomConstruction;
 import de.hsbremen.kss.construction.SavingsContruction;
+import de.hsbremen.kss.construction.SavingsTourConstruction;
 import de.hsbremen.kss.gui.MainFrame;
 import de.hsbremen.kss.model.Plan;
 import de.hsbremen.kss.timing.ConstructionTimeMeasuring;
@@ -97,6 +98,7 @@ public final class App {
 
         final Construction nearestNeighbor = new NearestNeighbor();
         final Construction savingsContruction = new SavingsContruction();
+        final Construction savingsTourConstruction = new SavingsTourConstruction();
         final Construction randomConstruction = new RandomConstruction();
         final Construction radialConstruction = new RadialConstruction();
         final Construction missAbortMultipleRandomConstruction = new MissAbortMultipleRandomConstruction(randomConstruction, App.MAX_MISSES);
@@ -104,7 +106,8 @@ public final class App {
         final Construction multipleRadialConstruction = new MultipleRadialConstruction();
 
         final List<Construction> allConstructions = Arrays.asList(nearestNeighbor, savingsContruction, radialConstruction,
-                multipleRadialConstruction, randomConstruction, fixMultipleRandomConstruction, missAbortMultipleRandomConstruction);
+                multipleRadialConstruction, randomConstruction, fixMultipleRandomConstruction, missAbortMultipleRandomConstruction, 
+                savingsTourConstruction);
 
         final ArrayList<ConstructionTimeMeasuring> timeMeasuringTasks = new ArrayList<>(allConstructions.size());
 

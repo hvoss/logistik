@@ -3,7 +3,13 @@ package de.hsbremen.kss.model;
 import de.hsbremen.kss.configuration.Order;
 import de.hsbremen.kss.configuration.Station;
 
-
+/**
+ * Calculates the Savings-Value between two the source station of one order and the
+ * destination source of an other order
+ * 
+ * @author david
+ *
+ */
 public class Saving implements Comparable<Saving>{
 	
 	private Order sourceOrder;
@@ -20,15 +26,15 @@ public class Saving implements Comparable<Saving>{
 	}
 
 	public Order getSourceOrder() {
-		return sourceOrder;
+		return this.sourceOrder;
 	}
 
 	public Order getDestinationOrder() {
-		return destinationOrder;
+		return this.destinationOrder;
 	}
 
 	public Station getDepot() {
-		return depot;
+		return this.depot;
 	}
 	
 	public double getSavingsValue(){
