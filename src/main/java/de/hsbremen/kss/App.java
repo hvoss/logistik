@@ -32,8 +32,9 @@ import de.hsbremen.kss.validate.SimpleValidator;
 import de.hsbremen.kss.validate.Validator;
 
 /**
- * Hello world!
+ * Starts the program
  * 
+ * @author henrik
  */
 public final class App {
 
@@ -62,15 +63,36 @@ public final class App {
     public static void main(final String[] args) {
         App.LOG.info("App started");
 
-        final ConfigurationParser confParser = new JAXBConfigurationParserImpl();
+        final Configuration configuration = loadConfiguration();
 
-        final File file = new File("conf.xml");
+        startAlgorithms(configuration);
 
-        final Instant start = new Instant();
-        final Configuration configuration = confParser.parseConfiguration(file);
-        final long durationMillis = new Interval(start, new Instant()).toDurationMillis();
-        App.LOG.info("configuration parsing took " + durationMillis + " ms");
+        startGUI(configuration);
 
+    }
+
+    /**
+     * starts the GUI.
+     * 
+     * @param configuration
+     *            parsed configuration
+     */
+    private static void startGUI(final Configuration configuration) {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new MainFrame(configuration);
+            }
+        });
+    }
+
+    /**
+     * start the algorithms.
+     * 
+     * @param configuration
+     *            parsed configuration
+     */
+    private static void startAlgorithms(final Configuration configuration) {
         App.LOG.info("got " + configuration.getStations().size() + " stations");
         App.LOG.info("got " + configuration.getVehicles().size() + " vehicles");
         App.LOG.info("got " + configuration.getOrders().size() + " orders");
@@ -123,13 +145,22 @@ public final class App {
             App.LOG.info("plan is valid: " + validator.validate(configuration, plan));
             plan.logTours();
         }
+    }
 
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new MainFrame(configuration);
-            }
-        });
+    /**
+     * loads the configuration from a XML-file.
+     * 
+     * @return parsed configuration
+     */
+    private static Configuration loadConfiguration() {
+        final ConfigurationParser confParser = new JAXBConfigurationParserImpl();
 
+        final File file = new File("conf.xml");
+
+        final Instant start = new Instant();
+        final Configuration configuration = confParser.parseConfiguration(file);
+        final long durationMillis = new Interval(start, new Instant()).toDurationMillis();
+        App.LOG.info("configuration parsing took " + durationMillis + " ms");
+        return configuration;
     }
 }
