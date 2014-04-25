@@ -9,7 +9,6 @@ import java.util.Collection;
 
 import javax.imageio.ImageIO;
 
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.math3.geometry.euclidean.threed.Plane;
 import org.apache.commons.math3.geometry.euclidean.threed.Rotation;
@@ -20,6 +19,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.hsbremen.kss.configuration.Station;
+import de.hsbremen.kss.model.Action;
+import de.hsbremen.kss.model.Plan;
+import de.hsbremen.kss.model.Tour;
 
 /**
  * canvas to display a map.
@@ -45,10 +47,10 @@ public final class MapCanvas extends Canvas {
     private static final int SPACE_BETWEEN_CIRCLE_TEXT = 5;
 
     /** angle of the arrowhead */
-    private static final double ARROWHEAD_ANGLE = FastMath.PI / (2 + 2 + 2);
+    private static final double ARROWHEAD_ANGLE = FastMath.PI / 12;
 
     /** length of the arrowhead */
-    private static final int ARROWHEAD_LENGTH = 50;
+    private static final int ARROWHEAD_LENGTH = 30;
 
     /** plane to transform from 3D to 2D and the other way around. */
     private static final Plane PLANE = new Plane(Vector3D.PLUS_K);
@@ -74,6 +76,9 @@ public final class MapCanvas extends Canvas {
     /** scale factor to transform model coordinates into graphical coordinates */
     private double scale;
 
+    /** plan to display */
+    private final Plan plan;
+
     /**
      * ctor.
      * 
@@ -83,16 +88,20 @@ public final class MapCanvas extends Canvas {
      *            height of the model.
      * @param stations
      *            stations to display
+     * @param plan
+     *            plan to display
      */
-    public MapCanvas(final int width, final int height, final Collection<Station> stations) {
+    public MapCanvas(final int width, final int height, final Collection<Station> stations, final Plan plan) {
         Validate.isTrue(width > 0, "width must be greater than 0");
         Validate.isTrue(height > 0, "height must be greater than 0");
         Validate.notNull(stations, "stations is null");
         Validate.noNullElements(stations, "stations contains null elements");
+        Validate.notNull(plan, "plan is null");
 
         this.width = width;
         this.height = height;
         this.stations = stations;
+        this.plan = plan;
 
         final InputStream is = MapCanvas.class.getResourceAsStream("/deutschland.png");
 
@@ -110,6 +119,8 @@ public final class MapCanvas extends Canvas {
         updateScale();
 
         drawBackgroundAndStations();
+
+        drawPlan();
     }
 
     /**
@@ -139,11 +150,6 @@ public final class MapCanvas extends Canvas {
         for (final Station station : this.stations) {
             drawStation(station);
         }
-
-        final Station firstStation = CollectionUtils.get(this.stations, 0);
-        final Station secondStation = CollectionUtils.get(this.stations, 1);
-
-        drawArrow(firstStation.getCoordinates(), secondStation.getCoordinates());
     }
 
     /**
@@ -165,7 +171,7 @@ public final class MapCanvas extends Canvas {
      * @return the graphical Y-coordinate
      */
     private int transformY(final double y) {
-        return (int) (this.height * this.scale) - (int) (y * this.scale) - MapCanvas.BORDER;
+        return (int) (this.height * this.scale) - (int) (y * this.scale) + MapCanvas.BORDER;
     }
 
     /**
@@ -248,4 +254,19 @@ public final class MapCanvas extends Canvas {
         g.drawLine(sX, sY, dX, dY);
     }
 
+    /** draws the plan */
+    public void drawPlan() {
+        for (final Tour tour : this.plan.getTours()) {
+            Station lastStation = null;
+            for (final Action action : tour.getActions()) {
+                final Station station = action.getStation();
+
+                if (lastStation != null && !station.equals(lastStation)) {
+                    drawArrow(lastStation.getCoordinates(), station.getCoordinates());
+                }
+
+                lastStation = station;
+            }
+        }
+    }
 }

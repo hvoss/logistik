@@ -47,6 +47,8 @@ public final class App {
     /** number of random plans to generate. */
     private static final int MAX_MISSES = 50;
 
+    private static MainFrame mainFrame;
+
     /**
      * static class
      */
@@ -65,9 +67,9 @@ public final class App {
 
         final Configuration configuration = loadConfiguration();
 
-        startAlgorithms(configuration);
+        final Plan plan = startAlgorithms(configuration);
 
-        startGUI(configuration);
+        startGUI(configuration, plan);
 
     }
 
@@ -77,11 +79,11 @@ public final class App {
      * @param configuration
      *            parsed configuration
      */
-    private static void startGUI(final Configuration configuration) {
+    private static void startGUI(final Configuration configuration, final Plan plan) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new MainFrame(configuration);
+                App.mainFrame = new MainFrame(configuration, plan);
             }
         });
     }
@@ -91,8 +93,11 @@ public final class App {
      * 
      * @param configuration
      *            parsed configuration
+     * @return the best plan
      */
-    private static void startAlgorithms(final Configuration configuration) {
+    private static Plan startAlgorithms(final Configuration configuration) {
+        Plan bestPlan = null;
+
         App.LOG.info("got " + configuration.getStations().size() + " stations");
         App.LOG.info("got " + configuration.getVehicles().size() + " vehicles");
         App.LOG.info("got " + configuration.getOrders().size() + " orders");
@@ -139,12 +144,19 @@ public final class App {
         for (final ConstructionTimeMeasuring timeMeasuring : timeMeasuringTasks) {
             App.LOG.info("");
             final Plan plan = timeMeasuring.getPlan();
-            timeMeasuring.getPlan().logPlan();
+            plan.logPlan();
             timeMeasuring.getConstruction().logStatistic();
             App.LOG.info("construction took " + timeMeasuring.duration() + " ms");
-            App.LOG.info("plan is valid: " + validator.validate(configuration, plan));
+            final boolean valid = validator.validate(configuration, plan);
+            App.LOG.info("plan is valid: " + valid);
             plan.logTours();
+
+            if (valid && (bestPlan == null || bestPlan.length() > plan.length())) {
+                bestPlan = plan;
+            }
         }
+
+        return bestPlan;
     }
 
     /**
