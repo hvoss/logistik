@@ -33,10 +33,9 @@ public class SavingsTourConstruction implements Construction {
 		
 		final Vehicle vehicle = CollectionUtils.get(configuration.getVehicles(), 0);
         final Station depot = vehicle.getSourceDepot();
-        final Tour tour = new Tour(vehicle);
+        Tour tour = new Tour(vehicle);
 		
         final List<Order> configurationOrderList = new ArrayList<Order>(configuration.getOrders());
-        final List<SavingTour> savingTourList = new ArrayList<>();
         
         // TODO find the best initial tour with the normal Savings-Algorithm
         
@@ -52,17 +51,34 @@ public class SavingsTourConstruction implements Construction {
                 
         
         while(!configurationOrderList.isEmpty()){
+        	final List<SavingTour> savingTourList = new ArrayList<>();
         	for (Order order : configurationOrderList){
             	savingTourList.add(new SavingTour(tour, order, depot));
+            	savingTourList.add(new SavingTour(order, tour, depot));
             }
         	
         	Collections.sort(savingTourList);
         	
         	SavingsTourConstruction.LOG.info("best Element: " + savingTourList.get(0).getAddingOrder());
-        	tour.addSourceOrder(savingTourList.get(0).getAddingOrder());
-            tour.addDestinationOrder(savingTourList.get(0).getAddingOrder());
+        	
+        	if(savingTourList.get(0).getDirection()){
+        		tour.addSourceOrder(savingTourList.get(0).getAddingOrder());
+                tour.addDestinationOrder(savingTourList.get(0).getAddingOrder());
+                SavingsTourConstruction.LOG.info("Direction: right");
+        	} else{
+        		Tour tempTour = new Tour(vehicle);
+        		tempTour.addSourceOrder(savingTourList.get(0).getAddingOrder());
+        		tempTour.addDestinationOrder(savingTourList.get(0).getAddingOrder());
+        		SavingsTourConstruction.LOG.info("Direction: left");
+        		for (Order order : tour.getOrders()){
+        			tempTour.addSourceOrder(order);
+        			tempTour.addDestinationOrder(order);
+        		}
+        		tour = tempTour;
+        	}
+        	
+        	
         	configurationOrderList.remove(savingTourList.get(0).getAddingOrder());
-        	savingTourList.clear();
         }
         
 //        configurationOrderList.remove(savingTourList.get(0).getAddingOrder());
