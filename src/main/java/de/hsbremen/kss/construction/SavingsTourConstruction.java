@@ -1,7 +1,6 @@
 package de.hsbremen.kss.construction;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -19,6 +18,7 @@ import de.hsbremen.kss.model.Tour;
 
 /**
  * Realizes the Savings-algorithm with tours instead of locations
+ * Not ready yet. Connects only Orders: Load --> Unload
  * 
  * @author david
  *
@@ -45,24 +45,30 @@ public class SavingsTourConstruction implements Construction {
         
         configurationOrderList.remove(2);
         
-    	for (Order order : configurationOrderList){
-        	savingTourList.add(new SavingTour(tour, order, depot));
+//        for (SavingTour savingTour : savingTourList){
+//        	SavingsTourConstruction.LOG.info("Savings: " + savingTour.getExistingTour().getOrders()+ " => " + 
+//        			savingTour.getAddingOrder() + ": " + savingTour.getSavingsValue());
+//        }
+                
+        
+        while(!configurationOrderList.isEmpty()){
+        	for (Order order : configurationOrderList){
+            	savingTourList.add(new SavingTour(tour, order, depot));
+            }
+        	
+        	Collections.sort(savingTourList);
+        	
+        	SavingsTourConstruction.LOG.info("best Element: " + savingTourList.get(0).getAddingOrder());
+        	tour.addSourceOrder(savingTourList.get(0).getAddingOrder());
+            tour.addDestinationOrder(savingTourList.get(0).getAddingOrder());
+        	configurationOrderList.remove(savingTourList.get(0).getAddingOrder());
+        	savingTourList.clear();
         }
         
-        for (SavingTour savingTour : savingTourList){
-        	SavingsTourConstruction.LOG.info("Savings: " + savingTour.getExistingTour().getOrders()+ " => " + 
-        			savingTour.getAddingOrder() + ": " + savingTour.getSavingsValue());
-        }
-        
-        Collections.sort(savingTourList);
-        
-        configurationOrderList.remove(savingTourList.get(0).getAddingOrder());
+//        configurationOrderList.remove(savingTourList.get(0).getAddingOrder());
         
         SavingsTourConstruction.LOG.info("Size of the list: " + configurationOrderList.size());
-        
-        tour.addSourceOrder(savingTourList.get(0).getAddingOrder());
-        tour.addDestinationOrder(savingTourList.get(0).getAddingOrder());
-		
+        		
         plan.addTour(tour);
         
 		return plan;
