@@ -25,8 +25,9 @@ public class SavingTour implements Comparable<SavingTour>{
 		this.addingOrder = addingOrder;
 		this.depot = depot;
 		final List <Order> existingTourorders = new ArrayList<>(existingTour.getOrders()); 
-		this.savingsValue = depot.distance(existingTourorders.get(0).getDestination()) + depot.distance(addingOrder.getSource())
-				- existingTourorders.get(0).getDestination().distance(addingOrder.getSource());
+		this.savingsValue = depot.distance(existingTourorders.get(existingTourorders.size()-1).getDestination()) 
+				+ depot.distance(addingOrder.getSource()) - existingTourorders.get(existingTourorders.size()-1).
+				getDestination().distance(addingOrder.getSource());
 		this.direction = true;
 	}
 	

@@ -4,7 +4,7 @@ import de.hsbremen.kss.configuration.Order;
 import de.hsbremen.kss.configuration.Station;
 
 /**
- * Calculates the Savings-Value between two the source station of one order and the
+ * Calculates the Savings-Value between the source station of one order and the
  * destination source of an other order
  * 
  * @author david
