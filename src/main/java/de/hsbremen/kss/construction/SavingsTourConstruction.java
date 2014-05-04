@@ -2,7 +2,9 @@ package de.hsbremen.kss.construction;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
@@ -18,8 +20,7 @@ import de.hsbremen.kss.model.SavingOrder;
 import de.hsbremen.kss.model.Tour;
 
 /**
- * Realizes the Savings-algorithm with tours instead of locations
- * Not ready yet. Connects only Orders: Load --> Unload
+ * Realizes the Savings-Algorithm with orders (one element is an order instead of a location)
  * 
  * @author david
  *
@@ -40,38 +41,46 @@ public class SavingsTourConstruction implements Construction {
         final Station depot = vehicle.getSourceDepot();
         final Tour tour = new Tour(vehicle);
 		
-        final List<Order> configurationOrderList = new ArrayList<Order>(configuration.getOrders());
+        final Set<Order> configurationOrders = new HashSet<>(configuration.getOrders());
+        final List<Order> visitedOrders = new ArrayList<>(configuration.getOrders().size());
 
         if(startOrder == null){
-        	final List<SavingOrder> savingsOrderList = new ArrayList<SavingOrder>(configurationOrderList.size());
-        	for(Order order : configurationOrderList) {
+        	final List<SavingOrder> savingsOrderList = new ArrayList<SavingOrder>(configurationOrders.size());
+        	for(Order order : configurationOrders) {
         		savingsOrderList.add(new SavingOrder(order, depot));
         	}
         	Collections.sort(savingsOrderList);
         	tour.addSourceOrder(savingsOrderList.get(0).getOrder());
         	tour.addDestinationOrder(savingsOrderList.get(0).getOrder());
-        	configurationOrderList.remove(savingsOrderList.get(0).getOrder());
+        	visitedOrders.add(savingsOrderList.get(0).getOrder());
+        	configurationOrders.remove(savingsOrderList.get(0).getOrder());
         } else {
 			tour.addSourceOrder(startOrder);
 			tour.addDestinationOrder(startOrder);
-			configurationOrderList.remove(startOrder);
+			visitedOrders.add(startOrder);
+			configurationOrders.remove(startOrder);
 		}
         
-        while(!configurationOrderList.isEmpty()) {
-        	final List<Order> existingTourOrders = new ArrayList<>(tour.getOrders());
-        	final int index = existingTourOrders.size() - 1;
+        while(!configurationOrders.isEmpty()) {
+        	final int index = visitedOrders.size() - 1;
         	final List<Saving> savingsList = new ArrayList<>();
-        	
-        	for(Order order : configurationOrderList) {
-        		savingsList.add(new Saving(existingTourOrders.get(index), order, depot));
+        	        	
+        	for(Order order : configurationOrders) {
+        		savingsList.add(new Saving(visitedOrders.get(index), order, depot));
         	}
         	
         	Collections.sort(savingsList);
         	
-        	tour.addSourceOrder(savingsList.get(0).getDestinationOrder());
-        	tour.addDestinationOrder(savingsList.get(0).getDestinationOrder());
+        	// load action
+        	if(tour.freeSpace() >= savingsList.get(0).getDestinationOrder().weightOfProducts()) {
+        		tour.addSourceOrder(savingsList.get(0).getDestinationOrder());
+        	}
         	
-        	configurationOrderList.remove(savingsList.get(0).getDestinationOrder());
+        	// unload action
+        	tour.addDestinationOrder(savingsList.get(0).getDestinationOrder());
+        	visitedOrders.add(savingsList.get(0).getDestinationOrder());
+        	
+        	configurationOrders.remove(savingsList.get(0).getDestinationOrder());
         }
                         		
         plan.addTour(tour);

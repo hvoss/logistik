@@ -20,24 +20,13 @@ public class SavingOrder implements Comparable<SavingOrder>{
 		return order;
 	}
 
-	public void setOrder(Order order) {
-		this.order = order;
-	}
-
 	public Station getDepot() {
 		return depot;
 	}
 
-	public void setDepot(Station depot) {
-		this.depot = depot;
-	}
 
 	public double getSavingsValue() {
 		return savingsValue;
-	}
-
-	public void setSavingsValue(double savingsValue) {
-		this.savingsValue = savingsValue;
 	}
 
 	@Override
