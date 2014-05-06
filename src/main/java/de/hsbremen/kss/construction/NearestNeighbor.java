@@ -1,6 +1,7 @@
 package de.hsbremen.kss.construction;
 
 import java.util.ArrayList;
+
 import java.util.List;
 
 import org.apache.commons.collections4.CollectionUtils;
@@ -13,6 +14,10 @@ import de.hsbremen.kss.configuration.Station;
 import de.hsbremen.kss.configuration.Vehicle;
 import de.hsbremen.kss.model.Plan;
 import de.hsbremen.kss.model.Tour;
+
+//TODO: Sets nutzen, Algorithmus anpassen, sodass Mehrfachbesuch möglich wird --> Validen Plan
+//TODO: Kapazität berücksichtigen
+//TODO: TESTEN
 
 public class NearestNeighbor implements Construction {
 	
