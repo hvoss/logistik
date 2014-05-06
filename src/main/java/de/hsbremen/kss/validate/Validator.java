@@ -5,5 +5,5 @@ import de.hsbremen.kss.model.Plan;
 
 public interface Validator {
 
-	boolean validate(Configuration configuration, Plan plan);
+    boolean validate(Configuration configuration, Plan plan);
 }

@@ -45,20 +45,6 @@ public final class Order {
      *            the name
      * @param source
      *            the source
-     */
-    Order(final Integer id, final String name, final Station source) {
-        this(id, name, source, null);
-    }
-
-    /**
-     * Instantiates a new order.
-     * 
-     * @param id
-     *            the id
-     * @param name
-     *            the name
-     * @param source
-     *            the source
      * @param destination
      *            the destination
      */
@@ -66,6 +52,7 @@ public final class Order {
         Validate.notNull(id, "id is null");
         Validate.notNull(name, "name is null");
         Validate.notNull(source, "source station is null");
+        Validate.notNull(destination, "destination station is null");
 
         this.id = id;
         this.name = name;
@@ -155,9 +142,18 @@ public final class Order {
         return this.productsCache.getCollection();
     }
 
+    /**
+     * returns the weight of all products.
+     * 
+     * @return weight of all products.
+     */
+    public Integer weightOfProducts() {
+        return Item.aggregateWeight(this.items);
+    }
+
     @Override
     public String toString() {
-        return this.name;
+        return this.name + " (id: " + this.id + ", weight: " + weightOfProducts() + ")";
     }
 
     /**
@@ -217,6 +213,27 @@ public final class Order {
         }
 
         return stations;
+    }
+
+    /**
+     * filters the given orders by a maximum weight
+     * 
+     * @param orderToFilter
+     *            orders to filter
+     * @param maxWeight
+     *            maximum weight (inclusive) of an order.
+     * @return a set of orders with the maximum given weight
+     */
+    public static Set<Order> filterOrderByWeight(final Collection<Order> orderToFilter, final Integer maxWeight) {
+        final Set<Order> filteredOrders = new HashSet<>();
+
+        for (final Order order : orderToFilter) {
+            if (order.weightOfProducts() <= maxWeight) {
+                filteredOrders.add(order);
+            }
+        }
+
+        return filteredOrders;
     }
 
     @Override

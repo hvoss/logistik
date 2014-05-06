@@ -17,17 +17,14 @@ public final class Product {
     /** the name. */
     private final String name;
 
+    /** the weight */
+    private final Integer weight;
+
     /** vehicles which can transport this product. */
     private final Set<Vehicle> vehicles;
 
     /** vehicles wrapped by a {@link Collections#unmodifiableSet(Set)} */
     private final Set<Vehicle> umVehicles;
-
-    /** Product groups to which the product belongs. */
-    private final Set<ProductGroup> productGroups;
-
-    /** product groups wrapped by a {@link Collections#unmodifiableSet(Set)} */
-    private final Set<ProductGroup> umProductGroups;
 
     /**
      * Instantiates a new product.
@@ -36,14 +33,20 @@ public final class Product {
      *            the id
      * @param name
      *            the name
+     * @param weight
+     *            the weight
      */
-    Product(final Integer id, final String name) {
+    Product(final Integer id, final String name, final Integer weight) {
+        Validate.notNull(id, "id is null");
+        Validate.notNull(name, "name is null");
+        Validate.notNull(weight, "weight is null");
+
         this.id = id;
         this.name = name;
-        this.productGroups = new HashSet<>();
+        this.weight = weight;
+
         this.vehicles = new HashSet<>();
 
-        this.umProductGroups = Collections.unmodifiableSet(this.productGroups);
         this.umVehicles = Collections.unmodifiableSet(this.vehicles);
     }
 
@@ -66,12 +69,12 @@ public final class Product {
     }
 
     /**
-     * Gets the product groups to which the product belongs.
+     * Gets the weight.
      * 
-     * @return the product groups to which the product belongs
+     * @return the weight
      */
-    public Set<ProductGroup> getProductGroups() {
-        return this.umProductGroups;
+    public Integer getWeight() {
+        return this.weight;
     }
 
     /**
@@ -81,19 +84,6 @@ public final class Product {
      */
     public Set<Vehicle> getVehicles() {
         return this.umVehicles;
-    }
-
-    /**
-     * adds a product group to which the product belongs.
-     * 
-     * @param productGroup
-     *            product group to which the product belongs
-     */
-    void addProductGroup(final ProductGroup productGroup) {
-        Validate.notNull(productGroup);
-        if (!this.productGroups.add(productGroup)) {
-            throw new IllegalStateException("product" + this.name + " already contain the given product group: " + productGroup);
-        }
     }
 
     /**

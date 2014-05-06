@@ -2,98 +2,211 @@
 <Configuration>
 	<Orders>
 		<Order id="1">
-			<Name>Test Auftrag</Name>
+			<Name>Bremen nach Hamburg</Name>
 			<SourceStationId>1</SourceStationId>
-			<DestinationStationId>2R</DestinationStationId>
+			<DestinationStationId>2</DestinationStationId>
 			<Items>
 				<Item>
 					<ProductId>1</ProductId>
-					<Amount>50</Amount>
-				</Item>
-				<Item>
-					<ProductId>2</ProductId>
-					<Amount>100</Amount>
-				</Item>
-				<Item>
-					<ProductId>3</ProductId>
-					<Amount>75</Amount>
-				</Item>
-			</Items>
-		</Order>
-		<Order id="2">
-			<Name>Noch ein Auftrag</Name>
-			<SourceStationId>5</SourceStationId>
-			<DestinationStationId>8</DestinationStationId>
-			<Items>
-				<Item>
-					<ProductId>4</ProductId>
 					<Amount>200</Amount>
 				</Item>
 			</Items>
 		</Order>
+		<Order id="2">
+			<Name>Osnabrück nach Neißeaue</Name>
+			<SourceStationId>5</SourceStationId>
+			<DestinationStationId>8</DestinationStationId>
+			<Items>
+				<Item>
+					<ProductId>2</ProductId>
+					<Amount>250</Amount>
+				</Item>
+			</Items>
+		</Order>
 		<Order id="3">
-			<Name>Noch ein Auftrag</Name>
-			<Name>Hannover als Ziel</Name>
+			<Name>Neißeaue nach Hannover</Name>
 			<SourceStationId>8</SourceStationId>
 			<DestinationStationId>3</DestinationStationId>
+			<Items>
+				<Item>
+					<ProductId>3</ProductId>
+					<Amount>500</Amount>
+				</Item>
+			</Items>
 		</Order>
 		<Order id="4">
-			<Name>Noch ein Auftrag</Name>
+			<Name>Ellenbogen nach Bremen</Name>
 			<SourceStationId>7</SourceStationId>
 			<DestinationStationId>1</DestinationStationId>
+			<Items>
+				<Item>
+					<ProductId>4</ProductId>
+					<Amount>50</Amount>
+				</Item>
+			</Items>
 		</Order>
 		<Order id="5">
-			<Name>Noch ein Auftrag</Name>
+			<Name>München nach Hamburg</Name>
 			<SourceStationId>4</SourceStationId>
 			<DestinationStationId>2</DestinationStationId>
+			<Items>
+				<Item>
+					<ProductId>5</ProductId>
+					<Amount>100</Amount>
+				</Item>
+			</Items>
 		</Order>
 		<Order id="6">
-			<Name>Noch ein Auftrag</Name>
+			<Name>Hamburg nach München</Name>
 			<SourceStationId>2</SourceStationId>
 			<DestinationStationId>4</DestinationStationId>
+			<Items>
+				<Item>
+					<ProductId>1</ProductId>
+					<Amount>75</Amount>
+				</Item>
+				<Item>
+					<ProductId>2</ProductId>
+					<Amount>125</Amount>
+				</Item>
+				<Item>
+					<ProductId>3</ProductId>
+					<Amount>150</Amount>
+				</Item>
+			</Items>
 		</Order>
+		<Order id="7">
+			<Name>Hannover -> Hamburg</Name>
+			<SourceStationId>3</SourceStationId>
+			<DestinationStationId>2</DestinationStationId>
+			<Items>
+				<Item>
+					<ProductId>5</ProductId>
+					<Amount>50</Amount>
+				</Item>
+			</Items>
+		</Order>
+		<Order id="8">
+			<Name>Hannover -> München</Name>
+			<SourceStationId>3</SourceStationId>
+			<DestinationStationId>4</DestinationStationId>
+			<Items>
+				<Item>
+					<ProductId>5</ProductId>
+					<Amount>60</Amount>
+				</Item>
+			</Items>
+		</Order>
+		<Order id="9">
+			<Name>Hannover -> Osnabrück</Name>
+			<SourceStationId>3</SourceStationId>
+			<DestinationStationId>5</DestinationStationId>
+			<Items>
+				<Item>
+					<ProductId>5</ProductId>
+					<Amount>10</Amount>
+				</Item>
+			</Items>
+		</Order>
+		<Order id="10">
+			<Name>Hannover -> Berlin</Name>
+			<SourceStationId>3</SourceStationId>
+			<DestinationStationId>6</DestinationStationId>
+			<Items>
+				<Item>
+					<ProductId>5</ProductId>
+					<Amount>5</Amount>
+				</Item>
+			</Items>
+		</Order>
+		<Order id="11">
+			<Name>Hannover -> Ellenbogen</Name>
+			<SourceStationId>3</SourceStationId>
+			<DestinationStationId>7</DestinationStationId>
+			<Items>
+				<Item>
+					<ProductId>5</ProductId>
+					<Amount>100</Amount>
+				</Item>
+			</Items>
+		</Order>
+		<Order id="12">
+			<Name>Hannover -> Neißeaue</Name>
+			<SourceStationId>3</SourceStationId>
+			<DestinationStationId>8</DestinationStationId>
+			<Items>
+				<Item>
+					<ProductId>5</ProductId>
+					<Amount>70</Amount>
+				</Item>
+			</Items>
+		</Order>
+		<Order id="13">
+			<Name>Hannover -> Bremen</Name>
+			<SourceStationId>3</SourceStationId>
+			<DestinationStationId>1</DestinationStationId>
+			<Items>
+				<Item>
+					<ProductId>5</ProductId>
+					<Amount>20</Amount>
+				</Item>
+			</Items>
+		</Order>
+		<!-- 
+		<Order id="14">
+			<Name>Impossible</Name>
+			<SourceStationId>3</SourceStationId>
+			<DestinationStationId>1</DestinationStationId>
+			<Items>
+				<Item>
+					<ProductId>5</ProductId>
+					<Amount>200</Amount>
+				</Item>
+			</Items>
+		</Order>
+		 -->
 	</Orders>
 		
 	<Stations>
 		<Station id="1">
 			<Name>Bremen</Name>
-			<XCoordinate>432</XCoordinate>
-			<YCoordinate>222</YCoordinate>
+			<XCoordinate>200</XCoordinate>
+			<YCoordinate>654</YCoordinate>
 		</Station>
 		<Station id="2">
 			<Name>Hamburg</Name>
-			<XCoordinate>350</XCoordinate>
-			<YCoordinate>169</YCoordinate>
+			<XCoordinate>282</XCoordinate>
+			<YCoordinate>707</YCoordinate>
 		</Station>
 		<Station id="3">
 			<Name>Hannover</Name>
-			<XCoordinate>367</XCoordinate>
-			<YCoordinate>301</YCoordinate>
+			<XCoordinate>265</XCoordinate>
+			<YCoordinate>575</YCoordinate>
 		</Station>
 		<Station id="4">
 			<Name>München</Name>
-			<XCoordinate>240</XCoordinate>
-			<YCoordinate>778</YCoordinate>
+			<XCoordinate>392</XCoordinate>
+			<YCoordinate>98</YCoordinate>
 		</Station>
 		<Station id="5">
 			<Name>Osnabrück</Name>
-			<XCoordinate>485</XCoordinate>
-			<YCoordinate>312</YCoordinate>
+			<XCoordinate>147</XCoordinate>
+			<YCoordinate>564</YCoordinate>
 		</Station>
 		<Station id="6">
 			<Name>Berlin</Name>
-			<XCoordinate>113</XCoordinate>
-			<YCoordinate>285</YCoordinate>
+			<XCoordinate>519</XCoordinate>
+			<YCoordinate>591</YCoordinate>
 		</Station>
 		<Station id="7">
 			<Name>Ellenbogen</Name>
-			<XCoordinate>459</XCoordinate>
-			<YCoordinate>0</YCoordinate>
+			<XCoordinate>173</XCoordinate>
+			<YCoordinate>876</YCoordinate>
 		</Station>
 		<Station id="8">
 			<Name>Neißeaue</Name>
-			<XCoordinate>5</XCoordinate>
-			<YCoordinate>428</YCoordinate>
+			<XCoordinate>627</XCoordinate>
+			<YCoordinate>448</YCoordinate>
 		</Station>
 	</Stations>
 	
@@ -103,55 +216,65 @@
 			<SourceDepotId>3</SourceDepotId>
 			<DestinationDepotId>3</DestinationDepotId>
 			<Capacities>
-				<Capacity productGroupId="1" miscible="true">100</Capacity>
+				<Capacity>
+					<CapacityWeight>2500</CapacityWeight>
+					<Miscible>true</Miscible>
+					<Products>
+						<ProductId>1</ProductId>
+						<ProductId>2</ProductId>
+						<ProductId>3</ProductId>
+					</Products>
+				</Capacity>
 			</Capacities>
 		</Vehicle>
+		<!-- 
 		<Vehicle id="2">
 			<Name>Tankwagen mit Anhänger</Name>
 			<SourceDepotId>6</SourceDepotId>
 			<DestinationDepotId>6</DestinationDepotId>
 			<Capacities>
-				<Capacity productId="4">500</Capacity>
-				<Capacity productGroupId="1">1000</Capacity>
+				<Capacity>
+					<CapacityWeight>1000</CapacityWeight>
+					<Miscible>true</Miscible>
+					<Products>
+						<ProductId>1</ProductId>
+						<ProductId>2</ProductId>
+						<ProductId>3</ProductId>
+					</Products>
+				</Capacity>
+				<Capacity>
+					<CapacityWeight>400</CapacityWeight>
+					<Miscible>false</Miscible>
+					<Products>
+						<ProductId>4</ProductId>
+						<ProductId>5</ProductId>
+					</Products>
+				</Capacity>
 			</Capacities>
 		</Vehicle>
+		 -->
 	</Vehicles>
-	
-	<ProductGroups>
-		<ProductGroup id="1">
-			<Name>Kleinteile</Name>
-			<Miscible>true</Miscible>
-			<Products>
-				<ProductId>1</ProductId>
-				<ProductId>2</ProductId>
-				<ProductId>3</ProductId>
-			</Products>
-		</ProductGroup>
-		<ProductGroup id="2">
-			<Name>Treibstoff</Name>
-			<Miscible>false</Miscible>
-			<Products>
-				<ProductId>4</ProductId>
-				<ProductId>5</ProductId>
-			</Products>
-		</ProductGroup>
-	</ProductGroups>
-	
+
 	<Products>
 		<Product id="1">
 			<Name>Snickers</Name>
+			<Weight>1</Weight>
 		</Product>
 		<Product id="2">
 			<Name>Mars</Name>
+			<Weight>1</Weight>
 		</Product>
 		<Product id="3">
 			<Name>Cola</Name>
+			<Weight>5</Weight>
 		</Product>
 		<Product id="4">
 			<Name>Diesel</Name>
+			<Weight>20</Weight>
 		</Product>
 		<Product id="5">
 			<Name>Benzin</Name>
+			<Weight>21</Weight>
 		</Product>
 	</Products>
 </Configuration>

@@ -1,5 +1,8 @@
 package de.hsbremen.kss.configuration;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.apache.commons.lang3.Validate;
 
 /**
@@ -13,13 +16,16 @@ import org.apache.commons.lang3.Validate;
 public final class Capacity {
 
     /** the product. */
-    private final Product product;
+    private final Set<Product> products;
 
-    /** the product group. */
-    private final ProductGroup productGroup;
+    /** the maximum capacity weight. */
+    private final Integer capacityWeight;
 
-    /** the actual capacity. */
-    private final Integer capacity;
+    /**
+     * indicates whether different products can be tranported in the same
+     * capacity.
+     */
+    private final Boolean miscible;
 
     /** vehicle the capacity belongs to. */
     private final Vehicle vehicle;
@@ -27,70 +33,24 @@ public final class Capacity {
     /**
      * ctor for a product.
      * 
-     * @param product
-     *            product the capacity belongs to
      * @param vehicle
      *            vehicle the capacity belongs to
-     * @param capacity
+     * @param capacityWeight
      *            the actual capacity
+     * @param miscible
+     *            indicates whether different products can be tranported in the
+     *            same capacity.
      */
-    Capacity(final Product product, final Vehicle vehicle, final Integer capacity) {
-        this(product, null, vehicle, capacity);
-    }
+    Capacity(final Vehicle vehicle, final Integer capacityWeight, final Boolean miscible) {
+        Validate.notNull(capacityWeight, "capacity is null");
+        Validate.notNull(vehicle, "vehicle is null");
+        Validate.notNull(miscible, "miscible is null");
 
-    /**
-     * ctor for a product group.
-     * 
-     * @param productGroup
-     *            product group the capacity belongs to
-     * @param vehicle
-     *            vehicle the capacity belongs to
-     * @param capacity
-     *            the actual capacity
-     */
-    Capacity(final ProductGroup productGroup, final Vehicle vehicle, final Integer capacity) {
-        this(null, productGroup, vehicle, capacity);
-    }
-
-    /**
-     * private ctor.
-     * 
-     * @param product
-     *            product the capacity belongs to
-     * @param productGroup
-     *            product group the capacity belongs to
-     * @param vehicle
-     *            vehicle the capacity belongs to
-     * @param capacity
-     *            the actual capacity
-     */
-    private Capacity(final Product product, final ProductGroup productGroup, final Vehicle vehicle, final Integer capacity) {
-        Validate.notNull(capacity, "capacity is null");
-        Validate.notNull(vehicle);
-        Validate.isTrue(product != null || productGroup != null, "product and product group is null");
-
-        this.product = product;
-        this.productGroup = productGroup;
-        this.capacity = capacity;
+        this.capacityWeight = capacityWeight;
         this.vehicle = vehicle;
-    }
+        this.miscible = miscible;
 
-    /**
-     * Gets the product.
-     * 
-     * @return the product
-     */
-    public Product getProduct() {
-        return this.product;
-    }
-
-    /**
-     * Gets the product group.
-     * 
-     * @return the product group
-     */
-    public ProductGroup getProductGroup() {
-        return this.productGroup;
+        this.products = new HashSet<>();
     }
 
     /**
@@ -98,8 +58,8 @@ public final class Capacity {
      * 
      * @return the actual capacity
      */
-    public Integer getCapacity() {
-        return this.capacity;
+    public Integer getCapacityWeight() {
+        return this.capacityWeight;
     }
 
     /**
@@ -119,36 +79,43 @@ public final class Capacity {
      * @return true: the product belongs to the capacity; false: otherwise
      */
     public boolean contains(final Product checkProduct) {
-        if (checkProduct == null) {
-            return false;
-        }
+        return this.products.contains(checkProduct);
+    }
 
-        if (checkProduct.equals(this.product)) {
-            return true;
+    /**
+     * adds a new product
+     * 
+     * @param product
+     *            product to add
+     */
+    public void addProduct(final Product product) {
+        Validate.notNull(product, "product is null");
+        if (!this.products.add(product)) {
+            throw new IllegalArgumentException("product " + product + " already added");
         }
+    }
 
-        if (this.productGroup != null) {
-            return this.productGroup.contains(checkProduct);
-        }
-
-        return false;
+    /**
+     * Capacity weight.
+     * 
+     * @return the integer
+     */
+    public Integer capacityWeight() {
+        return this.capacityWeight;
     }
 
     @Override
     public String toString() {
-        if (this.product != null) {
-            return "Capacity[Product: " + this.product.getName() + "]";
-        } else {
-            return "Capacity[ProductGroup: " + this.productGroup.getName() + "]";
-        }
+        return "Capacity[Products: " + this.products + "]";
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((this.product == null) ? 0 : this.product.hashCode());
-        result = prime * result + ((this.productGroup == null) ? 0 : this.productGroup.hashCode());
+        result = prime * result + ((this.capacityWeight == null) ? 0 : this.capacityWeight.hashCode());
+        result = prime * result + ((this.miscible == null) ? 0 : this.miscible.hashCode());
+        result = prime * result + ((this.products == null) ? 0 : this.products.hashCode());
         result = prime * result + ((this.vehicle == null) ? 0 : this.vehicle.hashCode());
         return result;
     }
@@ -165,18 +132,25 @@ public final class Capacity {
             return false;
         }
         final Capacity other = (Capacity) obj;
-        if (this.product == null) {
-            if (other.product != null) {
+        if (this.capacityWeight == null) {
+            if (other.capacityWeight != null) {
                 return false;
             }
-        } else if (!this.product.equals(other.product)) {
+        } else if (!this.capacityWeight.equals(other.capacityWeight)) {
             return false;
         }
-        if (this.productGroup == null) {
-            if (other.productGroup != null) {
+        if (this.miscible == null) {
+            if (other.miscible != null) {
                 return false;
             }
-        } else if (!this.productGroup.equals(other.productGroup)) {
+        } else if (!this.miscible.equals(other.miscible)) {
+            return false;
+        }
+        if (this.products == null) {
+            if (other.products != null) {
+                return false;
+            }
+        } else if (!this.products.equals(other.products)) {
             return false;
         }
         if (this.vehicle == null) {
@@ -188,4 +162,5 @@ public final class Capacity {
         }
         return true;
     }
+
 }

@@ -6,32 +6,42 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-
 @XmlRootElement(name = "Product")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ProductElement {
 
-	/** the id */
-	@XmlAttribute
-	private Integer id;
+    /** the id */
+    @XmlAttribute
+    private Integer id;
 
-	/** the name */
-	@XmlElement(name = "Name")
-	private String name;
+    /** the name */
+    @XmlElement(name = "Name")
+    private String name;
 
-	public Integer getId() {
-		return id;
-	}
+    @XmlElement(name = "Weight")
+    private Integer weight;
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public Integer getId() {
+        return this.id;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public void setId(final Integer id) {
+        this.id = id;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public String getName() {
+        return this.name;
+    }
+
+    public void setName(final String name) {
+        this.name = name;
+    }
+
+    public Integer getWeight() {
+        return weight;
+    }
+
+    public void setWeight(Integer weight) {
+        this.weight = weight;
+    }
 }

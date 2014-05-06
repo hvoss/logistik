@@ -25,9 +25,6 @@ public final class Configuration {
     /** a collection of all products. */
     private final Set<Product> products;
 
-    /** a collection of all product groups. */
-    private final Set<ProductGroup> productGroups;
-
     /**
      * Instantiates a new configuration.
      * 
@@ -39,22 +36,17 @@ public final class Configuration {
      *            the vehicles
      * @param products
      *            the products
-     * @param productGroups
-     *            the product groups
      */
-    Configuration(final Set<Order> orders, final Set<Station> stations, final Set<Vehicle> vehicles, final Set<Product> products,
-            final Set<ProductGroup> productGroups) {
+    Configuration(final Set<Order> orders, final Set<Station> stations, final Set<Vehicle> vehicles, final Set<Product> products) {
         Validate.noNullElements(orders);
         Validate.noNullElements(stations);
         Validate.noNullElements(vehicles);
         Validate.noNullElements(products);
-        Validate.noNullElements(productGroups);
 
         this.orders = Collections.unmodifiableSet(orders);
         this.stations = Collections.unmodifiableSet(stations);
         this.vehicles = Collections.unmodifiableSet(vehicles);
         this.products = Collections.unmodifiableSet(products);
-        this.productGroups = Collections.unmodifiableSet(productGroups);
     }
 
     /**
@@ -93,21 +85,11 @@ public final class Configuration {
         return this.products;
     }
 
-    /**
-     * Gets the a collection of all product groups.
-     * 
-     * @return the a collection of all product groups
-     */
-    public Set<ProductGroup> getProductGroups() {
-        return this.productGroups;
-    }
-
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((this.orders == null) ? 0 : this.orders.hashCode());
-        result = prime * result + ((this.productGroups == null) ? 0 : this.productGroups.hashCode());
         result = prime * result + ((this.products == null) ? 0 : this.products.hashCode());
         result = prime * result + ((this.stations == null) ? 0 : this.stations.hashCode());
         result = prime * result + ((this.vehicles == null) ? 0 : this.vehicles.hashCode());
@@ -131,13 +113,6 @@ public final class Configuration {
                 return false;
             }
         } else if (!this.orders.equals(other.orders)) {
-            return false;
-        }
-        if (this.productGroups == null) {
-            if (other.productGroups != null) {
-                return false;
-            }
-        } else if (!this.productGroups.equals(other.productGroups)) {
             return false;
         }
         if (this.products == null) {

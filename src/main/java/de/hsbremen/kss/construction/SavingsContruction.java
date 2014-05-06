@@ -108,4 +108,10 @@ public class SavingsContruction implements Construction {
         return indexNextPair;
     }
 
+    @Override
+    public void logStatistic() {
+        // TODO Auto-generated method stub
+
+    }
+
 }

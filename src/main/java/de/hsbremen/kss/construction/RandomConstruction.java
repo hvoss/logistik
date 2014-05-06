@@ -14,6 +14,7 @@ import de.hsbremen.kss.configuration.Station;
 import de.hsbremen.kss.configuration.Vehicle;
 import de.hsbremen.kss.model.Plan;
 import de.hsbremen.kss.model.Tour;
+import de.hsbremen.kss.util.ConstructionUtils;
 import de.hsbremen.kss.util.RandomUtils;
 
 /**
@@ -41,35 +42,50 @@ public final class RandomConstruction implements Construction {
         final Vehicle vehicle = CollectionUtils.get(configuration.getVehicles(), 0);
         final Tour tour = new Tour(vehicle);
 
-        final Set<Station> stations = Order.getAllSourceStations(configuration.getOrders());
+        final Set<Order> orders = configuration.getOrders();
 
-        final Set<Order> visitedSourceOrder = new HashSet<>();
-        final Set<Order> visitedDestinationOrder = new HashSet<>();
+        final Set<Order> visitedSourceOrders = new HashSet<>(orders.size());
+        final Set<Order> visitedDestinationOrders = new HashSet<>(orders.size());
 
-        while (!stations.isEmpty()) {
-            final Station rElement = RandomUtils.randomElement(stations);
-            tour.addStation(rElement);
-            stations.remove(rElement);
+        while (true) {
+            final Set<Station> processableStations = ConstructionUtils.processableStations(configuration.getOrders(), visitedSourceOrders,
+                    visitedDestinationOrders, tour);
+            if (processableStations.isEmpty()) {
+                break;
+            }
+            final Station rElement = RandomUtils.randomElement(processableStations);
 
-            final Set<Order> sourceOrders = new HashSet<>(rElement.getSourceOrders());
-            final Set<Order> destinationOrders = new HashSet<>(rElement.getDestinationOrders());
+            final Set<Order> newSourceOrders = new HashSet<>(rElement.getSourceOrders());
+            final Set<Order> newDestinationOrders = new HashSet<>(rElement.getDestinationOrders());
+            newSourceOrders.removeAll(visitedSourceOrders);
+            newDestinationOrders.removeAll(visitedDestinationOrders);
 
-            // order where the source station reached
-            visitedSourceOrder.addAll(sourceOrders);
+            // unload orders
+            final Collection<Order> destinationStationReached = CollectionUtils.intersection(visitedSourceOrders, newDestinationOrders);
+            visitedDestinationOrders.addAll(destinationStationReached);
 
-            // orders where the destination station reached
-            final Collection<Order> destinationStationReached = CollectionUtils.intersection(visitedSourceOrder, destinationOrders);
-            visitedDestinationOrder.addAll(destinationStationReached);
+            tour.addDestinationOrders(destinationStationReached);
 
-            // add new stations
-            sourceOrders.removeAll(visitedDestinationOrder);
-            stations.addAll(Order.getAllDestinationStations(sourceOrders));
+            // Load new orders
+            for (final Order newSourceOrder : newSourceOrders) {
+                if (tour.freeSpace() >= newSourceOrder.weightOfProducts()) {
+                    tour.addSourceOrder(newSourceOrder);
+
+                    // order where the source station reached
+                    visitedSourceOrders.add(newSourceOrder);
+                }
+            }
+
         }
-
-        tour.addOrders(configuration.getOrders());
 
         plan.addTour(tour);
 
         return plan;
+    }
+
+    @Override
+    public void logStatistic() {
+        // TODO Auto-generated method stub
+
     }
 }

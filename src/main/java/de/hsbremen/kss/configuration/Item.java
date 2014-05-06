@@ -1,5 +1,7 @@
 package de.hsbremen.kss.configuration;
 
+import java.util.Collection;
+
 import org.apache.commons.lang3.Validate;
 
 /**
@@ -66,6 +68,15 @@ public final class Item {
         return this.order;
     }
 
+    /**
+     * returns the weight of this item.
+     * 
+     * @return weight of this item
+     */
+    public int weight() {
+        return this.amount * this.product.getWeight();
+    }
+
     @Override
     public String toString() {
         return "Item[" + this.product.getName() + "]";
@@ -115,6 +126,21 @@ public final class Item {
             return false;
         }
         return true;
+    }
+
+    /**
+     * aggregates the weight of the given items.
+     * 
+     * @param items
+     *            items to aggregate
+     * @return the weight of all items.
+     */
+    public static Integer aggregateWeight(final Collection<Item> items) {
+        int sum = 0;
+        for (final Item item : items) {
+            sum += item.weight();
+        }
+        return sum;
     }
 
 }

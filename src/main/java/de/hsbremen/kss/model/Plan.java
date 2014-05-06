@@ -39,6 +39,19 @@ public final class Plan {
     }
 
     /**
+     * copies a plan.
+     * 
+     * @param constructionClazz
+     *            the implementation which generates the plan
+     * @param plan
+     *            plan to copy
+     */
+    public Plan(final Class<? extends Construction> constructionClazz, final Plan plan) {
+        this.constructionClazz = constructionClazz;
+        this.tours = new ArrayList<>(plan.tours);
+    }
+
+    /**
      * adds a tour.
      * 
      * @param tour
