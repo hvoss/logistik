@@ -1,6 +1,7 @@
 package de.hsbremen.kss.construction;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -42,45 +43,66 @@ public class SavingsTourConstruction implements Construction {
         final Tour tour = new Tour(vehicle);
 		
         final Set<Order> configurationOrders = new HashSet<>(configuration.getOrders());
-        final List<Order> visitedOrders = new ArrayList<>(configuration.getOrders().size());
-
+        final Set<Order> visitedOrders = new HashSet<>(configurationOrders.size());
+        
+        Order lastOrder = null;
+        Order actualOrder;
+        
+        // define the actual order with savings over the two stations of an order
         if(startOrder == null){
         	final List<SavingOrder> savingsOrderList = new ArrayList<SavingOrder>(configurationOrders.size());
+        	
         	for(Order order : configurationOrders) {
         		savingsOrderList.add(new SavingOrder(order, depot));
         	}
         	Collections.sort(savingsOrderList);
-        	tour.addSourceOrder(savingsOrderList.get(0).getOrder());
-        	tour.addDestinationOrder(savingsOrderList.get(0).getOrder());
-        	visitedOrders.add(savingsOrderList.get(0).getOrder());
-        	configurationOrders.remove(savingsOrderList.get(0).getOrder());
+        	actualOrder = savingsOrderList.get(0).getOrder();
         } else {
-			tour.addSourceOrder(startOrder);
-			tour.addDestinationOrder(startOrder);
-			visitedOrders.add(startOrder);
-			configurationOrders.remove(startOrder);
-		}
-        
+        	actualOrder = startOrder;
+        }
+
         while(!configurationOrders.isEmpty()) {
-        	final int index = visitedOrders.size() - 1;
+        	
         	final List<Saving> savingsList = new ArrayList<>();
-        	        	
-        	for(Order order : configurationOrders) {
-        		savingsList.add(new Saving(visitedOrders.get(index), order, depot));
+        	
+        	// calculate savings value and define actual order
+        	if(lastOrder != null) {
+        		for (Order order : configurationOrders) {
+        			savingsList.add(new Saving(lastOrder, order, depot));
+        		}
+        		
+        		Collections.sort(savingsList);
+        		actualOrder = savingsList.get(0).getDestinationOrder();
+        		SavingsTourConstruction.LOG.info("New Iteration");
+        		for(Saving saving : savingsList) {
+        			SavingsTourConstruction.LOG.info("Savingsvalue: " + saving.getSavingsValue() 
+            				+ " ID: " + saving.getDestinationOrder().getId());
+        		}
+        	}
+            
+        	Station actualStation = actualOrder.getSource();
+        	final Set<Order> newSourceOrders = new HashSet<>(actualStation.getSourceOrders());
+        	newSourceOrders.removeAll(visitedOrders);
+        	final Set<Order> loadedSourceOrders = new HashSet<>();
+        	
+        	// load new orders for the actual station
+        	for(Order newSourceorder : newSourceOrders) {
+        		if(tour.freeSpace() >= newSourceorder.weightOfProducts()) {
+        			tour.addSourceOrder(newSourceorder);
+        			loadedSourceOrders.add(newSourceorder);
+        		}
         	}
         	
-        	Collections.sort(savingsList);
-        	
-        	// load action
-        	if(tour.freeSpace() >= savingsList.get(0).getDestinationOrder().weightOfProducts()) {
-        		tour.addSourceOrder(savingsList.get(0).getDestinationOrder());
+        	// unload orders
+        	final List<Order> bestOrderSequence = getBestOrderSequence(loadedSourceOrders);
+        	final int index = bestOrderSequence.size() - 1 ;
+        	for(Order order : bestOrderSequence) {
+        		tour.addDestinationOrder(order);
         	}
         	
-        	// unload action
-        	tour.addDestinationOrder(savingsList.get(0).getDestinationOrder());
-        	visitedOrders.add(savingsList.get(0).getDestinationOrder());
-        	
-        	configurationOrders.remove(savingsList.get(0).getDestinationOrder());
+        	visitedOrders.addAll(loadedSourceOrders);
+        	configurationOrders.removeAll(loadedSourceOrders);
+        	lastOrder = bestOrderSequence.get(index);
         }
                         		
         plan.addTour(tour);
@@ -92,6 +114,15 @@ public class SavingsTourConstruction implements Construction {
 	public void logStatistic() {
 		// TODO Auto-generated method stub
 
+	}
+	
+	private List<Order> getBestOrderSequence(Collection<Order> loadedSourceOrders) {
+		// TODO find best order sequence
+		final List<Order> bestOrderSequence = new ArrayList<>(loadedSourceOrders.size());
+		for(Order order : loadedSourceOrders) {
+			bestOrderSequence.add(order);
+		}
+		return bestOrderSequence;
 	}
 
 }
