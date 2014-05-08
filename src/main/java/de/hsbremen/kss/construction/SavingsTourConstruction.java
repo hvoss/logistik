@@ -1,15 +1,12 @@
 package de.hsbremen.kss.construction;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.collections4.CollectionUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import de.hsbremen.kss.configuration.Configuration;
 import de.hsbremen.kss.configuration.Order;
@@ -28,8 +25,6 @@ import de.hsbremen.kss.model.Tour;
  */
 public class SavingsTourConstruction implements Construction {
 	
-	private static final Logger LOG = LoggerFactory.getLogger(SavingsTourConstruction.class);
-
 	@Override
 	public Plan constructPlan(Configuration configuration) {
 		return constructPlan(configuration, null);
@@ -73,11 +68,6 @@ public class SavingsTourConstruction implements Construction {
         		
         		Collections.sort(savingsList);
         		actualOrder = savingsList.get(0).getDestinationOrder();
-        		SavingsTourConstruction.LOG.info("New Iteration");
-        		for(Saving saving : savingsList) {
-        			SavingsTourConstruction.LOG.info("Savingsvalue: " + saving.getSavingsValue() 
-            				+ " ID: " + saving.getDestinationOrder().getId());
-        		}
         	}
             
         	Station actualStation = actualOrder.getSource();
@@ -94,15 +84,13 @@ public class SavingsTourConstruction implements Construction {
         	}
         	
         	// unload orders
-        	final List<Order> bestOrderSequence = getBestOrderSequence(loadedSourceOrders);
-        	final int index = bestOrderSequence.size() - 1 ;
-        	for(Order order : bestOrderSequence) {
+        	for(Order order : loadedSourceOrders) {
         		tour.addDestinationOrder(order);
+        		lastOrder = order;
         	}
         	
         	visitedOrders.addAll(loadedSourceOrders);
         	configurationOrders.removeAll(loadedSourceOrders);
-        	lastOrder = bestOrderSequence.get(index);
         }
                         		
         plan.addTour(tour);
@@ -114,15 +102,6 @@ public class SavingsTourConstruction implements Construction {
 	public void logStatistic() {
 		// TODO Auto-generated method stub
 
-	}
-	
-	private List<Order> getBestOrderSequence(Collection<Order> loadedSourceOrders) {
-		// TODO find best order sequence
-		final List<Order> bestOrderSequence = new ArrayList<>(loadedSourceOrders.size());
-		for(Order order : loadedSourceOrders) {
-			bestOrderSequence.add(order);
-		}
-		return bestOrderSequence;
 	}
 
 }
