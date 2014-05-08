@@ -1,7 +1,8 @@
 package de.hsbremen.kss.construction;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
@@ -13,6 +14,7 @@ import de.hsbremen.kss.configuration.Station;
 import de.hsbremen.kss.configuration.Vehicle;
 import de.hsbremen.kss.model.Plan;
 import de.hsbremen.kss.model.Tour;
+import de.hsbremen.kss.util.ConstructionUtils;
 
 public class NearestNeighbor implements Construction {
 
@@ -23,39 +25,45 @@ public class NearestNeighbor implements Construction {
     public Plan constructPlan(final Configuration configuration) {
         final Plan plan = new Plan(NearestNeighbor.class);
         final Vehicle vehicle = CollectionUtils.get(configuration.getVehicles(), 0);
-        final List<Order> orders = new ArrayList<>(configuration.getOrders());
-        final List<Station> stations = new ArrayList<>(configuration.getStations());
+        final Tour tour = new Tour(vehicle);
+          
+        final Set<Order> orders = configuration.getOrders();
+        final Set<Order> visitedSourceOrders = new HashSet<>(orders.size());
+        final Set<Order> visitedDestinationOrders = new HashSet<>(orders.size());
 
         Station startStation = vehicle.getSourceDepot();
-        stations.remove(startStation);
-        final Tour tour = new Tour(vehicle);
-
-        while (!stations.isEmpty()) {
-            // Order nearestOrder =
-            // startStation.findNearestSourceStation(orders);
-            Station nearestStation = startStation.findNearestStation(stations);
-            final List<Station> tempStations = new ArrayList<>(stations);
-            List<Order> tempOrders = new ArrayList<>(orders);
-
-            for (final Order order : tempOrders) {
-                if (order.getDestination() == nearestStation && !tour.getStations().contains(order.getSource())) {
-                    tempStations.remove(order.getDestination());
-                    nearestStation = startStation.findNearestStation(tempStations);
-                    tempOrders = new ArrayList<>(orders);
-                }
-            }
-
-            if (nearestStation != null) {
-                tour.addStation(nearestStation);
-                startStation = nearestStation;
-                stations.remove(startStation);
-                // orders.remove(nearestOrder);
-            } else {
+        
+        while (true) {
+            final Set<Station> processableStations = ConstructionUtils.processableStations(configuration.getOrders(), visitedSourceOrders,
+                    visitedDestinationOrders, tour);
+            
+            if (processableStations.isEmpty()) {
                 break;
             }
-        }
+            
+            final Station rElement = startStation.findNearestStation(processableStations);
+            startStation = rElement;
+            final Set<Order> newSourceOrders = new HashSet<>(rElement.getSourceOrders());
+            final Set<Order> newDestinationOrders = new HashSet<>(rElement.getDestinationOrders());
+            newSourceOrders.removeAll(visitedSourceOrders);
+            newDestinationOrders.removeAll(visitedDestinationOrders);
 
-        tour.addOrders(configuration.getOrders());
+            // unload orders
+            final Collection<Order> destinationStationReached = CollectionUtils.intersection(visitedSourceOrders, newDestinationOrders);
+            visitedDestinationOrders.addAll(destinationStationReached);
+
+            tour.addDestinationOrders(destinationStationReached);
+
+            // Load new orders
+            for (final Order newSourceOrder : newSourceOrders) {
+                if (tour.freeSpace() >= newSourceOrder.weightOfProducts()) {
+                    tour.addSourceOrder(newSourceOrder);
+
+                    // order where the source station reached
+                    visitedSourceOrders.add(newSourceOrder);
+                }
+            }
+        }
 
         plan.addTour(tour);
 
@@ -65,7 +73,6 @@ public class NearestNeighbor implements Construction {
     @Override
     public void logStatistic() {
         // TODO Auto-generated method stub
-
     }
 
 }
