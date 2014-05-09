@@ -13,74 +13,71 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class OrderElement {
 
-	/** the id */
-	@XmlAttribute
-	private Integer id;
+    /** the id */
+    @XmlAttribute
+    private Integer id;
 
-	/** the name */
-	@XmlElement(name = "Name")
-	private String name;
+    /** the name */
+    @XmlElement(name = "Name")
+    private String name;
 
-	/** the id of the source station */
-	@XmlElement(name = "SourceStationId")
-	private Integer sourceStationId;
+    /** the source station */
+    @XmlElement(name = "Source")
+    private OrderStationElement source;
 
-	/** the id of the destination station */
-	@XmlElement(name = "DestinationStationId")
-	private Integer destinationStationId;
+    /** the destination station */
+    @XmlElement(name = "Destination")
+    private OrderStationElement destination;
 
-	/** a list of all stations */
-	@XmlElementWrapper(name = "Items")
-	@XmlElement(name = "Item")
-	private List<ItemElement> items;
+    /** a list of all stations */
+    @XmlElementWrapper(name = "Items")
+    @XmlElement(name = "Item")
+    private List<ItemElement> items;
 
+    public Integer getId() {
+        return this.id;
+    }
 
-	public Integer getId() {
-		return id;
-	}
+    public void setId(final Integer id) {
+        this.id = id;
+    }
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public String getName() {
+        return this.name;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public void setName(final String name) {
+        this.name = name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public List<ItemElement> getItems() {
+        return this.items;
+    }
 
-	public Integer getSourceStationId() {
-		return sourceStationId;
-	}
+    public void setItems(final List<ItemElement> items) {
+        this.items = items;
+    }
 
-	public void setSourceStationId(Integer sourceStationId) {
-		this.sourceStationId = sourceStationId;
-	}
+    public OrderStationElement getSource() {
+        return this.source;
+    }
 
-	public Integer getDestinationStationId() {
-		return destinationStationId;
-	}
+    public void setSource(final OrderStationElement source) {
+        this.source = source;
+    }
 
-	public void setDestinationStationId(Integer destinationStationId) {
-		this.destinationStationId = destinationStationId;
-	}
+    public OrderStationElement getDestination() {
+        return this.destination;
+    }
 
-	@Override
-	public String toString() {
-		return "OrderElement [id=" + id + ", name=" + name
-				+ ", sourceStationId=" + sourceStationId
-				+ ", destinationStationId=" + destinationStationId + "]";
-	}
+    public void setDestination(final OrderStationElement destination) {
+        this.destination = destination;
+    }
 
-	public List<ItemElement> getItems() {
-		return items;
-	}
-
-	public void setItems(List<ItemElement> items) {
-		this.items = items;
-	}
-
+    @Override
+    public String toString() {
+        return "OrderElement [id=" + this.id + ", name=" + this.name + ", source=" + this.source + ", destination=" + this.destination + ", items="
+                + this.items + "]";
+    }
 
 }

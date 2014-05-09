@@ -12,8 +12,8 @@ public class SavingOrder implements Comparable<SavingOrder>{
 	public SavingOrder(Order order, Station depot){
 		this.order = order;
 		this.depot = depot;
-		this.savingsValue = depot.distance(order.getSource()) + depot.distance(order.getDestination())
-				- order.getSource().distance(order.getDestination());
+		this.savingsValue = depot.distance(order.getSourceStation()) + depot.distance(order.getDestinationStation())
+				- order.getSourceStation().distance(order.getDestinationStation());
 	}
 
 	public Order getOrder() {

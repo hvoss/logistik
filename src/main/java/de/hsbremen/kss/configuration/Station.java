@@ -290,8 +290,8 @@ public final class Station {
             if (nearestOrder == null) {
                 nearestOrder = order;
             } else {
-                final Station nearestStation = nearestOrder.getSource();
-                final Station otherStation = order.getSource();
+                final Station nearestStation = nearestOrder.getSourceStation();
+                final Station otherStation = order.getSourceStation();
                 if (distance(nearestStation) > distance(otherStation)) {
                     nearestOrder = order;
                 }

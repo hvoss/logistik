@@ -21,8 +21,10 @@ import de.hsbremen.kss.xml.CapacityElement;
 import de.hsbremen.kss.xml.ConfigurationElement;
 import de.hsbremen.kss.xml.ItemElement;
 import de.hsbremen.kss.xml.OrderElement;
+import de.hsbremen.kss.xml.OrderStationElement;
 import de.hsbremen.kss.xml.ProductElement;
 import de.hsbremen.kss.xml.StationElement;
+import de.hsbremen.kss.xml.TimeWindowElement;
 import de.hsbremen.kss.xml.VehicleElement;
 
 /**
@@ -237,16 +239,10 @@ public final class JAXBConfigurationParserImpl implements ConfigurationParser {
      * @return converted {@link Order}
      */
     private Order convert(final OrderElement element) {
-        final Station sourceStation = getStation(element.getSourceStationId());
-        Station destinationStation;
+        final OrderStation source = convert(element.getSource());
+        final OrderStation destination = convert(element.getDestination());
 
-        if (element.getDestinationStationId() != null) {
-            destinationStation = getStation(element.getDestinationStationId());
-        } else {
-            destinationStation = null;
-        }
-
-        final Order order = new Order(element.getId(), element.getName(), sourceStation, destinationStation);
+        final Order order = new Order(element.getId(), element.getName(), source, destination);
 
         Validate.notNull(element.getItems(), "no items, order: " + order);
         Validate.isTrue(!element.getItems().isEmpty(), "no items, order: " + order);
@@ -258,14 +254,38 @@ public final class JAXBConfigurationParserImpl implements ConfigurationParser {
             }
         }
 
-        if (sourceStation != null) { // not necessary
-            sourceStation.addSourceOrder(order);
-        }
-        if (destinationStation != null) {
-            destinationStation.addDestinationOrder(order);
-        }
+        source.getStation().addSourceOrder(order);
+        destination.getStation().addDestinationOrder(order);
 
         return order;
+    }
+
+    /**
+     * converts an {@link OrderStationElement} into a {@link OrderStation}.
+     * 
+     * @param element
+     *            XML-element to convert
+     * 
+     * @return converted {@link OrderStation}
+     */
+    private OrderStation convert(final OrderStationElement element) {
+        final Station station = getStation(element.getStationId());
+
+        final TimeWindow timeWindow = convert(element.getTimeWindow());
+
+        return new OrderStation(station, timeWindow);
+    }
+
+    /**
+     * converts an {@link TimeWindowElement} into a {@link TimeWindow}.
+     * 
+     * @param element
+     *            XML-element to convert
+     * 
+     * @return converted {@link TimeWindow}
+     */
+    private TimeWindow convert(final TimeWindowElement element) {
+        return new TimeWindow(element.getStart(), element.getEnd());
     }
 
     /**

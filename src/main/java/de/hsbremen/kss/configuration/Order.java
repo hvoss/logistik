@@ -21,11 +21,11 @@ public final class Order {
     /** the name. */
     private final String name;
 
-    /** the source station. */
-    private final Station source;
+    /** the source */
+    private final OrderStation source;
 
-    /** the destination station. could be null */
-    private final Station destination;
+    /** the destination */
+    private final OrderStation destination;
 
     /** all items. */
     private final Set<Item> items;
@@ -48,7 +48,7 @@ public final class Order {
      * @param destination
      *            the destination
      */
-    Order(final Integer id, final String name, final Station source, final Station destination) {
+    Order(final Integer id, final String name, final OrderStation source, final OrderStation destination) {
         Validate.notNull(id, "id is null");
         Validate.notNull(name, "name is null");
         Validate.notNull(source, "source station is null");
@@ -60,6 +60,9 @@ public final class Order {
         this.destination = destination;
         this.items = new HashSet<>();
         this.umItems = Collections.unmodifiableSet(this.items);
+
+        this.source.setOrder(this);
+        this.destination.setOrder(this);
 
         this.productsCache = new CollectionCache<Set<Product>, Product>();
     }
@@ -87,8 +90,8 @@ public final class Order {
      * 
      * @return the source station
      */
-    public Station getSource() {
-        return this.source;
+    public Station getSourceStation() {
+        return this.source.getStation();
     }
 
     /**
@@ -96,8 +99,8 @@ public final class Order {
      * 
      * @return the destination station
      */
-    public Station getDestination() {
-        return this.destination;
+    public Station getDestinationStation() {
+        return this.destination.getStation();
     }
 
     /**
@@ -167,7 +170,7 @@ public final class Order {
         final Set<Station> stations = new HashSet<>(orders.size());
 
         for (final Order order : orders) {
-            stations.add(order.getSource());
+            stations.add(order.getSourceStation());
         }
 
         return stations;
@@ -184,7 +187,7 @@ public final class Order {
         final Set<Station> stations = new HashSet<>(orders.size());
 
         for (final Order order : orders) {
-            final Station dest = order.getDestination();
+            final Station dest = order.getDestinationStation();
             if (dest != null) {
                 stations.add(dest);
             }
@@ -204,9 +207,9 @@ public final class Order {
         final Set<Station> stations = new HashSet<>(orders.size() * 2);
 
         for (final Order order : orders) {
-            final Station dest = order.getDestination();
+            final Station dest = order.getDestinationStation();
 
-            stations.add(order.getSource());
+            stations.add(order.getSourceStation());
             if (dest != null) {
                 stations.add(dest);
             }

@@ -70,7 +70,7 @@ public class SavingsTourConstruction implements Construction {
         		actualOrder = savingsList.get(0).getDestinationOrder();
         	}
             
-        	Station actualStation = actualOrder.getSource();
+        	Station actualStation = actualOrder.getSourceStation();
         	final Set<Order> newSourceOrders = new HashSet<>(actualStation.getSourceOrders());
         	newSourceOrders.removeAll(visitedOrders);
         	final Set<Order> loadedSourceOrders = new HashSet<>();

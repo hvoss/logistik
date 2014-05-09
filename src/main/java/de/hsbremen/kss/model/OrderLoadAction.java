@@ -25,7 +25,7 @@ public class OrderLoadAction extends OrderAction {
      */
     @Override
     public final Station getStation() {
-        return getOrder().getSource();
+        return getOrder().getSourceStation();
     }
 
 }

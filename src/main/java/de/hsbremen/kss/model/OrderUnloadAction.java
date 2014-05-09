@@ -25,6 +25,6 @@ public class OrderUnloadAction extends OrderAction {
      */
     @Override
     public final Station getStation() {
-        return getOrder().getDestination();
+        return getOrder().getDestinationStation();
     }
 }

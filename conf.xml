@@ -3,8 +3,22 @@
 	<Orders>
 		<Order id="1">
 			<Name>Bremen nach Hamburg</Name>
-			<SourceStationId>1</SourceStationId>
-			<DestinationStationId>2</DestinationStationId>
+			<Source>
+				<StationId>1</StationId>
+				<TimeWindow>
+					<Start>8</Start>
+					<End>17</End>
+				</TimeWindow>
+				<ServiceTime>0.25</ServiceTime>
+			</Source>
+			<Destination>
+				<StationId>2</StationId>
+				<TimeWindow>
+					<Start>8</Start>
+					<End>17</End>
+				</TimeWindow>
+				<ServiceTime>0.25</ServiceTime>
+			</Destination>
 			<Items>
 				<Item>
 					<ProductId>1</ProductId>
@@ -14,8 +28,22 @@
 		</Order>
 		<Order id="2">
 			<Name>Osnabrück nach Neißeaue</Name>
-			<SourceStationId>5</SourceStationId>
-			<DestinationStationId>8</DestinationStationId>
+			<Source>
+				<StationId>5</StationId>
+				<TimeWindow>
+					<Start>8</Start>
+					<End>17</End>
+				</TimeWindow>
+				<ServiceTime>0.25</ServiceTime>
+			</Source>
+			<Destination>
+				<StationId>8</StationId>
+				<TimeWindow>
+					<Start>8</Start>
+					<End>17</End>
+				</TimeWindow>
+				<ServiceTime>0.25</ServiceTime>
+			</Destination>
 			<Items>
 				<Item>
 					<ProductId>2</ProductId>
@@ -25,8 +53,22 @@
 		</Order>
 		<Order id="3">
 			<Name>Neißeaue nach Hannover</Name>
-			<SourceStationId>8</SourceStationId>
-			<DestinationStationId>3</DestinationStationId>
+			<Source>
+				<StationId>8</StationId>
+				<TimeWindow>
+					<Start>8</Start>
+					<End>17</End>
+				</TimeWindow>
+				<ServiceTime>0.25</ServiceTime>
+			</Source>
+			<Destination>
+				<StationId>3</StationId>
+				<TimeWindow>
+					<Start>8</Start>
+					<End>17</End>
+				</TimeWindow>
+				<ServiceTime>0.25</ServiceTime>
+			</Destination>
 			<Items>
 				<Item>
 					<ProductId>3</ProductId>
@@ -36,8 +78,22 @@
 		</Order>
 		<Order id="4">
 			<Name>Ellenbogen nach Bremen</Name>
-			<SourceStationId>7</SourceStationId>
-			<DestinationStationId>1</DestinationStationId>
+			<Source>
+				<StationId>7</StationId>
+				<TimeWindow>
+					<Start>8</Start>
+					<End>17</End>
+				</TimeWindow>
+				<ServiceTime>0.25</ServiceTime>
+			</Source>
+			<Destination>
+				<StationId>1</StationId>
+				<TimeWindow>
+					<Start>8</Start>
+					<End>17</End>
+				</TimeWindow>
+				<ServiceTime>0.25</ServiceTime>
+			</Destination>
 			<Items>
 				<Item>
 					<ProductId>4</ProductId>
@@ -47,8 +103,22 @@
 		</Order>
 		<Order id="5">
 			<Name>München nach Hamburg</Name>
-			<SourceStationId>4</SourceStationId>
-			<DestinationStationId>2</DestinationStationId>
+			<Source>
+				<StationId>4</StationId>
+				<TimeWindow>
+					<Start>8</Start>
+					<End>17</End>
+				</TimeWindow>
+				<ServiceTime>0.25</ServiceTime>
+			</Source>
+			<Destination>
+				<StationId>2</StationId>
+				<TimeWindow>
+					<Start>8</Start>
+					<End>17</End>
+				</TimeWindow>
+				<ServiceTime>0.25</ServiceTime>
+			</Destination>
 			<Items>
 				<Item>
 					<ProductId>5</ProductId>
@@ -58,8 +128,22 @@
 		</Order>
 		<Order id="6">
 			<Name>Hamburg nach München</Name>
-			<SourceStationId>2</SourceStationId>
-			<DestinationStationId>4</DestinationStationId>
+			<Source>
+				<StationId>2</StationId>
+				<TimeWindow>
+					<Start>8</Start>
+					<End>17</End>
+				</TimeWindow>
+				<ServiceTime>0.25</ServiceTime>
+			</Source>
+			<Destination>
+				<StationId>4</StationId>
+				<TimeWindow>
+					<Start>8</Start>
+					<End>17</End>
+				</TimeWindow>
+				<ServiceTime>0.25</ServiceTime>
+			</Destination>
 			<Items>
 				<Item>
 					<ProductId>1</ProductId>
@@ -77,8 +161,22 @@
 		</Order>
 		<Order id="7">
 			<Name>Hannover -> Hamburg</Name>
-			<SourceStationId>3</SourceStationId>
-			<DestinationStationId>2</DestinationStationId>
+			<Source>
+				<StationId>3</StationId>
+				<TimeWindow>
+					<Start>8</Start>
+					<End>17</End>
+				</TimeWindow>
+				<ServiceTime>0.25</ServiceTime>
+			</Source>
+			<Destination>
+				<StationId>2</StationId>
+				<TimeWindow>
+					<Start>8</Start>
+					<End>17</End>
+				</TimeWindow>
+				<ServiceTime>0.25</ServiceTime>
+			</Destination>
 			<Items>
 				<Item>
 					<ProductId>5</ProductId>
@@ -88,8 +186,22 @@
 		</Order>
 		<Order id="8">
 			<Name>Hannover -> München</Name>
-			<SourceStationId>3</SourceStationId>
-			<DestinationStationId>4</DestinationStationId>
+			<Source>
+				<StationId>3</StationId>
+				<TimeWindow>
+					<Start>8</Start>
+					<End>17</End>
+				</TimeWindow>
+				<ServiceTime>0.25</ServiceTime>
+			</Source>
+			<Destination>
+				<StationId>4</StationId>
+				<TimeWindow>
+					<Start>8</Start>
+					<End>17</End>
+				</TimeWindow>
+				<ServiceTime>0.25</ServiceTime>
+			</Destination>
 			<Items>
 				<Item>
 					<ProductId>5</ProductId>
@@ -99,8 +211,22 @@
 		</Order>
 		<Order id="9">
 			<Name>Hannover -> Osnabrück</Name>
-			<SourceStationId>3</SourceStationId>
-			<DestinationStationId>5</DestinationStationId>
+			<Source>
+				<StationId>3</StationId>
+				<TimeWindow>
+					<Start>8</Start>
+					<End>17</End>
+				</TimeWindow>
+				<ServiceTime>0.25</ServiceTime>
+			</Source>
+			<Destination>
+				<StationId>5</StationId>
+				<TimeWindow>
+					<Start>8</Start>
+					<End>17</End>
+				</TimeWindow>
+				<ServiceTime>0.25</ServiceTime>
+			</Destination>
 			<Items>
 				<Item>
 					<ProductId>5</ProductId>
@@ -110,8 +236,22 @@
 		</Order>
 		<Order id="10">
 			<Name>Hannover -> Berlin</Name>
-			<SourceStationId>3</SourceStationId>
-			<DestinationStationId>6</DestinationStationId>
+			<Source>
+				<StationId>3</StationId>
+				<TimeWindow>
+					<Start>8</Start>
+					<End>17</End>
+				</TimeWindow>
+				<ServiceTime>0.25</ServiceTime>
+			</Source>
+			<Destination>
+				<StationId>6</StationId>
+				<TimeWindow>
+					<Start>8</Start>
+					<End>17</End>
+				</TimeWindow>
+				<ServiceTime>0.25</ServiceTime>
+			</Destination>
 			<Items>
 				<Item>
 					<ProductId>5</ProductId>
@@ -121,8 +261,22 @@
 		</Order>
 		<Order id="11">
 			<Name>Hannover -> Ellenbogen</Name>
-			<SourceStationId>3</SourceStationId>
-			<DestinationStationId>7</DestinationStationId>
+			<Source>
+				<StationId>3</StationId>
+				<TimeWindow>
+					<Start>8</Start>
+					<End>17</End>
+				</TimeWindow>
+				<ServiceTime>0.25</ServiceTime>
+			</Source>
+			<Destination>
+				<StationId>7</StationId>
+				<TimeWindow>
+					<Start>8</Start>
+					<End>17</End>
+				</TimeWindow>
+				<ServiceTime>0.25</ServiceTime>
+			</Destination>
 			<Items>
 				<Item>
 					<ProductId>5</ProductId>
@@ -132,8 +286,22 @@
 		</Order>
 		<Order id="12">
 			<Name>Hannover -> Neißeaue</Name>
-			<SourceStationId>3</SourceStationId>
-			<DestinationStationId>8</DestinationStationId>
+			<Source>
+				<StationId>3</StationId>
+				<TimeWindow>
+					<Start>8</Start>
+					<End>17</End>
+				</TimeWindow>
+				<ServiceTime>0.25</ServiceTime>
+			</Source>
+			<Destination>
+				<StationId>8</StationId>
+				<TimeWindow>
+					<Start>8</Start>
+					<End>17</End>
+				</TimeWindow>
+				<ServiceTime>0.25</ServiceTime>
+			</Destination>
 			<Items>
 				<Item>
 					<ProductId>5</ProductId>
@@ -143,8 +311,22 @@
 		</Order>
 		<Order id="13">
 			<Name>Hannover -> Bremen</Name>
-			<SourceStationId>3</SourceStationId>
-			<DestinationStationId>1</DestinationStationId>
+			<Source>
+				<StationId>3</StationId>
+				<TimeWindow>
+					<Start>8</Start>
+					<End>17</End>
+				</TimeWindow>
+				<ServiceTime>0.25</ServiceTime>
+			</Source>
+			<Destination>
+				<StationId>1</StationId>
+				<TimeWindow>
+					<Start>8</Start>
+					<End>17</End>
+				</TimeWindow>
+				<ServiceTime>0.25</ServiceTime>
+			</Destination>
 			<Items>
 				<Item>
 					<ProductId>5</ProductId>
@@ -155,8 +337,22 @@
 		<!-- 
 		<Order id="14">
 			<Name>Impossible</Name>
-			<SourceStationId>3</SourceStationId>
-			<DestinationStationId>1</DestinationStationId>
+			<Source>
+				<StationId>3</StationId>
+				<TimeWindow>
+					<Start>8</Start>
+					<End>17</End>
+				</TimeWindow>
+				<ServiceTime>0.25</ServiceTime>
+			</Source>
+			<Destination>
+				<StationId>1</StationId>
+				<TimeWindow>
+					<Start>8</Start>
+					<End>17</End>
+				</TimeWindow>
+				<ServiceTime>0.25</ServiceTime>
+			</Destination>
 			<Items>
 				<Item>
 					<ProductId>5</ProductId>
