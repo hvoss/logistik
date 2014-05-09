@@ -411,6 +411,7 @@
 			<Name>VW Bus</Name>
 			<SourceDepotId>3</SourceDepotId>
 			<DestinationDepotId>3</DestinationDepotId>
+			<Velocity>80</Velocity>
 			<Capacities>
 				<Capacity>
 					<CapacityWeight>2500</CapacityWeight>
@@ -427,6 +428,7 @@
 		<Vehicle id="2">
 			<Name>Tankwagen mit Anhänger</Name>
 			<SourceDepotId>6</SourceDepotId>
+			<Velocity>60</Velocity>
 			<DestinationDepotId>6</DestinationDepotId>
 			<Capacities>
 				<Capacity>

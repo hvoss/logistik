@@ -9,74 +9,84 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement(name="Vehicle")
+@XmlRootElement(name = "Vehicle")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class VehicleElement {
 
-	/** the id */
-	@XmlAttribute
-	private Integer id;
-	
-	/** the name */
-	@XmlElement(name = "Name")
-	private String name;
-	
-	/** Id of the source depot (station) */
-	@XmlElement(name = "SourceDepotId")
-	private Integer sourceDepotId;
-	
-	/** Id of the destination depot (station) */
-	@XmlElement(name = "DestinationDepotId")
-	private Integer destinationDepotId;
+    /** the id */
+    @XmlAttribute
+    private Integer id;
 
-	@XmlElementWrapper(name = "Capacities")
-	@XmlElement(name = "Capacity")
-	private List<CapacityElement> capacities;
+    /** the name */
+    @XmlElement(name = "Name")
+    private String name;
 
-	public Integer getId() {
-		return id;
-	}
+    /** Id of the source depot (station) */
+    @XmlElement(name = "SourceDepotId")
+    private Integer sourceDepotId;
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    /** Id of the destination depot (station) */
+    @XmlElement(name = "DestinationDepotId")
+    private Integer destinationDepotId;
 
-	public String getName() {
-		return name;
-	}
+    @XmlElementWrapper(name = "Capacities")
+    @XmlElement(name = "Capacity")
+    private List<CapacityElement> capacities;
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    @XmlElement(name = "Velocity")
+    private Double velocity;
 
-	@Override
-	public String toString() {
-		return "VehicleElement [id=" + id + ", name=" + name + "]";
-	}
+    public Integer getId() {
+        return this.id;
+    }
 
-	public Integer getSourceDepotId() {
-		return sourceDepotId;
-	}
+    public void setId(final Integer id) {
+        this.id = id;
+    }
 
-	public void setSourceDepotId(Integer sourceDepotId) {
-		this.sourceDepotId = sourceDepotId;
-	}
+    public String getName() {
+        return this.name;
+    }
 
-	public Integer getDestinationDepotId() {
-		return destinationDepotId;
-	}
+    public void setName(final String name) {
+        this.name = name;
+    }
 
-	public void setDestinationDepotId(Integer destinationDepotId) {
-		this.destinationDepotId = destinationDepotId;
-	}
+    @Override
+    public String toString() {
+        return "VehicleElement [id=" + this.id + ", name=" + this.name + "]";
+    }
 
-	public List<CapacityElement> getCapacities() {
-		return capacities;
-	}
+    public Integer getSourceDepotId() {
+        return this.sourceDepotId;
+    }
 
-	public void setCapacities(List<CapacityElement> capacities) {
-		this.capacities = capacities;
-	}
-	
-	
+    public void setSourceDepotId(final Integer sourceDepotId) {
+        this.sourceDepotId = sourceDepotId;
+    }
+
+    public Integer getDestinationDepotId() {
+        return this.destinationDepotId;
+    }
+
+    public void setDestinationDepotId(final Integer destinationDepotId) {
+        this.destinationDepotId = destinationDepotId;
+    }
+
+    public List<CapacityElement> getCapacities() {
+        return this.capacities;
+    }
+
+    public void setCapacities(final List<CapacityElement> capacities) {
+        this.capacities = capacities;
+    }
+
+    public Double getVelocity() {
+        return this.velocity;
+    }
+
+    public void setVelocity(final Double velocity) {
+        this.velocity = velocity;
+    }
+
 }

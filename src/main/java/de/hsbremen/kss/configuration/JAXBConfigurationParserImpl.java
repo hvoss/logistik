@@ -314,7 +314,7 @@ public final class JAXBConfigurationParserImpl implements ConfigurationParser {
     private Vehicle convert(final VehicleElement element) {
         final Station sourceStation = getStation(element.getSourceDepotId());
         final Station destinationStation = getStation(element.getDestinationDepotId());
-        return new Vehicle(element.getId(), element.getName(), sourceStation, destinationStation);
+        return new Vehicle(element.getId(), element.getName(), sourceStation, destinationStation, element.getVelocity());
     }
 
     /**

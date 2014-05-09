@@ -23,6 +23,9 @@ public final class Vehicle {
     /** the destination depot (station). */
     private final Station destinationDepot;
 
+    /** the velocity (km/h) */
+    private final Double velocity;
+
     /** the capacities. */
     private final Set<Capacity> capacities;
 
@@ -40,17 +43,21 @@ public final class Vehicle {
      *            the source depot
      * @param destinationDepot
      *            the destination depot
+     * @param velocity
+     *            the velocity (km/h)
      */
-    Vehicle(final Integer id, final String name, final Station sourceDepot, final Station destinationDepot) {
+    Vehicle(final Integer id, final String name, final Station sourceDepot, final Station destinationDepot, final Double velocity) {
         Validate.notNull(id, "id is null");
         Validate.notNull(name, "name is null");
         Validate.notNull(sourceDepot, "sourceDepot is null");
         Validate.notNull(destinationDepot, "destinationDepot is null");
+        Validate.notNull(velocity, "velocity is null");
 
         this.id = id;
         this.name = name;
         this.sourceDepot = sourceDepot;
         this.destinationDepot = destinationDepot;
+        this.velocity = velocity;
         this.capacities = new HashSet<>();
 
         this.umCapacities = Collections.unmodifiableSet(this.capacities);
@@ -67,6 +74,7 @@ public final class Vehicle {
         this.name = vehicle.name;
         this.sourceDepot = vehicle.sourceDepot;
         this.destinationDepot = vehicle.destinationDepot;
+        this.velocity = vehicle.velocity;
         this.capacities = new HashSet<>(vehicle.capacities);
         this.umCapacities = Collections.unmodifiableSet(this.capacities);
     }
