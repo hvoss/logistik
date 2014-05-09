@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.swing.SwingUtilities;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.joda.time.Instant;
 import org.joda.time.Interval;
 import org.slf4j.Logger;
@@ -17,6 +18,7 @@ import de.hsbremen.kss.configuration.ConfigurationParser;
 import de.hsbremen.kss.configuration.JAXBConfigurationParserImpl;
 import de.hsbremen.kss.configuration.Order;
 import de.hsbremen.kss.configuration.Station;
+import de.hsbremen.kss.configuration.Vehicle;
 import de.hsbremen.kss.construction.Construction;
 import de.hsbremen.kss.construction.FixMultipleRandomConstruction;
 import de.hsbremen.kss.construction.MissAbortMultipleRandomConstruction;
@@ -111,7 +113,9 @@ public final class App {
         App.LOG.info("orders: " + configuration.getOrders());
         App.LOG.info("products: " + configuration.getProducts());
 
-        Station.logDistancesBetweenStations(configuration.getStations());
+        final Vehicle firstVehicle = CollectionUtils.get(configuration.getVehicles(), 0);
+
+        Station.logDistancesBetweenStations(firstVehicle, configuration.getStations());
 
         for (final Order order : configuration.getOrders()) {
             App.LOG.info(order.getName() + ": " + order.getProducts());
@@ -136,9 +140,9 @@ public final class App {
         final Construction multipleSavingsConstruction = new MultipleSavingsConstruction();
         final Construction multipleSavingsTourConstruction = new MultipleSavingsTourConstruction();
 
-        final List<Construction> allConstructions = Arrays.asList(nearestNeighbor, radialConstruction,
-                multipleRadialConstruction, randomConstruction, fixMultipleRandomConstruction, missAbortMultipleRandomConstruction,
-                savingsContruction, multipleSavingsConstruction, savingsTourConstruction, multipleSavingsTourConstruction);
+        final List<Construction> allConstructions = Arrays.asList(nearestNeighbor, radialConstruction, multipleRadialConstruction,
+                randomConstruction, fixMultipleRandomConstruction, missAbortMultipleRandomConstruction, savingsContruction,
+                multipleSavingsConstruction, savingsTourConstruction, multipleSavingsTourConstruction);
 
         final ArrayList<ConstructionTimeMeasuring> timeMeasuringTasks = new ArrayList<>(allConstructions.size());
 

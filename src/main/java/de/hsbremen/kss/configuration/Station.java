@@ -304,17 +304,20 @@ public final class Station {
     /**
      * logs the distance between all given stations.
      * 
+     * @param vehicle
+     *            vehicle used for traveling
      * @param stations
      *            stations to log.
      */
-    public static void logDistancesBetweenStations(final Collection<Station> stations) {
+    public static void logDistancesBetweenStations(final Vehicle vehicle, final Collection<Station> stations) {
         final Set<Station> processedStations = new HashSet<>();
         for (final Station station : stations) {
             processedStations.add(station);
             for (final Station otherStation : stations) {
                 if (!processedStations.contains(otherStation)) {
                     Station.LOG.debug("distance between " + station.getName() + " and " + otherStation.getName() + ": "
-                            + Math.round(station.distance(otherStation)) + " km");
+                            + Math.round(station.distance(otherStation)) + " km ("
+                            + ((double) Math.round(vehicle.calculateTavelingTime(station, otherStation) * 100) / 100) + " h)");
                 }
             }
         }

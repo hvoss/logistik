@@ -186,4 +186,18 @@ public final class Vehicle {
         }
         return true;
     }
+
+    /**
+     * calculates the traveling time between two given stations.
+     * 
+     * @param source
+     *            first station
+     * @param destination
+     *            second station
+     * @return the calculated traveling time.
+     */
+    public double calculateTavelingTime(final Station source, final Station destination) {
+        final double distance = source.distance(destination);
+        return distance / this.velocity;
+    }
 }
