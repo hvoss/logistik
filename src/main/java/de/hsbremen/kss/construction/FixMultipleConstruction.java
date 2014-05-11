@@ -12,10 +12,10 @@ import de.hsbremen.kss.model.Plan;
  * @author henrik
  * 
  */
-public final class FixMultipleRandomConstruction implements CloneableConstruction {
+public final class FixMultipleConstruction implements CloneableConstruction {
 
     /** logging interface */
-    private static final Logger LOG = LoggerFactory.getLogger(FixMultipleRandomConstruction.class);
+    private static final Logger LOG = LoggerFactory.getLogger(FixMultipleConstruction.class);
 
     /** construction method which is used */
     private final Construction construction;
@@ -34,7 +34,7 @@ public final class FixMultipleRandomConstruction implements CloneableConstructio
      * @param numOfRandomPlans
      *            number of constructions tries
      */
-    public FixMultipleRandomConstruction(final Construction construction, final int numOfRandomPlans) {
+    public FixMultipleConstruction(final Construction construction, final int numOfRandomPlans) {
         this.construction = construction;
         this.numOfRandomPlans = numOfRandomPlans;
     }
@@ -49,12 +49,12 @@ public final class FixMultipleRandomConstruction implements CloneableConstructio
                 this.planFoundInIteration = i;
             }
         }
-        return new Plan(FixMultipleRandomConstruction.class, bestRandomPlan);
+        return new Plan(FixMultipleConstruction.class, bestRandomPlan);
     }
 
     @Override
     public void logStatistic() {
-        FixMultipleRandomConstruction.LOG.info("best plan was found in iteration " + this.planFoundInIteration + " of " + this.numOfRandomPlans);
+        FixMultipleConstruction.LOG.info("best plan was found in iteration " + this.planFoundInIteration + " of " + this.numOfRandomPlans);
     }
 
     @Override

@@ -12,10 +12,10 @@ import de.hsbremen.kss.model.Plan;
  * @author henrik
  * 
  */
-public final class MissAbortMultipleRandomConstruction implements Construction {
+public final class MissAbortMultipleConstruction implements Construction {
 
     /** logging interface */
-    private static final Logger LOG = LoggerFactory.getLogger(MissAbortMultipleRandomConstruction.class);
+    private static final Logger LOG = LoggerFactory.getLogger(MissAbortMultipleConstruction.class);
 
     /** construction method which is used */
     private final Construction construction;
@@ -34,7 +34,7 @@ public final class MissAbortMultipleRandomConstruction implements Construction {
      * @param maxMisses
      *            number of misses to abort
      */
-    public MissAbortMultipleRandomConstruction(final Construction construction, final int maxMisses) {
+    public MissAbortMultipleConstruction(final Construction construction, final int maxMisses) {
         this.construction = construction;
         this.maxMisses = maxMisses;
     }
@@ -55,12 +55,12 @@ public final class MissAbortMultipleRandomConstruction implements Construction {
             }
 
         }
-        return new Plan(MissAbortMultipleRandomConstruction.class, bestRandomPlan);
+        return new Plan(MissAbortMultipleConstruction.class, bestRandomPlan);
     }
 
     @Override
     public void logStatistic() {
-        MissAbortMultipleRandomConstruction.LOG.info("best plan was found after " + this.numOfIterations + " iterations");
+        MissAbortMultipleConstruction.LOG.info("best plan was found after " + this.numOfIterations + " iterations");
     }
 
 }

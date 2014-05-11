@@ -10,10 +10,10 @@ import de.hsbremen.kss.model.Plan;
 /**
  * The Class MultipleRadialConstruction.
  */
-public final class MultipleRadialConstruction implements Construction {
+public final class MultipleSweepConstruction implements Construction {
 
     /** The radial construction. */
-    private final RadialConstruction radialConstruction = new RadialConstruction();
+    private final SweepConstruction radialConstruction = new SweepConstruction();
 
     @Override
     public Plan constructPlan(final Configuration configuration) {
@@ -33,7 +33,7 @@ public final class MultipleRadialConstruction implements Construction {
             }
         }
 
-        return new Plan(MultipleRadialConstruction.class, bestPlan);
+        return new Plan(MultipleSweepConstruction.class, bestPlan);
     }
 
     @Override

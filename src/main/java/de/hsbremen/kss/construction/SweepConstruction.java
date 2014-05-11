@@ -21,19 +21,31 @@ import de.hsbremen.kss.util.ConstructionUtils;
 /**
  * The Class RadialConstruction.
  */
-public final class RadialConstruction implements Construction {
+public final class SweepConstruction implements Construction {
 
     /** logging interface. */
     @SuppressWarnings("unused")
-    private static final Logger LOG = LoggerFactory.getLogger(RadialConstruction.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SweepConstruction.class);
 
     @Override
     public Plan constructPlan(final Configuration configuration) {
         return constructPlan(configuration, null, true);
     }
 
+    /**
+     * constructs a plan based on the sweep-algorithm.
+     * 
+     * @param configuration
+     *            the given configuration
+     * @param startStation
+     *            station to start
+     * @param forward
+     *            indicates whether to go forward (against the clock) or
+     *            backward (with the clock).
+     * @return the constructed plan
+     */
     public Plan constructPlan(final Configuration configuration, final Station startStation, final boolean forward) {
-        final Plan plan = new Plan(RadialConstruction.class);
+        final Plan plan = new Plan(SweepConstruction.class);
 
         final Vehicle vehicle = CollectionUtils.get(configuration.getVehicles(), 0);
         final Tour tour = new Tour(vehicle);
