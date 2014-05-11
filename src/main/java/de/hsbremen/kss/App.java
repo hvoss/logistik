@@ -19,12 +19,14 @@ import de.hsbremen.kss.configuration.JAXBConfigurationParserImpl;
 import de.hsbremen.kss.configuration.Order;
 import de.hsbremen.kss.configuration.Station;
 import de.hsbremen.kss.configuration.Vehicle;
+import de.hsbremen.kss.construction.CloneableConstruction;
 import de.hsbremen.kss.construction.Construction;
 import de.hsbremen.kss.construction.FixMultipleRandomConstruction;
 import de.hsbremen.kss.construction.MissAbortMultipleRandomConstruction;
 import de.hsbremen.kss.construction.MultipleRadialConstruction;
 import de.hsbremen.kss.construction.MultipleSavingsConstruction;
 import de.hsbremen.kss.construction.MultipleSavingsTourConstruction;
+import de.hsbremen.kss.construction.MultithreadingConstruction;
 import de.hsbremen.kss.construction.NearestNeighbor;
 import de.hsbremen.kss.construction.RadialConstruction;
 import de.hsbremen.kss.construction.RandomConstruction;
@@ -135,14 +137,15 @@ public final class App {
         final Construction randomConstruction = new RandomConstruction();
         final Construction radialConstruction = new RadialConstruction();
         final Construction missAbortMultipleRandomConstruction = new MissAbortMultipleRandomConstruction(randomConstruction, App.MAX_MISSES);
-        final Construction fixMultipleRandomConstruction = new FixMultipleRandomConstruction(randomConstruction, App.NUM_OF_RANDOM_PLANS);
+        final CloneableConstruction fixMultipleRandomConstruction = new FixMultipleRandomConstruction(randomConstruction, App.NUM_OF_RANDOM_PLANS);
         final Construction multipleRadialConstruction = new MultipleRadialConstruction();
         final Construction multipleSavingsConstruction = new MultipleSavingsConstruction();
         final Construction multipleSavingsTourConstruction = new MultipleSavingsTourConstruction();
+        final MultithreadingConstruction multithreadingConstruction = new MultithreadingConstruction(fixMultipleRandomConstruction);
 
         final List<Construction> allConstructions = Arrays.asList(nearestNeighbor, radialConstruction, multipleRadialConstruction,
                 randomConstruction, fixMultipleRandomConstruction, missAbortMultipleRandomConstruction, savingsContruction,
-                multipleSavingsConstruction, savingsTourConstruction, multipleSavingsTourConstruction);
+                multipleSavingsConstruction, savingsTourConstruction, multipleSavingsTourConstruction, multithreadingConstruction);
 
         final ArrayList<ConstructionTimeMeasuring> timeMeasuringTasks = new ArrayList<>(allConstructions.size());
 

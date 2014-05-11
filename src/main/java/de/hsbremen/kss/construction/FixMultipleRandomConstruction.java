@@ -12,7 +12,7 @@ import de.hsbremen.kss.model.Plan;
  * @author henrik
  * 
  */
-public final class FixMultipleRandomConstruction implements Construction {
+public final class FixMultipleRandomConstruction implements CloneableConstruction {
 
     /** logging interface */
     private static final Logger LOG = LoggerFactory.getLogger(FixMultipleRandomConstruction.class);
@@ -55,6 +55,15 @@ public final class FixMultipleRandomConstruction implements Construction {
     @Override
     public void logStatistic() {
         FixMultipleRandomConstruction.LOG.info("best plan was found in iteration " + this.planFoundInIteration + " of " + this.numOfRandomPlans);
+    }
+
+    @Override
+    public Construction clone() {
+        try {
+            return (Construction) super.clone();
+        } catch (final CloneNotSupportedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }
