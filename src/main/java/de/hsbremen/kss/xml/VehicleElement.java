@@ -36,6 +36,9 @@ public class VehicleElement {
     @XmlElement(name = "Velocity")
     private Double velocity;
 
+    @XmlElement(name = "Number")
+    private Long number;
+
     public Integer getId() {
         return this.id;
     }
@@ -87,6 +90,14 @@ public class VehicleElement {
 
     public void setVelocity(final Double velocity) {
         this.velocity = velocity;
+    }
+
+    public Long getNumber() {
+        return this.number;
+    }
+
+    public void setNumber(final Long number) {
+        this.number = number;
     }
 
 }

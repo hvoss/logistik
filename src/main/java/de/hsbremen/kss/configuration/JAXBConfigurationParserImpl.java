@@ -45,7 +45,7 @@ public final class JAXBConfigurationParserImpl implements ConfigurationParser {
     private Map<Integer, Order> orderMap;
 
     /** map of all vehicles (key: id, value: vehicle) */
-    private Map<Integer, Vehicle> vehicleMap;
+    private Map<String, Vehicle> vehicleMap;
 
     /** map of all products (key: id, value: product) */
     private Map<Integer, Product> productMap;
@@ -131,10 +131,12 @@ public final class JAXBConfigurationParserImpl implements ConfigurationParser {
      */
     private void convertVehicles(final Collection<VehicleElement> vehicles) {
         for (final VehicleElement element : vehicles) {
-            final Vehicle vehicle = convert(element);
-            addVehicle(vehicle);
+            for (int i = 0; i < element.getNumber(); i++) {
+                final Vehicle vehicle = convert(element, i);
+                addVehicle(vehicle);
 
-            convertCapacities(element.getCapacities(), vehicle);
+                convertCapacities(element.getCapacities(), vehicle);
+            }
         }
     }
 
@@ -309,12 +311,16 @@ public final class JAXBConfigurationParserImpl implements ConfigurationParser {
      * 
      * @param element
      *            XML-element to convert
+     * @param subId
+     *            the sub id
      * @return converted {@link Vehicle}
      */
-    private Vehicle convert(final VehicleElement element) {
+    private Vehicle convert(final VehicleElement element, final Integer subId) {
         final Station sourceStation = getStation(element.getSourceDepotId());
         final Station destinationStation = getStation(element.getDestinationDepotId());
-        return new Vehicle(element.getId(), element.getName(), sourceStation, destinationStation, element.getVelocity());
+        final String id = element.getId() + "-" + subId;
+
+        return new Vehicle(id, element.getName(), sourceStation, destinationStation, element.getVelocity());
     }
 
     /**

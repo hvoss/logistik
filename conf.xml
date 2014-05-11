@@ -412,6 +412,7 @@
 			<SourceDepotId>3</SourceDepotId>
 			<DestinationDepotId>3</DestinationDepotId>
 			<Velocity>80</Velocity>
+			<Number>5</Number>
 			<Capacities>
 				<Capacity>
 					<CapacityWeight>2500</CapacityWeight>
@@ -430,6 +431,7 @@
 			<SourceDepotId>6</SourceDepotId>
 			<Velocity>60</Velocity>
 			<DestinationDepotId>6</DestinationDepotId>
+			<Number>2</Number>
 			<Capacities>
 				<Capacity>
 					<CapacityWeight>1000</CapacityWeight>

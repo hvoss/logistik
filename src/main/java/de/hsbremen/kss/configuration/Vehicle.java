@@ -12,7 +12,7 @@ import org.apache.commons.lang3.Validate;
 public final class Vehicle {
 
     /** the id. */
-    private final Integer id;
+    private final String id;
 
     /** the name. */
     private final String name;
@@ -46,7 +46,7 @@ public final class Vehicle {
      * @param velocity
      *            the velocity (km/h)
      */
-    Vehicle(final Integer id, final String name, final Station sourceDepot, final Station destinationDepot, final Double velocity) {
+    Vehicle(final String id, final String name, final Station sourceDepot, final Station destinationDepot, final Double velocity) {
         Validate.notNull(id, "id is null");
         Validate.notNull(name, "name is null");
         Validate.notNull(sourceDepot, "sourceDepot is null");
@@ -84,7 +84,7 @@ public final class Vehicle {
      * 
      * @return the id
      */
-    public Integer getId() {
+    public String getId() {
         return this.id;
     }
 
