@@ -9,6 +9,7 @@ import java.util.Set;
 
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
+import org.apache.commons.math3.util.Precision;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -315,9 +316,11 @@ public final class Station {
             processedStations.add(station);
             for (final Station otherStation : stations) {
                 if (!processedStations.contains(otherStation)) {
-                    Station.LOG.debug("distance between " + station.getName() + " and " + otherStation.getName() + ": "
-                            + Math.round(station.distance(otherStation)) + " km ("
-                            + ((double) Math.round(vehicle.calculateTavelingTime(station, otherStation) * 100) / 100) + " h)");
+                    final double distance = Precision.round(station.distance(otherStation), 1);
+                    final double travelingTime = Precision.round(vehicle.calculateTavelingTime(station, otherStation), 2);
+
+                    Station.LOG.debug("distance between " + station.getName() + " and " + otherStation.getName() + ": " + distance + " km ("
+                            + travelingTime + " h)");
                 }
             }
         }
