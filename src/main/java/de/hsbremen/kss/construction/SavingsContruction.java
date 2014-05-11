@@ -26,7 +26,7 @@ import de.hsbremen.kss.util.ConstructionUtils;
  * 
  */
 public class SavingsContruction implements Construction {
-    
+	
     @Override
     public Plan constructPlan(final Configuration configuration) {
     	return constructPlan(configuration, null);
