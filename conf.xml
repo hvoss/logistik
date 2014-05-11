@@ -413,6 +413,10 @@
 			<DestinationDepotId>3</DestinationDepotId>
 			<Velocity>80</Velocity>
 			<Number>5</Number>
+			<Timespan>
+				<Start>8</Start>
+				<End>17</End>
+			</Timespan>
 			<Capacities>
 				<Capacity>
 					<CapacityWeight>2500</CapacityWeight>
@@ -432,6 +436,10 @@
 			<Velocity>60</Velocity>
 			<DestinationDepotId>6</DestinationDepotId>
 			<Number>2</Number>
+			<Timespan>
+				<Start>8</Start>
+				<End>17</End>
+			</Timespan>
 			<Capacities>
 				<Capacity>
 					<CapacityWeight>1000</CapacityWeight>

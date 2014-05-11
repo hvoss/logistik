@@ -320,7 +320,9 @@ public final class JAXBConfigurationParserImpl implements ConfigurationParser {
         final Station destinationStation = getStation(element.getDestinationDepotId());
         final String id = element.getId() + "-" + subId;
 
-        return new Vehicle(id, element.getName(), sourceStation, destinationStation, element.getVelocity());
+        final TimeWindow timespan = convert(element.getTimespan());
+
+        return new Vehicle(id, element.getName(), sourceStation, destinationStation, element.getVelocity(), timespan);
     }
 
     /**

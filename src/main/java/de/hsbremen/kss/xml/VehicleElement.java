@@ -33,6 +33,9 @@ public class VehicleElement {
     @XmlElement(name = "Capacity")
     private List<CapacityElement> capacities;
 
+    @XmlElement(name = "Timespan")
+    private TimeWindowElement timespan;
+
     @XmlElement(name = "Velocity")
     private Double velocity;
 
@@ -98,6 +101,14 @@ public class VehicleElement {
 
     public void setNumber(final Long number) {
         this.number = number;
+    }
+
+    public TimeWindowElement getTimespan() {
+        return timespan;
+    }
+
+    public void setTimespan(TimeWindowElement timespan) {
+        this.timespan = timespan;
     }
 
 }
