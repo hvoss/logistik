@@ -143,9 +143,11 @@ public final class App {
         final Construction multipleSavingsTourConstruction = new MultipleSavingsTourConstruction();
         final MultithreadingConstruction multithreadingConstruction = new MultithreadingConstruction(fixMultipleRandomConstruction);
 
-        final List<Construction> allConstructions = Arrays.asList(nearestNeighbor, radialConstruction, multipleRadialConstruction,
+        final List<Construction> allConstructions = new ArrayList<>(Arrays.asList(nearestNeighbor, radialConstruction, multipleRadialConstruction,
                 randomConstruction, fixMultipleRandomConstruction, missAbortMultipleRandomConstruction, savingsContruction,
-                multipleSavingsConstruction, savingsTourConstruction, multipleSavingsTourConstruction, multithreadingConstruction);
+                multipleSavingsConstruction, savingsTourConstruction, multipleSavingsTourConstruction, multithreadingConstruction));
+        final MultithreadingConstruction multiThreadAll = new MultithreadingConstruction(new ArrayList<>(allConstructions));
+        allConstructions.add(multiThreadAll);
 
         final ArrayList<ConstructionTimeMeasuring> timeMeasuringTasks = new ArrayList<>(allConstructions.size());
 

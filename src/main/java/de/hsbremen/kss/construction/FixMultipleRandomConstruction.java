@@ -58,9 +58,9 @@ public final class FixMultipleRandomConstruction implements CloneableConstructio
     }
 
     @Override
-    public Construction clone() {
+    public CloneableConstruction clone() {
         try {
-            return (Construction) super.clone();
+            return (CloneableConstruction) super.clone();
         } catch (final CloneNotSupportedException e) {
             throw new RuntimeException(e);
         }

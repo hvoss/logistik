@@ -1,6 +1,7 @@
 package de.hsbremen.kss.construction;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -31,8 +32,8 @@ public final class MultithreadingConstruction implements Construction {
     /** number of threads to use */
     private final int numberOfThreads;
 
-    /** construction method to use */
-    private final CloneableConstruction construction;
+    /** constructions to execute */
+    private final Collection<? extends Construction> constructions;
 
     /** duration of the thread controller in ms */
     private long duration;
@@ -55,29 +56,64 @@ public final class MultithreadingConstruction implements Construction {
      * 
      * @param construction
      *            construction method to use
+     * @param numberOfCopies
+     *            number of copies to generate
+     */
+    public MultithreadingConstruction(final CloneableConstruction construction, final int numberOfCopies) {
+        this(construction, numberOfCopies, Runtime.getRuntime().availableProcessors());
+    }
+
+    /**
+     * ctor.
+     * 
+     * @param construction
+     *            construction method to use
+     * @param numberOfCopies
+     *            number of copies to generate
      * @param numberOfThreads
      *            number of threads to use
      */
-    public MultithreadingConstruction(final CloneableConstruction construction, final int numberOfThreads) {
-        Validate.notNull(construction, "construction is null");
-        Validate.isTrue(numberOfThreads > 0, "number of threads must be greater than zero");
+    public MultithreadingConstruction(final CloneableConstruction construction, final int numberOfCopies, final int numberOfThreads) {
+        this(CloneableConstruction.Utils.createClones(construction, numberOfCopies), numberOfThreads);
+    }
 
-        this.construction = construction;
+    /**
+     * ctor.
+     * 
+     * @param constructions
+     *            constructions to execute
+     */
+    public MultithreadingConstruction(final Collection<Construction> constructions) {
+        this(constructions, Runtime.getRuntime().availableProcessors());
+    }
+
+    /**
+     * ctor.
+     * 
+     * @param constructions
+     *            constructions to execute
+     * @param numberOfThreads
+     *            number of threads to use
+     */
+    public MultithreadingConstruction(final Collection<? extends Construction> constructions, final int numberOfThreads) {
+        Validate.notNull(constructions, "constructions is null");
+        Validate.noNullElements(constructions, "constructions has null elements");
+
+        this.constructions = constructions;
         this.numberOfThreads = numberOfThreads;
     }
 
     @Override
     public Plan constructPlan(final Configuration configuration) {
         final ExecutorService executorService = Executors.newFixedThreadPool(this.numberOfThreads);
-        final List<ConstructionRunnable> constructions = new ArrayList<>();
+        final List<ConstructionRunnable> constructionRunnables = new ArrayList<>();
         Plan bestPlan = null;
         final long start = System.currentTimeMillis();
 
-        for (int i = 0; i < this.numberOfThreads; i++) {
-            final Construction constructionClone = this.construction.clone();
-            final ConstructionRunnable runnable = new ConstructionRunnable(constructionClone, configuration);
+        for (final Construction construction : this.constructions) {
+            final ConstructionRunnable runnable = new ConstructionRunnable(construction, configuration);
             executorService.execute(runnable);
-            constructions.add(runnable);
+            constructionRunnables.add(runnable);
         }
 
         executorService.shutdown();
@@ -89,7 +125,7 @@ public final class MultithreadingConstruction implements Construction {
         }
 
         this.threadDuration = 0;
-        for (final ConstructionRunnable constructionRunnable : constructions) {
+        for (final ConstructionRunnable constructionRunnable : constructionRunnables) {
             final Plan plan = constructionRunnable.getPlan();
             if (bestPlan == null || bestPlan.length() > plan.length()) {
                 bestPlan = plan;
@@ -108,8 +144,7 @@ public final class MultithreadingConstruction implements Construction {
         final double relativeTimeSaving = MultithreadingConstruction.HUNDRED - ((double) this.duration / (double) this.threadDuration)
                 * MultithreadingConstruction.HUNDRED;
 
-        MultithreadingConstruction.LOG.info("construction method " + this.construction.getClass().getSimpleName() + " runs on "
-                + this.numberOfThreads + " threads");
+        MultithreadingConstruction.LOG.info(this.constructions.size() + " construction methods run on " + this.numberOfThreads + " threads");
         MultithreadingConstruction.LOG.info("real executing time: " + this.duration + " ms");
         MultithreadingConstruction.LOG.info("cumulated executing time: " + this.threadDuration + " ms");
         MultithreadingConstruction.LOG.info("time saving: " + timeSaving + " ms (" + Precision.round(relativeTimeSaving, 1) + "%)");
