@@ -101,47 +101,6 @@ public final class Tour {
     }
 
     /**
-     * adds a station.
-     * 
-     * @param station
-     *            station to add
-     * @deprecated use {@link Tour#addSourceOrder(Order)} or
-     *             {@link Tour#addDestinationOrder(Order)} or
-     *             {@link Tour#addSourceOrders(Collection)} or
-     *             {@link Tour#addDestinationOrders(Collection)} instead
-     */
-    @Deprecated
-    public void addStation(final Station station) {
-    }
-
-    /**
-     * adds a order.
-     * 
-     * @param order
-     *            order to add
-     * @deprecated use {@link Tour#addSourceOrder(Order)} or
-     *             {@link Tour#addDestinationOrder(Order)} instead
-     */
-    @Deprecated
-    public void addOrder(final Order order) {
-    }
-
-    /**
-     * adds a collection of orders to the tour.
-     * 
-     * @param ordersToAdd
-     *            orders to add
-     * @deprecated use {@link Tour#addSourceOrders(Collection)} or
-     *             {@link Tour#addDestinationOrders(Collection)} instead
-     */
-    @Deprecated
-    public void addOrders(final Collection<Order> ordersToAdd) {
-        for (final Order order : ordersToAdd) {
-            addOrder(order);
-        }
-    }
-
-    /**
      * adds a visited source order.
      * 
      * @param sourceOrder
@@ -202,24 +161,6 @@ public final class Tour {
         Validate.notNull(action, "action is null");
         final int index = this.actions.size() - 1;
         this.actions.add(index, action);
-    }
-
-    /**
-     * Adds an order and a station to the tour.
-     * 
-     * @param order
-     *            order to add
-     * @param station
-     *            station to add
-     * @deprecated use {@link Tour#addSourceOrder(Order)} or
-     *             {@link Tour#addDestinationOrder(Order)} or
-     *             {@link Tour#addSourceOrders(Collection)} or
-     *             {@link Tour#addDestinationOrders(Collection)} instead
-     */
-    @Deprecated
-    public void addOrderAndStation(final Order order, final Station station) {
-        addOrder(order);
-        addStation(station);
     }
 
     /**
