@@ -243,4 +243,14 @@ public final class Tour {
     public Integer freeSpace() {
         return this.vehicle.maxCapacityWeight() - this.actualLoadingWeight;
     }
+
+    /**
+     * returns free time of the vehicle.
+     * 
+     * @return free time of the vehicle.
+     */
+    public double freeTime() {
+        final double availableTime = this.vehicle.getTimeWindow().getEnd() - this.vehicle.getTimeWindow().getEnd();
+        return availableTime - duration();
+    }
 }

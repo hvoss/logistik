@@ -27,7 +27,7 @@ public final class Vehicle {
     private final Double velocity;
 
     /** the timespan */
-    private final TimeWindow timespan;
+    private final TimeWindow timewindow;
 
     /** the capacities. */
     private final Set<Capacity> capacities;
@@ -48,24 +48,24 @@ public final class Vehicle {
      *            the destination depot
      * @param velocity
      *            the velocity (km/h)
-     * @param timespan
+     * @param timewindow
      *            the timespan
      */
     Vehicle(final String id, final String name, final Station sourceDepot, final Station destinationDepot, final Double velocity,
-            final TimeWindow timespan) {
+            final TimeWindow timewindow) {
         Validate.notNull(id, "id is null");
         Validate.notNull(name, "name is null");
         Validate.notNull(sourceDepot, "sourceDepot is null");
         Validate.notNull(destinationDepot, "destinationDepot is null");
         Validate.notNull(velocity, "velocity is null");
-        Validate.notNull(timespan, "timespan is null");
+        Validate.notNull(timewindow, "timewindow is null");
 
         this.id = id;
         this.name = name;
         this.sourceDepot = sourceDepot;
         this.destinationDepot = destinationDepot;
         this.velocity = velocity;
-        this.timespan = timespan;
+        this.timewindow = timewindow;
         this.capacities = new HashSet<>();
 
         this.umCapacities = Collections.unmodifiableSet(this.capacities);
@@ -209,7 +209,7 @@ public final class Vehicle {
      * 
      * @return the timespan
      */
-    public TimeWindow getTimespan() {
-        return this.timespan;
+    public TimeWindow getTimeWindow() {
+        return this.timewindow;
     }
 }

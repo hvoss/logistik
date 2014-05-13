@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.math3.util.Precision;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,6 +46,14 @@ public final class SimpleValidator implements Validator {
             final Vehicle vehicle = tour.getVehicle();
             final List<Action> actions = tour.getActions();
             int weight = 0;
+
+            if (tour.freeTime() < 0) {
+                final double duration = Precision.round(tour.duration(), 2);
+                final double maxTimespan = Precision.round(vehicle.getTimeWindow().timespan(), 2);
+                SimpleValidator.LOG
+                        .warn("The tour " + tour + " took " + duration + " hours. But it must take a maximum of " + maxTimespan + " hours");
+                allRight = false;
+            }
 
             for (int i = 0; i < actions.size(); i++) {
                 final Action action = actions.get(i);

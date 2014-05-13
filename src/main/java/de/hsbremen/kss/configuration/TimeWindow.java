@@ -68,4 +68,13 @@ public final class TimeWindow {
     public Double getEnd() {
         return this.end;
     }
+
+    /**
+     * returns the timespan in hours.
+     * 
+     * @return the timespan in hours
+     */
+    public double timespan() {
+        return this.end - this.start;
+    }
 }

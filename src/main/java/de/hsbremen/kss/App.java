@@ -23,15 +23,15 @@ import de.hsbremen.kss.construction.CloneableConstruction;
 import de.hsbremen.kss.construction.Construction;
 import de.hsbremen.kss.construction.FixMultipleConstruction;
 import de.hsbremen.kss.construction.MissAbortMultipleConstruction;
-import de.hsbremen.kss.construction.MultipleSweepConstruction;
 import de.hsbremen.kss.construction.MultipleSavingsConstruction;
 import de.hsbremen.kss.construction.MultipleSavingsTourConstruction;
+import de.hsbremen.kss.construction.MultipleSweepConstruction;
 import de.hsbremen.kss.construction.MultithreadingConstruction;
 import de.hsbremen.kss.construction.NearestNeighbor;
-import de.hsbremen.kss.construction.SweepConstruction;
 import de.hsbremen.kss.construction.RandomConstruction;
 import de.hsbremen.kss.construction.SavingsContruction;
 import de.hsbremen.kss.construction.SavingsTourConstruction;
+import de.hsbremen.kss.construction.SweepConstruction;
 import de.hsbremen.kss.gui.MainFrame;
 import de.hsbremen.kss.model.Plan;
 import de.hsbremen.kss.timing.ConstructionTimeMeasuring;
@@ -76,7 +76,7 @@ public final class App {
 
         final Plan plan = startAlgorithms(configuration);
 
-        startGUI(configuration, plan);
+        // startGUI(configuration, plan);
 
     }
 
