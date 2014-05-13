@@ -268,4 +268,22 @@ public final class Order {
         }
         return true;
     }
+
+    /**
+     * Gets the source.
+     * 
+     * @return the source
+     */
+    public OrderStation getSource() {
+        return this.source;
+    }
+
+    /**
+     * Gets the destination.
+     * 
+     * @return the destination
+     */
+    public OrderStation getDestination() {
+        return this.destination;
+    }
 }

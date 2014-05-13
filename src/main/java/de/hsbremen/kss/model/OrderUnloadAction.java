@@ -6,7 +6,7 @@ import de.hsbremen.kss.configuration.Station;
 /**
  * The Class OrderUnloadAction.
  */
-public class OrderUnloadAction extends OrderAction {
+public final class OrderUnloadAction extends OrderAction {
 
     /**
      * Instantiates a new order unload action.
@@ -18,13 +18,13 @@ public class OrderUnloadAction extends OrderAction {
         super(order);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see de.hsbremen.kss.model.Action#getStation()
-     */
     @Override
-    public final Station getStation() {
+    public Station getStation() {
         return getOrder().getDestinationStation();
+    }
+
+    @Override
+    public double duration() {
+        return getOrder().getDestination().getServiceTime();
     }
 }

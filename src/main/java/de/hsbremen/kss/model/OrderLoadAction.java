@@ -6,7 +6,7 @@ import de.hsbremen.kss.configuration.Station;
 /**
  * The Class OrderLoadAction.
  */
-public class OrderLoadAction extends OrderAction {
+public final class OrderLoadAction extends OrderAction {
 
     /**
      * Instantiates a new order load action.
@@ -18,14 +18,14 @@ public class OrderLoadAction extends OrderAction {
         super(order);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see de.hsbremen.kss.model.Action#getStation()
-     */
     @Override
-    public final Station getStation() {
+    public Station getStation() {
         return getOrder().getSourceStation();
+    }
+
+    @Override
+    public double duration() {
+        return getOrder().getSource().getServiceTime();
     }
 
 }

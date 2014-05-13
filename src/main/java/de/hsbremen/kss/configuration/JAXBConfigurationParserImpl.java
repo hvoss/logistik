@@ -275,7 +275,7 @@ public final class JAXBConfigurationParserImpl implements ConfigurationParser {
 
         final TimeWindow timeWindow = convert(element.getTimeWindow());
 
-        return new OrderStation(station, timeWindow);
+        return new OrderStation(station, timeWindow, element.getServiceTime());
     }
 
     /**

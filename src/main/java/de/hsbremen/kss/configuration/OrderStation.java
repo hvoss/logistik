@@ -16,6 +16,9 @@ public final class OrderStation {
     /** the time window. */
     private final TimeWindow timeWindow;
 
+    /** the service time */
+    private final Double serviceTime;
+
     /**
      * ctor
      * 
@@ -23,13 +26,17 @@ public final class OrderStation {
      *            the station of the order station.
      * @param timeWindow
      *            the time window.
+     * @param serviceTime
+     *            the service time
      */
-    public OrderStation(final Station station, final TimeWindow timeWindow) {
+    public OrderStation(final Station station, final TimeWindow timeWindow, final Double serviceTime) {
         Validate.notNull(station, "station is null");
         Validate.notNull(timeWindow, "timeWindow is null");
+        Validate.notNull(serviceTime, "serviceTime is null");
 
         this.station = station;
         this.timeWindow = timeWindow;
+        this.serviceTime = serviceTime;
     }
 
     /**
@@ -67,6 +74,15 @@ public final class OrderStation {
      */
     void setOrder(final Order order) {
         this.order = order;
+    }
+
+    /**
+     * Gets the service time.
+     * 
+     * @return the service time
+     */
+    public Double getServiceTime() {
+        return this.serviceTime;
     }
 
 }

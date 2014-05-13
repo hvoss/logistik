@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang3.Validate;
+import org.apache.commons.math3.util.Precision;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -168,6 +169,9 @@ public final class Tour {
      */
     public void logTour() {
         Action lastAction = null;
+        Tour.LOG.info("Tour (Vehicle: " + this.vehicle + "):");
+        Tour.LOG.info("length: " + Precision.round(length(), 2) + "km");
+        Tour.LOG.info("duration: " + Precision.round(duration(), 2) + "h");
         for (final Action action : this.actions) {
             if (lastAction != null) {
                 final Station source = lastAction.getStation();
@@ -204,6 +208,22 @@ public final class Tour {
         }
 
         return length;
+    }
+
+    /**
+     * returns the duration of the order
+     * 
+     * @return duration of the order
+     */
+    public double duration() {
+        double duration = this.vehicle.calculateTavelingTime(length());
+
+        // XXX cache duration
+        for (final Action action : this.actions) {
+            duration += action.duration();
+        }
+
+        return duration;
     }
 
     /**

@@ -23,6 +23,11 @@ abstract class DepotAction implements Action {
     }
 
     @Override
+    public double duration() {
+        return 0;
+    }
+
+    @Override
     public final Station getStation() {
         return this.depot;
     }

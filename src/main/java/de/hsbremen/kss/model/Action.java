@@ -16,4 +16,11 @@ public interface Action {
      * @return station where the action is performed
      */
     Station getStation();
+
+    /**
+     * returns the duration of a action.
+     * 
+     * @return duration of a action
+     */
+    double duration();
 }

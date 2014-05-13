@@ -190,6 +190,17 @@ public final class Vehicle {
      */
     public double calculateTavelingTime(final Station source, final Station destination) {
         final double distance = source.distance(destination);
+        return calculateTavelingTime(distance);
+    }
+
+    /**
+     * calculates the traveling time for the given distance.
+     * 
+     * @param distance
+     *            the distance
+     * @return the calculated traveling time.
+     */
+    public double calculateTavelingTime(final double distance) {
         return distance / this.velocity;
     }
 
