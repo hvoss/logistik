@@ -37,6 +37,7 @@ import de.hsbremen.kss.model.Plan;
 import de.hsbremen.kss.simpleconstruction.PerfectSimpleConstruction;
 import de.hsbremen.kss.simpleconstruction.SimpleConstruction;
 import de.hsbremen.kss.timing.ConstructionTimeMeasuring;
+import de.hsbremen.kss.util.RandomUtils;
 import de.hsbremen.kss.validate.SimpleValidator;
 import de.hsbremen.kss.validate.Validator;
 
@@ -133,16 +134,18 @@ public final class App {
 
         final Validator validator = new SimpleValidator();
 
+        final RandomUtils randomUtils = new RandomUtils(System.currentTimeMillis());
+
         final SimpleConstruction simpleConstruction = new PerfectSimpleConstruction();
 
-        final Construction nearestNeighbor = new NearestNeighbor(simpleConstruction);
+        final Construction nearestNeighbor = new NearestNeighbor(simpleConstruction, randomUtils);
         final Construction savingsContruction = new SavingsContruction();
         final Construction savingsTourConstruction = new SavingsTourConstruction();
-        final Construction randomConstruction = new RandomConstruction(simpleConstruction);
-        final Construction radialConstruction = new SweepConstruction(simpleConstruction);
+        final Construction randomConstruction = new RandomConstruction(simpleConstruction, randomUtils);
+        final Construction radialConstruction = new SweepConstruction(simpleConstruction, randomUtils);
         final Construction missAbortMultipleRandomConstruction = new MissAbortMultipleConstruction(randomConstruction, App.MAX_MISSES);
         final CloneableConstruction fixMultipleRandomConstruction = new FixMultipleConstruction(randomConstruction, App.NUM_OF_RANDOM_PLANS);
-        final Construction multipleRadialConstruction = new MultipleSweepConstruction(simpleConstruction);
+        final Construction multipleRadialConstruction = new MultipleSweepConstruction(simpleConstruction, randomUtils);
         final Construction multipleSavingsConstruction = new MultipleSavingsConstruction();
         final Construction multipleSavingsTourConstruction = new MultipleSavingsTourConstruction();
         final MultithreadingConstruction multithreadingConstruction = new MultithreadingConstruction(fixMultipleRandomConstruction);

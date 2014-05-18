@@ -26,16 +26,19 @@ public final class RandomConstruction extends BaseConstruction {
     private static final Logger LOG = LoggerFactory.getLogger(RandomConstruction.class);
 
     /** some utils for random numbers */
-    private final RandomUtils randomUtils = new RandomUtils(System.currentTimeMillis());
+    private final RandomUtils randomUtils;
 
     /**
      * ctor.
      * 
      * @param simpleConstruction
      *            construction methods to find simple routes
+     * @param randomUtils
+     *            some utils for random numbers
      */
-    public RandomConstruction(final SimpleConstruction simpleConstruction) {
+    public RandomConstruction(final SimpleConstruction simpleConstruction, final RandomUtils randomUtils) {
         super(simpleConstruction);
+        this.randomUtils = randomUtils;
     }
 
     @Override

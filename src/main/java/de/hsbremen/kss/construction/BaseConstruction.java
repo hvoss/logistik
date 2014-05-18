@@ -93,6 +93,8 @@ public abstract class BaseConstruction implements Construction {
             if (tour.hasOrderActions()) {
                 vehicles.remove(vehicle);
                 plan.addTour(tour);
+            } else {
+                vehicles.add(vehicle);
             }
         }
 
@@ -142,6 +144,10 @@ public abstract class BaseConstruction implements Construction {
         }
 
         final Vehicle vehicle = tour.getVehicle();
+        if (!vehicle.canTransport(order)) {
+            return false;
+        }
+
         final Station sourceStation = order.getSourceStation();
         final Set<Station> stations = Order.getAllDestinationStations(tour.notDeliveredOrders());
 

@@ -331,7 +331,7 @@
 				<End>28</End>
 			</Timespan>
 			<ProductId>1</ProductId>
-			<Capacity>1000</Capacity>
+			<Capacity>500</Capacity>
 		</Vehicle>
 		<Vehicle id="2">
 			<Name>LKW</Name>
@@ -341,10 +341,10 @@
 			<Number>50</Number>
 			<Timespan>
 				<Start>8</Start>
-				<End>28</End>
+				<End>40</End>
 			</Timespan>
 			<ProductId>2</ProductId>
-			<Capacity>1000</Capacity>
+			<Capacity>500</Capacity>
 		</Vehicle>
 	</Vehicles>
 

@@ -7,6 +7,7 @@ import de.hsbremen.kss.configuration.Order;
 import de.hsbremen.kss.configuration.Station;
 import de.hsbremen.kss.model.Plan;
 import de.hsbremen.kss.simpleconstruction.SimpleConstruction;
+import de.hsbremen.kss.util.RandomUtils;
 
 /**
  * The Class MultipleRadialConstruction.
@@ -21,9 +22,11 @@ public final class MultipleSweepConstruction implements Construction {
      * 
      * @param simpleConstruction
      *            construction methods to find simple routes
+     * @param randomUtils
+     *            some utils for random numbers
      */
-    public MultipleSweepConstruction(final SimpleConstruction simpleConstruction) {
-        this.sweepConstruction = new SweepConstruction(simpleConstruction);
+    public MultipleSweepConstruction(final SimpleConstruction simpleConstruction, final RandomUtils randomUtils) {
+        this.sweepConstruction = new SweepConstruction(simpleConstruction, randomUtils);
     }
 
     @Override

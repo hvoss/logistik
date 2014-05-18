@@ -1,11 +1,9 @@
 package de.hsbremen.kss.construction;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,6 +13,7 @@ import de.hsbremen.kss.configuration.StationAngleComparator;
 import de.hsbremen.kss.configuration.Vehicle;
 import de.hsbremen.kss.model.Tour;
 import de.hsbremen.kss.simpleconstruction.SimpleConstruction;
+import de.hsbremen.kss.util.RandomUtils;
 
 /**
  * The Class RadialConstruction.
@@ -28,6 +27,9 @@ public final class SweepConstruction extends BaseConstruction {
     /** station to start */
     private Station startStation;
 
+    /** some utils for random numbers */
+    private final RandomUtils randomUtils;
+
     /**
      * indicates whether to go forward (against the clock) or backward (with the
      * clock).
@@ -39,9 +41,12 @@ public final class SweepConstruction extends BaseConstruction {
      * 
      * @param simpleConstruction
      *            construction methods to find simple routes
+     * @param randomUtils
+     *            some utils for random numbers
      */
-    public SweepConstruction(final SimpleConstruction simpleConstruction) {
+    public SweepConstruction(final SimpleConstruction simpleConstruction, final RandomUtils randomUtils) {
         super(simpleConstruction);
+        this.randomUtils = randomUtils;
     }
 
     @Override
@@ -55,12 +60,12 @@ public final class SweepConstruction extends BaseConstruction {
 
     @Override
     protected Vehicle nextVehicle(final Collection<Vehicle> vehicle) {
-        return CollectionUtils.get(vehicle, 0);
+        return this.randomUtils.randomElement(vehicle);
     }
 
     @Override
     protected List<Order> loadOrderSequence(final Collection<Order> orders) {
-        return new ArrayList<>(orders);
+        return this.randomUtils.shuffle(orders);
     }
 
     /**
