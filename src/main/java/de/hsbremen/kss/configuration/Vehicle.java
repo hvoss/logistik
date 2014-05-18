@@ -212,4 +212,13 @@ public final class Vehicle {
     public TimeWindow getTimeWindow() {
         return this.timewindow;
     }
+
+    /**
+     * Gets the velocity (km/h).
+     * 
+     * @return the velocity (km/h)
+     */
+    public Double getVelocity() {
+        return this.velocity;
+    }
 }

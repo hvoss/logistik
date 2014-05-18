@@ -6,6 +6,7 @@ import de.hsbremen.kss.configuration.Configuration;
 import de.hsbremen.kss.configuration.Order;
 import de.hsbremen.kss.configuration.Station;
 import de.hsbremen.kss.model.Plan;
+import de.hsbremen.kss.simpleconstruction.SimpleConstruction;
 
 /**
  * The Class MultipleRadialConstruction.
@@ -13,7 +14,17 @@ import de.hsbremen.kss.model.Plan;
 public final class MultipleSweepConstruction implements Construction {
 
     /** The radial construction. */
-    private final SweepConstruction radialConstruction = new SweepConstruction();
+    private final SweepConstruction sweepConstruction;
+
+    /**
+     * ctor.
+     * 
+     * @param simpleConstruction
+     *            construction methods to find simple routes
+     */
+    public MultipleSweepConstruction(final SimpleConstruction simpleConstruction) {
+        this.sweepConstruction = new SweepConstruction(simpleConstruction);
+    }
 
     @Override
     public Plan constructPlan(final Configuration configuration) {
@@ -22,12 +33,16 @@ public final class MultipleSweepConstruction implements Construction {
 
         for (final Station station : allSourceStations) {
             Plan plan;
-            plan = this.radialConstruction.constructPlan(configuration, station, true);
+            this.sweepConstruction.setStartStation(station);
+            this.sweepConstruction.setForward(true);
+            plan = this.sweepConstruction.constructPlan(configuration);
             if (bestPlan == null || plan.length() < bestPlan.length()) {
                 bestPlan = plan;
             }
 
-            plan = this.radialConstruction.constructPlan(configuration, station, false);
+            this.sweepConstruction.setStartStation(station);
+            this.sweepConstruction.setForward(false);
+            plan = this.sweepConstruction.constructPlan(configuration);
             if (bestPlan == null || plan.length() < bestPlan.length()) {
                 bestPlan = plan;
             }

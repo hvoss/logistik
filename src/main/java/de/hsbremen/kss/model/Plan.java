@@ -10,7 +10,9 @@ import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.hsbremen.kss.configuration.Order;
 import de.hsbremen.kss.configuration.Station;
+import de.hsbremen.kss.configuration.Vehicle;
 import de.hsbremen.kss.construction.Construction;
 
 /**
@@ -26,6 +28,9 @@ public final class Plan {
 
     /** The tours. */
     private final List<Tour> tours;
+
+    /** counter of the tour ids */
+    private int tourIdCounter = 1;
 
     /**
      * Instantiates a new plan.
@@ -116,6 +121,33 @@ public final class Plan {
      */
     public void logPlan() {
         Plan.LOG.info(this.constructionClazz.getSimpleName() + " length [km]: " + Math.round(length()));
+    }
+
+    /**
+     * finds the tour which is associated with the given order.
+     * 
+     * @param order
+     *            order to search for
+     * @return the tour which is associated with the given order or null
+     */
+    public Tour associatedTour(final Order order) {
+        for (final Tour tour : this.tours) {
+            if (tour.contains(order)) {
+                return tour;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * creates a new tour.
+     * 
+     * @param vehicle
+     *            vehicle which should be used.
+     * @return the new tour.
+     */
+    public Tour newTour(final Vehicle vehicle) {
+        return new Tour(vehicle, this.tourIdCounter++);
     }
 
 }

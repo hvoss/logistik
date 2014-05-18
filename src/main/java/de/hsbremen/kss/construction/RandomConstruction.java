@@ -1,20 +1,16 @@
 package de.hsbremen.kss.construction;
 
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
-import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.hsbremen.kss.configuration.Configuration;
 import de.hsbremen.kss.configuration.Order;
 import de.hsbremen.kss.configuration.Station;
 import de.hsbremen.kss.configuration.Vehicle;
-import de.hsbremen.kss.model.Plan;
 import de.hsbremen.kss.model.Tour;
-import de.hsbremen.kss.util.ConstructionUtils;
+import de.hsbremen.kss.simpleconstruction.SimpleConstruction;
 import de.hsbremen.kss.util.RandomUtils;
 
 /**
@@ -23,69 +19,43 @@ import de.hsbremen.kss.util.RandomUtils;
  * @author henrik
  * 
  */
-public final class RandomConstruction implements Construction {
+public final class RandomConstruction extends BaseConstruction {
 
     /** logging interface */
     @SuppressWarnings("unused")
     private static final Logger LOG = LoggerFactory.getLogger(RandomConstruction.class);
 
+    /** some utils for random numbers */
+    private final RandomUtils randomUtils = new RandomUtils(System.currentTimeMillis());
+
     /**
      * ctor.
      * 
+     * @param simpleConstruction
+     *            construction methods to find simple routes
      */
-    public RandomConstruction() {
-    }
-
-    @Override
-    public Plan constructPlan(final Configuration configuration) {
-        final Plan plan = new Plan(RandomConstruction.class);
-        final Vehicle vehicle = CollectionUtils.get(configuration.getVehicles(), 0);
-        final Tour tour = new Tour(vehicle);
-
-        final Set<Order> orders = configuration.getOrders();
-
-        final Set<Order> visitedSourceOrders = new HashSet<>(orders.size());
-        final Set<Order> visitedDestinationOrders = new HashSet<>(orders.size());
-
-        while (true) {
-            final Set<Station> processableStations = ConstructionUtils.processableStations(configuration.getOrders(), visitedSourceOrders,
-                    visitedDestinationOrders, tour);
-            if (processableStations.isEmpty()) {
-                break;
-            }
-            final Station rElement = RandomUtils.randomElement(processableStations);
-
-            final Set<Order> newSourceOrders = new HashSet<>(rElement.getSourceOrders());
-            final Set<Order> newDestinationOrders = new HashSet<>(rElement.getDestinationOrders());
-            newSourceOrders.removeAll(visitedSourceOrders);
-            newDestinationOrders.removeAll(visitedDestinationOrders);
-
-            // unload orders
-            final Collection<Order> destinationStationReached = CollectionUtils.intersection(visitedSourceOrders, newDestinationOrders);
-            visitedDestinationOrders.addAll(destinationStationReached);
-
-            tour.addDestinationOrders(destinationStationReached);
-
-            // Load new orders
-            for (final Order newSourceOrder : newSourceOrders) {
-                if (tour.freeSpace() >= newSourceOrder.weightOfProducts()) {
-                    tour.addSourceOrder(newSourceOrder);
-
-                    // order where the source station reached
-                    visitedSourceOrders.add(newSourceOrder);
-                }
-            }
-
-        }
-
-        plan.addTour(tour);
-
-        return plan;
+    public RandomConstruction(final SimpleConstruction simpleConstruction) {
+        super(simpleConstruction);
     }
 
     @Override
     public void logStatistic() {
         // TODO Auto-generated method stub
 
+    }
+
+    @Override
+    protected Station nextStation(final Tour tour, final Collection<Station> stations) {
+        return this.randomUtils.randomElement(stations);
+    }
+
+    @Override
+    protected Vehicle nextVehicle(final Collection<Vehicle> vehicle) {
+        return this.randomUtils.randomElement(vehicle);
+    }
+
+    @Override
+    protected List<Order> loadOrderSequence(final Collection<Order> orders) {
+        return this.randomUtils.shuffle(orders);
     }
 }

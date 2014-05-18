@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import de.hsbremen.kss.configuration.Order;
 import de.hsbremen.kss.configuration.Station;
 import de.hsbremen.kss.configuration.Vehicle;
+import de.hsbremen.kss.util.TimeUtils;
 
 /**
  * The Class Tour.
@@ -33,17 +34,36 @@ public final class Tour {
     /** The actual loading weight. */
     private Integer actualLoadingWeight = 0;
 
+    /** identifier of the tour */
+    private final int id;
+
     /**
      * Instantiates a new tour.
      * 
      * @param vehicle
      *            the vehicle
+     * @param id
+     *            identifier of the tour
      */
-    public Tour(final Vehicle vehicle) {
+    Tour(final Vehicle vehicle, final int id) {
         this.vehicle = vehicle;
+        this.id = id;
 
         this.actions = new LinkedList<>();
+
+    }
+
+    /**
+     * adds the {@link FromDepotAction} to the tour.
+     */
+    public void leafSourceDepot() {
         this.actions.add(new FromDepotAction(this.vehicle.getSourceDepot()));
+    }
+
+    /**
+     * adds the {@link ToDepotAction} to the tour.
+     */
+    public void gotoDestinationDepot() {
         this.actions.add(new ToDepotAction(this.vehicle.getDestinationDepot()));
     }
 
@@ -160,8 +180,7 @@ public final class Tour {
      */
     private void addAction(final Action action) {
         Validate.notNull(action, "action is null");
-        final int index = this.actions.size() - 1;
-        this.actions.add(index, action);
+        this.actions.add(action);
     }
 
     /**
@@ -169,17 +188,30 @@ public final class Tour {
      */
     public void logTour() {
         Action lastAction = null;
-        Tour.LOG.info("Tour (Vehicle: " + this.vehicle + "):");
+        Tour.LOG.info("Tour #" + this.id + " (Vehicle: " + this.vehicle + "):");
         Tour.LOG.info("length: " + Precision.round(length(), 2) + "km");
-        Tour.LOG.info("duration: " + Precision.round(duration(), 2) + "h");
+        Tour.LOG.info("duration: " + Precision.round(actualDuration(), 2) + "h");
+
+        double time = this.vehicle.getTimeWindow().getStart();
+
         for (final Action action : this.actions) {
             if (lastAction != null) {
                 final Station source = lastAction.getStation();
                 final Station destination = action.getStation();
+
                 if (!source.equals(destination)) {
-                    Tour.LOG.info(source.getName() + " => " + destination.getName() + " (" + Math.round(source.distance(destination)) + " km)");
+                    final String startTime = TimeUtils.convertToClockString(time);
+                    final double excactDuration = this.vehicle.calculateTavelingTime(source, destination);
+                    final double duration = Precision.round(excactDuration, 1);
+                    time += excactDuration;
+                    final String endTime = TimeUtils.convertToClockString(time);
+
+                    final long distance = Math.round(source.distance(destination));
+                    Tour.LOG.info(source.getName() + " => " + destination.getName() + " (" + distance + " km) time: " + startTime + " -> " + endTime
+                            + " (" + duration + "h)");
                 }
             }
+            time += action.duration();
             Tour.LOG.info(action.toString());
             lastAction = action;
         }
@@ -215,7 +247,7 @@ public final class Tour {
      * 
      * @return duration of the order
      */
-    public double duration() {
+    public double actualDuration() {
         double duration = this.vehicle.calculateTavelingTime(length());
 
         // XXX cache duration
@@ -250,7 +282,111 @@ public final class Tour {
      * @return free time of the vehicle.
      */
     public double freeTime() {
-        final double availableTime = this.vehicle.getTimeWindow().getEnd() - this.vehicle.getTimeWindow().getEnd();
-        return availableTime - duration();
+        double freeTime = getVehicle().getTimeWindow().timespan() - actualDuration();
+        freeTime -= Order.completeUnloadDuration(notDeliveredOrders());
+        return freeTime;
+    }
+
+    /**
+     * returns the actual (last) station.
+     * 
+     * @return the actual (last) station
+     */
+    public Station actualStation() {
+        if (this.actions.isEmpty()) {
+            return null;
+        }
+
+        final Action lastAction = this.actions.get(this.actions.size() - 1);
+        return lastAction.getStation();
+    }
+
+    /**
+     * returns true if the tour contains at least one {@link OrderAction}.
+     * 
+     * @return true if the tour contains at least one {@link OrderAction}.
+     */
+    public boolean hasOrderActions() {
+        for (final Action action : this.actions) {
+            if (action instanceof OrderAction) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * returns a list of all loaded orders, but not yet delivered orders.
+     * 
+     * @return a list of all loaded orders, but not yet delivered orders.
+     */
+    public Set<Order> notDeliveredOrders() {
+        // XXX caching
+        final Set<Order> orders = new HashSet<>();
+        for (final Action action : this.actions) {
+            if (action instanceof OrderLoadAction) {
+                final OrderLoadAction loadAction = (OrderLoadAction) action;
+                orders.add(loadAction.getOrder());
+            } else if (action instanceof OrderUnloadAction) {
+                final OrderUnloadAction unloadAction = (OrderUnloadAction) action;
+                if (!orders.remove(unloadAction.getOrder())) {
+                    throw new IllegalStateException();
+                }
+            }
+        }
+        return orders;
+    }
+
+    /**
+     * returns the free length.
+     * 
+     * @return the free length.
+     */
+    public double freeLength() {
+        return freeTime() * this.vehicle.getVelocity();
+    }
+
+    @Override
+    public String toString() {
+        return "Tour [vehicle=" + this.vehicle + ", actions=" + this.actions + ", actualStation()=" + actualStation() + ", freeLength()="
+                + freeLength() + "]";
+    }
+
+    /**
+     * Gets the identifier of the tour.
+     * 
+     * @return the identifier of the tour
+     */
+    public int getId() {
+        return this.id;
+    }
+
+    /**
+     * checks whether the given order is part of the tour.
+     * 
+     * @param order
+     *            the order
+     * @return true, if the given order is part of the tour.
+     */
+    public boolean contains(final Order order) {
+        return getOrders().contains(order);
+    }
+
+    /**
+     * returns the first action.
+     * 
+     * @return the first action.
+     */
+    public Action firstAction() {
+        return this.actions.get(0);
+    }
+
+    /**
+     * returns the last action.
+     * 
+     * @return the last action.
+     */
+    public Action lastAction() {
+        return this.actions.get(this.actions.size() - 1);
     }
 }

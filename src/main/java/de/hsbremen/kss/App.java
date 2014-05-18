@@ -34,6 +34,8 @@ import de.hsbremen.kss.construction.SavingsTourConstruction;
 import de.hsbremen.kss.construction.SweepConstruction;
 import de.hsbremen.kss.gui.MainFrame;
 import de.hsbremen.kss.model.Plan;
+import de.hsbremen.kss.simpleconstruction.PerfectSimpleConstruction;
+import de.hsbremen.kss.simpleconstruction.SimpleConstruction;
 import de.hsbremen.kss.timing.ConstructionTimeMeasuring;
 import de.hsbremen.kss.validate.SimpleValidator;
 import de.hsbremen.kss.validate.Validator;
@@ -131,14 +133,16 @@ public final class App {
 
         final Validator validator = new SimpleValidator();
 
-        final Construction nearestNeighbor = new NearestNeighbor();
+        final SimpleConstruction simpleConstruction = new PerfectSimpleConstruction();
+
+        final Construction nearestNeighbor = new NearestNeighbor(simpleConstruction);
         final Construction savingsContruction = new SavingsContruction();
         final Construction savingsTourConstruction = new SavingsTourConstruction();
-        final Construction randomConstruction = new RandomConstruction();
-        final Construction radialConstruction = new SweepConstruction();
+        final Construction randomConstruction = new RandomConstruction(simpleConstruction);
+        final Construction radialConstruction = new SweepConstruction(simpleConstruction);
         final Construction missAbortMultipleRandomConstruction = new MissAbortMultipleConstruction(randomConstruction, App.MAX_MISSES);
         final CloneableConstruction fixMultipleRandomConstruction = new FixMultipleConstruction(randomConstruction, App.NUM_OF_RANDOM_PLANS);
-        final Construction multipleRadialConstruction = new MultipleSweepConstruction();
+        final Construction multipleRadialConstruction = new MultipleSweepConstruction(simpleConstruction);
         final Construction multipleSavingsConstruction = new MultipleSavingsConstruction();
         final Construction multipleSavingsTourConstruction = new MultipleSavingsTourConstruction();
         final MultithreadingConstruction multithreadingConstruction = new MultithreadingConstruction(fixMultipleRandomConstruction);
@@ -147,6 +151,7 @@ public final class App {
                 randomConstruction, fixMultipleRandomConstruction, missAbortMultipleRandomConstruction, savingsContruction,
                 multipleSavingsConstruction, savingsTourConstruction, multipleSavingsTourConstruction, multithreadingConstruction));
         final MultithreadingConstruction multiThreadAll = new MultithreadingConstruction(new ArrayList<>(allConstructions));
+
         allConstructions.add(multiThreadAll);
 
         final ArrayList<ConstructionTimeMeasuring> timeMeasuringTasks = new ArrayList<>(allConstructions.size());

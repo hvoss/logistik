@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -354,5 +355,44 @@ public final class Station {
             return false;
         }
         return true;
+    }
+
+    /**
+     * calculates the length of a route.
+     * 
+     * @param route
+     *            route to calculate
+     * @return length of the route
+     */
+    public static double length(final List<Station> route) {
+        double length = 0;
+        Station actualStation = null;
+
+        for (final Station station : route) {
+            if (actualStation != null) {
+                length += actualStation.distance(station);
+            }
+            actualStation = station;
+        }
+
+        return length;
+    }
+
+    /**
+     * returns the nearest station out of a collection of stations.
+     * 
+     * @param stations
+     *            stations to be analyzed
+     * @return the nearest station
+     */
+    public Station nearestStation(final Collection<Station> stations) {
+        Station nearestStation = null;
+        for (final Station station : stations) {
+            if (nearestStation == null || distance(station) < distance(nearestStation)) {
+                nearestStation = station;
+            }
+        }
+
+        return nearestStation;
     }
 }

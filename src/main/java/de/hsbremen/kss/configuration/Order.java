@@ -113,6 +113,24 @@ public final class Order {
     }
 
     /**
+     * Gets the source.
+     * 
+     * @return the source
+     */
+    public OrderStation getSource() {
+        return this.source;
+    }
+
+    /**
+     * Gets the destination.
+     * 
+     * @return the destination
+     */
+    public OrderStation getDestination() {
+        return this.destination;
+    }
+
+    /**
      * adds a item to the order.
      * 
      * @param item
@@ -152,11 +170,6 @@ public final class Order {
      */
     public Integer weightOfProducts() {
         return Item.aggregateWeight(this.items);
-    }
-
-    @Override
-    public String toString() {
-        return this.name + " (id: " + this.id + ", weight: " + weightOfProducts() + ")";
     }
 
     /**
@@ -227,7 +240,7 @@ public final class Order {
      *            maximum weight (inclusive) of an order.
      * @return a set of orders with the maximum given weight
      */
-    public static Set<Order> filterOrderByWeight(final Collection<Order> orderToFilter, final Integer maxWeight) {
+    public static Set<Order> filterOrdersByWeight(final Collection<Order> orderToFilter, final Integer maxWeight) {
         final Set<Order> filteredOrders = new HashSet<>();
 
         for (final Order order : orderToFilter) {
@@ -237,6 +250,74 @@ public final class Order {
         }
 
         return filteredOrders;
+    }
+
+    /**
+     * calculates the complete unload duration.
+     * 
+     * @param orders
+     *            orders used for calculation.
+     * @return the complete unload duration
+     */
+    public static double completeUnloadDuration(final Iterable<Order> orders) {
+        double duration = 0;
+
+        for (final Order order : orders) {
+            duration += order.destination.getServiceTime();
+        }
+
+        return duration;
+    }
+
+    /**
+     * filters the given orders by its destination station.
+     * 
+     * @param orderToFilter
+     *            orders that should be filtered.
+     * @param station
+     *            station to search for.
+     * @return the filtered stations
+     */
+    public static Set<Order> filterOrdersByDestinationStation(final Iterable<Order> orderToFilter, final Station station) {
+        final Set<Order> filterdOrder = new HashSet<>();
+
+        for (final Order order : orderToFilter) {
+            if (order.getDestinationStation().equals(station)) {
+                filterdOrder.add(order);
+            }
+        }
+
+        return filterdOrder;
+    }
+
+    /**
+     * filters the given orders by its source station.
+     * 
+     * @param orderToFilter
+     *            orders that should be filtered.
+     * @param station
+     *            station to search for.
+     * @return the filtered stations
+     */
+    public static Set<Order> filterOrdersBySourceStation(final Iterable<Order> orderToFilter, final Station station) {
+        final Set<Order> filterdOrder = new HashSet<>();
+
+        for (final Order order : orderToFilter) {
+            if (order.getSourceStation().equals(station)) {
+                filterdOrder.add(order);
+            }
+        }
+
+        return filterdOrder;
+    }
+
+    /**
+     * calculates the complete service time.
+     * 
+     * @return the complete service time
+     */
+    public double serviceTime() {
+        return this.source.getServiceTime() + this.destination.getServiceTime();
     }
 
     @Override
@@ -269,21 +350,8 @@ public final class Order {
         return true;
     }
 
-    /**
-     * Gets the source.
-     * 
-     * @return the source
-     */
-    public OrderStation getSource() {
-        return this.source;
-    }
-
-    /**
-     * Gets the destination.
-     * 
-     * @return the destination
-     */
-    public OrderStation getDestination() {
-        return this.destination;
+    @Override
+    public String toString() {
+        return this.name + " (id: " + this.id + ", weight: " + weightOfProducts() + ")";
     }
 }

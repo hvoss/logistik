@@ -1,73 +1,56 @@
 package de.hsbremen.kss.construction;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.hsbremen.kss.configuration.Configuration;
 import de.hsbremen.kss.configuration.Order;
 import de.hsbremen.kss.configuration.Station;
 import de.hsbremen.kss.configuration.Vehicle;
-import de.hsbremen.kss.model.Plan;
 import de.hsbremen.kss.model.Tour;
-import de.hsbremen.kss.util.ConstructionUtils;
+import de.hsbremen.kss.simpleconstruction.SimpleConstruction;
 
-public class NearestNeighbor implements Construction {
+/**
+ * always goes to the nearest station.
+ * 
+ * @author henrik
+ * 
+ */
+public final class NearestNeighbor extends BaseConstruction {
 
+    /** logging interface */
     @SuppressWarnings("unused")
-    private static final Logger LOG = LoggerFactory.getLogger(NearestNeighbor.class);
+    private static final Logger LOG = LoggerFactory.getLogger(RandomConstruction.class);
+
+    /**
+     * ctor.
+     * 
+     * @param simpleConstruction
+     *            construction methods to find simple routes
+     */
+    public NearestNeighbor(final SimpleConstruction simpleConstruction) {
+        super(simpleConstruction);
+    }
 
     @Override
-    public Plan constructPlan(final Configuration configuration) {
-        final Plan plan = new Plan(NearestNeighbor.class);
-        final Vehicle vehicle = CollectionUtils.get(configuration.getVehicles(), 0);
-        final Tour tour = new Tour(vehicle);
-          
-        final Set<Order> orders = configuration.getOrders();
-        final Set<Order> visitedSourceOrders = new HashSet<>(orders.size());
-        final Set<Order> visitedDestinationOrders = new HashSet<>(orders.size());
+    protected Station nextStation(final Tour tour, final Collection<Station> stations) {
+        final Station actualStation = tour.actualStation();
 
-        Station startStation = vehicle.getSourceDepot();
-        
-        while (true) {
-            final Set<Station> processableStations = ConstructionUtils.processableStations(configuration.getOrders(), visitedSourceOrders,
-                    visitedDestinationOrders, tour);
-            
-            if (processableStations.isEmpty()) {
-                break;
-            }
-            
-            final Station rElement = startStation.findNearestStation(processableStations);
-            startStation = rElement;
-            final Set<Order> newSourceOrders = new HashSet<>(rElement.getSourceOrders());
-            final Set<Order> newDestinationOrders = new HashSet<>(rElement.getDestinationOrders());
-            newSourceOrders.removeAll(visitedSourceOrders);
-            newDestinationOrders.removeAll(visitedDestinationOrders);
+        return actualStation.nearestStation(stations);
+    }
 
-            // unload orders
-            final Collection<Order> destinationStationReached = CollectionUtils.intersection(visitedSourceOrders, newDestinationOrders);
-            visitedDestinationOrders.addAll(destinationStationReached);
+    @Override
+    protected Vehicle nextVehicle(final Collection<Vehicle> vehicle) {
+        return CollectionUtils.get(vehicle, 0);
+    }
 
-            tour.addDestinationOrders(destinationStationReached);
-
-            // Load new orders
-            for (final Order newSourceOrder : newSourceOrders) {
-                if (tour.freeSpace() >= newSourceOrder.weightOfProducts()) {
-                    tour.addSourceOrder(newSourceOrder);
-
-                    // order where the source station reached
-                    visitedSourceOrders.add(newSourceOrder);
-                }
-            }
-        }
-
-        plan.addTour(tour);
-
-        return plan;
+    @Override
+    protected List<Order> loadOrderSequence(final Collection<Order> orders) {
+        return new ArrayList<>(orders);
     }
 
     @Override

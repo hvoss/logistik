@@ -47,11 +47,26 @@ public final class SimpleValidator implements Validator {
             final List<Action> actions = tour.getActions();
             int weight = 0;
 
+            final Action firstAction = tour.firstAction();
+            final Action lastAction = tour.lastAction();
+
+            if (!(firstAction instanceof FromDepotAction)) {
+                SimpleValidator.LOG.warn("Tour #" + tour.getId() + ": " + firstAction.getClass().getSimpleName()
+                        + " is the first action, but it should be a " + FromDepotAction.class.getSimpleName() + " action");
+                allRight = false;
+            }
+
+            if (!(lastAction instanceof ToDepotAction)) {
+                SimpleValidator.LOG.warn("Tour #" + tour.getId() + ": " + lastAction.getClass().getSimpleName()
+                        + " is the last action, but it should be a " + ToDepotAction.class.getSimpleName() + " action");
+                allRight = false;
+            }
+
             if (tour.freeTime() < 0) {
-                final double duration = Precision.round(tour.duration(), 2);
+                final double duration = Precision.round(tour.actualDuration(), 2);
                 final double maxTimespan = Precision.round(vehicle.getTimeWindow().timespan(), 2);
-                SimpleValidator.LOG
-                        .warn("The tour " + tour + " took " + duration + " hours. But it must take a maximum of " + maxTimespan + " hours");
+                SimpleValidator.LOG.warn("Tour #" + tour.getId() + " took " + duration + " hours. But it must take a maximum of " + maxTimespan
+                        + " hours");
                 allRight = false;
             }
 
@@ -60,14 +75,15 @@ public final class SimpleValidator implements Validator {
                 if (action instanceof FromDepotAction) {
                     final FromDepotAction fromDepotAction = (FromDepotAction) action;
                     if (i > 0) {
-                        SimpleValidator.LOG.warn(fromDepotAction + " is not the first action, it is action no: " + i);
+                        SimpleValidator.LOG
+                                .warn("Tour #" + tour.getId() + ": " + fromDepotAction + " is not the first action, it is action no: " + i);
                         allRight = false;
                     }
 
                 } else if (action instanceof ToDepotAction) {
                     final ToDepotAction toDepotAction = (ToDepotAction) action;
                     if (i - 1 == actions.size()) {
-                        SimpleValidator.LOG.warn(toDepotAction + " is not the last action, it is action no: " + i);
+                        SimpleValidator.LOG.warn("Tour #" + tour.getId() + ": " + toDepotAction + " is not the last action, it is action no: " + i);
                         allRight = false;
                     }
 
@@ -80,8 +96,8 @@ public final class SimpleValidator implements Validator {
 
                     weight += orderLoadAction.getOrder().weightOfProducts();
                     if (weight > vehicle.maxCapacityWeight()) {
-                        SimpleValidator.LOG.warn("vehicle " + vehicle + " overloaded (weight: " + weight + ", max: " + vehicle.maxCapacityWeight()
-                                + ") on " + orderLoadAction);
+                        SimpleValidator.LOG.warn("Tour #" + tour.getId() + ": " + "vehicle " + vehicle + " overloaded (weight: " + weight + ", max: "
+                                + vehicle.maxCapacityWeight() + ") on " + orderLoadAction);
                         allRight = false;
                     }
 
@@ -91,17 +107,18 @@ public final class SimpleValidator implements Validator {
                     weight -= orderUnloadAction.getOrder().weightOfProducts();
 
                     if (!visitedSourceOrders.contains(orderUnloadAction.getOrder())) {
-                        SimpleValidator.LOG.warn(orderUnloadAction + " performed before " + OrderLoadAction.class.getSimpleName());
+                        SimpleValidator.LOG.warn("Tour #" + tour.getId() + ": " + orderUnloadAction + " performed before "
+                                + OrderLoadAction.class.getSimpleName());
                         allRight = false;
                     }
 
                     if (!visitedDestinationOrders.add(orderUnloadAction.getOrder())) {
-                        SimpleValidator.LOG.warn(orderUnloadAction + " performed multiple times");
+                        SimpleValidator.LOG.warn("Tour #" + tour.getId() + ": " + orderUnloadAction + " performed multiple times");
                         allRight = false;
                     }
 
                 } else {
-                    throw new IllegalStateException("unknown action type: " + action.getClass());
+                    throw new IllegalStateException("Tour #" + tour.getId() + ": " + "unknown action type: " + action.getClass());
                 }
             }
         }
@@ -115,7 +132,8 @@ public final class SimpleValidator implements Validator {
         }
 
         for (final Order order : notVisitedDestinationOrders) {
-            SimpleValidator.LOG.warn("destination order \"" + order + "\" not visited");
+            final Tour tour = plan.associatedTour(order);
+            SimpleValidator.LOG.warn("destination order \"" + order + "\" not visited on tour #" + tour.getId());
             allRight = false;
         }
 

@@ -35,7 +35,7 @@ public class SavingsTourConstruction implements Construction {
 		
 		final Vehicle vehicle = CollectionUtils.get(configuration.getVehicles(), 0);
         final Station depot = vehicle.getSourceDepot();
-        final Tour tour = new Tour(vehicle);
+        final Tour tour = plan.newTour(vehicle);
 		
         final Set<Order> configurationOrders = new HashSet<>(configuration.getOrders());
         final Set<Order> visitedOrders = new HashSet<>(configurationOrders.size());
