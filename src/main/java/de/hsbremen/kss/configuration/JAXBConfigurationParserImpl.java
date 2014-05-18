@@ -17,9 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.hsbremen.kss.common.exception.DuplicateIdException;
-import de.hsbremen.kss.xml.CapacityElement;
 import de.hsbremen.kss.xml.ConfigurationElement;
-import de.hsbremen.kss.xml.ItemElement;
 import de.hsbremen.kss.xml.OrderElement;
 import de.hsbremen.kss.xml.OrderStationElement;
 import de.hsbremen.kss.xml.ProductElement;
@@ -134,24 +132,7 @@ public final class JAXBConfigurationParserImpl implements ConfigurationParser {
             for (int i = 0; i < element.getNumber(); i++) {
                 final Vehicle vehicle = convert(element, i);
                 addVehicle(vehicle);
-
-                convertCapacities(element.getCapacities(), vehicle);
             }
-        }
-    }
-
-    /**
-     * converts the XML capacities.
-     * 
-     * @param capacities
-     *            the XML-capacities.
-     * @param vehicle
-     *            the vehicle to which the capacities belongs to
-     */
-    private void convertCapacities(final Collection<CapacityElement> capacities, final Vehicle vehicle) {
-        for (final CapacityElement capacityElement : capacities) {
-            final Capacity capacity = convert(capacityElement, vehicle);
-            vehicle.addCapacity(capacity);
         }
     }
 
@@ -244,20 +225,9 @@ public final class JAXBConfigurationParserImpl implements ConfigurationParser {
         final OrderStation source = convert(element.getSource());
         final OrderStation destination = convert(element.getDestination());
 
-        final Order order = new Order(element.getId(), element.getName(), source, destination);
+        final Product product = getProduct(element.getProductId());
 
-        Validate.notNull(element.getItems(), "no items, order: " + order);
-        Validate.isTrue(!element.getItems().isEmpty(), "no items, order: " + order);
-
-        if (element.getItems() != null) {
-            for (final ItemElement itemElement : element.getItems()) {
-                final Item item = convert(itemElement, order);
-                order.addItem(item);
-            }
-        }
-
-        source.getStation().addSourceOrder(order);
-        destination.getStation().addDestinationOrder(order);
+        final Order order = new Order(element.getId(), element.getName(), source, destination, product, element.getAmount());
 
         return order;
     }
@@ -291,22 +261,6 @@ public final class JAXBConfigurationParserImpl implements ConfigurationParser {
     }
 
     /**
-     * converts an {@link ItemElement} into a {@link Item}.
-     * 
-     * @param element
-     *            XML-element to convert
-     * @param order
-     *            order the item belongs to
-     * 
-     * @return converted {@link Item}
-     */
-    private Item convert(final ItemElement element, final Order order) {
-        final Product product = getProduct(element.getProductId());
-
-        return new Item(order, product, element.getAmount());
-    }
-
-    /**
      * converts an {@link VehicleElement} into a {@link Vehicle}.
      * 
      * @param element
@@ -322,7 +276,9 @@ public final class JAXBConfigurationParserImpl implements ConfigurationParser {
 
         final TimeWindow timespan = convert(element.getTimespan());
 
-        return new Vehicle(id, element.getName(), sourceStation, destinationStation, element.getVelocity(), timespan);
+        final Product product = getProduct(element.getProductId());
+
+        return new Vehicle(id, element.getName(), sourceStation, destinationStation, element.getVelocity(), timespan, product, element.getCapacity());
     }
 
     /**
@@ -345,23 +301,7 @@ public final class JAXBConfigurationParserImpl implements ConfigurationParser {
      * @return converted {@link Order}
      */
     private Product convert(final ProductElement element) {
-        return new Product(element.getId(), element.getName(), element.getWeight());
-    }
-
-    /**
-     * converts an {@link CapacityElement} into a {@link Capacity}.
-     * 
-     * @param element
-     *            XML-element to convert
-     * @param vehicle
-     *            vehicle to which the capacity belongs to
-     * @return converted {@link Capacity}
-     */
-    private Capacity convert(final CapacityElement element, final Vehicle vehicle) {
-        final Integer capacity = element.getCapacityWeight();
-        final Boolean miscible = element.getMiscible();
-
-        return new Capacity(vehicle, capacity, miscible);
+        return new Product(element.getId(), element.getName());
     }
 
     /**

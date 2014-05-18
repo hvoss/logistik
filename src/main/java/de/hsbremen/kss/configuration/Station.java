@@ -197,33 +197,13 @@ public final class Station {
             final Set<Product> sourceProducts = new HashSet<>();
 
             for (final Order order : this.sourceOrders) {
-                final Set<Product> products = order.getProducts();
-                sourceProducts.addAll(products);
+                sourceProducts.add(order.getProduct());
             }
 
             this.sourceProductsCache.setCollection(sourceProducts);
         }
 
         return this.sourceProductsCache.getCollection();
-    }
-
-    /**
-     * Gets the destination products.
-     * 
-     * @return the destination products
-     */
-    public Set<Product> getDestinationProducts() {
-        if (!this.destinationProductsCache.isValid()) {
-            final Set<Product> destinationProducts = new HashSet<>();
-
-            for (final Order order : this.destinationOrders) {
-                final Set<Product> products = order.getProducts();
-                destinationProducts.addAll(products);
-            }
-            this.destinationProductsCache.setCollection(destinationProducts);
-        }
-
-        return this.destinationProductsCache.getCollection();
     }
 
     /**

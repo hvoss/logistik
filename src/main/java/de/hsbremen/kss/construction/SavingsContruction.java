@@ -96,7 +96,7 @@ public class SavingsContruction implements Construction {
 
             // Load new orders
             for (final Order newSourceOrder : newSourceOrders) {
-                if (tour.freeSpace() >= newSourceOrder.weightOfProducts()) {
+                if (tour.freeAmount() >= newSourceOrder.getAmount()) {
                     tour.addSourceOrder(newSourceOrder);
 
                     // order where the source station reached

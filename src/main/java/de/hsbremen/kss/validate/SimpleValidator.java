@@ -45,7 +45,7 @@ public final class SimpleValidator implements Validator {
         for (final Tour tour : plan.getTours()) {
             final Vehicle vehicle = tour.getVehicle();
             final List<Action> actions = tour.getActions();
-            int weight = 0;
+            int amount = 0;
 
             final Action firstAction = tour.firstAction();
             final Action lastAction = tour.lastAction();
@@ -89,22 +89,29 @@ public final class SimpleValidator implements Validator {
 
                 } else if (action instanceof OrderLoadAction) {
                     final OrderLoadAction orderLoadAction = (OrderLoadAction) action;
+                    final Order order = orderLoadAction.getOrder();
                     if (!visitedSourceOrders.add(orderLoadAction.getOrder())) {
-                        SimpleValidator.LOG.warn(orderLoadAction + " performed multiple times");
+                        SimpleValidator.LOG.warn("Tour #" + tour.getId() + ": " + orderLoadAction + " performed multiple times");
                         allRight = false;
                     }
 
-                    weight += orderLoadAction.getOrder().weightOfProducts();
-                    if (weight > vehicle.maxCapacityWeight()) {
-                        SimpleValidator.LOG.warn("Tour #" + tour.getId() + ": " + "vehicle " + vehicle + " overloaded (weight: " + weight + ", max: "
-                                + vehicle.maxCapacityWeight() + ") on " + orderLoadAction);
+                    if (!vehicle.canTransport(order)) {
+                        SimpleValidator.LOG.warn("Tour #" + tour.getId() + ": vehicle " + vehicle + " can't transport " + order.getProduct()
+                                + ". It can transport only " + vehicle.getProduct() + "!");
+                        allRight = false;
+                    }
+
+                    amount += orderLoadAction.getOrder().getAmount();
+                    if (amount > vehicle.getCapacity()) {
+                        SimpleValidator.LOG.warn("Tour #" + tour.getId() + ": " + "vehicle " + vehicle + " overloaded (amount: " + amount + ", max: "
+                                + vehicle.getCapacity() + ") on " + orderLoadAction);
                         allRight = false;
                     }
 
                 } else if (action instanceof OrderUnloadAction) {
                     final OrderUnloadAction orderUnloadAction = (OrderUnloadAction) action;
 
-                    weight -= orderUnloadAction.getOrder().weightOfProducts();
+                    amount -= orderUnloadAction.getOrder().getAmount();
 
                     if (!visitedSourceOrders.contains(orderUnloadAction.getOrder())) {
                         SimpleValidator.LOG.warn("Tour #" + tour.getId() + ": " + orderUnloadAction + " performed before "

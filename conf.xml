@@ -19,12 +19,8 @@
 				</TimeWindow>
 				<ServiceTime>0.25</ServiceTime>
 			</Destination>
-			<Items>
-				<Item>
-					<ProductId>1</ProductId>
-					<Amount>200</Amount>
-				</Item>
-			</Items>
+			<ProductId>1</ProductId>
+			<Amount>200</Amount>
 		</Order>
 		<Order id="2">
 			<Name>Osnabrück nach Neißeaue</Name>
@@ -44,12 +40,8 @@
 				</TimeWindow>
 				<ServiceTime>0.25</ServiceTime>
 			</Destination>
-			<Items>
-				<Item>
-					<ProductId>2</ProductId>
-					<Amount>250</Amount>
-				</Item>
-			</Items>
+			<ProductId>2</ProductId>
+			<Amount>250</Amount>
 		</Order>
 		<Order id="3">
 			<Name>Neißeaue nach Hannover</Name>
@@ -69,12 +61,8 @@
 				</TimeWindow>
 				<ServiceTime>0.25</ServiceTime>
 			</Destination>
-			<Items>
-				<Item>
-					<ProductId>3</ProductId>
-					<Amount>500</Amount>
-				</Item>
-			</Items>
+			<ProductId>1</ProductId>
+			<Amount>500</Amount>
 		</Order>
 		<Order id="4">
 			<Name>Ellenbogen nach Bremen</Name>
@@ -94,12 +82,8 @@
 				</TimeWindow>
 				<ServiceTime>0.25</ServiceTime>
 			</Destination>
-			<Items>
-				<Item>
-					<ProductId>4</ProductId>
-					<Amount>50</Amount>
-				</Item>
-			</Items>
+			<ProductId>1</ProductId>
+			<Amount>50</Amount>
 		</Order>
 		<Order id="5">
 			<Name>München nach Hamburg</Name>
@@ -119,12 +103,8 @@
 				</TimeWindow>
 				<ServiceTime>0.25</ServiceTime>
 			</Destination>
-			<Items>
-				<Item>
-					<ProductId>5</ProductId>
-					<Amount>100</Amount>
-				</Item>
-			</Items>
+			<ProductId>2</ProductId>
+			<Amount>100</Amount>
 		</Order>
 		<Order id="6">
 			<Name>Hamburg nach München</Name>
@@ -144,20 +124,8 @@
 				</TimeWindow>
 				<ServiceTime>0.25</ServiceTime>
 			</Destination>
-			<Items>
-				<Item>
-					<ProductId>1</ProductId>
-					<Amount>75</Amount>
-				</Item>
-				<Item>
-					<ProductId>2</ProductId>
-					<Amount>125</Amount>
-				</Item>
-				<Item>
-					<ProductId>3</ProductId>
-					<Amount>150</Amount>
-				</Item>
-			</Items>
+			<ProductId>2</ProductId>
+			<Amount>125</Amount>
 		</Order>
 		<Order id="7">
 			<Name>Hannover -> Hamburg</Name>
@@ -177,12 +145,8 @@
 				</TimeWindow>
 				<ServiceTime>0.25</ServiceTime>
 			</Destination>
-			<Items>
-				<Item>
-					<ProductId>5</ProductId>
-					<Amount>50</Amount>
-				</Item>
-			</Items>
+			<ProductId>1</ProductId>
+			<Amount>50</Amount>
 		</Order>
 		<Order id="8">
 			<Name>Hannover -> München</Name>
@@ -202,12 +166,8 @@
 				</TimeWindow>
 				<ServiceTime>0.25</ServiceTime>
 			</Destination>
-			<Items>
-				<Item>
-					<ProductId>5</ProductId>
-					<Amount>60</Amount>
-				</Item>
-			</Items>
+			<ProductId>1</ProductId>
+			<Amount>60</Amount>
 		</Order>
 		<Order id="9">
 			<Name>Hannover -> Osnabrück</Name>
@@ -227,12 +187,8 @@
 				</TimeWindow>
 				<ServiceTime>0.25</ServiceTime>
 			</Destination>
-			<Items>
-				<Item>
-					<ProductId>5</ProductId>
-					<Amount>10</Amount>
-				</Item>
-			</Items>
+			<ProductId>1</ProductId>
+			<Amount>10</Amount>
 		</Order>
 		<Order id="10">
 			<Name>Hannover -> Berlin</Name>
@@ -252,12 +208,8 @@
 				</TimeWindow>
 				<ServiceTime>0.25</ServiceTime>
 			</Destination>
-			<Items>
-				<Item>
-					<ProductId>5</ProductId>
-					<Amount>5</Amount>
-				</Item>
-			</Items>
+			<ProductId>2</ProductId>
+			<Amount>5</Amount>
 		</Order>
 		<Order id="11">
 			<Name>Hannover -> Ellenbogen</Name>
@@ -277,12 +229,8 @@
 				</TimeWindow>
 				<ServiceTime>0.25</ServiceTime>
 			</Destination>
-			<Items>
-				<Item>
-					<ProductId>5</ProductId>
-					<Amount>100</Amount>
-				</Item>
-			</Items>
+			<ProductId>2</ProductId>
+			<Amount>100</Amount>
 		</Order>
 		<Order id="12">
 			<Name>Hannover -> Neißeaue</Name>
@@ -302,12 +250,8 @@
 				</TimeWindow>
 				<ServiceTime>0.25</ServiceTime>
 			</Destination>
-			<Items>
-				<Item>
-					<ProductId>5</ProductId>
-					<Amount>70</Amount>
-				</Item>
-			</Items>
+			<ProductId>1</ProductId>
+			<Amount>70</Amount>
 		</Order>
 		<Order id="13">
 			<Name>Hannover -> Bremen</Name>
@@ -327,42 +271,11 @@
 				</TimeWindow>
 				<ServiceTime>0.25</ServiceTime>
 			</Destination>
-			<Items>
-				<Item>
-					<ProductId>5</ProductId>
-					<Amount>20</Amount>
-				</Item>
-			</Items>
+			<ProductId>1</ProductId>
+			<Amount>20</Amount>
 		</Order>
-		<!-- 
-		<Order id="14">
-			<Name>Impossible</Name>
-			<Source>
-				<StationId>3</StationId>
-				<TimeWindow>
-					<Start>8</Start>
-					<End>17</End>
-				</TimeWindow>
-				<ServiceTime>0.25</ServiceTime>
-			</Source>
-			<Destination>
-				<StationId>1</StationId>
-				<TimeWindow>
-					<Start>8</Start>
-					<End>17</End>
-				</TimeWindow>
-				<ServiceTime>0.25</ServiceTime>
-			</Destination>
-			<Items>
-				<Item>
-					<ProductId>5</ProductId>
-					<Amount>200</Amount>
-				</Item>
-			</Items>
-		</Order>
-		 -->
 	</Orders>
-		
+
 	<Stations>
 		<Station id="1">
 			<Name>Bremen</Name>
@@ -405,7 +318,7 @@
 			<YCoordinate>448</YCoordinate>
 		</Station>
 	</Stations>
-	
+
 	<Vehicles>
 		<Vehicle id="1">
 			<Name>VW Bus</Name>
@@ -417,72 +330,30 @@
 				<Start>8</Start>
 				<End>28</End>
 			</Timespan>
-			<Capacities>
-				<Capacity>
-					<CapacityWeight>2500</CapacityWeight>
-					<Miscible>true</Miscible>
-					<Products>
-						<ProductId>1</ProductId>
-						<ProductId>2</ProductId>
-						<ProductId>3</ProductId>
-					</Products>
-				</Capacity>
-			</Capacities>
+			<ProductId>1</ProductId>
+			<Capacity>1000</Capacity>
 		</Vehicle>
-		<!-- 
 		<Vehicle id="2">
-			<Name>Tankwagen mit Anhänger</Name>
-			<SourceDepotId>6</SourceDepotId>
+			<Name>LKW</Name>
+			<SourceDepotId>4</SourceDepotId>
+			<DestinationDepotId>4</DestinationDepotId>
 			<Velocity>60</Velocity>
-			<DestinationDepotId>6</DestinationDepotId>
-			<Number>2</Number>
+			<Number>50</Number>
 			<Timespan>
 				<Start>8</Start>
-				<End>17</End>
+				<End>28</End>
 			</Timespan>
-			<Capacities>
-				<Capacity>
-					<CapacityWeight>1000</CapacityWeight>
-					<Miscible>true</Miscible>
-					<Products>
-						<ProductId>1</ProductId>
-						<ProductId>2</ProductId>
-						<ProductId>3</ProductId>
-					</Products>
-				</Capacity>
-				<Capacity>
-					<CapacityWeight>400</CapacityWeight>
-					<Miscible>false</Miscible>
-					<Products>
-						<ProductId>4</ProductId>
-						<ProductId>5</ProductId>
-					</Products>
-				</Capacity>
-			</Capacities>
+			<ProductId>2</ProductId>
+			<Capacity>1000</Capacity>
 		</Vehicle>
-		 -->
 	</Vehicles>
 
 	<Products>
 		<Product id="1">
 			<Name>Snickers</Name>
-			<Weight>1</Weight>
 		</Product>
 		<Product id="2">
 			<Name>Mars</Name>
-			<Weight>1</Weight>
-		</Product>
-		<Product id="3">
-			<Name>Cola</Name>
-			<Weight>5</Weight>
-		</Product>
-		<Product id="4">
-			<Name>Diesel</Name>
-			<Weight>20</Weight>
-		</Product>
-		<Product id="5">
-			<Name>Benzin</Name>
-			<Weight>21</Weight>
 		</Product>
 	</Products>
 </Configuration>

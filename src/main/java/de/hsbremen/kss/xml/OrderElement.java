@@ -1,12 +1,9 @@
 package de.hsbremen.kss.xml;
 
-import java.util.List;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "Order")
@@ -29,10 +26,13 @@ public class OrderElement {
     @XmlElement(name = "Destination")
     private OrderStationElement destination;
 
-    /** a list of all stations */
-    @XmlElementWrapper(name = "Items")
-    @XmlElement(name = "Item")
-    private List<ItemElement> items;
+    /** id of a product */
+    @XmlElement(name = "ProductId")
+    private Integer productId;
+
+    /** number of products */
+    @XmlElement(name = "Amount")
+    private Integer amount;
 
     public Integer getId() {
         return this.id;
@@ -48,14 +48,6 @@ public class OrderElement {
 
     public void setName(final String name) {
         this.name = name;
-    }
-
-    public List<ItemElement> getItems() {
-        return this.items;
-    }
-
-    public void setItems(final List<ItemElement> items) {
-        this.items = items;
     }
 
     public OrderStationElement getSource() {
@@ -74,10 +66,20 @@ public class OrderElement {
         this.destination = destination;
     }
 
-    @Override
-    public String toString() {
-        return "OrderElement [id=" + this.id + ", name=" + this.name + ", source=" + this.source + ", destination=" + this.destination + ", items="
-                + this.items + "]";
+    public Integer getProductId() {
+        return this.productId;
+    }
+
+    public void setProductId(final Integer productId) {
+        this.productId = productId;
+    }
+
+    public Integer getAmount() {
+        return this.amount;
+    }
+
+    public void setAmount(final Integer amount) {
+        this.amount = amount;
     }
 
 }

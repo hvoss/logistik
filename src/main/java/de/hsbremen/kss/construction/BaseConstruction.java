@@ -1,6 +1,5 @@
 package de.hsbremen.kss.construction;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -41,13 +40,14 @@ public abstract class BaseConstruction implements Construction {
     public final Plan constructPlan(final Configuration configuration) {
         final Plan plan = new Plan(getClass());
 
-        final List<Vehicle> vehicles = new ArrayList<>(configuration.getVehicles());
+        final Set<Vehicle> vehicles = new HashSet<>(configuration.getVehicles());
 
         final Set<Order> availableOrders = new HashSet<>(configuration.getOrders());
 
         while (!availableOrders.isEmpty()) {
             final Vehicle vehicle = nextVehicle(vehicles);
             final Tour tour = plan.newTour(vehicle);
+            vehicles.remove(vehicle);
             tour.leafSourceDepot();
 
             while (true) {
@@ -137,7 +137,7 @@ public abstract class BaseConstruction implements Construction {
      * @return true: it is possible to load the order.
      */
     private boolean orderIncludePossible(final Tour tour, final Order order) {
-        if (tour.freeSpace() < order.weightOfProducts()) {
+        if (tour.freeAmount() < order.getAmount()) {
             return false;
         }
 

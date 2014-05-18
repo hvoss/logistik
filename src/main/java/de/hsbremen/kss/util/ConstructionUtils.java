@@ -37,7 +37,7 @@ public class ConstructionUtils {
             final Tour tourSoFar) {
         final Set<Order> notVisitedSourceOrders = new HashSet<>(allOrders);
         notVisitedSourceOrders.removeAll(visitedSourceOrders);
-        return Order.filterOrdersByWeight(notVisitedSourceOrders, tourSoFar.freeSpace());
+        return Order.filterOrdersByAmount(notVisitedSourceOrders, tourSoFar.freeAmount());
     }
 
     public static Set<Order> processableDestinationOrders(final Collection<Order> allOrders, final Collection<Order> visitedSourceOrders,

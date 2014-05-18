@@ -1,9 +1,5 @@
 package de.hsbremen.kss.configuration;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
-
 import org.apache.commons.lang3.Validate;
 
 /**
@@ -30,10 +26,10 @@ public final class Vehicle {
     private final TimeWindow timewindow;
 
     /** the capacities. */
-    private final Set<Capacity> capacities;
+    private final Product product;
 
-    /** capacities wrapped by a {@link Collections#unmodifiableSet(Set)} */
-    private final Set<Capacity> umCapacities;
+    /** the capacity */
+    private final Integer capacity;
 
     /**
      * Instantiates a new vehicle.
@@ -50,15 +46,21 @@ public final class Vehicle {
      *            the velocity (km/h)
      * @param timewindow
      *            the timespan
+     * @param product
+     *            the product
+     * @param capacity
+     *            the capacity
      */
     Vehicle(final String id, final String name, final Station sourceDepot, final Station destinationDepot, final Double velocity,
-            final TimeWindow timewindow) {
+            final TimeWindow timewindow, final Product product, final Integer capacity) {
         Validate.notNull(id, "id is null");
         Validate.notNull(name, "name is null");
         Validate.notNull(sourceDepot, "sourceDepot is null");
         Validate.notNull(destinationDepot, "destinationDepot is null");
         Validate.notNull(velocity, "velocity is null");
         Validate.notNull(timewindow, "timewindow is null");
+        Validate.notNull(product, "product is null");
+        Validate.notNull(capacity, "capacity is null");
 
         this.id = id;
         this.name = name;
@@ -66,9 +68,8 @@ public final class Vehicle {
         this.destinationDepot = destinationDepot;
         this.velocity = velocity;
         this.timewindow = timewindow;
-        this.capacities = new HashSet<>();
-
-        this.umCapacities = Collections.unmodifiableSet(this.capacities);
+        this.product = product;
+        this.capacity = capacity;
     }
 
     /**
@@ -105,43 +106,6 @@ public final class Vehicle {
      */
     public Station getDestinationDepot() {
         return this.destinationDepot;
-    }
-
-    /**
-     * Gets the capacities.
-     * 
-     * @return the capacities
-     */
-    public Set<Capacity> getCapacities() {
-        return this.umCapacities;
-    }
-
-    /**
-     * adds a capacity
-     * 
-     * @param capacity
-     *            capacity to add
-     */
-    public void addCapacity(final Capacity capacity) {
-        Validate.notNull(capacity);
-        if (!this.capacities.add(capacity)) {
-            throw new IllegalStateException("vehicle " + this.name + " already contain the given capacity: " + capacity);
-        }
-    }
-
-    /**
-     * returns the maximum capacity weight of the whole vehicle.
-     * 
-     * @return the maximum capacity weight of the whole vehicle
-     */
-    public Integer maxCapacityWeight() {
-        int maxWeight = 0;
-
-        for (final Capacity capacity : this.capacities) {
-            maxWeight += capacity.getCapacityWeight();
-        }
-
-        return maxWeight;
     }
 
     @Override
@@ -220,5 +184,34 @@ public final class Vehicle {
      */
     public Double getVelocity() {
         return this.velocity;
+    }
+
+    /**
+     * Gets the capacities.
+     * 
+     * @return the capacities
+     */
+    public Product getProduct() {
+        return this.product;
+    }
+
+    /**
+     * Gets the capacity.
+     * 
+     * @return the capacity
+     */
+    public Integer getCapacity() {
+        return this.capacity;
+    }
+
+    /**
+     * checks if the order could be transported with this vehicle.
+     * 
+     * @param order
+     *            order to check
+     * @return true: order could be transported with this vehicle.
+     */
+    public boolean canTransport(final Order order) {
+        return this.product.equals(order.getProduct());
     }
 }

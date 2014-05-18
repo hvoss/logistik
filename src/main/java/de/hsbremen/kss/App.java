@@ -122,7 +122,7 @@ public final class App {
         Station.logDistancesBetweenStations(firstVehicle, configuration.getStations());
 
         for (final Order order : configuration.getOrders()) {
-            App.LOG.info(order.getName() + ": " + order.getProducts());
+            App.LOG.info(order.getName() + ": " + order.getProduct());
         }
 
         for (final Station station : configuration.getStations()) {

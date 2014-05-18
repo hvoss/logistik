@@ -1,12 +1,12 @@
 package de.hsbremen.kss.configuration;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.commons.lang3.Validate;
 
+// TODO: Auto-generated Javadoc
 /**
  * represents a order of a customer.
  * 
@@ -21,20 +21,17 @@ public final class Order {
     /** the name. */
     private final String name;
 
-    /** the source */
+    /** the source. */
     private final OrderStation source;
 
-    /** the destination */
+    /** the destination. */
     private final OrderStation destination;
 
-    /** all items. */
-    private final Set<Item> items;
+    /** the product. */
+    private final Product product;
 
-    /** all items wrapped by a {@link Collections#unmodifiableSet(Set)} */
-    private final Set<Item> umItems;
-
-    /** a cache of the products */
-    private final CollectionCache<Set<Product>, Product> productsCache;
+    /** the amount. */
+    private final Integer amount;
 
     /**
      * Instantiates a new order.
@@ -47,24 +44,30 @@ public final class Order {
      *            the source
      * @param destination
      *            the destination
+     * @param product
+     *            the product
+     * @param amount
+     *            the amount
      */
-    Order(final Integer id, final String name, final OrderStation source, final OrderStation destination) {
+    Order(final Integer id, final String name, final OrderStation source, final OrderStation destination, final Product product, final Integer amount) {
         Validate.notNull(id, "id is null");
         Validate.notNull(name, "name is null");
         Validate.notNull(source, "source station is null");
         Validate.notNull(destination, "destination station is null");
+        Validate.notNull(product, "product station is null");
+        Validate.notNull(amount, "amount station is null");
 
         this.id = id;
         this.name = name;
         this.source = source;
         this.destination = destination;
-        this.items = new HashSet<>();
-        this.umItems = Collections.unmodifiableSet(this.items);
-
         this.source.setOrder(this);
         this.destination.setOrder(this);
+        this.product = product;
+        this.amount = amount;
 
-        this.productsCache = new CollectionCache<Set<Product>, Product>();
+        source.getStation().addSourceOrder(this);
+        destination.getStation().addDestinationOrder(this);
     }
 
     /**
@@ -104,15 +107,6 @@ public final class Order {
     }
 
     /**
-     * Gets the all items.
-     * 
-     * @return the all items
-     */
-    public Set<Item> getItems() {
-        return this.umItems;
-    }
-
-    /**
      * Gets the source.
      * 
      * @return the source
@@ -131,45 +125,21 @@ public final class Order {
     }
 
     /**
-     * adds a item to the order.
+     * Gets the product.
      * 
-     * @param item
-     *            item to add
+     * @return the product
      */
-    void addItem(final Item item) {
-        Validate.notNull(item, "item is null");
-        if (!this.items.add(item)) {
-            throw new IllegalStateException("order " + this.name + " already contain the given item: " + item);
-        }
-        this.productsCache.clearCache();
+    public Product getProduct() {
+        return this.product;
     }
 
     /**
-     * Gets the products.
+     * Gets the amount.
      * 
-     * @return the products
+     * @return the amount
      */
-    public Set<Product> getProducts() {
-        if (!this.productsCache.isValid()) {
-            final Set<Product> products = new HashSet<>(this.items.size());
-
-            for (final Item item : this.items) {
-                products.add(item.getProduct());
-            }
-
-            this.productsCache.setCollection(products);
-        }
-
-        return this.productsCache.getCollection();
-    }
-
-    /**
-     * returns the weight of all products.
-     * 
-     * @return weight of all products.
-     */
-    public Integer weightOfProducts() {
-        return Item.aggregateWeight(this.items);
+    public Integer getAmount() {
+        return this.amount;
     }
 
     /**
@@ -236,15 +206,15 @@ public final class Order {
      * 
      * @param orderToFilter
      *            orders to filter
-     * @param maxWeight
-     *            maximum weight (inclusive) of an order.
+     * @param maxAmount
+     *            maximum amount (inclusive) of an order.
      * @return a set of orders with the maximum given weight
      */
-    public static Set<Order> filterOrdersByWeight(final Collection<Order> orderToFilter, final Integer maxWeight) {
+    public static Set<Order> filterOrdersByAmount(final Collection<Order> orderToFilter, final Integer maxAmount) {
         final Set<Order> filteredOrders = new HashSet<>();
 
         for (final Order order : orderToFilter) {
-            if (order.weightOfProducts() <= maxWeight) {
+            if (order.amount <= maxAmount) {
                 filteredOrders.add(order);
             }
         }
@@ -352,6 +322,6 @@ public final class Order {
 
     @Override
     public String toString() {
-        return this.name + " (id: " + this.id + ", weight: " + weightOfProducts() + ")";
+        return this.name + " (id: " + this.id + ", product: " + this.product + ", amount: " + this.amount + ")";
     }
 }

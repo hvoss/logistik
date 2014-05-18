@@ -1,12 +1,9 @@
 package de.hsbremen.kss.xml;
 
-import java.util.List;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "Vehicle")
@@ -29,9 +26,11 @@ public class VehicleElement {
     @XmlElement(name = "DestinationDepotId")
     private Integer destinationDepotId;
 
-    @XmlElementWrapper(name = "Capacities")
+    @XmlElement(name = "ProductId")
+    private Integer productId;
+
     @XmlElement(name = "Capacity")
-    private List<CapacityElement> capacities;
+    private Integer capacity;
 
     @XmlElement(name = "Timespan")
     private TimeWindowElement timespan;
@@ -79,14 +78,6 @@ public class VehicleElement {
         this.destinationDepotId = destinationDepotId;
     }
 
-    public List<CapacityElement> getCapacities() {
-        return this.capacities;
-    }
-
-    public void setCapacities(final List<CapacityElement> capacities) {
-        this.capacities = capacities;
-    }
-
     public Double getVelocity() {
         return this.velocity;
     }
@@ -104,11 +95,27 @@ public class VehicleElement {
     }
 
     public TimeWindowElement getTimespan() {
-        return timespan;
+        return this.timespan;
     }
 
-    public void setTimespan(TimeWindowElement timespan) {
+    public void setTimespan(final TimeWindowElement timespan) {
         this.timespan = timespan;
+    }
+
+    public Integer getProductId() {
+        return productId;
+    }
+
+    public void setProductId(Integer productId) {
+        this.productId = productId;
+    }
+
+    public Integer getCapacity() {
+        return capacity;
+    }
+
+    public void setCapacity(Integer capacity) {
+        this.capacity = capacity;
     }
 
 }

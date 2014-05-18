@@ -18,9 +18,6 @@ public class ProductElement {
     @XmlElement(name = "Name")
     private String name;
 
-    @XmlElement(name = "Weight")
-    private Integer weight;
-
     public Integer getId() {
         return this.id;
     }
@@ -37,11 +34,4 @@ public class ProductElement {
         this.name = name;
     }
 
-    public Integer getWeight() {
-        return weight;
-    }
-
-    public void setWeight(Integer weight) {
-        this.weight = weight;
-    }
 }
