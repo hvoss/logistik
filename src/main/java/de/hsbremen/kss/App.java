@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.hsbremen.kss.configuration.Configuration;
+import de.hsbremen.kss.configuration.ConfigurationGenerator;
 import de.hsbremen.kss.configuration.ConfigurationParser;
 import de.hsbremen.kss.configuration.JAXBConfigurationParserImpl;
 import de.hsbremen.kss.configuration.Order;
@@ -135,6 +136,9 @@ public final class App {
         final Validator validator = new SimpleValidator();
 
         final RandomUtils randomUtils = new RandomUtils(System.currentTimeMillis());
+        final ConfigurationGenerator configurationGenerator = new ConfigurationGenerator(randomUtils);
+
+        // configuration <hicles(), 50);
 
         final SimpleConstruction simpleConstruction = new PerfectSimpleConstruction();
 

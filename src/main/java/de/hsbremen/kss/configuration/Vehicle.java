@@ -1,5 +1,8 @@
 package de.hsbremen.kss.configuration;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.apache.commons.lang3.Validate;
 
 /**
@@ -213,5 +216,17 @@ public final class Vehicle {
      */
     public boolean canTransport(final Order order) {
         return this.product.equals(order.getProduct());
+    }
+
+    public Set<Vehicle> filterByProduct(final Iterable<Vehicle> vehicles, final Product product) {
+        final Set<Vehicle> filteredVehicles = new HashSet<>();
+
+        for (final Vehicle vehicle : vehicles) {
+            if (vehicle.product.equals(product)) {
+                filteredVehicles.add(vehicle);
+            }
+        }
+
+        return filteredVehicles;
     }
 }

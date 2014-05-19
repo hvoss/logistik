@@ -47,6 +47,25 @@ public final class RandomUtils {
     }
 
     /**
+     * returns a random element of a collection.
+     * 
+     * @param elements
+     *            the collection of elements.
+     * @param <T>
+     *            type of the elements
+     * @param except
+     *            element to except
+     * @return a random element of the given collection
+     */
+    public <T> T randomElement(final Collection<T> elements, final T except) {
+        T element;
+        do {
+            element = randomElement(elements);
+        } while (element.equals(except));
+        return element;
+    }
+
+    /**
      * Returns a random integer within the specified range.
      * 
      * @param startInclusive

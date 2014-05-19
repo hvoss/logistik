@@ -96,6 +96,16 @@ public final class Station {
     }
 
     /**
+     * copy constructor.
+     * 
+     * @param station
+     *            station to copy
+     */
+    Station(final Station station) {
+        this(station.id, station.name, station.coordinates);
+    }
+
+    /**
      * Gets the id.
      * 
      * @return the id
@@ -374,5 +384,20 @@ public final class Station {
         }
 
         return nearestStation;
+    }
+
+    /**
+     * copies a collection of stations.
+     * 
+     * @param stations
+     *            stations to copy.
+     * @return copied stations
+     */
+    public static Set<Station> copy(final Collection<Station> stations) {
+        final Set<Station> copiedStations = new HashSet<>(stations.size());
+        for (final Station station : stations) {
+            copiedStations.add(new Station(station));
+        }
+        return copiedStations;
     }
 }
