@@ -28,6 +28,8 @@ public final class TimeWindow {
         Validate.notNull(start, "start is null");
         Validate.notNull(end, "end is null");
 
+        Validate.isTrue(start < end, "start after end");
+
         this.start = start;
         this.end = end;
     }
@@ -76,5 +78,16 @@ public final class TimeWindow {
      */
     public double timespan() {
         return this.end - this.start;
+    }
+
+    /**
+     * checks if the value is between start and end (inclusive).
+     * 
+     * @param value
+     *            value to check.
+     * @return true, if the value is between start and end.
+     */
+    public boolean between(final Double value) {
+        return this.start <= value && value <= this.end;
     }
 }

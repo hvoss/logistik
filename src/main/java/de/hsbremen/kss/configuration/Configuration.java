@@ -25,6 +25,9 @@ public final class Configuration {
     /** a collection of all products. */
     private final Set<Product> products;
 
+    /** a collection of all complex orders */
+    private final Set<ComplexOrder> complexOrders;
+
     /**
      * Instantiates a new configuration.
      * 
@@ -37,16 +40,19 @@ public final class Configuration {
      * @param products
      *            the products
      */
-    Configuration(final Set<Order> orders, final Set<Station> stations, final Set<Vehicle> vehicles, final Set<Product> products) {
+    Configuration(final Set<Order> orders, final Set<Station> stations, final Set<Vehicle> vehicles, final Set<Product> products,
+            final Set<ComplexOrder> complexOrders) {
         Validate.noNullElements(orders);
         Validate.noNullElements(stations);
         Validate.noNullElements(vehicles);
         Validate.noNullElements(products);
+        Validate.noNullElements(complexOrders);
 
         this.orders = Collections.unmodifiableSet(orders);
         this.stations = Collections.unmodifiableSet(stations);
         this.vehicles = Collections.unmodifiableSet(vehicles);
         this.products = Collections.unmodifiableSet(products);
+        this.complexOrders = Collections.unmodifiableSet(complexOrders);
     }
 
     /**
@@ -83,6 +89,15 @@ public final class Configuration {
      */
     public Set<Product> getProducts() {
         return this.products;
+    }
+
+    /**
+     * Gets the a collection of all complex orders.
+     * 
+     * @return the a collection of all complex orders
+     */
+    public Set<ComplexOrder> getComplexOrders() {
+        return this.complexOrders;
     }
 
     @Override

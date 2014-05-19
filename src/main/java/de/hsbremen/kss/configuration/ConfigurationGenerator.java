@@ -36,6 +36,6 @@ public class ConfigurationGenerator {
             final Order order = new Order(i, name, source, destination, product, amount);
             orders.add(order);
         }
-        return new Configuration(orders, stationCopy, new HashSet<>(vehicles), new HashSet<>(products));
+        return new Configuration(orders, stationCopy, new HashSet<>(vehicles), new HashSet<>(products), new HashSet<ComplexOrder>());
     }
 }

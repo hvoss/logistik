@@ -17,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.hsbremen.kss.common.exception.DuplicateIdException;
+import de.hsbremen.kss.xml.ComplexOrderElement;
 import de.hsbremen.kss.xml.ConfigurationElement;
 import de.hsbremen.kss.xml.OrderElement;
 import de.hsbremen.kss.xml.OrderStationElement;
@@ -47,6 +48,9 @@ public final class JAXBConfigurationParserImpl implements ConfigurationParser {
 
     /** map of all products (key: id, value: product) */
     private Map<Integer, Product> productMap;
+
+    /** map of all complex orders (key: id, value: complex order) */
+    private Map<Integer, ComplexOrder> complexOrderMap;
 
     /** the JAXB-context of the {@link ConfigurationElement}-class. */
     private static final JAXBContext CONTEXT;
@@ -92,6 +96,7 @@ public final class JAXBConfigurationParserImpl implements ConfigurationParser {
         this.orderMap = new HashMap<>(configuration.getOrders().size());
         this.vehicleMap = new HashMap<>(configuration.getVehicles().size());
         this.productMap = new HashMap<>(configuration.getProducts().size());
+        this.complexOrderMap = new HashMap<>(configuration.getComplexOrders().size());
     }
 
     /**
@@ -104,8 +109,9 @@ public final class JAXBConfigurationParserImpl implements ConfigurationParser {
         final Set<Station> stations = new HashSet<>(this.stationMap.values());
         final Set<Vehicle> vehicles = new HashSet<>(this.vehicleMap.values());
         final Set<Product> products = new HashSet<>(this.productMap.values());
+        final Set<ComplexOrder> complexOrders = new HashSet<>(this.complexOrderMap.values());
 
-        return new Configuration(orders, stations, vehicles, products);
+        return new Configuration(orders, stations, vehicles, products, complexOrders);
     }
 
     /**
@@ -118,6 +124,19 @@ public final class JAXBConfigurationParserImpl implements ConfigurationParser {
         for (final OrderElement element : orders) {
             final Order order = convert(element);
             addOrder(order);
+        }
+    }
+
+    /**
+     * converts the XML complex orders.
+     * 
+     * @param complexOrders
+     *            the XML-complexorders.
+     */
+    private void convertComplexOrders(final Collection<ComplexOrderElement> complexOrders) {
+        for (final ComplexOrderElement element : complexOrders) {
+            final ComplexOrder order = convert(element);
+            addComplexOrder(order);
         }
     }
 
@@ -171,7 +190,20 @@ public final class JAXBConfigurationParserImpl implements ConfigurationParser {
     private void addOrder(final Order order) {
         final Order oldOrder = this.orderMap.put(order.getId(), order);
         if (oldOrder != null) {
-            throw new DuplicateIdException(Station.class, oldOrder, order);
+            throw new DuplicateIdException(Order.class, oldOrder, order);
+        }
+    }
+
+    /**
+     * adds a complex order to the map.
+     * 
+     * @param complexOrder
+     *            order to add.
+     */
+    private void addComplexOrder(final ComplexOrder complexOrder) {
+        final ComplexOrder oldComplexOrder = this.complexOrderMap.put(complexOrder.getId(), complexOrder);
+        if (oldComplexOrder != null) {
+            throw new DuplicateIdException(ComplexOrder.class, oldComplexOrder, complexOrder);
         }
     }
 
@@ -230,6 +262,22 @@ public final class JAXBConfigurationParserImpl implements ConfigurationParser {
         final Order order = new Order(element.getId(), element.getName(), source, destination, product, element.getAmount());
 
         return order;
+    }
+
+    /**
+     * converts an {@link ComplexOrderElement} into a {@link ComplexOrder}.
+     * 
+     * @param element
+     *            XML-element to convert
+     * @return converted {@link ComplexOrder}
+     */
+    private ComplexOrder convert(final ComplexOrderElement element) {
+        final Order firstOrder = getOrder(element.getFirstOrderId());
+        final Order secondOrder = getOrder(element.getSecondOrderId());
+
+        final ComplexOrder complexOrder = new ComplexOrder(element.getId(), firstOrder, secondOrder, element.getMaxDuration());
+
+        return complexOrder;
     }
 
     /**

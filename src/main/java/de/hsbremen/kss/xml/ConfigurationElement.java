@@ -32,6 +32,11 @@ public class ConfigurationElement {
     @XmlElement(name = "Product")
     private List<ProductElement> products;
 
+    /** a list of all stations */
+    @XmlElementWrapper(name = "ComplexOrders")
+    @XmlElement(name = "ComplexOrder")
+    private List<ComplexOrderElement> complexOrders;
+
     public List<OrderElement> getOrders() {
         return this.orders;
     }
@@ -67,5 +72,13 @@ public class ConfigurationElement {
     @Override
     public String toString() {
         return "ConfigurationElement [orders=" + this.orders + ", stations=" + this.stations + ", vehicles=" + this.vehicles + "]";
+    }
+
+    public List<ComplexOrderElement> getComplexOrders() {
+        return complexOrders;
+    }
+
+    public void setComplexOrders(List<ComplexOrderElement> complexOrders) {
+        this.complexOrders = complexOrders;
     }
 }

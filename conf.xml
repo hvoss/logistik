@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Configuration>
+	<ComplexOrders>
+		<ComplexOrder id="1">
+			<FirstOrderId>1</FirstOrderId>
+			<SecondOrderId>5</SecondOrderId>
+			<MaxDuration>2</MaxDuration>
+		</ComplexOrder>
+	</ComplexOrders>
+
 	<Orders>
 		<Order id="1">
 			<Name>Bremen nach Hamburg</Name>
