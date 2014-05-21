@@ -5,7 +5,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import de.hsbremen.kss.configuration.OrderStation;
 import de.hsbremen.kss.configuration.Station;
+import de.hsbremen.kss.configuration.Vehicle;
 
 /**
  * Implementation that finds the perfect solution. Should only be used with a
@@ -19,86 +21,81 @@ public final class PerfectSimpleConstruction implements SimpleConstruction {
     @Override
     public List<Station> findShortestRoute(final Station start, final Set<Station> stopovers, final Station end) {
 
-        final RouteHolder routeHolder = new RouteHolder();
+        final Set<OrderStation> stopoversWithTimewindows = OrderStation.convert(stopovers);
 
-        final Set<Station> stopoversCopy = new HashSet<>(stopovers);
+        final List<OrderStation> route = findShortestRouteWithTimewindows(start, stopoversWithTimewindows, end, 0d, null);
 
-        final RouteConsumer routeConsumer = new RouteConsumer() {
-
-            @Override
-            public void foundRoute(final List<Station> route) {
-                final double length = length(start, route, end);
-                if (routeHolder.length > length) {
-                    routeHolder.length = length;
-                    routeHolder.route = route;
-                }
-            }
-
-        };
-
-        final ArrayList<Station> routeSoFar = new ArrayList<Station>();
-        findBestRoute(routeSoFar, stopoversCopy, routeConsumer);
-
-        final ArrayList<Station> bestRoute = new ArrayList<>();
-        bestRoute.add(start);
-        bestRoute.addAll(routeHolder.route);
-        bestRoute.add(end);
-
-        return bestRoute;
+        return Station.convert(route);
     }
 
     /**
      * recursion function that finds all routes.
      * 
-     * @param routeSoFar
-     *            route so far
-     * @param stopovers
-     *            remaining stop overs.
+     * @param vehicle
+     *            the vehicle
      * @param routeConsumer
      *            end point of the recursion
+     * @param time
+     *            the actual time
+     * @param length
+     *            the actual length
+     * @param nextStation
+     *            the next station
+     * @param stopovers
+     *            remaining stop overs.
+     * @param routeSoFar
+     *            route so far
+     * 
      */
-    private void findBestRoute(final List<Station> routeSoFar, final Set<Station> stopovers, final RouteConsumer routeConsumer) {
+    private void findBestRoute(final Vehicle vehicle, final List<OrderStation> routeSoFar, final double time, final double length,
+            final OrderStation nextStation, final Set<OrderStation> stopovers, final RouteConsumer routeConsumer) {
 
-        if (stopovers.size() == 0) {
-            routeConsumer.foundRoute(routeSoFar);
+        double newTime = time;
+        double newLength = length;
+
+        if (!routeSoFar.isEmpty()) {
+            final OrderStation lastStation = routeSoFar.get(routeSoFar.size() - 1);
+            final double distance = lastStation.getStation().distance(nextStation.getStation());
+            newLength += distance;
+            if (vehicle != null) {
+                newTime += vehicle.calculateTavelingTime(distance);
+            }
+        }
+
+        if (nextStation != null) {
+            if (newTime > nextStation.getTimeWindow().getEnd()) {
+                return;
+            }
+
+            if (newTime < nextStation.getTimeWindow().getStart()) {
+                newTime = nextStation.getTimeWindow().getStart();
+            }
+
+            newTime += nextStation.getServiceTime();
+        }
+
+        final List<OrderStation> routeSoFarCopy = new ArrayList<>(routeSoFar);
+        final Set<OrderStation> stopoversCopy = new HashSet<>(stopovers);
+        if (nextStation != null) {
+            routeSoFarCopy.add(nextStation);
+            stopoversCopy.remove(nextStation);
+        }
+
+        if (stopoversCopy.size() == 0) {
+            routeConsumer.foundRoute(routeSoFarCopy, newTime, newLength);
             return;
         }
 
-        for (final Station station : stopovers) {
-            final List<Station> routeCopy = new ArrayList<>(routeSoFar);
-            final Set<Station> stopoversCopy = new HashSet<>(stopovers);
-
-            stopoversCopy.remove(station);
-            routeCopy.add(station);
-
-            findBestRoute(routeCopy, stopoversCopy, routeConsumer);
+        for (final OrderStation station : stopovers) {
+            findBestRoute(vehicle, routeSoFarCopy, newTime, newLength, station, stopoversCopy, routeConsumer);
         }
     }
 
     @Override
     public Set<Station> findPossibleNextStations(final Station start, final Set<Station> stopovers, final Station end, final double maxLength) {
-        final Set<Station> possibleNextStations = new HashSet<>();
+        final Set<OrderStation> stopoversWithTimewindows = OrderStation.convert(stopovers);
 
-        final Set<Station> stopoversCopy = new HashSet<>(stopovers);
-        if (!stopoversCopy.isEmpty()) {
-
-            final RouteConsumer routeConsumer = new RouteConsumer() {
-
-                @Override
-                public void foundRoute(final List<Station> route) {
-                    final double length = length(start, route, end);
-                    if (length <= maxLength) {
-                        possibleNextStations.add(route.get(0));
-                    }
-                }
-
-            };
-
-            final ArrayList<Station> routeSoFar = new ArrayList<Station>();
-            findBestRoute(routeSoFar, stopoversCopy, routeConsumer);
-        }
-
-        return possibleNextStations;
+        return findPossibleNextStationsWithTimewindows(start, stopoversWithTimewindows, end, maxLength, 0, null);
     }
 
     /**
@@ -110,12 +107,14 @@ public final class PerfectSimpleConstruction implements SimpleConstruction {
      *            sorted stop overs
      * @param end
      *            end of the route
+     * @param stopoversLength
+     *            length of the stopovers
      * @return length of the route
      */
-    private static double length(final Station start, final List<Station> stopovers, final Station end) {
-        double length = start.distance(stopovers.get(0));
-        length += Station.length(stopovers);
-        length += stopovers.get(stopovers.size() - 1).distance(end);
+    private static double length(final Station start, final List<OrderStation> stopovers, final Station end, final double stopoversLength) {
+        double length = start.distance(stopovers.get(0).getStation());
+        length += stopoversLength;
+        length += stopovers.get(stopovers.size() - 1).getStation().distance(end);
         return length;
     }
 
@@ -129,7 +128,7 @@ public final class PerfectSimpleConstruction implements SimpleConstruction {
         /** length of the route */
         private double length = Double.MAX_VALUE;
         /** the route */
-        private List<Station> route;
+        private List<OrderStation> route;
     }
 
     /**
@@ -145,6 +144,57 @@ public final class PerfectSimpleConstruction implements SimpleConstruction {
          * @param route
          *            route that is found by recursion algorithm
          */
-        void foundRoute(List<Station> route);
+        void foundRoute(List<OrderStation> route, double time, double length);
+    }
+
+    @Override
+    public Set<Station> findPossibleNextStationsWithTimewindows(final Station start, final Set<OrderStation> stopovers, final Station end,
+            final double maxLength, final double startTime, final Vehicle vehicle) {
+        final Set<Station> possibleNextStations = new HashSet<>();
+
+        final Set<OrderStation> stopoversCopy = new HashSet<>(stopovers);
+        if (!stopoversCopy.isEmpty()) {
+
+            final RouteConsumer routeConsumer = new RouteConsumer() {
+
+                @Override
+                public void foundRoute(final List<OrderStation> route, final double time, final double length) {
+                    final double completeLength = length(start, route, end, length);
+                    if (completeLength <= maxLength) {
+                        possibleNextStations.add(route.get(0).getStation());
+                    }
+                }
+
+            };
+
+            findBestRoute(vehicle, new ArrayList<OrderStation>(), startTime, 0d, null, stopoversCopy, routeConsumer);
+        }
+
+        return possibleNextStations;
+    }
+
+    @Override
+    public List<OrderStation> findShortestRouteWithTimewindows(final Station start, final Set<OrderStation> stopovers, final Station end,
+            final double startTime, final Vehicle vehicle) {
+        final RouteHolder routeHolder = new RouteHolder();
+
+        final Set<OrderStation> stopoversCopy = new HashSet<>(stopovers);
+
+        final RouteConsumer routeConsumer = new RouteConsumer() {
+
+            @Override
+            public void foundRoute(final List<OrderStation> route, final double time, final double length) {
+                final double routeLength = length(start, route, end, length);
+                if (routeHolder.length > routeLength) {
+                    routeHolder.length = routeLength;
+                    routeHolder.route = route;
+                }
+            }
+
+        };
+
+        findBestRoute(vehicle, new ArrayList<OrderStation>(), startTime, 0d, null, stopoversCopy, routeConsumer);
+
+        return routeHolder.route;
     }
 }

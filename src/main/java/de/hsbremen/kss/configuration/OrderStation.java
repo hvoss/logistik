@@ -1,5 +1,9 @@
 package de.hsbremen.kss.configuration;
 
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.apache.commons.lang3.Validate;
 
 /**
@@ -29,7 +33,7 @@ public final class OrderStation {
      * @param serviceTime
      *            the service time
      */
-    public OrderStation(final Station station, final TimeWindow timeWindow, final Double serviceTime) {
+    OrderStation(final Station station, final TimeWindow timeWindow, final Double serviceTime) {
         Validate.notNull(station, "station is null");
         Validate.notNull(timeWindow, "timeWindow is null");
         Validate.notNull(serviceTime, "serviceTime is null");
@@ -37,6 +41,38 @@ public final class OrderStation {
         this.station = station;
         this.timeWindow = timeWindow;
         this.serviceTime = serviceTime;
+    }
+
+    /**
+     * converts a {@link Station} into a {@link OrderStation}. time window goes
+     * from negative infinity to positive infinity. services time is 0.
+     * 
+     * @param station
+     *            station to convert
+     * @return converted {@link OrderStation}.
+     */
+    public static OrderStation convert(final Station station) {
+        return new OrderStation(station, TimeWindow.INFINITY_TIMEWINDOW, 0d);
+    }
+
+    /**
+     * converts a collection of {@link Station} into a set of
+     * {@link OrderStation}. time window goes from negative infinity to positive
+     * infinity. services time is 0.
+     * 
+     * @param stations
+     *            stations to convert
+     * @return converted {@link OrderStation}.
+     */
+    public static Set<OrderStation> convert(final Collection<Station> stations) {
+        final HashSet<OrderStation> orderStations = new HashSet<>();
+
+        for (final Station station : stations) {
+            final OrderStation orderStation = OrderStation.convert(station);
+            orderStations.add(orderStation);
+        }
+
+        return orderStations;
     }
 
     /**

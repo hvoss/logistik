@@ -1,5 +1,6 @@
 package de.hsbremen.kss.configuration;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -399,5 +400,15 @@ public final class Station {
             copiedStations.add(new Station(station));
         }
         return copiedStations;
+    }
+
+    public static List<Station> convert(final List<OrderStation> route) {
+        final List<Station> list = new ArrayList<>(route.size());
+
+        for (final OrderStation station : route) {
+            list.add(station.getStation());
+        }
+
+        return list;
     }
 }

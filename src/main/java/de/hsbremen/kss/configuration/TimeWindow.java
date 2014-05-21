@@ -16,6 +16,9 @@ public final class TimeWindow {
     /** end of the time window. */
     private final Double end;
 
+    /** infinity time window */
+    static final TimeWindow INFINITY_TIMEWINDOW = new TimeWindow(Double.MIN_VALUE, Double.MAX_VALUE);
+
     /**
      * ctor.
      * 
@@ -24,7 +27,7 @@ public final class TimeWindow {
      * @param end
      *            end of the time window
      */
-    TimeWindow(final Double start, final Double end) {
+    public TimeWindow(final Double start, final Double end) {
         Validate.notNull(start, "start is null");
         Validate.notNull(end, "end is null");
 
