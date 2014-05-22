@@ -161,6 +161,10 @@ public final class App {
 
         allConstructions.add(multiThreadAll);
 
+        allConstructions.clear();
+
+        allConstructions.add(nearestNeighbor);
+
         final ArrayList<ConstructionTimeMeasuring> timeMeasuringTasks = new ArrayList<>(allConstructions.size());
 
         for (final Construction construction : allConstructions) {

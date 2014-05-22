@@ -6,6 +6,8 @@ import java.util.Set;
 
 import org.apache.commons.lang3.Validate;
 
+import de.hsbremen.kss.util.TimeUtils;
+
 // TODO: Auto-generated Javadoc
 /**
  * represents a order of a customer.
@@ -322,6 +324,12 @@ public final class Order {
 
     @Override
     public String toString() {
-        return this.name + " (id: " + this.id + ", product: " + this.product + ", amount: " + this.amount + ")";
+        final String start = TimeUtils.convertToClockString(this.source.getTimeWindow().getStart()) + " - "
+                + TimeUtils.convertToClockString(this.source.getTimeWindow().getEnd());
+        final String end = TimeUtils.convertToClockString(this.destination.getTimeWindow().getStart()) + " - "
+                + TimeUtils.convertToClockString(this.destination.getTimeWindow().getEnd());
+
+        return this.name + " (id: " + this.id + ", product: " + this.product + ", amount: " + this.amount + ", start: " + start + ", end: " + end
+                + ")";
     }
 }

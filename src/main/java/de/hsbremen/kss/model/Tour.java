@@ -248,14 +248,24 @@ public final class Tour {
      * @return duration of the order
      */
     public double actualDuration() {
-        double duration = this.vehicle.calculateTavelingTime(length());
+        double time = 0;
 
-        // XXX cache duration
+        final Station actualStation = this.vehicle.getSourceDepot();
+
         for (final Action action : this.actions) {
-            duration += action.duration();
+            final Station station = action.getStation();
+            time += this.vehicle.calculateTavelingTime(actualStation, station);
+            if (action instanceof OrderAction) {
+                final OrderAction orderAction = (OrderAction) action;
+                time += orderAction.duration();
+            }
         }
 
-        return duration;
+        return time;
+    }
+
+    public double actualTime() {
+        return this.vehicle.getTimeWindow().getStart() + actualDuration();
     }
 
     /**

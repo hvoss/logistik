@@ -121,4 +121,14 @@ public final class OrderStation {
         return this.serviceTime;
     }
 
+    public static Set<OrderStation> getAllDestinationStations(final Iterable<Order> orders) {
+        final Set<OrderStation> orderStations = new HashSet<>();
+
+        for (final Order order : orders) {
+            orderStations.add(order.getDestination());
+        }
+
+        return orderStations;
+    }
+
 }

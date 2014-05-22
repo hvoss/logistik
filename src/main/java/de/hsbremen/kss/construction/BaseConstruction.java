@@ -7,6 +7,7 @@ import java.util.Set;
 
 import de.hsbremen.kss.configuration.Configuration;
 import de.hsbremen.kss.configuration.Order;
+import de.hsbremen.kss.configuration.OrderStation;
 import de.hsbremen.kss.configuration.Station;
 import de.hsbremen.kss.configuration.Vehicle;
 import de.hsbremen.kss.model.Plan;
@@ -115,10 +116,10 @@ public abstract class BaseConstruction implements Construction {
         final Station actualStation = tour.actualStation();
         final Station destinationDepot = tour.getVehicle().getDestinationDepot();
         final double freeLength = tour.freeLength();
-        final Set<Station> processableStations = Order.getAllDestinationStations(tour.notDeliveredOrders());
+        final Set<OrderStation> processableStations = OrderStation.getAllDestinationStations(tour.notDeliveredOrders());
 
-        final Set<Station> possibleNextStations = this.simpleConstruction.findPossibleNextStations(actualStation, processableStations,
-                destinationDepot, freeLength);
+        final Set<Station> possibleNextStations = this.simpleConstruction.findPossibleNextStationsWithTimewindows(actualStation, processableStations,
+                destinationDepot, freeLength, tour.actualTime(), tour.getVehicle());
 
         for (final Order order : orders) {
             if (orderIncludePossible(tour, order)) {
@@ -149,18 +150,22 @@ public abstract class BaseConstruction implements Construction {
         }
 
         final Station sourceStation = order.getSourceStation();
-        final Set<Station> stations = Order.getAllDestinationStations(tour.notDeliveredOrders());
+        final Set<OrderStation> stations = OrderStation.getAllDestinationStations(tour.notDeliveredOrders());
 
-        stations.add(order.getDestinationStation());
+        stations.add(order.getDestination());
+        double actualTime = tour.actualTime();
 
         final double orderLength = vehicle.getVelocity() * order.serviceTime();
         final double distanceToOrder = tour.actualStation().distance(sourceStation);
         final double freeLength = tour.freeLength() - orderLength - distanceToOrder;
 
+        actualTime += vehicle.calculateTavelingTime(distanceToOrder);
+        actualTime += order.getSource().getServiceTime();
+
         final Station destinationDepot = vehicle.getDestinationDepot();
 
-        final Set<Station> possibleNextStations = this.simpleConstruction.findPossibleNextStations(sourceStation, stations, destinationDepot,
-                freeLength);
+        final Set<Station> possibleNextStations = this.simpleConstruction.findPossibleNextStationsWithTimewindows(sourceStation, stations,
+                destinationDepot, freeLength, actualTime, tour.getVehicle());
 
         return !possibleNextStations.isEmpty();
     }
