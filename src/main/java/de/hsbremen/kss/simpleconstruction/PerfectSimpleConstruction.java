@@ -86,7 +86,7 @@ public final class PerfectSimpleConstruction implements SimpleConstruction {
             return;
         }
 
-        for (final OrderStation station : stopovers) {
+        for (final OrderStation station : stopoversCopy) {
             findBestRoute(vehicle, routeSoFarCopy, newTime, newLength, station, stopoversCopy, routeConsumer);
         }
     }
@@ -152,8 +152,7 @@ public final class PerfectSimpleConstruction implements SimpleConstruction {
             final double maxLength, final double startTime, final Vehicle vehicle) {
         final Set<Station> possibleNextStations = new HashSet<>();
 
-        final Set<OrderStation> stopoversCopy = new HashSet<>(stopovers);
-        if (!stopoversCopy.isEmpty()) {
+        if (!stopovers.isEmpty()) {
 
             final RouteConsumer routeConsumer = new RouteConsumer() {
 
@@ -167,7 +166,10 @@ public final class PerfectSimpleConstruction implements SimpleConstruction {
 
             };
 
-            findBestRoute(vehicle, new ArrayList<OrderStation>(), startTime, 0d, null, stopoversCopy, routeConsumer);
+            for (final OrderStation stopover : stopovers) {
+                final double time = startTime + vehicle.calculateTavelingTime(start, stopover.getStation());
+                findBestRoute(vehicle, new ArrayList<OrderStation>(), time, 0d, stopover, stopovers, routeConsumer);
+            }
         }
 
         return possibleNextStations;

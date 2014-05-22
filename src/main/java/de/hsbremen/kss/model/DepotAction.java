@@ -1,6 +1,7 @@
 package de.hsbremen.kss.model;
 
 import de.hsbremen.kss.configuration.Station;
+import de.hsbremen.kss.configuration.TimeWindow;
 
 /**
  * 
@@ -12,14 +13,17 @@ abstract class DepotAction implements Action {
     /** the depot where the action is performed */
     private final Station depot;
 
+    private final TimeWindow timewindow;
+
     /**
      * ctor.
      * 
      * @param depot
      *            the depot where the action is performed
      */
-    DepotAction(final Station depot) {
+    DepotAction(final Station depot, final TimeWindow timewindow) {
         this.depot = depot;
+        this.timewindow = timewindow;
     }
 
     @Override
@@ -35,5 +39,10 @@ abstract class DepotAction implements Action {
     @Override
     public String toString() {
         return getClass().getSimpleName() + " : " + this.depot;
+    }
+
+    @Override
+    public TimeWindow timewindow() {
+        return this.timewindow;
     }
 }

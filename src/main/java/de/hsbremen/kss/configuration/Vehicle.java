@@ -218,7 +218,7 @@ public final class Vehicle {
         return this.product.equals(order.getProduct());
     }
 
-    public Set<Vehicle> filterByProduct(final Iterable<Vehicle> vehicles, final Product product) {
+    public static Set<Vehicle> filterByProduct(final Iterable<Vehicle> vehicles, final Product product) {
         final Set<Vehicle> filteredVehicles = new HashSet<>();
 
         for (final Vehicle vehicle : vehicles) {

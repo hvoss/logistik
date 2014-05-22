@@ -2,6 +2,8 @@ package de.hsbremen.kss.configuration;
 
 import org.apache.commons.lang3.Validate;
 
+import de.hsbremen.kss.util.TimeUtils;
+
 /**
  * The Class TimeWindow.
  */
@@ -92,5 +94,10 @@ public final class TimeWindow {
      */
     public boolean between(final Double value) {
         return this.start <= value && value <= this.end;
+    }
+
+    @Override
+    public String toString() {
+        return "[" + TimeUtils.convertToClockString(this.start) + " - " + TimeUtils.convertToClockString(this.end) + "]";
     }
 }

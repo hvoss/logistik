@@ -57,14 +57,14 @@ public final class Tour {
      * adds the {@link FromDepotAction} to the tour.
      */
     public void leafSourceDepot() {
-        this.actions.add(new FromDepotAction(this.vehicle.getSourceDepot()));
+        this.actions.add(new FromDepotAction(this.vehicle.getSourceDepot(), this.vehicle.getTimeWindow()));
     }
 
     /**
      * adds the {@link ToDepotAction} to the tour.
      */
     public void gotoDestinationDepot() {
-        this.actions.add(new ToDepotAction(this.vehicle.getDestinationDepot()));
+        this.actions.add(new ToDepotAction(this.vehicle.getDestinationDepot(), this.vehicle.getTimeWindow()));
     }
 
     /**
@@ -250,7 +250,7 @@ public final class Tour {
     public double actualDuration() {
         double time = 0;
 
-        final Station actualStation = this.vehicle.getSourceDepot();
+        Station actualStation = this.vehicle.getSourceDepot();
 
         for (final Action action : this.actions) {
             final Station station = action.getStation();
@@ -259,6 +259,7 @@ public final class Tour {
                 final OrderAction orderAction = (OrderAction) action;
                 time += orderAction.duration();
             }
+            actualStation = station;
         }
 
         return time;

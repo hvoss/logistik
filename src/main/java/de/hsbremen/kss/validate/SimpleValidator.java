@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import de.hsbremen.kss.configuration.Configuration;
 import de.hsbremen.kss.configuration.Order;
+import de.hsbremen.kss.configuration.Station;
 import de.hsbremen.kss.configuration.Vehicle;
 import de.hsbremen.kss.model.Action;
 import de.hsbremen.kss.model.FromDepotAction;
@@ -18,6 +19,7 @@ import de.hsbremen.kss.model.OrderUnloadAction;
 import de.hsbremen.kss.model.Plan;
 import de.hsbremen.kss.model.ToDepotAction;
 import de.hsbremen.kss.model.Tour;
+import de.hsbremen.kss.util.TimeUtils;
 
 /**
  * A simple validator.
@@ -44,6 +46,7 @@ public final class SimpleValidator implements Validator {
 
         for (final Tour tour : plan.getTours()) {
             final Vehicle vehicle = tour.getVehicle();
+            double time = vehicle.getTimeWindow().getStart();
             final List<Action> actions = tour.getActions();
             int amount = 0;
 
@@ -70,8 +73,22 @@ public final class SimpleValidator implements Validator {
                 allRight = false;
             }
 
+            Station lastStation = vehicle.getSourceDepot();
+
             for (int i = 0; i < actions.size(); i++) {
                 final Action action = actions.get(i);
+                final Station station = action.getStation();
+
+                time += vehicle.calculateTavelingTime(lastStation, station);
+                if (time < action.timewindow().getStart()) {
+                    time = action.timewindow().getStart();
+                }
+                if (!action.timewindow().between(time)) {
+                    SimpleValidator.LOG.warn("Tour #" + tour.getId() + ": action " + action + " not performed in time window: " + action.timewindow()
+                            + " ; time: " + TimeUtils.convertToClockString(time));
+                }
+                time += action.duration();
+
                 if (action instanceof FromDepotAction) {
                     final FromDepotAction fromDepotAction = (FromDepotAction) action;
                     if (i > 0) {
@@ -80,14 +97,18 @@ public final class SimpleValidator implements Validator {
                         allRight = false;
                     }
 
-                } else if (action instanceof ToDepotAction) {
+                }
+
+                if (action instanceof ToDepotAction) {
                     final ToDepotAction toDepotAction = (ToDepotAction) action;
                     if (i - 1 == actions.size()) {
                         SimpleValidator.LOG.warn("Tour #" + tour.getId() + ": " + toDepotAction + " is not the last action, it is action no: " + i);
                         allRight = false;
                     }
 
-                } else if (action instanceof OrderLoadAction) {
+                }
+
+                if (action instanceof OrderLoadAction) {
                     final OrderLoadAction orderLoadAction = (OrderLoadAction) action;
                     final Order order = orderLoadAction.getOrder();
                     if (!visitedSourceOrders.add(orderLoadAction.getOrder())) {
@@ -108,7 +129,9 @@ public final class SimpleValidator implements Validator {
                         allRight = false;
                     }
 
-                } else if (action instanceof OrderUnloadAction) {
+                }
+
+                if (action instanceof OrderUnloadAction) {
                     final OrderUnloadAction orderUnloadAction = (OrderUnloadAction) action;
 
                     amount -= orderUnloadAction.getOrder().getAmount();
@@ -124,9 +147,9 @@ public final class SimpleValidator implements Validator {
                         allRight = false;
                     }
 
-                } else {
-                    throw new IllegalStateException("Tour #" + tour.getId() + ": " + "unknown action type: " + action.getClass());
                 }
+
+                lastStation = station;
             }
         }
 

@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import de.hsbremen.kss.configuration.Configuration;
 import de.hsbremen.kss.configuration.ConfigurationGenerator;
 import de.hsbremen.kss.configuration.ConfigurationParser;
+import de.hsbremen.kss.configuration.ConfigurationValidator;
 import de.hsbremen.kss.configuration.JAXBConfigurationParserImpl;
 import de.hsbremen.kss.configuration.Order;
 import de.hsbremen.kss.configuration.Station;
@@ -134,11 +135,13 @@ public final class App {
         }
 
         final Validator validator = new SimpleValidator();
+        final ConfigurationValidator configurationValidator = new ConfigurationValidator();
 
-        final RandomUtils randomUtils = new RandomUtils(System.currentTimeMillis());
+        final RandomUtils randomUtils = new RandomUtils(0);
         final ConfigurationGenerator configurationGenerator = new ConfigurationGenerator(randomUtils);
 
         // configuration <hicles(), 50);
+        configurationValidator.validate(configuration);
 
         final SimpleConstruction simpleConstruction = new PerfectSimpleConstruction();
 
@@ -160,10 +163,6 @@ public final class App {
         final MultithreadingConstruction multiThreadAll = new MultithreadingConstruction(new ArrayList<>(allConstructions));
 
         allConstructions.add(multiThreadAll);
-
-        allConstructions.clear();
-
-        allConstructions.add(nearestNeighbor);
 
         final ArrayList<ConstructionTimeMeasuring> timeMeasuringTasks = new ArrayList<>(allConstructions.size());
 

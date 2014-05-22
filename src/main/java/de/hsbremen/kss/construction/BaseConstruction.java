@@ -5,6 +5,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import de.hsbremen.kss.configuration.Configuration;
 import de.hsbremen.kss.configuration.Order;
 import de.hsbremen.kss.configuration.OrderStation;
@@ -26,6 +29,8 @@ public abstract class BaseConstruction implements Construction {
 
     /** construction methods to find simple routes */
     private final SimpleConstruction simpleConstruction;
+
+    private static final Logger LOG = LoggerFactory.getLogger(BaseConstruction.class);
 
     /**
      * ctor.
@@ -55,7 +60,12 @@ public abstract class BaseConstruction implements Construction {
                 final Set<Station> processableStations = findPossibleNextStations(tour, availableOrders);
 
                 if (processableStations.isEmpty()) {
-                    break;
+                    if (tour.notDeliveredOrders().isEmpty()) {
+                        break;
+                    } else {
+                        BaseConstruction.LOG.error("undeliverd orders:" + tour.notDeliveredOrders());
+                        break;
+                    }
                 }
                 final Station rElement = nextStation(tour, processableStations);
 

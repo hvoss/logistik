@@ -1,6 +1,7 @@
 package de.hsbremen.kss.model;
 
 import de.hsbremen.kss.configuration.Station;
+import de.hsbremen.kss.configuration.TimeWindow;
 
 /**
  * represents an action performed within a tour.
@@ -23,4 +24,6 @@ public interface Action {
      * @return duration of a action
      */
     double duration();
+
+    TimeWindow timewindow();
 }

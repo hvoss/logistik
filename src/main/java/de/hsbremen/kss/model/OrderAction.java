@@ -5,7 +5,7 @@ import de.hsbremen.kss.configuration.Order;
 /**
  * The Class OrderAction.
  */
-abstract class OrderAction implements Action {
+public abstract class OrderAction implements Action {
 
     /** the order. */
     private final Order order;
@@ -25,12 +25,12 @@ abstract class OrderAction implements Action {
      * 
      * @return the order
      */
-    public Order getOrder() {
+    public final Order getOrder() {
         return this.order;
     }
 
     @Override
-    public String toString() {
+    public final String toString() {
         return getClass().getSimpleName() + " : " + this.order;
     }
 }
