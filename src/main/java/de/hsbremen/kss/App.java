@@ -34,6 +34,8 @@ import de.hsbremen.kss.construction.RandomConstruction;
 import de.hsbremen.kss.construction.SavingsContruction;
 import de.hsbremen.kss.construction.SavingsTourConstruction;
 import de.hsbremen.kss.construction.SweepConstruction;
+import de.hsbremen.kss.fitness.FitnessTest;
+import de.hsbremen.kss.fitness.SimpleFitnessTest;
 import de.hsbremen.kss.gui.MainFrame;
 import de.hsbremen.kss.model.Plan;
 import de.hsbremen.kss.simpleconstruction.PerfectSimpleConstruction;
@@ -80,7 +82,10 @@ public final class App {
         final Configuration configuration = loadConfiguration();
 
         final Plan plan = startAlgorithms(configuration);
-
+        
+//        final FitnessTest fitnessTest = new SimpleFitnessTest(configuration);
+//        
+//        fitnessTest.calculateFitness(plan);
         // startGUI(configuration, plan);
 
     }
@@ -142,6 +147,8 @@ public final class App {
 
         // configuration <hicles(), 50);
         configurationValidator.validate(configuration);
+        
+        final FitnessTest fitnessTest = new SimpleFitnessTest(configuration);
 
         final SimpleConstruction simpleConstruction = new PerfectSimpleConstruction();
 
@@ -180,6 +187,8 @@ public final class App {
             App.LOG.info("construction took " + timeMeasuring.duration() + " ms");
             final boolean valid = validator.validate(configuration, plan);
             App.LOG.info("plan is valid: " + valid);
+            final double totalFitness = fitnessTest.calculateFitness(plan);
+            App.LOG.info("total fitness value: " + totalFitness);
             plan.logTours();
 
             if (valid && (bestPlan == null || bestPlan.length() > plan.length())) {

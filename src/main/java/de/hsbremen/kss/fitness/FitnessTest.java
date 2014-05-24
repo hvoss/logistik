@@ -5,5 +5,5 @@ import de.hsbremen.kss.model.Plan;
 
 public interface FitnessTest {
 
-    Double calculateFitness(Configuration configuration, Plan plan);
+    Double calculateFitness(Plan plan);
 }
