@@ -11,6 +11,7 @@ import java.util.Map;
 import com.sun.org.apache.bcel.internal.generic.PopInstruction;
 
 import de.hsbremen.kss.configuration.Configuration;
+import de.hsbremen.kss.configuration.Order;
 import de.hsbremen.kss.fitness.FitnessTest;
 import de.hsbremen.kss.fitness.SimpleFitnessTest;
 import de.hsbremen.kss.model.Plan;
@@ -109,6 +110,27 @@ public class GeneticAlgorithmImpl implements GeneticAlgorithm {
     	List<Tour> perent2Tours = parent2.getTours();
     	
     	return null;
+    }
+    
+    private void insertHeuristic(final Plan plan, final Order order) {
+    	List<Tour> tours = plan.getTours();
+    	double bestFitness = Double.MAX_VALUE;
+    	Tour bestTourForInsert;
+    	
+    	for (Tour tour : tours) {
+			tour.addSourceOrder(order);
+			tour.addDestinationOrder(order);
+			
+			double actualFitness = fitnessTest.calculateFitness(plan);
+			
+			if (actualFitness < bestFitness) {
+				bestFitness = actualFitness;
+				bestTourForInsert = tour;
+			}
+			
+		}
+    	
+    	//plan.
     }
 
 }
