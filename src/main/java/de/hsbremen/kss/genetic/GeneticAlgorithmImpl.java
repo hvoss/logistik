@@ -19,7 +19,7 @@ public class GeneticAlgorithmImpl implements GeneticAlgorithm {
 
     @Override
     public Plan optimize(final Configuration configuration, final Collection<Plan> plans) {
-        // TODO Auto-generated method stub
+        System.out.println("Test");
         return null;
     }
 
