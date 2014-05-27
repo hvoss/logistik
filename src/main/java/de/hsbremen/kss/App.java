@@ -112,7 +112,7 @@ public final class App {
      *            parsed configuration
      * @return the best plan
      */
-    private static Plan startAlgorithms(final Configuration configuration) {
+    private static Plan startAlgorithms(Configuration configuration) {
         Plan bestPlan = null;
 
         App.LOG.info("got " + configuration.getStations().size() + " stations");
@@ -145,7 +145,9 @@ public final class App {
         final RandomUtils randomUtils = new RandomUtils(0);
         final ConfigurationGenerator configurationGenerator = new ConfigurationGenerator(randomUtils);
 
-        // configuration <hicles(), 50);
+        configuration = configurationGenerator.generateConfiguration(configuration.getStations(), configuration.getProducts(),
+                configuration.getVehicles(), 10);
+
         configurationValidator.validate(configuration);
 
         final FitnessTest fitnessTest = new SimpleFitnessTest(configuration);

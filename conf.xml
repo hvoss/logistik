@@ -1,329 +1,393 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Configuration>
 	<ComplexOrders>
-		<ComplexOrder id="1">
-			<FirstOrderId>1</FirstOrderId>
-			<SecondOrderId>5</SecondOrderId>
-			<MaxDuration>2</MaxDuration>
-		</ComplexOrder>
+
 	</ComplexOrders>
 
 	<Orders>
-		<Order id="1">
-			<Name>Bremen nach Hamburg</Name>
-			<Source>
-				<StationId>1</StationId>
-				<TimeWindow>
-					<Start>8</Start>
-					<End>17</End>
-				</TimeWindow>
-				<ServiceTime>0.25</ServiceTime>
-			</Source>
-			<Destination>
-				<StationId>2</StationId>
-				<TimeWindow>
-					<Start>8</Start>
-					<End>17</End>
-				</TimeWindow>
-				<ServiceTime>0.25</ServiceTime>
-			</Destination>
-			<ProductId>1</ProductId>
-			<Amount>200</Amount>
-		</Order>
-		<Order id="2">
-			<Name>Osnabrück nach Neißeaue</Name>
-			<Source>
-				<StationId>5</StationId>
-				<TimeWindow>
-					<Start>8</Start>
-					<End>17</End>
-				</TimeWindow>
-				<ServiceTime>0.25</ServiceTime>
-			</Source>
-			<Destination>
-				<StationId>8</StationId>
-				<TimeWindow>
-					<Start>20</Start>
-					<End>28</End>
-				</TimeWindow>
-				<ServiceTime>0.25</ServiceTime>
-			</Destination>
-			<ProductId>2</ProductId>
-			<Amount>250</Amount>
-		</Order>
-		<Order id="3">
-			<Name>Neißeaue nach Hannover</Name>
-			<Source>
-				<StationId>8</StationId>
-				<TimeWindow>
-					<Start>8</Start>
-					<End>17</End>
-				</TimeWindow>
-				<ServiceTime>0.25</ServiceTime>
-			</Source>
-			<Destination>
-				<StationId>3</StationId>
-				<TimeWindow>
-					<Start>20</Start>
-					<End>28</End>
-				</TimeWindow>
-				<ServiceTime>0.25</ServiceTime>
-			</Destination>
-			<ProductId>1</ProductId>
-			<Amount>500</Amount>
-		</Order>
-		<Order id="4">
-			<Name>Ellenbogen nach Bremen</Name>
-			<Source>
-				<StationId>7</StationId>
-				<TimeWindow>
-					<Start>8</Start>
-					<End>17</End>
-				</TimeWindow>
-				<ServiceTime>0.25</ServiceTime>
-			</Source>
-			<Destination>
-				<StationId>1</StationId>
-				<TimeWindow>
-					<Start>8</Start>
-					<End>17</End>
-				</TimeWindow>
-				<ServiceTime>0.25</ServiceTime>
-			</Destination>
-			<ProductId>1</ProductId>
-			<Amount>50</Amount>
-		</Order>
-		<Order id="5">
-			<Name>München nach Hamburg</Name>
-			<Source>
-				<StationId>4</StationId>
-				<TimeWindow>
-					<Start>8</Start>
-					<End>17</End>
-				</TimeWindow>
-				<ServiceTime>0.25</ServiceTime>
-			</Source>
-			<Destination>
-				<StationId>2</StationId>
-				<TimeWindow>
-					<Start>20</Start>
-					<End>30</End>
-				</TimeWindow>
-				<ServiceTime>0.25</ServiceTime>
-			</Destination>
-			<ProductId>2</ProductId>
-			<Amount>100</Amount>
-		</Order>
-		<Order id="6">
-			<Name>Hamburg nach München</Name>
-			<Source>
-				<StationId>2</StationId>
-				<TimeWindow>
-					<Start>8</Start>
-					<End>30</End>
-				</TimeWindow>
-				<ServiceTime>0.25</ServiceTime>
-			</Source>
-			<Destination>
-				<StationId>4</StationId>
-				<TimeWindow>
-					<Start>15</Start>
-					<End>39</End>
-				</TimeWindow>
-				<ServiceTime>0.25</ServiceTime>
-			</Destination>
-			<ProductId>2</ProductId>
-			<Amount>125</Amount>
-		</Order>
-		<Order id="7">
-			<Name>Hannover -> Hamburg</Name>
-			<Source>
-				<StationId>3</StationId>
-				<TimeWindow>
-					<Start>8</Start>
-					<End>17</End>
-				</TimeWindow>
-				<ServiceTime>0.25</ServiceTime>
-			</Source>
-			<Destination>
-				<StationId>2</StationId>
-				<TimeWindow>
-					<Start>8</Start>
-					<End>17</End>
-				</TimeWindow>
-				<ServiceTime>0.25</ServiceTime>
-			</Destination>
-			<ProductId>1</ProductId>
-			<Amount>50</Amount>
-		</Order>
-		<Order id="8">
-			<Name>Hannover -> München</Name>
-			<Source>
-				<StationId>3</StationId>
-				<TimeWindow>
-					<Start>8</Start>
-					<End>17</End>
-				</TimeWindow>
-				<ServiceTime>0.25</ServiceTime>
-			</Source>
-			<Destination>
-				<StationId>4</StationId>
-				<TimeWindow>
-					<Start>8</Start>
-					<End>17</End>
-				</TimeWindow>
-				<ServiceTime>0.25</ServiceTime>
-			</Destination>
-			<ProductId>1</ProductId>
-			<Amount>60</Amount>
-		</Order>
-		<Order id="9">
-			<Name>Hannover -> Osnabrück</Name>
-			<Source>
-				<StationId>3</StationId>
-				<TimeWindow>
-					<Start>8</Start>
-					<End>17</End>
-				</TimeWindow>
-				<ServiceTime>0.25</ServiceTime>
-			</Source>
-			<Destination>
-				<StationId>5</StationId>
-				<TimeWindow>
-					<Start>8</Start>
-					<End>17</End>
-				</TimeWindow>
-				<ServiceTime>0.25</ServiceTime>
-			</Destination>
-			<ProductId>1</ProductId>
-			<Amount>10</Amount>
-		</Order>
-		<Order id="10">
-			<Name>Hannover -> Berlin</Name>
-			<Source>
-				<StationId>3</StationId>
-				<TimeWindow>
-					<Start>8</Start>
-					<End>17</End>
-				</TimeWindow>
-				<ServiceTime>0.25</ServiceTime>
-			</Source>
-			<Destination>
-				<StationId>6</StationId>
-				<TimeWindow>
-					<Start>20</Start>
-					<End>30</End>
-				</TimeWindow>
-				<ServiceTime>0.25</ServiceTime>
-			</Destination>
-			<ProductId>2</ProductId>
-			<Amount>5</Amount>
-		</Order>
-		<Order id="11">
-			<Name>Hannover -> Ellenbogen</Name>
-			<Source>
-				<StationId>3</StationId>
-				<TimeWindow>
-					<Start>8</Start>
-					<End>17</End>
-				</TimeWindow>
-				<ServiceTime>0.25</ServiceTime>
-			</Source>
-			<Destination>
-				<StationId>7</StationId>
-				<TimeWindow>
-					<Start>20</Start>
-					<End>30</End>
-				</TimeWindow>
-				<ServiceTime>0.25</ServiceTime>
-			</Destination>
-			<ProductId>2</ProductId>
-			<Amount>100</Amount>
-		</Order>
-		<Order id="12">
-			<Name>Hannover -> Neißeaue</Name>
-			<Source>
-				<StationId>3</StationId>
-				<TimeWindow>
-					<Start>8</Start>
-					<End>17</End>
-				</TimeWindow>
-				<ServiceTime>0.25</ServiceTime>
-			</Source>
-			<Destination>
-				<StationId>8</StationId>
-				<TimeWindow>
-					<Start>8</Start>
-					<End>17</End>
-				</TimeWindow>
-				<ServiceTime>0.25</ServiceTime>
-			</Destination>
-			<ProductId>1</ProductId>
-			<Amount>70</Amount>
-		</Order>
-		<Order id="13">
-			<Name>Hannover -> Bremen</Name>
-			<Source>
-				<StationId>3</StationId>
-				<TimeWindow>
-					<Start>8</Start>
-					<End>17</End>
-				</TimeWindow>
-				<ServiceTime>0.25</ServiceTime>
-			</Source>
-			<Destination>
-				<StationId>1</StationId>
-				<TimeWindow>
-					<Start>8</Start>
-					<End>17</End>
-				</TimeWindow>
-				<ServiceTime>0.25</ServiceTime>
-			</Destination>
-			<ProductId>1</ProductId>
-			<Amount>20</Amount>
-		</Order>
+		
 	</Orders>
 
 	<Stations>
 		<Station id="1">
-			<Name>Bremen</Name>
-			<XCoordinate>200</XCoordinate>
-			<YCoordinate>654</YCoordinate>
+			<Name>Berlin</Name>
+			<XCoordinate>114</XCoordinate>
+			<YCoordinate>287</YCoordinate>
 		</Station>
 		<Station id="2">
 			<Name>Hamburg</Name>
-			<XCoordinate>282</XCoordinate>
-			<YCoordinate>707</YCoordinate>
+			<XCoordinate>350</XCoordinate>
+			<YCoordinate>169</YCoordinate>
 		</Station>
 		<Station id="3">
-			<Name>Hannover</Name>
-			<XCoordinate>265</XCoordinate>
-			<YCoordinate>575</YCoordinate>
+			<Name>München</Name>
+			<XCoordinate>244</XCoordinate>
+			<YCoordinate>778</YCoordinate>
 		</Station>
 		<Station id="4">
-			<Name>München</Name>
-			<XCoordinate>392</XCoordinate>
-			<YCoordinate>98</YCoordinate>
+			<Name>Köln</Name>
+			<XCoordinate>560</XCoordinate>
+			<YCoordinate>463</YCoordinate>
 		</Station>
 		<Station id="5">
-			<Name>Osnabrück</Name>
-			<XCoordinate>147</XCoordinate>
-			<YCoordinate>564</YCoordinate>
+			<Name>Frankfurt am Main</Name>
+			<XCoordinate>440</XCoordinate>
+			<YCoordinate>556</YCoordinate>
 		</Station>
 		<Station id="6">
-			<Name>Berlin</Name>
-			<XCoordinate>519</XCoordinate>
-			<YCoordinate>591</YCoordinate>
+			<Name>Stuttgart</Name>
+			<XCoordinate>407</XCoordinate>
+			<YCoordinate>707</YCoordinate>
 		</Station>
 		<Station id="7">
-			<Name>Ellenbogen</Name>
-			<XCoordinate>173</XCoordinate>
-			<YCoordinate>876</YCoordinate>
+			<Name>Düsseldorf</Name>
+			<XCoordinate>572</XCoordinate>
+			<YCoordinate>432</YCoordinate>
 		</Station>
 		<Station id="8">
-			<Name>Neißeaue</Name>
-			<XCoordinate>627</XCoordinate>
-			<YCoordinate>448</YCoordinate>
+			<Name>Dortmund</Name>
+			<XCoordinate>525</XCoordinate>
+			<YCoordinate>398</YCoordinate>
+		</Station>
+		<Station id="9">
+			<Name>Essen</Name>
+			<XCoordinate>556</XCoordinate>
+			<YCoordinate>405</YCoordinate>
+		</Station>
+		<Station id="10">
+			<Name>Bremen</Name>
+			<XCoordinate>432</XCoordinate>
+			<YCoordinate>223</YCoordinate>
+		</Station>
+		<Station id="11">
+			<Name>Dresden</Name>
+			<XCoordinate>90</XCoordinate>
+			<YCoordinate>450</YCoordinate>
+		</Station>
+		<Station id="12">
+			<Name>Leipzig</Name>
+			<XCoordinate>184</XCoordinate>
+			<YCoordinate>417</YCoordinate>
+		</Station>
+		<Station id="13">
+			<Name>Hannover</Name>
+			<XCoordinate>367</XCoordinate>
+			<YCoordinate>302</YCoordinate>
+		</Station>
+		<Station id="14">
+			<Name>Nürnberg</Name>
+			<XCoordinate>275</XCoordinate>
+			<YCoordinate>629</YCoordinate>
+		</Station>
+		<Station id="15">
+			<Name>Duisburg</Name>
+			<XCoordinate>573</XCoordinate>
+			<YCoordinate>408</YCoordinate>
+		</Station>
+		<Station id="16">
+			<Name>Bochum</Name>
+			<XCoordinate>542</XCoordinate>
+			<YCoordinate>402</YCoordinate>
+		</Station>
+		<Station id="17">
+			<Name>Wuppertal</Name>
+			<XCoordinate>543</XCoordinate>
+			<YCoordinate>426</YCoordinate>
+		</Station>
+		<Station id="18">
+			<Name>Bielefeld</Name>
+			<XCoordinate>447</XCoordinate>
+			<YCoordinate>343</YCoordinate>
+		</Station>
+		<Station id="19">
+			<Name>Bonn</Name>
+			<XCoordinate>550</XCoordinate>
+			<YCoordinate>486</YCoordinate>
+		</Station>
+		<Station id="20">
+			<Name>Münster</Name>
+			<XCoordinate>514</XCoordinate>
+			<YCoordinate>348</YCoordinate>
+		</Station>
+		<Station id="21">
+			<Name>Karlsruhe</Name>
+			<XCoordinate>461</XCoordinate>
+			<YCoordinate>681</YCoordinate>
+		</Station>
+		<Station id="22">
+			<Name>Mannheim</Name>
+			<XCoordinate>454</XCoordinate>
+			<YCoordinate>627</YCoordinate>
+		</Station>
+		<Station id="23">
+			<Name>Augsburg</Name>
+			<XCoordinate>285</XCoordinate>
+			<YCoordinate>754</YCoordinate>
+		</Station>
+		<Station id="24">
+			<Name>Wiesbaden</Name>
+			<XCoordinate>471</XCoordinate>
+			<YCoordinate>559</YCoordinate>
+		</Station>
+		<Station id="25">
+			<Name>Gelsenkirchen</Name>
+			<XCoordinate>549</XCoordinate>
+			<YCoordinate>398</YCoordinate>
+		</Station>
+		<Station id="26">
+			<Name>Mönchengladbach</Name>
+			<XCoordinate>596</XCoordinate>
+			<YCoordinate>434</YCoordinate>
+		</Station>
+		<Station id="27">
+			<Name>Braunschweig</Name>
+			<XCoordinate>312</XCoordinate>
+			<YCoordinate>317</YCoordinate>
+		</Station>
+		<Station id="28">
+			<Name>Chemnitz</Name>
+			<XCoordinate>146</XCoordinate>
+			<YCoordinate>475</YCoordinate>
+		</Station>
+		<Station id="29">
+			<Name>Aachen</Name>
+			<XCoordinate>620</XCoordinate>
+			<YCoordinate>481</YCoordinate>
+		</Station>
+		<Station id="30">
+			<Name>Kiel</Name>
+			<XCoordinate>340</XCoordinate>
+			<YCoordinate>82</YCoordinate>
+		</Station>
+		<Station id="31">
+			<Name>Halle (Saale)</Name>
+			<XCoordinate>213</XCoordinate>
+			<YCoordinate>405</YCoordinate>
+		</Station>
+		<Station id="32">
+			<Name>Magdeburg</Name>
+			<XCoordinate>236</XCoordinate>
+			<YCoordinate>329</YCoordinate>
+		</Station>
+		<Station id="33">
+			<Name>Krefeld</Name>
+			<XCoordinate>587</XCoordinate>
+			<YCoordinate>419</YCoordinate>
+		</Station>
+		<Station id="34">
+			<Name>Freiburg im Breisgau</Name>
+			<XCoordinate>498</XCoordinate>
+			<YCoordinate>794</YCoordinate>
+		</Station>
+		<Station id="35">
+			<Name>Lübeck</Name>
+			<XCoordinate>302</XCoordinate>
+			<YCoordinate>133</YCoordinate>
+		</Station>
+		<Station id="36">
+			<Name>Oberhausen</Name>
+			<XCoordinate>567</XCoordinate>
+			<YCoordinate>403</YCoordinate>
+		</Station>
+		<Station id="37">
+			<Name>Erfurt</Name>
+			<XCoordinate>277</XCoordinate>
+			<YCoordinate>453</YCoordinate>
+		</Station>
+		<Station id="38">
+			<Name>Rostock</Name>
+			<XCoordinate>202</XCoordinate>
+			<YCoordinate>110</YCoordinate>
+		</Station>
+		<Station id="39">
+			<Name>Mainz</Name>
+			<XCoordinate>469</XCoordinate>
+			<YCoordinate>569</YCoordinate>
+		</Station>
+		<Station id="40">
+			<Name>Kassel</Name>
+			<XCoordinate>386</XCoordinate>
+			<YCoordinate>421</YCoordinate>
+		</Station>
+		<Station id="41">
+			<Name>Hagen</Name>
+			<XCoordinate>525</XCoordinate>
+			<YCoordinate>416</YCoordinate>
+		</Station>
+		<Station id="42">
+			<Name>Saarbrücken</Name>
+			<XCoordinate>557</XCoordinate>
+			<YCoordinate>655</YCoordinate>
+		</Station>
+		<Station id="43">
+			<Name>Hamm</Name>
+			<XCoordinate>503</XCoordinate>
+			<YCoordinate>381</YCoordinate>
+		</Station>
+		<Station id="44">
+			<Name>Mülheim an der Ruhr</Name>
+			<XCoordinate>565</XCoordinate>
+			<YCoordinate>408</YCoordinate>
+		</Station>
+		<Station id="45">
+			<Name>Ludwigshafen am Rhein</Name>
+			<XCoordinate>457</XCoordinate>
+			<YCoordinate>627</YCoordinate>
+		</Station>
+		<Station id="46">
+			<Name>Leverkusen</Name>
+			<XCoordinate>558</XCoordinate>
+			<YCoordinate>452</YCoordinate>
+		</Station>
+		<Station id="47">
+			<Name>Potsdam</Name>
+			<XCoordinate>138</XCoordinate>
+			<YCoordinate>300</YCoordinate>
+		</Station>
+		<Station id="48">
+			<Name>Oldenburg</Name>
+			<XCoordinate>474</XCoordinate>
+			<YCoordinate>215</YCoordinate>
+		</Station>
+		<Station id="49">
+			<Name>Osnabrück</Name>
+			<XCoordinate>484</XCoordinate>
+			<YCoordinate>311</YCoordinate>
+		</Station>
+		<Station id="50">
+			<Name>Solingen</Name>
+			<XCoordinate>551</XCoordinate>
+			<YCoordinate>437</YCoordinate>
+		</Station>
+		<Station id="51">
+			<Name>Herne</Name>
+			<XCoordinate>542</XCoordinate>
+			<YCoordinate>395</YCoordinate>
+		</Station>
+		<Station id="52">
+			<Name>Neuss</Name>
+			<XCoordinate>580</XCoordinate>
+			<YCoordinate>432</YCoordinate>
+		</Station>
+		<Station id="53">
+			<Name>Heidelberg</Name>
+			<XCoordinate>439</XCoordinate>
+			<YCoordinate>635</YCoordinate>
+		</Station>
+		<Station id="54">
+			<Name>Darmstadt</Name>
+			<XCoordinate>443</XCoordinate>
+			<YCoordinate>585</YCoordinate>
+		</Station>
+		<Station id="55">
+			<Name>Paderborn</Name>
+			<XCoordinate>436</XCoordinate>
+			<YCoordinate>375</YCoordinate>
+		</Station>
+		<Station id="56">
+			<Name>Regensburg</Name>
+			<XCoordinate>205</XCoordinate>
+			<YCoordinate>679</YCoordinate>
+		</Station>
+		<Station id="57">
+			<Name>Ingolstadt</Name>
+			<XCoordinate>251</XCoordinate>
+			<YCoordinate>707</YCoordinate>
+		</Station>
+		<Station id="58">
+			<Name>Würzburg</Name>
+			<XCoordinate>353</XCoordinate>
+			<YCoordinate>591</YCoordinate>
+		</Station>
+		<Station id="59">
+			<Name>Wolfsburg</Name>
+			<XCoordinate>294</XCoordinate>
+			<YCoordinate>296</YCoordinate>
+		</Station>
+		<Station id="60">
+			<Name>Fürth</Name>
+			<XCoordinate>281</XCoordinate>
+			<YCoordinate>627</YCoordinate>
+		</Station>
+		<Station id="61">
+			<Name>Ulm</Name>
+			<XCoordinate>351</XCoordinate>
+			<YCoordinate>749</YCoordinate>
+		</Station>
+		<Station id="62">
+			<Name>Heilbronn</Name>
+			<XCoordinate>402</XCoordinate>
+			<YCoordinate>666</YCoordinate>
+		</Station>
+		<Station id="63">
+			<Name>Offenbach am Main</Name>
+			<XCoordinate>434</XCoordinate>
+			<YCoordinate>557</YCoordinate>
+		</Station>
+		<Station id="64">
+			<Name>Göttingen</Name>
+			<XCoordinate>354</XCoordinate>
+			<YCoordinate>393</YCoordinate>
+		</Station>
+		<Station id="65">
+			<Name>Bottrop</Name>
+			<XCoordinate>562</XCoordinate>
+			<YCoordinate>398</YCoordinate>
+		</Station>
+		<Station id="66">
+			<Name>Pforzheim</Name>
+			<XCoordinate>439</XCoordinate>
+			<YCoordinate>693</YCoordinate>
+		</Station>
+		<Station id="67">
+			<Name>Recklinghausen</Name>
+			<XCoordinate>542</XCoordinate>
+			<YCoordinate>386</YCoordinate>
+		</Station>
+		<Station id="68">
+			<Name>Reutlingen</Name>
+			<XCoordinate>404</XCoordinate>
+			<YCoordinate>738</YCoordinate>
+		</Station>
+		<Station id="69">
+			<Name>Koblenz</Name>
+			<XCoordinate>516</XCoordinate>
+			<YCoordinate>528</YCoordinate>
+		</Station>
+		<Station id="70">
+			<Name>Remscheid</Name>
+			<XCoordinate>542</XCoordinate>
+			<YCoordinate>436</YCoordinate>
+		</Station>
+		<Station id="71">
+			<Name>Bergisch Gladbach</Name>
+			<XCoordinate>548</XCoordinate>
+			<YCoordinate>457</YCoordinate>
+		</Station>
+		<Station id="72">
+			<Name>Bremerhaven</Name>
+			<XCoordinate>445</XCoordinate>
+			<YCoordinate>172</YCoordinate>
+		</Station>
+		<Station id="73">
+			<Name>Jena</Name>
+			<XCoordinate>239</XCoordinate>
+			<YCoordinate>465</YCoordinate>
+		</Station>
+		<Station id="74">
+			<Name>Trier</Name>
+			<XCoordinate>582</XCoordinate>
+			<YCoordinate>596</YCoordinate>
+		</Station>
+		<Station id="75">
+			<Name>Erlangen</Name>
+			<XCoordinate>278</XCoordinate>
+			<YCoordinate>615</YCoordinate>
+		</Station>
+		<Station id="76">
+			<Name>Moers</Name>
+			<XCoordinate>580</XCoordinate>
+			<YCoordinate>406</YCoordinate>
 		</Station>
 	</Stations>
 
@@ -336,7 +400,7 @@
 			<Number>50</Number>
 			<Timespan>
 				<Start>8</Start>
-				<End>28</End>
+				<End>999999</End>
 			</Timespan>
 			<ProductId>1</ProductId>
 			<Capacity>500</Capacity>
@@ -349,7 +413,7 @@
 			<Number>50</Number>
 			<Timespan>
 				<Start>8</Start>
-				<End>40</End>
+				<End>99999999</End>
 			</Timespan>
 			<ProductId>2</ProductId>
 			<Capacity>500</Capacity>

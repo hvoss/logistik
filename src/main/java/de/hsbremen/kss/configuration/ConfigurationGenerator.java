@@ -25,13 +25,13 @@ public class ConfigurationGenerator {
             final Product product = this.randomUtils.randomElement(products);
             final String name = sourceStation.getName() + " => " + destinationStation.getName();
 
-            final TimeWindow timeWindow = new TimeWindow(8d, 10d);
+            final TimeWindow timeWindow = TimeWindow.INFINITY_TIMEWINDOW;
             final Double serviceTime = 0.25;
 
             final OrderStation source = new OrderStation(sourceStation, timeWindow, serviceTime);
             final OrderStation destination = new OrderStation(destinationStation, timeWindow, serviceTime);
 
-            final Integer amount = 50;
+            final Integer amount = 1;
 
             final Order order = new Order(i, name, source, destination, product, amount);
             orders.add(order);
