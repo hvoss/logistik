@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 
 import de.hsbremen.kss.configuration.Order;
 import de.hsbremen.kss.configuration.Station;
+import de.hsbremen.kss.configuration.TimeWindow;
 import de.hsbremen.kss.configuration.Vehicle;
 import de.hsbremen.kss.util.TimeUtils;
 
@@ -131,7 +132,7 @@ public final class Tour {
         Validate.notNull(sourceOrder, "source order is null");
         final OrderLoadAction unloadAction = new OrderLoadAction(sourceOrder);
         this.actualLoadingAmount += sourceOrder.getAmount();
-        addAction(unloadAction);
+        addOrderAction(unloadAction);
 
     }
 
@@ -157,7 +158,7 @@ public final class Tour {
         Validate.notNull(destinationOrder, "destination order is null");
         final OrderUnloadAction unloadAction = new OrderUnloadAction(destinationOrder);
         this.actualLoadingAmount -= destinationOrder.getAmount();
-        addAction(unloadAction);
+        addOrderAction(unloadAction);
     }
 
     /**
@@ -170,6 +171,21 @@ public final class Tour {
         for (final Order destinationOrder : destinationOrders) {
             addDestinationOrder(destinationOrder);
         }
+    }
+
+    private void addOrderAction(final OrderAction orderAction) {
+        final Double start = orderAction.timewindow().getStart();
+        final Station nextStation = orderAction.getStation();
+        final Station actualStation = actualStation();
+
+        final double nextTime = this.actualTime() + this.vehicle.calculateTavelingTime(actualStation, nextStation);
+
+        if (start > nextTime) {
+            final TimeWindow timeWindow = this.vehicle.getTimeWindow();
+            final WaitingAction waitingAction = new WaitingAction(nextStation, timeWindow, nextTime, start);
+            addAction(waitingAction);
+        }
+        addAction(orderAction);
     }
 
     /**

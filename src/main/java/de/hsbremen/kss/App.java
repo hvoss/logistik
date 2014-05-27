@@ -82,10 +82,10 @@ public final class App {
         final Configuration configuration = loadConfiguration();
 
         final Plan plan = startAlgorithms(configuration);
-        
-//        final FitnessTest fitnessTest = new SimpleFitnessTest(configuration);
-//        
-//        fitnessTest.calculateFitness(plan);
+
+        // final FitnessTest fitnessTest = new SimpleFitnessTest(configuration);
+        //
+        // fitnessTest.calculateFitness(plan);
         // startGUI(configuration, plan);
 
     }
@@ -147,7 +147,7 @@ public final class App {
 
         // configuration <hicles(), 50);
         configurationValidator.validate(configuration);
-        
+
         final FitnessTest fitnessTest = new SimpleFitnessTest(configuration);
 
         final SimpleConstruction simpleConstruction = new PerfectSimpleConstruction();
@@ -165,8 +165,7 @@ public final class App {
         final MultithreadingConstruction multithreadingConstruction = new MultithreadingConstruction(fixMultipleRandomConstruction);
 
         final List<Construction> allConstructions = new ArrayList<>(Arrays.asList(nearestNeighbor, radialConstruction, multipleRadialConstruction,
-                randomConstruction, fixMultipleRandomConstruction, missAbortMultipleRandomConstruction, savingsContruction,
-                multipleSavingsConstruction, savingsTourConstruction, multipleSavingsTourConstruction, multithreadingConstruction));
+                randomConstruction, fixMultipleRandomConstruction, missAbortMultipleRandomConstruction, multithreadingConstruction));
         final MultithreadingConstruction multiThreadAll = new MultithreadingConstruction(new ArrayList<>(allConstructions));
 
         allConstructions.add(multiThreadAll);
