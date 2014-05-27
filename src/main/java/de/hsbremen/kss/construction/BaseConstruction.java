@@ -170,6 +170,9 @@ public abstract class BaseConstruction implements Construction {
         final double freeLength = tour.freeLength() - orderLength - distanceToOrder;
 
         actualTime += vehicle.calculateTavelingTime(distanceToOrder);
+        if (!order.getSource().getTimeWindow().between(actualTime)) {
+            return false;
+        }
         actualTime += order.getSource().getServiceTime();
 
         final Station destinationDepot = vehicle.getDestinationDepot();
