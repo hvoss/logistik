@@ -9,6 +9,10 @@ import java.util.Random;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.Validate;
 
+import de.hsbremen.kss.model.Action;
+import de.hsbremen.kss.model.OrderAction;
+import de.hsbremen.kss.model.Tour;
+
 /**
  * some random utils.
  * 
@@ -99,4 +103,16 @@ public final class RandomUtils {
         Collections.shuffle(shuffle, this.random);
         return shuffle;
     }
+
+	public <T>  T  removeRandomElement(List<T> elements) {
+		int idx = nextInt(0, elements.size()-1);
+		return elements.remove(idx);
+	}
+
+	public <T>  void insertAtRandomPosition(List<T> elements,
+			T elementToInsert) {
+		int idx = nextInt(0, elements.size()-1);
+		
+		elements.add(idx, elementToInsert);
+	}
 }
