@@ -5,389 +5,389 @@
 	</ComplexOrders>
 
 	<Orders>
-		
+
 	</Orders>
 
 	<Stations>
 		<Station id="1">
 			<Name>Berlin</Name>
-			<XCoordinate>114</XCoordinate>
-			<YCoordinate>287</YCoordinate>
+			<XCoordinate>518</XCoordinate>
+			<YCoordinate>589</YCoordinate>
 		</Station>
 		<Station id="2">
 			<Name>Hamburg</Name>
-			<XCoordinate>350</XCoordinate>
-			<YCoordinate>169</YCoordinate>
+			<XCoordinate>282</XCoordinate>
+			<YCoordinate>707</YCoordinate>
 		</Station>
 		<Station id="3">
 			<Name>München</Name>
-			<XCoordinate>244</XCoordinate>
-			<YCoordinate>778</YCoordinate>
+			<XCoordinate>388</XCoordinate>
+			<YCoordinate>98</YCoordinate>
 		</Station>
 		<Station id="4">
 			<Name>Köln</Name>
-			<XCoordinate>560</XCoordinate>
-			<YCoordinate>463</YCoordinate>
+			<XCoordinate>72</XCoordinate>
+			<YCoordinate>413</YCoordinate>
 		</Station>
 		<Station id="5">
 			<Name>Frankfurt am Main</Name>
-			<XCoordinate>440</XCoordinate>
-			<YCoordinate>556</YCoordinate>
+			<XCoordinate>192</XCoordinate>
+			<YCoordinate>320</YCoordinate>
 		</Station>
 		<Station id="6">
 			<Name>Stuttgart</Name>
-			<XCoordinate>407</XCoordinate>
-			<YCoordinate>707</YCoordinate>
+			<XCoordinate>225</XCoordinate>
+			<YCoordinate>169</YCoordinate>
 		</Station>
 		<Station id="7">
 			<Name>Düsseldorf</Name>
-			<XCoordinate>572</XCoordinate>
-			<YCoordinate>432</YCoordinate>
+			<XCoordinate>60</XCoordinate>
+			<YCoordinate>444</YCoordinate>
 		</Station>
 		<Station id="8">
 			<Name>Dortmund</Name>
-			<XCoordinate>525</XCoordinate>
-			<YCoordinate>398</YCoordinate>
+			<XCoordinate>107</XCoordinate>
+			<YCoordinate>478</YCoordinate>
 		</Station>
 		<Station id="9">
 			<Name>Essen</Name>
-			<XCoordinate>556</XCoordinate>
-			<YCoordinate>405</YCoordinate>
+			<XCoordinate>76</XCoordinate>
+			<YCoordinate>471</YCoordinate>
 		</Station>
 		<Station id="10">
 			<Name>Bremen</Name>
-			<XCoordinate>432</XCoordinate>
-			<YCoordinate>223</YCoordinate>
+			<XCoordinate>200</XCoordinate>
+			<YCoordinate>653</YCoordinate>
 		</Station>
 		<Station id="11">
 			<Name>Dresden</Name>
-			<XCoordinate>90</XCoordinate>
-			<YCoordinate>450</YCoordinate>
+			<XCoordinate>542</XCoordinate>
+			<YCoordinate>426</YCoordinate>
 		</Station>
 		<Station id="12">
 			<Name>Leipzig</Name>
-			<XCoordinate>184</XCoordinate>
-			<YCoordinate>417</YCoordinate>
+			<XCoordinate>448</XCoordinate>
+			<YCoordinate>459</YCoordinate>
 		</Station>
 		<Station id="13">
 			<Name>Hannover</Name>
-			<XCoordinate>367</XCoordinate>
-			<YCoordinate>302</YCoordinate>
+			<XCoordinate>265</XCoordinate>
+			<YCoordinate>574</YCoordinate>
 		</Station>
 		<Station id="14">
 			<Name>Nürnberg</Name>
-			<XCoordinate>275</XCoordinate>
-			<YCoordinate>629</YCoordinate>
+			<XCoordinate>357</XCoordinate>
+			<YCoordinate>247</YCoordinate>
 		</Station>
 		<Station id="15">
 			<Name>Duisburg</Name>
-			<XCoordinate>573</XCoordinate>
-			<YCoordinate>408</YCoordinate>
+			<XCoordinate>59</XCoordinate>
+			<YCoordinate>468</YCoordinate>
 		</Station>
 		<Station id="16">
 			<Name>Bochum</Name>
-			<XCoordinate>542</XCoordinate>
-			<YCoordinate>402</YCoordinate>
+			<XCoordinate>90</XCoordinate>
+			<YCoordinate>474</YCoordinate>
 		</Station>
 		<Station id="17">
 			<Name>Wuppertal</Name>
-			<XCoordinate>543</XCoordinate>
-			<YCoordinate>426</YCoordinate>
+			<XCoordinate>89</XCoordinate>
+			<YCoordinate>450</YCoordinate>
 		</Station>
 		<Station id="18">
 			<Name>Bielefeld</Name>
-			<XCoordinate>447</XCoordinate>
-			<YCoordinate>343</YCoordinate>
+			<XCoordinate>185</XCoordinate>
+			<YCoordinate>533</YCoordinate>
 		</Station>
 		<Station id="19">
 			<Name>Bonn</Name>
-			<XCoordinate>550</XCoordinate>
-			<YCoordinate>486</YCoordinate>
+			<XCoordinate>82</XCoordinate>
+			<YCoordinate>390</YCoordinate>
 		</Station>
 		<Station id="20">
 			<Name>Münster</Name>
-			<XCoordinate>514</XCoordinate>
-			<YCoordinate>348</YCoordinate>
+			<XCoordinate>118</XCoordinate>
+			<YCoordinate>528</YCoordinate>
 		</Station>
 		<Station id="21">
 			<Name>Karlsruhe</Name>
-			<XCoordinate>461</XCoordinate>
-			<YCoordinate>681</YCoordinate>
+			<XCoordinate>171</XCoordinate>
+			<YCoordinate>195</YCoordinate>
 		</Station>
 		<Station id="22">
 			<Name>Mannheim</Name>
-			<XCoordinate>454</XCoordinate>
-			<YCoordinate>627</YCoordinate>
+			<XCoordinate>178</XCoordinate>
+			<YCoordinate>249</YCoordinate>
 		</Station>
 		<Station id="23">
 			<Name>Augsburg</Name>
-			<XCoordinate>285</XCoordinate>
-			<YCoordinate>754</YCoordinate>
+			<XCoordinate>347</XCoordinate>
+			<YCoordinate>122</YCoordinate>
 		</Station>
 		<Station id="24">
 			<Name>Wiesbaden</Name>
-			<XCoordinate>471</XCoordinate>
-			<YCoordinate>559</YCoordinate>
+			<XCoordinate>161</XCoordinate>
+			<YCoordinate>317</YCoordinate>
 		</Station>
 		<Station id="25">
 			<Name>Gelsenkirchen</Name>
-			<XCoordinate>549</XCoordinate>
-			<YCoordinate>398</YCoordinate>
+			<XCoordinate>83</XCoordinate>
+			<YCoordinate>478</YCoordinate>
 		</Station>
 		<Station id="26">
 			<Name>Mönchengladbach</Name>
-			<XCoordinate>596</XCoordinate>
-			<YCoordinate>434</YCoordinate>
+			<XCoordinate>36</XCoordinate>
+			<YCoordinate>442</YCoordinate>
 		</Station>
 		<Station id="27">
 			<Name>Braunschweig</Name>
-			<XCoordinate>312</XCoordinate>
-			<YCoordinate>317</YCoordinate>
+			<XCoordinate>320</XCoordinate>
+			<YCoordinate>559</YCoordinate>
 		</Station>
 		<Station id="28">
 			<Name>Chemnitz</Name>
-			<XCoordinate>146</XCoordinate>
-			<YCoordinate>475</YCoordinate>
+			<XCoordinate>486</XCoordinate>
+			<YCoordinate>401</YCoordinate>
 		</Station>
 		<Station id="29">
 			<Name>Aachen</Name>
-			<XCoordinate>620</XCoordinate>
-			<YCoordinate>481</YCoordinate>
+			<XCoordinate>12</XCoordinate>
+			<YCoordinate>395</YCoordinate>
 		</Station>
 		<Station id="30">
 			<Name>Kiel</Name>
-			<XCoordinate>340</XCoordinate>
-			<YCoordinate>82</YCoordinate>
+			<XCoordinate>292</XCoordinate>
+			<YCoordinate>794</YCoordinate>
 		</Station>
 		<Station id="31">
 			<Name>Halle (Saale)</Name>
-			<XCoordinate>213</XCoordinate>
-			<YCoordinate>405</YCoordinate>
+			<XCoordinate>419</XCoordinate>
+			<YCoordinate>471</YCoordinate>
 		</Station>
 		<Station id="32">
 			<Name>Magdeburg</Name>
-			<XCoordinate>236</XCoordinate>
-			<YCoordinate>329</YCoordinate>
+			<XCoordinate>396</XCoordinate>
+			<YCoordinate>547</YCoordinate>
 		</Station>
 		<Station id="33">
 			<Name>Krefeld</Name>
-			<XCoordinate>587</XCoordinate>
-			<YCoordinate>419</YCoordinate>
+			<XCoordinate>45</XCoordinate>
+			<YCoordinate>457</YCoordinate>
 		</Station>
 		<Station id="34">
 			<Name>Freiburg im Breisgau</Name>
-			<XCoordinate>498</XCoordinate>
-			<YCoordinate>794</YCoordinate>
+			<XCoordinate>134</XCoordinate>
+			<YCoordinate>82</YCoordinate>
 		</Station>
 		<Station id="35">
 			<Name>Lübeck</Name>
-			<XCoordinate>302</XCoordinate>
-			<YCoordinate>133</YCoordinate>
+			<XCoordinate>330</XCoordinate>
+			<YCoordinate>743</YCoordinate>
 		</Station>
 		<Station id="36">
 			<Name>Oberhausen</Name>
-			<XCoordinate>567</XCoordinate>
-			<YCoordinate>403</YCoordinate>
+			<XCoordinate>65</XCoordinate>
+			<YCoordinate>473</YCoordinate>
 		</Station>
 		<Station id="37">
 			<Name>Erfurt</Name>
-			<XCoordinate>277</XCoordinate>
-			<YCoordinate>453</YCoordinate>
+			<XCoordinate>355</XCoordinate>
+			<YCoordinate>423</YCoordinate>
 		</Station>
 		<Station id="38">
 			<Name>Rostock</Name>
-			<XCoordinate>202</XCoordinate>
-			<YCoordinate>110</YCoordinate>
+			<XCoordinate>430</XCoordinate>
+			<YCoordinate>766</YCoordinate>
 		</Station>
 		<Station id="39">
 			<Name>Mainz</Name>
-			<XCoordinate>469</XCoordinate>
-			<YCoordinate>569</YCoordinate>
+			<XCoordinate>163</XCoordinate>
+			<YCoordinate>307</YCoordinate>
 		</Station>
 		<Station id="40">
 			<Name>Kassel</Name>
-			<XCoordinate>386</XCoordinate>
-			<YCoordinate>421</YCoordinate>
+			<XCoordinate>246</XCoordinate>
+			<YCoordinate>455</YCoordinate>
 		</Station>
 		<Station id="41">
 			<Name>Hagen</Name>
-			<XCoordinate>525</XCoordinate>
-			<YCoordinate>416</YCoordinate>
+			<XCoordinate>107</XCoordinate>
+			<YCoordinate>460</YCoordinate>
 		</Station>
 		<Station id="42">
 			<Name>Saarbrücken</Name>
-			<XCoordinate>557</XCoordinate>
-			<YCoordinate>655</YCoordinate>
+			<XCoordinate>75</XCoordinate>
+			<YCoordinate>221</YCoordinate>
 		</Station>
 		<Station id="43">
 			<Name>Hamm</Name>
-			<XCoordinate>503</XCoordinate>
-			<YCoordinate>381</YCoordinate>
+			<XCoordinate>129</XCoordinate>
+			<YCoordinate>495</YCoordinate>
 		</Station>
 		<Station id="44">
 			<Name>Mülheim an der Ruhr</Name>
-			<XCoordinate>565</XCoordinate>
-			<YCoordinate>408</YCoordinate>
+			<XCoordinate>67</XCoordinate>
+			<YCoordinate>468</YCoordinate>
 		</Station>
 		<Station id="45">
 			<Name>Ludwigshafen am Rhein</Name>
-			<XCoordinate>457</XCoordinate>
-			<YCoordinate>627</YCoordinate>
+			<XCoordinate>175</XCoordinate>
+			<YCoordinate>249</YCoordinate>
 		</Station>
 		<Station id="46">
 			<Name>Leverkusen</Name>
-			<XCoordinate>558</XCoordinate>
-			<YCoordinate>452</YCoordinate>
+			<XCoordinate>74</XCoordinate>
+			<YCoordinate>424</YCoordinate>
 		</Station>
 		<Station id="47">
 			<Name>Potsdam</Name>
-			<XCoordinate>138</XCoordinate>
-			<YCoordinate>300</YCoordinate>
+			<XCoordinate>494</XCoordinate>
+			<YCoordinate>576</YCoordinate>
 		</Station>
 		<Station id="48">
 			<Name>Oldenburg</Name>
-			<XCoordinate>474</XCoordinate>
-			<YCoordinate>215</YCoordinate>
+			<XCoordinate>158</XCoordinate>
+			<YCoordinate>661</YCoordinate>
 		</Station>
 		<Station id="49">
 			<Name>Osnabrück</Name>
-			<XCoordinate>484</XCoordinate>
-			<YCoordinate>311</YCoordinate>
+			<XCoordinate>148</XCoordinate>
+			<YCoordinate>565</YCoordinate>
 		</Station>
 		<Station id="50">
 			<Name>Solingen</Name>
-			<XCoordinate>551</XCoordinate>
-			<YCoordinate>437</YCoordinate>
+			<XCoordinate>81</XCoordinate>
+			<YCoordinate>439</YCoordinate>
 		</Station>
 		<Station id="51">
 			<Name>Herne</Name>
-			<XCoordinate>542</XCoordinate>
-			<YCoordinate>395</YCoordinate>
+			<XCoordinate>90</XCoordinate>
+			<YCoordinate>481</YCoordinate>
 		</Station>
 		<Station id="52">
 			<Name>Neuss</Name>
-			<XCoordinate>580</XCoordinate>
-			<YCoordinate>432</YCoordinate>
+			<XCoordinate>52</XCoordinate>
+			<YCoordinate>444</YCoordinate>
 		</Station>
 		<Station id="53">
 			<Name>Heidelberg</Name>
-			<XCoordinate>439</XCoordinate>
-			<YCoordinate>635</YCoordinate>
+			<XCoordinate>193</XCoordinate>
+			<YCoordinate>241</YCoordinate>
 		</Station>
 		<Station id="54">
 			<Name>Darmstadt</Name>
-			<XCoordinate>443</XCoordinate>
-			<YCoordinate>585</YCoordinate>
+			<XCoordinate>189</XCoordinate>
+			<YCoordinate>291</YCoordinate>
 		</Station>
 		<Station id="55">
 			<Name>Paderborn</Name>
-			<XCoordinate>436</XCoordinate>
-			<YCoordinate>375</YCoordinate>
+			<XCoordinate>196</XCoordinate>
+			<YCoordinate>501</YCoordinate>
 		</Station>
 		<Station id="56">
 			<Name>Regensburg</Name>
-			<XCoordinate>205</XCoordinate>
-			<YCoordinate>679</YCoordinate>
+			<XCoordinate>427</XCoordinate>
+			<YCoordinate>197</YCoordinate>
 		</Station>
 		<Station id="57">
 			<Name>Ingolstadt</Name>
-			<XCoordinate>251</XCoordinate>
-			<YCoordinate>707</YCoordinate>
+			<XCoordinate>381</XCoordinate>
+			<YCoordinate>169</YCoordinate>
 		</Station>
 		<Station id="58">
 			<Name>Würzburg</Name>
-			<XCoordinate>353</XCoordinate>
-			<YCoordinate>591</YCoordinate>
+			<XCoordinate>279</XCoordinate>
+			<YCoordinate>285</YCoordinate>
 		</Station>
 		<Station id="59">
 			<Name>Wolfsburg</Name>
-			<XCoordinate>294</XCoordinate>
-			<YCoordinate>296</YCoordinate>
+			<XCoordinate>338</XCoordinate>
+			<YCoordinate>580</YCoordinate>
 		</Station>
 		<Station id="60">
 			<Name>Fürth</Name>
-			<XCoordinate>281</XCoordinate>
-			<YCoordinate>627</YCoordinate>
+			<XCoordinate>351</XCoordinate>
+			<YCoordinate>249</YCoordinate>
 		</Station>
 		<Station id="61">
 			<Name>Ulm</Name>
-			<XCoordinate>351</XCoordinate>
-			<YCoordinate>749</YCoordinate>
+			<XCoordinate>281</XCoordinate>
+			<YCoordinate>127</YCoordinate>
 		</Station>
 		<Station id="62">
 			<Name>Heilbronn</Name>
-			<XCoordinate>402</XCoordinate>
-			<YCoordinate>666</YCoordinate>
+			<XCoordinate>230</XCoordinate>
+			<YCoordinate>210</YCoordinate>
 		</Station>
 		<Station id="63">
 			<Name>Offenbach am Main</Name>
-			<XCoordinate>434</XCoordinate>
-			<YCoordinate>557</YCoordinate>
+			<XCoordinate>198</XCoordinate>
+			<YCoordinate>319</YCoordinate>
 		</Station>
 		<Station id="64">
 			<Name>Göttingen</Name>
-			<XCoordinate>354</XCoordinate>
-			<YCoordinate>393</YCoordinate>
+			<XCoordinate>278</XCoordinate>
+			<YCoordinate>483</YCoordinate>
 		</Station>
 		<Station id="65">
 			<Name>Bottrop</Name>
-			<XCoordinate>562</XCoordinate>
-			<YCoordinate>398</YCoordinate>
+			<XCoordinate>70</XCoordinate>
+			<YCoordinate>478</YCoordinate>
 		</Station>
 		<Station id="66">
 			<Name>Pforzheim</Name>
-			<XCoordinate>439</XCoordinate>
-			<YCoordinate>693</YCoordinate>
+			<XCoordinate>193</XCoordinate>
+			<YCoordinate>183</YCoordinate>
 		</Station>
 		<Station id="67">
 			<Name>Recklinghausen</Name>
-			<XCoordinate>542</XCoordinate>
-			<YCoordinate>386</YCoordinate>
+			<XCoordinate>90</XCoordinate>
+			<YCoordinate>490</YCoordinate>
 		</Station>
 		<Station id="68">
 			<Name>Reutlingen</Name>
-			<XCoordinate>404</XCoordinate>
-			<YCoordinate>738</YCoordinate>
+			<XCoordinate>228</XCoordinate>
+			<YCoordinate>138</YCoordinate>
 		</Station>
 		<Station id="69">
 			<Name>Koblenz</Name>
-			<XCoordinate>516</XCoordinate>
-			<YCoordinate>528</YCoordinate>
+			<XCoordinate>116</XCoordinate>
+			<YCoordinate>348</YCoordinate>
 		</Station>
 		<Station id="70">
 			<Name>Remscheid</Name>
-			<XCoordinate>542</XCoordinate>
-			<YCoordinate>436</YCoordinate>
+			<XCoordinate>90</XCoordinate>
+			<YCoordinate>440</YCoordinate>
 		</Station>
 		<Station id="71">
 			<Name>Bergisch Gladbach</Name>
-			<XCoordinate>548</XCoordinate>
-			<YCoordinate>457</YCoordinate>
+			<XCoordinate>84</XCoordinate>
+			<YCoordinate>419</YCoordinate>
 		</Station>
 		<Station id="72">
 			<Name>Bremerhaven</Name>
-			<XCoordinate>445</XCoordinate>
-			<YCoordinate>172</YCoordinate>
+			<XCoordinate>187</XCoordinate>
+			<YCoordinate>704</YCoordinate>
 		</Station>
 		<Station id="73">
 			<Name>Jena</Name>
-			<XCoordinate>239</XCoordinate>
-			<YCoordinate>465</YCoordinate>
+			<XCoordinate>393</XCoordinate>
+			<YCoordinate>411</YCoordinate>
 		</Station>
 		<Station id="74">
 			<Name>Trier</Name>
-			<XCoordinate>582</XCoordinate>
-			<YCoordinate>596</YCoordinate>
+			<XCoordinate>50</XCoordinate>
+			<YCoordinate>280</YCoordinate>
 		</Station>
 		<Station id="75">
 			<Name>Erlangen</Name>
-			<XCoordinate>278</XCoordinate>
-			<YCoordinate>615</YCoordinate>
+			<XCoordinate>354</XCoordinate>
+			<YCoordinate>261</YCoordinate>
 		</Station>
 		<Station id="76">
 			<Name>Moers</Name>
-			<XCoordinate>580</XCoordinate>
-			<YCoordinate>406</YCoordinate>
+			<XCoordinate>52</XCoordinate>
+			<YCoordinate>470</YCoordinate>
 		</Station>
 	</Stations>
 
@@ -405,27 +405,11 @@
 			<ProductId>1</ProductId>
 			<Capacity>500</Capacity>
 		</Vehicle>
-		<Vehicle id="2">
-			<Name>LKW</Name>
-			<SourceDepotId>4</SourceDepotId>
-			<DestinationDepotId>4</DestinationDepotId>
-			<Velocity>60</Velocity>
-			<Number>50</Number>
-			<Timespan>
-				<Start>8</Start>
-				<End>99999999</End>
-			</Timespan>
-			<ProductId>2</ProductId>
-			<Capacity>500</Capacity>
-		</Vehicle>
 	</Vehicles>
 
 	<Products>
 		<Product id="1">
 			<Name>Snickers</Name>
-		</Product>
-		<Product id="2">
-			<Name>Mars</Name>
 		</Product>
 	</Products>
 </Configuration>

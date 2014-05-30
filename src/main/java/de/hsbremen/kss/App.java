@@ -86,7 +86,7 @@ public final class App {
         // final FitnessTest fitnessTest = new SimpleFitnessTest(configuration);
         //
         // fitnessTest.calculateFitness(plan);
-        // startGUI(configuration, plan);
+        startGUI(configuration, plan);
 
     }
 
