@@ -402,7 +402,7 @@ public final class Station {
         return copiedStations;
     }
 
-    public static List<Station> convert(final List<OrderStation> route) {
+    public static List<Station> convert(final Collection<OrderStation> route) {
         final List<Station> list = new ArrayList<>(route.size());
 
         for (final OrderStation station : route) {

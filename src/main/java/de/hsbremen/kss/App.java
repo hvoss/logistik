@@ -36,9 +36,12 @@ import de.hsbremen.kss.construction.SavingsTourConstruction;
 import de.hsbremen.kss.construction.SweepConstruction;
 import de.hsbremen.kss.fitness.FitnessTest;
 import de.hsbremen.kss.fitness.SimpleFitnessTest;
+import de.hsbremen.kss.genetic.GeneticAlgorithm;
+import de.hsbremen.kss.genetic.GeneticAlgorithmImpl;
 import de.hsbremen.kss.gui.MainFrame;
 import de.hsbremen.kss.model.Plan;
 import de.hsbremen.kss.simpleconstruction.PerfectSimpleConstruction;
+import de.hsbremen.kss.simpleconstruction.RandomSimpleConstruction;
 import de.hsbremen.kss.simpleconstruction.SimpleConstruction;
 import de.hsbremen.kss.timing.ConstructionTimeMeasuring;
 import de.hsbremen.kss.util.RandomUtils;
@@ -63,6 +66,8 @@ public final class App {
 
     private static MainFrame mainFrame;
 
+    private static RandomUtils randomUtils = new RandomUtils(0);;
+
     /**
      * static class
      */
@@ -81,7 +86,25 @@ public final class App {
 
         final Configuration configuration = loadConfiguration();
 
-        final Plan plan = startAlgorithms(configuration);
+        final ConfigurationGenerator configurationGenerator = new ConfigurationGenerator(App.randomUtils);
+
+        final Configuration genConfig = configurationGenerator.generateConfiguration(configuration.getStations(), configuration.getProducts(),
+                configuration.getVehicles(), 20);
+
+        // final Plan plan = startAlgorithms(genConfig);
+
+        final List<Plan> randomPlans = generateRandomPlans(genConfig, 100);
+
+        System.out.println(randomPlans);
+
+        for (final Plan plan : randomPlans) {
+            plan.logPlan();
+            plan.logTours();
+        }
+
+        final GeneticAlgorithm geneticAlgorithm = new GeneticAlgorithmImpl(configuration, randomPlans);
+
+        final Plan plan = geneticAlgorithm.startOptimize();
 
         // final FitnessTest fitnessTest = new SimpleFitnessTest(configuration);
         //
@@ -112,7 +135,7 @@ public final class App {
      *            parsed configuration
      * @return the best plan
      */
-    private static Plan startAlgorithms(Configuration configuration) {
+    private static Plan startAlgorithms(final Configuration configuration) {
         Plan bestPlan = null;
 
         App.LOG.info("got " + configuration.getStations().size() + " stations");
@@ -142,26 +165,20 @@ public final class App {
         final Validator validator = new SimpleValidator();
         final ConfigurationValidator configurationValidator = new ConfigurationValidator();
 
-        final RandomUtils randomUtils = new RandomUtils(0);
-        final ConfigurationGenerator configurationGenerator = new ConfigurationGenerator(randomUtils);
-
-        configuration = configurationGenerator.generateConfiguration(configuration.getStations(), configuration.getProducts(),
-                configuration.getVehicles(), 10);
-
         configurationValidator.validate(configuration);
 
         final FitnessTest fitnessTest = new SimpleFitnessTest(configuration);
 
         final SimpleConstruction simpleConstruction = new PerfectSimpleConstruction();
 
-        final Construction nearestNeighbor = new NearestNeighbor(simpleConstruction, randomUtils);
+        final Construction nearestNeighbor = new NearestNeighbor(simpleConstruction, App.randomUtils);
         final Construction savingsContruction = new SavingsContruction();
         final Construction savingsTourConstruction = new SavingsTourConstruction();
-        final Construction randomConstruction = new RandomConstruction(simpleConstruction, randomUtils);
-        final Construction radialConstruction = new SweepConstruction(simpleConstruction, randomUtils);
+        final Construction randomConstruction = new RandomConstruction(simpleConstruction, App.randomUtils);
+        final Construction radialConstruction = new SweepConstruction(simpleConstruction, App.randomUtils);
         final Construction missAbortMultipleRandomConstruction = new MissAbortMultipleConstruction(randomConstruction, App.MAX_MISSES);
         final CloneableConstruction fixMultipleRandomConstruction = new FixMultipleConstruction(randomConstruction, App.NUM_OF_RANDOM_PLANS);
-        final Construction multipleRadialConstruction = new MultipleSweepConstruction(simpleConstruction, randomUtils);
+        final Construction multipleRadialConstruction = new MultipleSweepConstruction(simpleConstruction, App.randomUtils);
         final Construction multipleSavingsConstruction = new MultipleSavingsConstruction();
         final Construction multipleSavingsTourConstruction = new MultipleSavingsTourConstruction();
         final MultithreadingConstruction multithreadingConstruction = new MultithreadingConstruction(fixMultipleRandomConstruction);
@@ -215,5 +232,20 @@ public final class App {
         final long durationMillis = new Interval(start, new Instant()).toDurationMillis();
         App.LOG.info("configuration parsing took " + durationMillis + " ms");
         return configuration;
+    }
+
+    private static List<Plan> generateRandomPlans(final Configuration configuration, final int numberOfPlans) {
+        final List<Plan> plans = new ArrayList<>(numberOfPlans);
+
+        final RandomSimpleConstruction randomSimpleConstruction = new RandomSimpleConstruction(App.randomUtils);
+
+        final RandomConstruction randomConstruction = new RandomConstruction(randomSimpleConstruction, App.randomUtils);
+
+        for (int i = 0; i < numberOfPlans; i++) {
+            final Plan plan = randomConstruction.constructPlan(configuration);
+            plans.add(plan);
+        }
+
+        return plans;
     }
 }

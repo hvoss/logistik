@@ -9,10 +9,6 @@ import java.util.Random;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.Validate;
 
-import de.hsbremen.kss.model.Action;
-import de.hsbremen.kss.model.OrderAction;
-import de.hsbremen.kss.model.Tour;
-
 /**
  * some random utils.
  * 
@@ -79,7 +75,8 @@ public final class RandomUtils {
      * @return the random integer
      */
     public int nextInt(final int startInclusive, final int endExclusive) {
-        Validate.isTrue(endExclusive >= startInclusive, "Start value must be smaller or equal to end value.");
+        Validate.isTrue(endExclusive >= startInclusive, "Start value (" + startInclusive + ") must be smaller or equal to end value (" + endExclusive
+                + ").");
         Validate.isTrue(startInclusive >= 0, "Both range values must be non-negative.");
 
         if (startInclusive == endExclusive) {
@@ -104,15 +101,14 @@ public final class RandomUtils {
         return shuffle;
     }
 
-	public <T>  T  removeRandomElement(List<T> elements) {
-		int idx = nextInt(0, elements.size()-1);
-		return elements.remove(idx);
-	}
+    public <T> T removeRandomElement(final List<T> elements) {
+        final int idx = nextInt(0, elements.size() - 1);
+        return elements.remove(idx);
+    }
 
-	public <T>  void insertAtRandomPosition(List<T> elements,
-			T elementToInsert) {
-		int idx = nextInt(0, elements.size()-1);
-		
-		elements.add(idx, elementToInsert);
-	}
+    public <T> void insertAtRandomPosition(final List<T> elements, final T elementToInsert) {
+        final int idx = nextInt(0, elements.size() - 1);
+
+        elements.add(idx, elementToInsert);
+    }
 }

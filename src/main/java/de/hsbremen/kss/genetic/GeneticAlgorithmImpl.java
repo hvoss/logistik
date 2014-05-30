@@ -21,6 +21,7 @@ import de.hsbremen.kss.configuration.Order;
 import de.hsbremen.kss.construction.NearestNeighbor;
 import de.hsbremen.kss.construction.SweepConstruction;
 import de.hsbremen.kss.fitness.FitnessTest;
+import de.hsbremen.kss.fitness.LengthFitnessTest;
 import de.hsbremen.kss.fitness.SimpleFitnessTest;
 import de.hsbremen.kss.model.Action;
 import de.hsbremen.kss.model.OrderAction;
@@ -49,7 +50,7 @@ public class GeneticAlgorithmImpl implements GeneticAlgorithm {
 	private final double CROSSOVER_RATE = 1;
 	private final double FIFTY_FIFTY = 0.5;
 	
-	private double durchschnittsFitness = 9999.99;
+	private double durchschnittsFitness = Double.MAX_VALUE;
 	
     private FitnessTest fitnessTest;
     private List<Plan> population;
@@ -58,7 +59,7 @@ public class GeneticAlgorithmImpl implements GeneticAlgorithm {
 
     public GeneticAlgorithmImpl(final Configuration configuration, final Collection<Plan> plans) {
         this.population = new ArrayList<Plan>(plans);
-        this.fitnessTest = new SimpleFitnessTest(configuration);
+        this.fitnessTest = new LengthFitnessTest();
     }
     
     @Override
