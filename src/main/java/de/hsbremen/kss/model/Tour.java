@@ -1,5 +1,6 @@
 package de.hsbremen.kss.model;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -416,4 +417,33 @@ public final class Tour {
     public Action lastAction() {
         return this.actions.get(this.actions.size() - 1);
     }
+    
+
+	public List<OrderAction> getOrderActions() {
+		List<OrderAction> orderActions = new ArrayList<>();
+		
+		for (Action action : this.actions) {
+			if (action instanceof OrderAction) {
+				orderActions.add((OrderAction) action);
+			}
+		}
+		
+		return orderActions;
+	}
+	
+	public void addOtherAction(Action action) {
+		if (action instanceof OrderLoadAction) {
+			addDestinationOrder(((OrderLoadAction) action).getOrder());
+		} else if (action instanceof OrderUnloadAction) {
+			addSourceOrder(((OrderUnloadAction) action).getOrder());
+		} else {
+			throw new IllegalArgumentException();
+		}
+	}
+	
+	public void addOtherActions(Iterable<? extends Action> actions) {
+		for (Action action : actions) {
+			addAction(action);
+		}
+	}
 }
