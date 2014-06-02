@@ -95,18 +95,11 @@ public final class App {
         final List<Station> stations = configurationGenerator.generateStations(-300, 300, -300, 300, 100);
 
         final Configuration genConfig = configurationGenerator.generateConfiguration(configuration.getStations(), configuration.getProducts(),
-                configuration.getVehicles(), 25);
+                configuration.getVehicles(), 50);
 
         // final Plan plan = startAlgorithms(genConfig);
 
-        final List<Plan> randomPlans = generateRandomPlans(genConfig, 200);
-
-        System.out.println(randomPlans);
-
-        for (final Plan plan : randomPlans) {
-            plan.logPlan();
-            plan.logTours();
-        }
+        final List<Plan> randomPlans = generateRandomPlans(genConfig, 500);
 
         final GeneticAlgorithm geneticAlgorithm = new GeneticAlgorithmImpl();
 
