@@ -40,6 +40,7 @@ import de.hsbremen.kss.fitness.SimpleFitnessTest;
 import de.hsbremen.kss.genetic.GeneticAlgorithm;
 import de.hsbremen.kss.genetic.GeneticAlgorithmImpl;
 import de.hsbremen.kss.gui.MainFrame;
+import de.hsbremen.kss.gui.Map;
 import de.hsbremen.kss.model.Plan;
 import de.hsbremen.kss.simpleconstruction.PerfectSimpleConstruction;
 import de.hsbremen.kss.simpleconstruction.RandomSimpleConstruction;
@@ -86,18 +87,19 @@ public final class App {
         App.LOG.info("App started");
 
         final ch.qos.logback.classic.Logger validatorLogger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(SimpleValidator.class);
+        final int diameter = 300;
 
         final GeneticAlgorithm geneticAlgorithm = new GeneticAlgorithmImpl();
         final CircleConfigurationGenerator circleConfigurationGenerator = new CircleConfigurationGenerator(App.randomUtils);
-        final Configuration circleConfig = circleConfigurationGenerator.generateConfiguration(300, 50, 1);
+        final Configuration circleConfig = circleConfigurationGenerator.generateConfiguration(diameter, 20, 1);
 
-        final List<Plan> randomPlans = generateRandomPlans(circleConfig, 200);
+        final List<Plan> randomPlans = generateRandomPlans(circleConfig, 50);
 
         validatorLogger.setLevel(Level.OFF);
         final Plan plan = geneticAlgorithm.startOptimize(circleConfig, randomPlans);
         validatorLogger.setLevel(null);
 
-        startGUI(circleConfig, plan);
+        startGUI(Map.circle(diameter), circleConfig, plan);
     }
 
     /**
@@ -106,11 +108,11 @@ public final class App {
      * @param configuration
      *            parsed configuration
      */
-    private static void startGUI(final Configuration configuration, final Plan plan) {
+    private static void startGUI(final Map map, final Configuration configuration, final Plan plan) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                App.mainFrame = new MainFrame(configuration, plan);
+                App.mainFrame = new MainFrame(map, configuration, plan);
             }
         });
     }

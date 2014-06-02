@@ -23,7 +23,7 @@ public class MainFrame extends JFrame {
      * @param configuration
      *            configuration to display
      */
-    public MainFrame(final Configuration configuration, final Plan plan) {
+    public MainFrame(final Map map, final Configuration configuration, final Plan plan) {
         super("Logistik");
 
         setSize(420, 600);
@@ -31,7 +31,7 @@ public class MainFrame extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
 
-        this.canvas = new MapCanvas(632, 876, configuration.getStations(), plan);
+        this.canvas = new MapCanvas(map, configuration.getStations(), plan);
         add(this.canvas);
     }
 

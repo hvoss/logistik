@@ -38,7 +38,7 @@ public final class MapCanvas extends Canvas {
     private static final Logger LOG = LoggerFactory.getLogger(MapCanvas.class);
 
     /** border of the canvas */
-    private static final int BORDER = 5;
+    private static final int BORDER = 10;
 
     /** size of the circles to display stations */
     private static final int STATION_CIRCLE_SIZE = 4;
@@ -62,10 +62,7 @@ public final class MapCanvas extends Canvas {
     private static final Rotation NEGATIVE_ROTATION = new Rotation(Vector3D.PLUS_K, -MapCanvas.ARROWHEAD_ANGLE);
 
     /** width of the model. */
-    private final int width;
-
-    /** height of the model */
-    private final int height;
+    private final Map map;
 
     /** stations to display */
     private final Collection<Station> stations;
@@ -91,27 +88,30 @@ public final class MapCanvas extends Canvas {
      * @param plan
      *            plan to display
      */
-    public MapCanvas(final int width, final int height, final Collection<Station> stations, final Plan plan) {
-        Validate.isTrue(width > 0, "width must be greater than 0");
-        Validate.isTrue(height > 0, "height must be greater than 0");
+    public MapCanvas(final Map map, final Collection<Station> stations, final Plan plan) {
+        Validate.notNull(map, "map is null");
         Validate.notNull(stations, "stations is null");
         Validate.noNullElements(stations, "stations contains null elements");
         Validate.notNull(plan, "plan is null");
 
-        this.width = width;
-        this.height = height;
         this.stations = stations;
         this.plan = plan;
+        this.map = map;
 
-        final InputStream is = MapCanvas.class.getResourceAsStream("/deutschland.png");
+        if (map.image != null) {
+            final InputStream is = MapCanvas.class.getResourceAsStream(map.image);
 
-        Image tmpImage = null;
-        try {
-            tmpImage = ImageIO.read(is);
-        } catch (final IOException e) {
-            MapCanvas.LOG.warn("could not load graphical map", e);
+            Image tmpImage = null;
+            try {
+                tmpImage = ImageIO.read(is);
+            } catch (final IOException e) {
+                MapCanvas.LOG.warn("could not load graphical map", e);
+            }
+
+            this.image = tmpImage;
+        } else {
+            this.image = null;
         }
-        this.image = tmpImage;
     }
 
     @Override
@@ -130,8 +130,8 @@ public final class MapCanvas extends Canvas {
         final int screenWidth = getSize().width;
         final int screenHeight = getSize().height;
 
-        final double scaleWidth = (double) (screenWidth - 2 * MapCanvas.BORDER) / (double) this.width;
-        final double scaleHeight = (double) (screenHeight - 2 * MapCanvas.BORDER) / (double) this.height;
+        final double scaleWidth = (double) (screenWidth - 2 * MapCanvas.BORDER) / (double) this.map.width();
+        final double scaleHeight = (double) (screenHeight - 2 * MapCanvas.BORDER) / (double) this.map.height();
 
         this.scale = scaleWidth < scaleHeight ? scaleWidth : scaleHeight;
     }
@@ -143,7 +143,9 @@ public final class MapCanvas extends Canvas {
         final Graphics g = getGraphics();
 
         if (this.image != null) {
-            g.drawImage(this.image, MapCanvas.BORDER, MapCanvas.BORDER, (int) (this.width * this.scale - MapCanvas.BORDER), (int) (this.height
+            g.drawImage(this.image, MapCanvas.BORDER, MapCanvas.BORDER, (int) (this.map.width() * this.scale - MapCanvas.BORDER),
+                    (int) (this.map.height()
+
                     * this.scale - MapCanvas.BORDER), getParent());
         }
 
@@ -160,7 +162,7 @@ public final class MapCanvas extends Canvas {
      * @return the graphical X-coordinate
      */
     private int transformX(final double x) {
-        return (int) (x * this.scale) + MapCanvas.BORDER;
+        return (int) (x * this.scale) - (int) (Math.min(0, this.map.minX) * this.scale) + MapCanvas.BORDER;
     }
 
     /**
@@ -171,7 +173,7 @@ public final class MapCanvas extends Canvas {
      * @return the graphical Y-coordinate
      */
     private int transformY(final double y) {
-        return (int) (this.height * this.scale) - (int) (y * this.scale) + MapCanvas.BORDER;
+        return (int) (this.map.height() * this.scale) - (int) (y * this.scale) + (int) (Math.min(0, this.map.minY) * this.scale) + MapCanvas.BORDER;
     }
 
     /**
