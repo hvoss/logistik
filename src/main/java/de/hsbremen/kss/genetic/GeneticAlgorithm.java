@@ -21,4 +21,6 @@ public interface GeneticAlgorithm {
      * @return Plan
      */
     Plan startOptimize(Configuration configuration, Collection<Plan> population);
+
+    void setListener(GeneticAlgorithmListener listener);
 }

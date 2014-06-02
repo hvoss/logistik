@@ -1,6 +1,7 @@
 package de.hsbremen.kss.gui;
 
 import java.awt.Canvas;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.io.IOException;
@@ -74,7 +75,7 @@ public final class MapCanvas extends Canvas {
     private double scale;
 
     /** plan to display */
-    private final Plan plan;
+    private Plan plan;
 
     /**
      * ctor.
@@ -88,14 +89,12 @@ public final class MapCanvas extends Canvas {
      * @param plan
      *            plan to display
      */
-    public MapCanvas(final Map map, final Collection<Station> stations, final Plan plan) {
+    public MapCanvas(final Map map, final Collection<Station> stations) {
         Validate.notNull(map, "map is null");
         Validate.notNull(stations, "stations is null");
         Validate.noNullElements(stations, "stations contains null elements");
-        Validate.notNull(plan, "plan is null");
 
         this.stations = stations;
-        this.plan = plan;
         this.map = map;
 
         if (map.image != null) {
@@ -118,9 +117,18 @@ public final class MapCanvas extends Canvas {
     public void paint(final Graphics g) {
         updateScale();
 
-        drawBackgroundAndStations();
+        final Dimension d = getSize();
+        final Image offscreen = createImage(d.width, d.height);
+        final Graphics offgc = offscreen.getGraphics();
+        // clear the exposed area
+        offgc.setColor(getBackground());
+        offgc.fillRect(0, 0, d.width, d.height);
+        offgc.setColor(getForeground());
 
-        drawPlan();
+        drawBackgroundAndStations(offgc);
+        drawPlan(offgc);
+
+        g.drawImage(offscreen, 0, 0, this);
     }
 
     /**
@@ -138,10 +146,10 @@ public final class MapCanvas extends Canvas {
 
     /**
      * draws the background and stations.
+     * 
+     * @param graphics
      */
-    private void drawBackgroundAndStations() {
-        final Graphics g = getGraphics();
-
+    private void drawBackgroundAndStations(final Graphics g) {
         if (this.image != null) {
             g.drawImage(this.image, MapCanvas.BORDER, MapCanvas.BORDER, (int) (this.map.width() * this.scale - MapCanvas.BORDER),
                     (int) (this.map.height()
@@ -150,7 +158,7 @@ public final class MapCanvas extends Canvas {
         }
 
         for (final Station station : this.stations) {
-            drawStation(station);
+            drawStation(g, station);
         }
     }
 
@@ -179,15 +187,15 @@ public final class MapCanvas extends Canvas {
     /**
      * draws a circle and the name of the station on the map.
      * 
+     * @param g
+     * 
      * @param station
      *            station to draw
      */
-    private void drawStation(final Station station) {
+    private void drawStation(final Graphics g, final Station station) {
         final Vector2D coords = station.getCoordinates();
         final int x = transformX(coords.getX());
         final int y = transformY(coords.getY());
-
-        final Graphics g = getGraphics();
 
         g.drawOval(x - MapCanvas.STATION_CIRCLE_SIZE / 2, y - MapCanvas.STATION_CIRCLE_SIZE / 2, MapCanvas.STATION_CIRCLE_SIZE,
                 MapCanvas.STATION_CIRCLE_SIZE);
@@ -197,12 +205,14 @@ public final class MapCanvas extends Canvas {
     /**
      * draws a arrow from a source point to a destination point.
      * 
+     * @param g
+     * 
      * @param source
      *            source of the arrow.
      * @param destination
      *            destination if the arrow
      */
-    private void drawArrow(final Vector2D source, final Vector2D destination) {
+    private void drawArrow(final Graphics g, final Vector2D source, final Vector2D destination) {
         final Vector2D arrowVector = source.subtract(destination).normalize().scalarMultiply(MapCanvas.ARROWHEAD_LENGTH);
 
         final Vector3D arrowVector3d = convert(arrowVector);
@@ -210,9 +220,9 @@ public final class MapCanvas extends Canvas {
         final Vector3D a1 = MapCanvas.POSITIVE_ROTATION.applyTo(arrowVector3d);
         final Vector3D a2 = MapCanvas.NEGATIVE_ROTATION.applyTo(arrowVector3d);
 
-        drawLine(source, destination);
-        drawLine(destination, destination.add(convert(a1)));
-        drawLine(destination, destination.add(convert(a2)));
+        drawLine(g, source, destination);
+        drawLine(g, destination, destination.add(convert(a1)));
+        drawLine(g, destination, destination.add(convert(a2)));
     }
 
     /**
@@ -240,35 +250,46 @@ public final class MapCanvas extends Canvas {
     /**
      * draws a line between two points (vectors)
      * 
+     * @param g
+     * 
      * @param source
      *            source point of the line
      * @param destination
      *            end point of the line
      */
-    private void drawLine(final Vector2D source, final Vector2D destination) {
+    private void drawLine(final Graphics g, final Vector2D source, final Vector2D destination) {
         final int sX = transformX(source.getX());
         final int sY = transformY(source.getY());
         final int dX = transformX(destination.getX());
         final int dY = transformY(destination.getY());
 
-        final Graphics g = getGraphics();
-
         g.drawLine(sX, sY, dX, dY);
     }
 
-    /** draws the plan */
-    public void drawPlan() {
-        for (final Tour tour : this.plan.getTours()) {
-            Station lastStation = null;
-            for (final Action action : tour.getActions()) {
-                final Station station = action.getStation();
+    /**
+     * draws the plan
+     * 
+     * @param g
+     */
+    public void drawPlan(final Graphics g) {
+        if (this.plan != null) {
+            for (final Tour tour : this.plan.getTours()) {
+                Station lastStation = null;
+                for (final Action action : tour.getActions()) {
+                    final Station station = action.getStation();
 
-                if (lastStation != null && !station.equals(lastStation)) {
-                    drawArrow(lastStation.getCoordinates(), station.getCoordinates());
+                    if (lastStation != null && !station.equals(lastStation)) {
+                        drawArrow(g, lastStation.getCoordinates(), station.getCoordinates());
+                    }
+
+                    lastStation = station;
                 }
-
-                lastStation = station;
             }
         }
+    }
+
+    public void setPlan(final Plan plan) {
+        this.plan = plan;
+        repaint();
     }
 }

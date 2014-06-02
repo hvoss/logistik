@@ -15,7 +15,8 @@ public class MainFrame extends JFrame {
 
     /** serial version uid */
     private static final long serialVersionUID = 7878524832119272990L;
-    private final MapCanvas canvas;
+    private final MapCanvas firstCanvas;
+    private final MapCanvas secondCanvas;
 
     /**
      * ctor.
@@ -23,7 +24,7 @@ public class MainFrame extends JFrame {
      * @param configuration
      *            configuration to display
      */
-    public MainFrame(final Map map, final Configuration configuration, final Plan plan) {
+    public MainFrame(final Map map, final Configuration configuration) {
         super("Logistik");
 
         setSize(420, 600);
@@ -31,8 +32,13 @@ public class MainFrame extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
 
-        this.canvas = new MapCanvas(map, configuration.getStations(), plan);
-        add(this.canvas);
+        this.firstCanvas = new MapCanvas(map, configuration.getStations());
+        this.secondCanvas = new MapCanvas(map, configuration.getStations());
+        add(this.firstCanvas);
+    }
+
+    public void setPlan(final Plan plan) {
+        this.firstCanvas.setPlan(plan);
     }
 
 }

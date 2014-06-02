@@ -39,6 +39,7 @@ import de.hsbremen.kss.fitness.FitnessTest;
 import de.hsbremen.kss.fitness.SimpleFitnessTest;
 import de.hsbremen.kss.genetic.GeneticAlgorithm;
 import de.hsbremen.kss.genetic.GeneticAlgorithmImpl;
+import de.hsbremen.kss.genetic.GeneticAlgorithmListener;
 import de.hsbremen.kss.gui.MainFrame;
 import de.hsbremen.kss.gui.Map;
 import de.hsbremen.kss.model.Plan;
@@ -93,13 +94,35 @@ public final class App {
         final CircleConfigurationGenerator circleConfigurationGenerator = new CircleConfigurationGenerator(App.randomUtils);
         final Configuration circleConfig = circleConfigurationGenerator.generateConfiguration(diameter, 20, 1);
 
-        final List<Plan> randomPlans = generateRandomPlans(circleConfig, 50);
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                App.mainFrame = new MainFrame(Map.circle(diameter), circleConfig);
+
+            }
+        });
+
+        geneticAlgorithm.setListener(new GeneticAlgorithmListener() {
+
+            @Override
+            public void newPlan(final Plan plan) {
+                SwingUtilities.invokeLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        App.mainFrame.setPlan(plan);
+                    }
+                });
+            }
+        });
+
+        final List<Plan> randomPlans = generateRandomPlans(circleConfig, 1000);
 
         validatorLogger.setLevel(Level.OFF);
         final Plan plan = geneticAlgorithm.startOptimize(circleConfig, randomPlans);
         validatorLogger.setLevel(null);
 
-        startGUI(Map.circle(diameter), circleConfig, plan);
+        plan.logPlan();
+        plan.logTours();
     }
 
     /**
@@ -108,13 +131,8 @@ public final class App {
      * @param configuration
      *            parsed configuration
      */
-    private static void startGUI(final Map map, final Configuration configuration, final Plan plan) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                App.mainFrame = new MainFrame(map, configuration, plan);
-            }
-        });
+    private static void startGUI(final Map map, final Configuration configuration) {
+
     }
 
     /**

@@ -50,6 +50,8 @@ public final class GeneticAlgorithmImpl implements GeneticAlgorithm {
 
     private final Selection selectionMethod = new RandomSelection(this.randomUtils);
 
+    private GeneticAlgorithmListener listener;
+
     public GeneticAlgorithmImpl() {
         this.mutationMethods.add(new MoveActionMutationImpl(this.randomUtils));
         this.crossoverMethods.add(new ControlStringCrossoverImpl(this.randomUtils));
@@ -63,6 +65,7 @@ public final class GeneticAlgorithmImpl implements GeneticAlgorithm {
 
         for (int i = 0; i < this.maxIterations && checkNotAbort(population, this.abortCriterion); i++) {
             population = optimize(configuration, population);
+            this.listener.newPlan(population.get(0));
             logPopulation(i, population);
         }
 
@@ -137,5 +140,10 @@ public final class GeneticAlgorithmImpl implements GeneticAlgorithm {
         final Double worst = Precision.round(this.fitnessTest.calculateFitness(population.get(population.size() - 1)), 2);
         final Double avg = Precision.round(this.fitnessTest.avgFitness(population), 2);
         GeneticAlgorithmImpl.LOG.info("iteration: #" + iteration + ", best: " + best + ", worst:" + worst + ", avg: " + avg);
+    }
+
+    @Override
+    public void setListener(final GeneticAlgorithmListener listener) {
+        this.listener = listener;
     }
 }
