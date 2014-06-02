@@ -12,11 +12,11 @@ import de.hsbremen.kss.model.Plan;
 import de.hsbremen.kss.model.Tour;
 import de.hsbremen.kss.util.RandomUtils;
 
-public class CrossoverImpl implements Crossover {
+public final class ControlStringCrossoverImpl implements Crossover {
 
     private final RandomUtils randomUtils;
 
-    public CrossoverImpl(final RandomUtils randomUtils) {
+    public ControlStringCrossoverImpl(final RandomUtils randomUtils) {
         this.randomUtils = randomUtils;
     }
 

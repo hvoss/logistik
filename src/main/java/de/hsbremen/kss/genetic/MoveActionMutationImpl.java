@@ -9,11 +9,11 @@ import de.hsbremen.kss.model.Plan;
 import de.hsbremen.kss.model.Tour;
 import de.hsbremen.kss.util.RandomUtils;
 
-public class MutationImpl implements Mutation {
+public class MoveActionMutationImpl implements Mutation {
 
     private final RandomUtils randomUtils;
 
-    public MutationImpl(final RandomUtils randomUtils) {
+    public MoveActionMutationImpl(final RandomUtils randomUtils) {
         this.randomUtils = randomUtils;
     }
 

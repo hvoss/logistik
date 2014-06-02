@@ -49,8 +49,8 @@ public final class GeneticAlgorithmImpl implements GeneticAlgorithm {
         this.population = new ArrayList<Plan>(plans);
         this.fitnessTest = new LengthFitnessTest();
 
-        this.mutationMethods.add(new MutationImpl(this.randomUtils));
-        this.crossoverMethods.add(new CrossoverImpl(this.randomUtils));
+        this.mutationMethods.add(new MoveActionMutationImpl(this.randomUtils));
+        this.crossoverMethods.add(new ControlStringCrossoverImpl(this.randomUtils));
     }
 
     @Override
@@ -61,10 +61,12 @@ public final class GeneticAlgorithmImpl implements GeneticAlgorithm {
 
         int count = 0;
         while (Math.round(this.durchschnittsFitness) > Math.round(this.fitnessTest.calculateFitness(bestplan))) {
-            GeneticAlgorithmImpl.LOG.info("Durchschnittsfitness: " + this.durchschnittsFitness);
+            // GeneticAlgorithmImpl.LOG.info("Durchschnittsfitness: " +
+            // this.durchschnittsFitness);
             GeneticAlgorithmImpl.LOG.info("Beste Fitness: " + bestplan.length());
             bestplan = optimize().get(0);
-            if (count++ > 1000) {
+
+            if (count++ > 10) {
                 break;
             }
         }
@@ -76,8 +78,6 @@ public final class GeneticAlgorithmImpl implements GeneticAlgorithm {
     public List<Plan> optimize() {
 
         this.durchschnittsFitness = 0;
-
-        GeneticAlgorithmImpl.LOG.info("Durchschnittsfitness: " + this.durchschnittsFitness);
 
         List<Plan> nextPopulation = createNewPopulation(this.population);
         nextPopulation = rankPopulation(nextPopulation);
@@ -128,8 +128,8 @@ public final class GeneticAlgorithmImpl implements GeneticAlgorithm {
     private List<Plan> createNewPopulation(final List<Plan> startPopulation) {
         final List<Plan> newGeneration = new ArrayList<Plan>();
         for (int i = 0; i < startPopulation.size(); i++) {
-            final Plan parent1 = this.randomUtils.randomElement(startPopulation);
-            final Plan parent2 = this.randomUtils.randomElement(startPopulation);
+            final Plan parent1 = this.randomUtils.randomElementByLinearDistribution(startPopulation);
+            final Plan parent2 = this.randomUtils.randomElementByLinearDistribution(startPopulation);
             newGeneration.add(createChild(parent1, parent2));
         }
         return newGeneration;
