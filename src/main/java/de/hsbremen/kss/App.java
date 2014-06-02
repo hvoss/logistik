@@ -14,8 +14,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ch.qos.logback.classic.Level;
+import de.hsbremen.kss.configuration.CircleConfigurationGenerator;
 import de.hsbremen.kss.configuration.Configuration;
-import de.hsbremen.kss.configuration.ConfigurationGenerator;
 import de.hsbremen.kss.configuration.ConfigurationParser;
 import de.hsbremen.kss.configuration.ConfigurationValidator;
 import de.hsbremen.kss.configuration.JAXBConfigurationParserImpl;
@@ -85,48 +85,19 @@ public final class App {
     public static void main(final String[] args) {
         App.LOG.info("App started");
 
-        final ch.qos.logback.classic.Logger log = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(SimpleValidator.class);
-        log.setLevel(Level.OFF);
-
-        final Configuration configuration = loadConfiguration();
-
-        final ConfigurationGenerator configurationGenerator = new ConfigurationGenerator(App.randomUtils);
-
-        final List<Station> stations = configurationGenerator.generateStations(-300, 300, -300, 300, 100);
-
-        final Configuration genConfig = configurationGenerator.generateConfiguration(configuration.getStations(), configuration.getProducts(),
-                configuration.getVehicles(), 50);
-
-        // final Plan plan = startAlgorithms(genConfig);
-
-        final List<Plan> randomPlans = generateRandomPlans(genConfig, 500);
+        final ch.qos.logback.classic.Logger validatorLogger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(SimpleValidator.class);
 
         final GeneticAlgorithm geneticAlgorithm = new GeneticAlgorithmImpl();
+        final CircleConfigurationGenerator circleConfigurationGenerator = new CircleConfigurationGenerator(App.randomUtils);
+        final Configuration circleConfig = circleConfigurationGenerator.generateConfiguration(300, 50, 1);
 
-        final SimpleConstruction simpleConstruction = new RandomSimpleConstruction(App.randomUtils);
-        final Construction randomConstruction = new RandomConstruction(simpleConstruction, App.randomUtils);
-        final CloneableConstruction fixMultipleRandomConstruction = new FixMultipleConstruction(randomConstruction, App.NUM_OF_RANDOM_PLANS);
-        final MultithreadingConstruction multithreadingConstruction = new MultithreadingConstruction(fixMultipleRandomConstruction);
+        final List<Plan> randomPlans = generateRandomPlans(circleConfig, 200);
 
-        final Plan constructPlan = multithreadingConstruction.constructPlan(genConfig);
-        constructPlan.logPlan();
-        constructPlan.logTours();
+        validatorLogger.setLevel(Level.OFF);
+        final Plan plan = geneticAlgorithm.startOptimize(circleConfig, randomPlans);
+        validatorLogger.setLevel(null);
 
-        final Plan plan = geneticAlgorithm.startOptimize(genConfig, randomPlans);
-
-        log.setLevel(Level.DEBUG);
-
-        final Validator validator = new SimpleValidator();
-        plan.logPlan();
-        plan.logTours();
-        final boolean validate = validator.validate(genConfig, plan);
-        System.out.println(validate);
-
-        // final FitnessTest fitnessTest = new SimpleFitnessTest(configuration);
-        //
-        // fitnessTest.calculateFitness(plan);
-        startGUI(configuration, plan);
-
+        startGUI(circleConfig, plan);
     }
 
     /**
