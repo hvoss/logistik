@@ -32,13 +32,13 @@ public class MutationImpl implements Mutation {
 
         newTour.addOtherActions(actions);
 
-        plan.addTour(newTour);
+        newPlan.addTour(newTour);
 
         for (final Tour tour : tours) {
-            plan.addTour(tour);
+            newPlan.addTour(tour);
         }
 
-        return plan;
+        return newPlan;
     }
 
 }

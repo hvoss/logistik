@@ -83,8 +83,8 @@ public final class GeneticAlgorithmImpl implements GeneticAlgorithm {
         nextPopulation = rankPopulation(nextPopulation);
         this.population = rankPopulation(this.population);
         List<Plan> newStartPopulation = new ArrayList<>(100);
-        newStartPopulation.addAll(this.population.subList(0, 50));
-        newStartPopulation.addAll(nextPopulation.subList(0, 50));
+        newStartPopulation.addAll(this.population);
+        newStartPopulation.addAll(nextPopulation);
 
         logPopulation("old", this.population);
         logPopulation("new", nextPopulation);
