@@ -77,7 +77,7 @@ public class RandomUtils {
     public int nextInt(final int startInclusive, final int endExclusive) {
         Validate.isTrue(endExclusive >= startInclusive, "Start value (" + startInclusive + ") must be smaller or equal to end value (" + endExclusive
                 + ").");
-        
+
         if (startInclusive == endExclusive) {
             return startInclusive;
         }
@@ -102,7 +102,9 @@ public class RandomUtils {
 
     /**
      * removes a random element from a list and returns it.
-     * @param elements list of elements.
+     * 
+     * @param elements
+     *            list of elements.
      * @return removed element.
      */
     public <T> T removeRandomElement(final List<T> elements) {
@@ -112,30 +114,37 @@ public class RandomUtils {
 
     /**
      * insert a element at a random position in the list.
-     * @param elements list of elements.
-     * @param elementToInsert element to insert
+     * 
+     * @param elements
+     *            list of elements.
+     * @param elementToInsert
+     *            element to insert
      */
     public <T> void insertAtRandomPosition(final List<T> elements, final T elementToInsert) {
         final int idx = nextInt(0, elements.size() - 1);
 
         elements.add(idx, elementToInsert);
     }
-    
-    public <T> T randomElementByLinearDistribution(List<T> elements) {
-    	int num = elements.size();
-    	int max = sumN(num);
-    	int randomInt = nextInt(0, max);
-    	
-    	int sum = 0;
-    	for (int i = 0; true ; i++) {
-    		sum += num - i;
-    		if (randomInt < sum) {
-    			return elements.get(i);
-    		}
-    	}
+
+    public <T> T randomElementByLinearDistribution(final List<T> elements) {
+        final int num = elements.size();
+        final int max = sumN(num);
+        final int randomInt = nextInt(0, max);
+
+        int sum = 0;
+        for (int i = 0; true; i++) {
+            sum += num - i;
+            if (randomInt < sum) {
+                return elements.get(i);
+            }
+        }
     }
-    
-    private static int sumN(int n) {
-    	return n *(n +1) /2;
+
+    private static int sumN(final int n) {
+        return n * (n + 1) / 2;
+    }
+
+    public boolean randomBoolean() {
+        return this.random.nextBoolean();
     }
 }
