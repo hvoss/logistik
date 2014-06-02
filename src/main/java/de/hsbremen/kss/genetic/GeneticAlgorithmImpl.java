@@ -3,9 +3,9 @@ package de.hsbremen.kss.genetic;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
+import org.apache.commons.math3.util.Precision;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,6 +14,8 @@ import de.hsbremen.kss.fitness.FitnessTest;
 import de.hsbremen.kss.fitness.LengthFitnessTest;
 import de.hsbremen.kss.model.Plan;
 import de.hsbremen.kss.util.RandomUtils;
+import de.hsbremen.kss.validate.SimpleValidator;
+import de.hsbremen.kss.validate.Validator;
 
 /**
  * 
@@ -26,18 +28,15 @@ public final class GeneticAlgorithmImpl implements GeneticAlgorithm {
     /** logging interface */
     private static final Logger LOG = LoggerFactory.getLogger(GeneticAlgorithmImpl.class);
 
-    // Constans
-    private final int SELECTION_RANGE_POPULATION = 100; // Welche Eltern
-                                                        // erzeugen Nachkommen
-                                                        // (Die 10 Besten)
-    private final double MUTATION_RATE = 1;
-    private final double CROSSOVER_RATE = 1;
-    private final double FIFTY_FIFTY = 0.5;
+    private final double mutationRate = 0;
 
-    private double durchschnittsFitness = Double.MAX_VALUE;
+    private final double crossoverRate = 1;
 
-    private final FitnessTest fitnessTest;
-    private List<Plan> population;
+    private final int maxIterations = 1000;
+
+    private final double abortCriterion = 0.01;
+
+    private final FitnessTest fitnessTest = new LengthFitnessTest();
 
     private final RandomUtils randomUtils = new RandomUtils(0);
 
@@ -45,118 +44,75 @@ public final class GeneticAlgorithmImpl implements GeneticAlgorithm {
 
     private final List<Crossover> crossoverMethods = new ArrayList<>();
 
-    public GeneticAlgorithmImpl(final Configuration configuration, final Collection<Plan> plans) {
-        this.population = new ArrayList<Plan>(plans);
-        this.fitnessTest = new LengthFitnessTest();
+    private final Validator validator = new SimpleValidator();
 
+    public GeneticAlgorithmImpl() {
         this.mutationMethods.add(new MoveActionMutationImpl(this.randomUtils));
         this.crossoverMethods.add(new ControlStringCrossoverImpl(this.randomUtils));
     }
 
     @Override
-    public Plan startOptimize() {
+    public Plan startOptimize(final Configuration configuration, final Collection<Plan> startPopulation) {
 
-        this.population = rankPopulation(this.population);
-        Plan bestplan = this.population.get(0);
+        final PlanComparator planComparator = new PlanComparator(this.validator, configuration);
 
-        int count = 0;
-        while (Math.round(this.durchschnittsFitness) > Math.round(this.fitnessTest.calculateFitness(bestplan))) {
-            // GeneticAlgorithmImpl.LOG.info("Durchschnittsfitness: " +
-            // this.durchschnittsFitness);
-            GeneticAlgorithmImpl.LOG.info("Beste Fitness: " + bestplan.length());
-            bestplan = optimize().get(0);
+        List<Plan> population = new ArrayList<>(startPopulation);
+        Collections.sort(population, planComparator);
 
-            if (count++ > 10) {
-                break;
-            }
+        for (int i = 0; i < this.maxIterations && checkNotAbort(population, this.abortCriterion); i++) {
+            population = optimize(planComparator, population);
+            logPopulation(i, population);
         }
-        GeneticAlgorithmImpl.LOG.info("ENDE Durchschnittsfitness: " + this.durchschnittsFitness);
-        GeneticAlgorithmImpl.LOG.info("ENDE Beste Fitness: " + this.fitnessTest.calculateFitness(bestplan));
-        return bestplan;
+
+        return population.get(0);
     }
 
-    public List<Plan> optimize() {
+    private boolean checkNotAbort(final List<Plan> population, final double abortCriterion) {
+        final double bestFiness = this.fitnessTest.calculateFitness(population.get(0));
+        final double avgFiness = this.fitnessTest.avgFitness(population);
+        final double factor = 1 - bestFiness / avgFiness;
+        return factor > abortCriterion;
+    }
 
-        this.durchschnittsFitness = 0;
+    public List<Plan> optimize(final PlanComparator planComparator, final List<Plan> population) {
+        final List<Plan> nextPopulation = new ArrayList<>(population.size() * 2);
 
-        List<Plan> nextPopulation = createNewPopulation(this.population);
-        nextPopulation = rankPopulation(nextPopulation);
-        this.population = rankPopulation(this.population);
-        List<Plan> newStartPopulation = new ArrayList<>(100);
-        newStartPopulation.addAll(this.population);
-        newStartPopulation.addAll(nextPopulation);
-
-        logPopulation("old", this.population);
-        logPopulation("new", nextPopulation);
-
-        newStartPopulation = rankPopulation(newStartPopulation);
-
-        this.population = newStartPopulation.subList(0, 100);
-
-        for (final Plan plan : this.population) {
-            this.durchschnittsFitness += plan.length();
+        for (int i = 0; i < population.size(); i++) {
+            final Plan firstParent = this.randomUtils.randomElementByLinearDistribution(population);
+            final Plan secondParent = this.randomUtils.randomElementByLinearDistribution(population);
+            final Plan child = createChild(firstParent, secondParent);
+            nextPopulation.add(child);
         }
 
-        this.durchschnittsFitness = this.durchschnittsFitness / this.population.size();
+        nextPopulation.addAll(population);
 
-        return this.population;
+        Collections.sort(nextPopulation, planComparator);
+
+        return nextPopulation.subList(0, population.size());
     }
 
     /**
      * 
-     */
-    private List<Plan> rankPopulation(final List<Plan> populationToRank) {
-        Collections.sort(populationToRank, new Comparator<Plan>() {
-
-            @Override
-            public int compare(final Plan plan1, final Plan plan2) {
-                if (plan1.length() < plan2.length()) {
-                    return -1;
-                } else if (plan1.length() > plan2.length()) {
-                    return 1;
-                } else {
-                    return 0;
-                }
-            }
-        });
-        return populationToRank;
-    }
-
-    /**
-     * Wahrscheinlichkeit für ersten 50
-     */
-    private List<Plan> createNewPopulation(final List<Plan> startPopulation) {
-        final List<Plan> newGeneration = new ArrayList<Plan>();
-        for (int i = 0; i < startPopulation.size(); i++) {
-            final Plan parent1 = this.randomUtils.randomElementByLinearDistribution(startPopulation);
-            final Plan parent2 = this.randomUtils.randomElementByLinearDistribution(startPopulation);
-            newGeneration.add(createChild(parent1, parent2));
-        }
-        return newGeneration;
-    }
-
-    /**
-     * 
-     * @param parent1
+     * @param firstParent
      *            Parent1
-     * @param parent2
+     * @param secondParent
      *            Parent2
      * @return child
      */
-    private Plan createChild(final Plan parent1, final Plan parent2) {
+    private Plan createChild(final Plan firstParent, final Plan secondParent) {
 
         Plan child;
 
-        if (Math.random() <= this.CROSSOVER_RATE) {
+        if (this.randomUtils.randomBoolean(this.crossoverRate)) {
             final Crossover crossover = this.randomUtils.randomElement(this.crossoverMethods);
-            child = crossover.crossover(parent1, parent2);
+            child = crossover.crossover(firstParent, secondParent);
         } else if (this.randomUtils.randomBoolean()) {
-            child = parent1;
+            child = firstParent;
         } else {
-            child = parent2;
+            child = secondParent;
         }
 
-        if (Math.random() <= this.MUTATION_RATE) {
+        if (this.randomUtils.randomBoolean(this.mutationRate)) {
             final Mutation mutation = this.randomUtils.randomElement(this.mutationMethods);
             child = mutation.mutate(child);
         }
@@ -164,9 +120,10 @@ public final class GeneticAlgorithmImpl implements GeneticAlgorithm {
         return child;
     }
 
-    private void logPopulation(final String name, final List<Plan> population) {
-        final Double best = this.fitnessTest.calculateFitness(population.get(0));
-        final Double worst = this.fitnessTest.calculateFitness(population.get(population.size() - 1));
-        GeneticAlgorithmImpl.LOG.info("Popuplation " + name + ": best: " + best + ", worst:" + worst);
+    private void logPopulation(final int iteration, final List<Plan> population) {
+        final Double best = Precision.round(this.fitnessTest.calculateFitness(population.get(0)), 2);
+        final Double worst = Precision.round(this.fitnessTest.calculateFitness(population.get(population.size() - 1)), 2);
+        final Double avg = Precision.round(this.fitnessTest.avgFitness(population), 2);
+        GeneticAlgorithmImpl.LOG.info("iteration: #" + iteration + ", best: " + best + ", worst:" + worst + ", avg: " + avg);
     }
 }

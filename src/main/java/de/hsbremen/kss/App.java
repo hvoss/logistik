@@ -13,6 +13,7 @@ import org.joda.time.Interval;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import ch.qos.logback.classic.Level;
 import de.hsbremen.kss.configuration.Configuration;
 import de.hsbremen.kss.configuration.ConfigurationGenerator;
 import de.hsbremen.kss.configuration.ConfigurationParser;
@@ -84,6 +85,9 @@ public final class App {
     public static void main(final String[] args) {
         App.LOG.info("App started");
 
+        final ch.qos.logback.classic.Logger log = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(SimpleValidator.class);
+        log.setLevel(Level.OFF);
+
         final Configuration configuration = loadConfiguration();
 
         final ConfigurationGenerator configurationGenerator = new ConfigurationGenerator(App.randomUtils);
@@ -95,7 +99,7 @@ public final class App {
 
         // final Plan plan = startAlgorithms(genConfig);
 
-        final List<Plan> randomPlans = generateRandomPlans(genConfig, 100);
+        final List<Plan> randomPlans = generateRandomPlans(genConfig, 200);
 
         System.out.println(randomPlans);
 
@@ -104,7 +108,7 @@ public final class App {
             plan.logTours();
         }
 
-        final GeneticAlgorithm geneticAlgorithm = new GeneticAlgorithmImpl(genConfig, randomPlans);
+        final GeneticAlgorithm geneticAlgorithm = new GeneticAlgorithmImpl();
 
         final SimpleConstruction simpleConstruction = new RandomSimpleConstruction(App.randomUtils);
         final Construction randomConstruction = new RandomConstruction(simpleConstruction, App.randomUtils);
@@ -115,7 +119,15 @@ public final class App {
         constructPlan.logPlan();
         constructPlan.logTours();
 
-        final Plan plan = geneticAlgorithm.startOptimize();
+        final Plan plan = geneticAlgorithm.startOptimize(genConfig, randomPlans);
+
+        log.setLevel(Level.DEBUG);
+
+        final Validator validator = new SimpleValidator();
+        plan.logPlan();
+        plan.logTours();
+        final boolean validate = validator.validate(genConfig, plan);
+        System.out.println(validate);
 
         // final FitnessTest fitnessTest = new SimpleFitnessTest(configuration);
         //

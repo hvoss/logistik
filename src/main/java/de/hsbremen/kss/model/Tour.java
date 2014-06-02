@@ -417,33 +417,32 @@ public final class Tour {
     public Action lastAction() {
         return this.actions.get(this.actions.size() - 1);
     }
-    
 
-	public List<OrderAction> getOrderActions() {
-		List<OrderAction> orderActions = new ArrayList<>();
-		
-		for (Action action : this.actions) {
-			if (action instanceof OrderAction) {
-				orderActions.add((OrderAction) action);
-			}
-		}
-		
-		return orderActions;
-	}
-	
-	public void addOtherAction(Action action) {
-		if (action instanceof OrderLoadAction) {
-			addDestinationOrder(((OrderLoadAction) action).getOrder());
-		} else if (action instanceof OrderUnloadAction) {
-			addSourceOrder(((OrderUnloadAction) action).getOrder());
-		} else {
-			throw new IllegalArgumentException();
-		}
-	}
-	
-	public void addOtherActions(Iterable<? extends Action> actions) {
-		for (Action action : actions) {
-			addAction(action);
-		}
-	}
+    public List<OrderAction> getOrderActions() {
+        final List<OrderAction> orderActions = new ArrayList<>();
+
+        for (final Action action : this.actions) {
+            if (action instanceof OrderAction) {
+                orderActions.add((OrderAction) action);
+            }
+        }
+
+        return orderActions;
+    }
+
+    public void addOtherAction(final Action action) {
+        if (action instanceof OrderLoadAction) {
+            addSourceOrder(((OrderLoadAction) action).getOrder());
+        } else if (action instanceof OrderUnloadAction) {
+            addDestinationOrder(((OrderUnloadAction) action).getOrder());
+        } else {
+            throw new IllegalArgumentException();
+        }
+    }
+
+    public void addOtherActions(final Iterable<? extends Action> actions) {
+        for (final Action action : actions) {
+            addAction(action);
+        }
+    }
 }

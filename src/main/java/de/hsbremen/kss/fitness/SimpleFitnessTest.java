@@ -20,7 +20,7 @@ import de.hsbremen.kss.model.Plan;
  * @author david
  *
  */
-public class SimpleFitnessTest implements FitnessTest {
+public class SimpleFitnessTest extends AbstractFitnessTest {
 	
 	// TODO Constants in an extra file or class
 	

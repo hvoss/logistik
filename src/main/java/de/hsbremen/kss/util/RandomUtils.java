@@ -144,6 +144,10 @@ public class RandomUtils {
         return n * (n + 1) / 2;
     }
 
+    public boolean randomBoolean(final double probability) {
+        return this.random.nextDouble() < probability;
+    }
+
     public boolean randomBoolean() {
         return this.random.nextBoolean();
     }
