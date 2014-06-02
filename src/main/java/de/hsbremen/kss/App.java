@@ -88,8 +88,10 @@ public final class App {
 
         final ConfigurationGenerator configurationGenerator = new ConfigurationGenerator(App.randomUtils);
 
-        final Configuration genConfig = configurationGenerator.generateConfiguration(configuration.getStations(), configuration.getProducts(),
-                configuration.getVehicles(), 20);
+        List<Station> stations = configurationGenerator.generateStations(-300, 300, -300, 300, 100);
+        
+        final Configuration genConfig = configurationGenerator.generateConfiguration(stations, configuration.getProducts(),
+                configuration.getVehicles(), 50);
 
         // final Plan plan = startAlgorithms(genConfig);
 

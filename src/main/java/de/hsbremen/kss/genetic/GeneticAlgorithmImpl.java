@@ -46,7 +46,7 @@ public class GeneticAlgorithmImpl implements GeneticAlgorithm {
 	
 	//Constans
 	private final int SELECTION_RANGE_POPULATION = 100; //Welche Eltern erzeugen Nachkommen (Die 10 Besten)
-	private final double MUTATION_RATE = 0.5;
+	private final double MUTATION_RATE = 1;
 	private final double CROSSOVER_RATE = 1;
 	private final double FIFTY_FIFTY = 0.5;
 	
@@ -65,13 +65,17 @@ public class GeneticAlgorithmImpl implements GeneticAlgorithm {
     @Override
     public Plan startOptimize() {
         
-    	Plan bestplan = population.get(0);
     	population = rankPopulation(population);
-    	
-		while(Math.round(durchschnittsFitness) > Math.round(fitnessTest.calculateFitness(bestplan))) {
+    	Plan bestplan = population.get(0);
+
+    	int count = 0;
+    	while(Math.round(durchschnittsFitness) > Math.round(fitnessTest.calculateFitness(bestplan))) {
 			GeneticAlgorithmImpl.LOG.info("Durchschnittsfitness: " + durchschnittsFitness);
 			GeneticAlgorithmImpl.LOG.info("Beste Fitness: " + bestplan.length());
 			bestplan = optimize().get(0);
+			if (count++ > 1000) {
+				break;
+			}
 		}
 		GeneticAlgorithmImpl.LOG.info("ENDE Durchschnittsfitness: " + durchschnittsFitness);
 		GeneticAlgorithmImpl.LOG.info("ENDE Beste Fitness: " + fitnessTest.calculateFitness(bestplan));
@@ -82,16 +86,22 @@ public class GeneticAlgorithmImpl implements GeneticAlgorithm {
         
     	durchschnittsFitness = 0;
     	
+    	GeneticAlgorithmImpl.LOG.info("Durchschnittsfitness: " + durchschnittsFitness);
+    	
     	List<Plan> nextPopulation = createNewPopulation(population);
     	nextPopulation = rankPopulation(nextPopulation);
     	population = rankPopulation(population);
     	List<Plan> newStartPopulation = new ArrayList<>(100);
-    	newStartPopulation.addAll(nextPopulation);
-    	newStartPopulation.addAll(population);
+    	newStartPopulation.addAll(population.subList(0, 50));
+    	newStartPopulation.addAll(nextPopulation.subList(0, 50));
+    	
+    	logPopulation("old", population);
+    	logPopulation("new", nextPopulation);
 
     	newStartPopulation = rankPopulation(newStartPopulation);
     	
     	population = newStartPopulation.subList(0, 100);
+    	
     	
         for (Plan plan : population) {
 			durchschnittsFitness += plan.length();
@@ -128,12 +138,13 @@ public class GeneticAlgorithmImpl implements GeneticAlgorithm {
     private List<Plan> createNewPopulation(List<Plan> startPopulation) {
     	List<Plan> newGeneration = new ArrayList<Plan>();
     	for (int i = 0; i < startPopulation.size(); i++) {
-        	Plan parent1 = startPopulation.get((int) (Math.random() * SELECTION_RANGE_POPULATION));
-        	Plan parent2 = startPopulation.get((int) (Math.random() * SELECTION_RANGE_POPULATION));
+        	Plan parent1 = this.randomUtils.randomElement(startPopulation);
+        	Plan parent2 = this.randomUtils.randomElement(startPopulation);
         	newGeneration.add(createChild(parent1, parent2));
     	}
     	return newGeneration;
     }
+    
     
     /**
      * 
@@ -261,5 +272,11 @@ public class GeneticAlgorithmImpl implements GeneticAlgorithm {
     	}
     	
     	return plan;
+    }
+    
+    private void logPopulation(String name, List<Plan> population) {
+    	Double best = this.fitnessTest.calculateFitness(population.get(0));
+    	Double worst = this.fitnessTest.calculateFitness(population.get(population.size()-1));
+    	GeneticAlgorithmImpl.LOG.info("Popuplation " + name + ": best: " +best + ", worst:"  +worst);
     }
 }

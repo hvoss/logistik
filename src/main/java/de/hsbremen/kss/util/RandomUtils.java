@@ -15,7 +15,7 @@ import org.apache.commons.lang3.Validate;
  * @author henrik
  * 
  */
-public final class RandomUtils {
+public class RandomUtils {
 
     /** random */
     private final Random random;
@@ -77,8 +77,7 @@ public final class RandomUtils {
     public int nextInt(final int startInclusive, final int endExclusive) {
         Validate.isTrue(endExclusive >= startInclusive, "Start value (" + startInclusive + ") must be smaller or equal to end value (" + endExclusive
                 + ").");
-        Validate.isTrue(startInclusive >= 0, "Both range values must be non-negative.");
-
+        
         if (startInclusive == endExclusive) {
             return startInclusive;
         }
@@ -101,14 +100,42 @@ public final class RandomUtils {
         return shuffle;
     }
 
+    /**
+     * removes a random element from a list and returns it.
+     * @param elements list of elements.
+     * @return removed element.
+     */
     public <T> T removeRandomElement(final List<T> elements) {
         final int idx = nextInt(0, elements.size() - 1);
         return elements.remove(idx);
     }
 
+    /**
+     * insert a element at a random position in the list.
+     * @param elements list of elements.
+     * @param elementToInsert element to insert
+     */
     public <T> void insertAtRandomPosition(final List<T> elements, final T elementToInsert) {
         final int idx = nextInt(0, elements.size() - 1);
 
         elements.add(idx, elementToInsert);
+    }
+    
+    public <T> T randomElementByLinearDistribution(List<T> elements) {
+    	int num = elements.size();
+    	int max = sumN(num);
+    	int randomInt = nextInt(0, max);
+    	
+    	int sum = 0;
+    	for (int i = 0; true ; i++) {
+    		sum += num - i;
+    		if (randomInt < sum) {
+    			return elements.get(i);
+    		}
+    	}
+    }
+    
+    private static int sumN(int n) {
+    	return n *(n +1) /2;
     }
 }
