@@ -21,7 +21,7 @@ import de.hsbremen.kss.util.RandomUtils;
  * 
  */
 
-public class GeneticAlgorithmImpl implements GeneticAlgorithm {
+public final class GeneticAlgorithmImpl implements GeneticAlgorithm {
 
     /** logging interface */
     private static final Logger LOG = LoggerFactory.getLogger(GeneticAlgorithmImpl.class);
@@ -41,13 +41,16 @@ public class GeneticAlgorithmImpl implements GeneticAlgorithm {
 
     private final RandomUtils randomUtils = new RandomUtils(0);
 
-    private final Mutation mutation = new MutationImpl(this.randomUtils);
+    private final List<Mutation> mutationMethods = new ArrayList<>();
 
-    private final Crossover crossover = new CrossoverImpl(this.randomUtils);
+    private final List<Crossover> crossoverMethods = new ArrayList<>();
 
     public GeneticAlgorithmImpl(final Configuration configuration, final Collection<Plan> plans) {
         this.population = new ArrayList<Plan>(plans);
         this.fitnessTest = new LengthFitnessTest();
+
+        this.mutationMethods.add(new MutationImpl(this.randomUtils));
+        this.crossoverMethods.add(new CrossoverImpl(this.randomUtils));
     }
 
     @Override
@@ -145,15 +148,17 @@ public class GeneticAlgorithmImpl implements GeneticAlgorithm {
         Plan child;
 
         if (Math.random() <= this.CROSSOVER_RATE) {
-            child = this.crossover.crossover(parent1, parent2);
-        } else if ((Math.random() * this.FIFTY_FIFTY) <= this.FIFTY_FIFTY) {
+            final Crossover crossover = this.randomUtils.randomElement(this.crossoverMethods);
+            child = crossover.crossover(parent1, parent2);
+        } else if (this.randomUtils.randomBoolean()) {
             child = parent1;
         } else {
             child = parent2;
         }
 
         if (Math.random() <= this.MUTATION_RATE) {
-            child = this.mutation.mutate(child);
+            final Mutation mutation = this.randomUtils.randomElement(this.mutationMethods);
+            child = mutation.mutate(child);
         }
 
         return child;
