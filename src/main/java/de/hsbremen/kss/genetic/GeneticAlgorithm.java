@@ -15,12 +15,10 @@ public interface GeneticAlgorithm {
     /**
      * 
      * @param configuration
-     *            Configuration
-     * @param plans
-     *            Plans
-     * @return Plan
+     *            the given configuration
+     * @param population
+     *            the initial population
+     * @return the best plan
      */
     Plan startOptimize(Configuration configuration, Collection<Plan> population);
-
-    void setListener(GeneticAlgorithmListener listener);
 }
