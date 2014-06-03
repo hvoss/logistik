@@ -86,7 +86,7 @@ public final class MapCanvas extends Canvas {
      *            height of the model.
      * @param stations
      *            stations to display
-     * @param plan
+     * @param bestPlan
      *            plan to display
      */
     public MapCanvas(final Map map, final Collection<Station> stations) {

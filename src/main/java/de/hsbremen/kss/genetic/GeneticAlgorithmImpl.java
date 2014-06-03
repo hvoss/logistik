@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 import com.google.common.eventbus.EventBus;
 
 import de.hsbremen.kss.configuration.Configuration;
-import de.hsbremen.kss.events.NewPlanEvent;
+import de.hsbremen.kss.events.NewPopulationEvent;
 import de.hsbremen.kss.fitness.FitnessTest;
 import de.hsbremen.kss.model.Plan;
 import de.hsbremen.kss.util.RandomUtils;
@@ -124,7 +124,7 @@ public final class GeneticAlgorithmImpl extends Observable implements GeneticAlg
         for (int i = 0; i < this.maxIterations && checkNotAbort(population); i++) {
             population = createNextPopulation(configuration, population);
             logPopulation(i, population);
-            this.eventBus.post(new NewPlanEvent(population.get(0)));
+            this.eventBus.post(new NewPopulationEvent(i, this.fitnessTest, population));
         }
 
         return population.get(0);
