@@ -41,9 +41,13 @@ public class RandomUtils {
      */
     public <T> T randomElement(final Collection<T> elements) {
         final int size = elements.size();
-        final int idx = nextInt(0, size);
+        if (size > 0) {
+            final int idx = nextInt(0, size);
 
-        return CollectionUtils.get(elements, idx);
+            return CollectionUtils.get(elements, idx);
+        }
+
+        return null;
     }
 
     /**
@@ -150,5 +154,25 @@ public class RandomUtils {
 
     public boolean randomBoolean() {
         return this.random.nextBoolean();
+    }
+
+    public <T> List<T> randomSublist(final List<T> orderActions) {
+        final int size = orderActions.size();
+        final int start = nextInt(0, size);
+        final int end = nextInt(start + 1, size + 1);
+        return orderActions.subList(start, end);
+    }
+
+    public <T> List<T> removeRandomSublist(final List<T> orderActions) {
+        final List<T> subList = randomSublist(orderActions);
+        final ArrayList<T> copy = new ArrayList<>(subList);
+        subList.clear();
+        return copy;
+
+    }
+
+    public <T> void insertAtRandomPosition(final List<T> orderActions, final List<T> subRoute) {
+        final int position = nextInt(0, orderActions.size());
+        orderActions.addAll(position, subRoute);
     }
 }
