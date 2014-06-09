@@ -1,7 +1,7 @@
 package de.hsbremen.kss.model;
 
 import de.hsbremen.kss.configuration.Order;
-import de.hsbremen.kss.configuration.Station;
+import de.hsbremen.kss.configuration.OrderStation;
 import de.hsbremen.kss.configuration.TimeWindow;
 
 /**
@@ -20,11 +20,6 @@ public final class OrderUnloadAction extends OrderAction {
     }
 
     @Override
-    public Station getStation() {
-        return getOrder().getDestinationStation();
-    }
-
-    @Override
     public double duration() {
         return getOrder().getDestination().getServiceTime();
     }
@@ -32,5 +27,10 @@ public final class OrderUnloadAction extends OrderAction {
     @Override
     public TimeWindow timewindow() {
         return getOrder().getDestination().getTimeWindow();
+    }
+
+    @Override
+    public OrderStation orderStation() {
+        return getOrder().getDestination();
     }
 }

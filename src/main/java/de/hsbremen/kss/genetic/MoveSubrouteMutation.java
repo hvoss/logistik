@@ -23,6 +23,10 @@ public class MoveSubrouteMutation implements Mutation {
         final Plan mutatedPlan = new Plan(SweepConstruction.class);
 
         final List<Tour> tours = new ArrayList<>(plan.getTours());
+        if (tours.isEmpty()) {
+            return plan;
+        }
+
         final Tour tourToMutate = this.randomUtils.removeRandomElement(tours);
 
         final List<OrderAction> orderActions = tourToMutate.getOrderActions();

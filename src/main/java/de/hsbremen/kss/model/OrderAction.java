@@ -1,6 +1,11 @@
 package de.hsbremen.kss.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import de.hsbremen.kss.configuration.Order;
+import de.hsbremen.kss.configuration.OrderStation;
+import de.hsbremen.kss.configuration.Station;
 
 /**
  * The Class OrderAction.
@@ -29,33 +34,55 @@ public abstract class OrderAction implements Action {
         return this.order;
     }
 
+    public static List<OrderStation> extractOrderStations(final List<OrderAction> actions) {
+        final ArrayList<OrderStation> stations = new ArrayList<>(actions.size());
+
+        for (final OrderAction action : actions) {
+            stations.add(action.orderStation());
+        }
+
+        return stations;
+    }
+
+    public abstract OrderStation orderStation();
+
+    @Override
+    public final Station getStation() {
+        return orderStation().getStation();
+    }
+
     @Override
     public final String toString() {
         return getClass().getSimpleName() + " : " + this.order;
     }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((order == null) ? 0 : order.hashCode());
-		return result;
-	}
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((this.order == null) ? 0 : this.order.hashCode());
+        return result;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		OrderAction other = (OrderAction) obj;
-		if (order == null) {
-			if (other.order != null)
-				return false;
-		} else if (!order.equals(other.order))
-			return false;
-		return true;
-	}
+    @Override
+    public boolean equals(final Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final OrderAction other = (OrderAction) obj;
+        if (this.order == null) {
+            if (other.order != null) {
+                return false;
+            }
+        } else if (!this.order.equals(other.order)) {
+            return false;
+        }
+        return true;
+    }
 }
