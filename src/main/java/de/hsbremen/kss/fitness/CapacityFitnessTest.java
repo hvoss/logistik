@@ -20,7 +20,7 @@ public class CapacityFitnessTest extends AbstractFitnessTest{
 		double length = plan.length();
 		int overloads = getNumberOfOverloads(plan);
 		
-		double totalFitness = length + length*NUMBER_OF_OVERLOADS*overloads;
+		double totalFitness = length*NUMBER_OF_OVERLOADS*overloads;
 		
 		return totalFitness;
 	}

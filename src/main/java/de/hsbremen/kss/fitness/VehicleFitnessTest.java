@@ -21,7 +21,7 @@ public class VehicleFitnessTest extends AbstractFitnessTest {
 		
 		double length = plan.length();
 		int vehicles = plan.getTours().size();
-		double totalFitness = length + length*NUMBER_OF_VEHICLES*vehicles;
+		double totalFitness = length*NUMBER_OF_VEHICLES*vehicles;
 		
 		return totalFitness;
 	}

@@ -7,7 +7,7 @@ import de.hsbremen.kss.configuration.SampleOrders;
 import de.hsbremen.kss.configuration.SampleVehicle;
 import de.hsbremen.kss.construction.SweepConstruction;
 import de.hsbremen.kss.fitness.CapacityFitnessTest;
-import de.hsbremen.kss.fitness.FitnessTest;
+import de.hsbremen.kss.fitness.FitnessTestBuilder;
 import de.hsbremen.kss.fitness.LengthFitnessTest;
 import de.hsbremen.kss.fitness.VehicleFitnessTest;
 import de.hsbremen.kss.model.Plan;
@@ -58,35 +58,41 @@ public class FitnessTestTest {
 	
 	@Test
 	public void testLength() {		
-		FitnessTest firstLengthFitnessTest = new LengthFitnessTest();
-		double firstLengthFitnessValue = firstLengthFitnessTest.calculateFitness(this.firstPlan);
-		System.out.println("Length Fitness Value (First Plan): " + firstLengthFitnessValue);
+		FitnessTestBuilder fitnessTestBuilder = new FitnessTestBuilder();
+		fitnessTestBuilder.addFitnessTest(new LengthFitnessTest());
 		
-		FitnessTest secondLengthFitnessTest = new LengthFitnessTest();
-		double secondLengthFitnessValue = secondLengthFitnessTest.calculateFitness(this.secondPlan);
-		System.out.println("Length Fitness Value (Second Plan): " + secondLengthFitnessValue);		
+		double firstFitnessTestBuilderValue = fitnessTestBuilder.calculateFitness(this.firstPlan);
+		System.out.println("Fitness Value (Length) (first Plan): " + firstFitnessTestBuilderValue);
+		
+		double secondFitnessTestBuilderValue = fitnessTestBuilder.calculateFitness(this.secondPlan);
+		System.out.println("Fitness Value (Length) (second Plan): " + secondFitnessTestBuilderValue);		
 	}
 	
 	@Test
 	public void testVehicle() {
-		FitnessTest firstVehicleFitnessTest = new VehicleFitnessTest();
-		double firstVehicleFitnessValue = firstVehicleFitnessTest.calculateFitness(this.firstPlan);
-		System.out.println("Vehicle Fitness Value (First Plan): " + firstVehicleFitnessValue);
 		
-		FitnessTest secondVehicleFitnessTest = new VehicleFitnessTest();
-		double secondVehicleFitnessValue = secondVehicleFitnessTest.calculateFitness(this.secondPlan);
-		System.out.println("Vehicle Fitness Value (Second Plan): " + secondVehicleFitnessValue);
+		FitnessTestBuilder fitnessTestBuilder = new FitnessTestBuilder();
+		fitnessTestBuilder.addFitnessTest(new LengthFitnessTest())
+			.addFitnessTest(new VehicleFitnessTest());
+		
+		double firstFitnessTestBuilderValue = fitnessTestBuilder.calculateFitness(this.firstPlan);
+		System.out.println("Fitness Value (Length + Vehicle) (first Plan): " + firstFitnessTestBuilderValue);
+		
+		double secondFitnessTestBuilderValue = fitnessTestBuilder.calculateFitness(this.secondPlan);
+		System.out.println("Fitness Value (Length + Vehicle) (second Plan): " + secondFitnessTestBuilderValue);
 	}
 	
 	@Test
 	public void testCapacity() {
-		FitnessTest firstCapacityFitnessTest = new CapacityFitnessTest();
-		double firstCapacityFitnessValue = firstCapacityFitnessTest.calculateFitness(this.firstPlan);
-		System.out.println("Capacity Fitness Value (First Plan): " + firstCapacityFitnessValue);
+		FitnessTestBuilder fitnessTestBuilder = new FitnessTestBuilder();
+		fitnessTestBuilder.addFitnessTest(new LengthFitnessTest())
+			.addFitnessTest(new CapacityFitnessTest());
 		
-		FitnessTest secondCapacityFitnessTest = new CapacityFitnessTest();
-		double secondCapacityFitnessValue = secondCapacityFitnessTest.calculateFitness(this.secondPlan);
-		System.out.println("Capacity Fitness Value (Second Plan): " + secondCapacityFitnessValue);
+		double firstFitnessTestBuilderValue = fitnessTestBuilder.calculateFitness(this.firstPlan);
+		System.out.println("Fitness Value (Length + Capacity) (first Plan): " + firstFitnessTestBuilderValue);
+		
+		double secondFitnessTestBuilderValue = fitnessTestBuilder.calculateFitness(this.secondPlan);
+		System.out.println("Fitness Value (Length + Capacity) (second Plan): " + secondFitnessTestBuilderValue);
 	}
 
 }
