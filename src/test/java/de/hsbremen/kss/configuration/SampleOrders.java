@@ -13,4 +13,13 @@ public class SampleOrders {
 
     public static final Order BREMEN_OSNABRUECK = new Order(4, "Bremen -> Osnabrück", SampleOrderStations.BREMEN, SampleOrderStations.OSNABRUECK,
             SampleProducts.SNICKERS, 1);
+    
+    public static final Order BREMEN_BERLIN = new Order(5, "Bremen -> Berlin", SampleOrderStations.BREMEN, SampleOrderStations.BERLIN,
+            SampleProducts.SNICKERS, 1);
+
+    public static final Order HANNOVER_MUENCHEN = new Order(6, "Hannover -> München", SampleOrderStations.HANNOVER, SampleOrderStations.MUENCHEN,
+            SampleProducts.SNICKERS, 1);
+
+    public static final Order ELLENBOGEN_BREMEN = new Order(7, "Ellenbogen -> Bremen", SampleOrderStations.ELLENBOGEN, SampleOrderStations.BREMEN,
+            SampleProducts.SNICKERS, 1);
 }

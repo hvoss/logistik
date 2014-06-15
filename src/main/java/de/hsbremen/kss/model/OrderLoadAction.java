@@ -15,7 +15,7 @@ public final class OrderLoadAction extends OrderAction {
      * @param order
      *            the order
      */
-    OrderLoadAction(final Order order) {
+    public OrderLoadAction(final Order order) {
         super(order);
     }
 

@@ -23,7 +23,7 @@ public class AllocateLongestRouteMutationImpl implements Mutation {
 	@Override
 	public Plan mutate(final Plan plan) {
 		final Plan newPlan = new Plan(SweepConstruction.class);
-
+		
 		final List<Tour> tours = new ArrayList<>(plan.getTours());
 		Tour tourToRemove = tours.get(0);
 
@@ -33,33 +33,34 @@ public class AllocateLongestRouteMutationImpl implements Mutation {
 			}
 		}
 
-		final List<OrderAction> allocatedActions = tourToRemove.getOrderActions();
+		final List<OrderAction> allocatedActions = tourToRemove
+				.getOrderActions();
 		List<OrderAction> newTourActions;
 		tours.remove(tourToRemove);
 
+		Tour tourToManipulate = tours.get(0);
+		newTourActions = tourToManipulate.getOrderActions();
+		Tour newTour = newPlan.newTour(tourToManipulate.getVehicle());
+		tours.remove(tourToManipulate);
+		newTour.leafSourceDepot();
+		//newTour.addOtherActions(newTourActions);
+
 		while (!allocatedActions.isEmpty()) {
-
-			Tour tourToManipulate = this.randomUtils.randomElement(tours);
-			newTourActions = tourToManipulate.getOrderActions();
-			Tour newTour = newPlan.newTour(tourToManipulate.getVehicle());
-			tours.remove(tourToManipulate);
-			newTour.leafSourceDepot();
-			newTour.addOtherActions(newTourActions);
-
 			Order orderToMove = allocatedActions.get(0).getOrder();
-//
-//			this.randomUtils.insertAtRandomPosition(newTourActions,
-//					new OrderLoadAction(orderToMove));
-//			this.randomUtils.insertAtRandomPosition(newTourActions,
-//					new OrderUnloadAction(orderToMove));
+
+			this.randomUtils.insertAtRandomPosition(newTourActions,
+					new OrderLoadAction(orderToMove));
+			this.randomUtils.insertAtRandomPosition(newTourActions,
+					new OrderUnloadAction(orderToMove));
 
 			allocatedActions.remove(0);
 
-			newTour.gotoDestinationDepot();
-			tours.add(newTour);
-
 		}
 		
+		newTour.addOtherActions(newTourActions);
+		newTour.gotoDestinationDepot();
+		tours.add(newTour);
+
 		for (Tour tour : tours) {
 			newPlan.addTour(tour);
 		}
