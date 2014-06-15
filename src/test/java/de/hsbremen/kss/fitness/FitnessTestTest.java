@@ -1,4 +1,4 @@
-package de.hsbremen.fitness;
+package de.hsbremen.kss.fitness;
 
 import org.junit.Before;
 import org.junit.Test;
