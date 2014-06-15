@@ -47,11 +47,11 @@ public class AllocateLongestRouteMutationImpl implements Mutation {
 			newTour.addOtherActions(newTourActions);
 
 			Order orderToMove = allocatedActions.get(0).getOrder();
-
-			this.randomUtils.insertAtRandomPosition(newTourActions,
-					new OrderLoadAction(orderToMove));
-			this.randomUtils.insertAtRandomPosition(newTourActions,
-					new OrderUnloadAction(orderToMove));
+//
+//			this.randomUtils.insertAtRandomPosition(newTourActions,
+//					new OrderLoadAction(orderToMove));
+//			this.randomUtils.insertAtRandomPosition(newTourActions,
+//					new OrderUnloadAction(orderToMove));
 
 			allocatedActions.remove(0);
 
