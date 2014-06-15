@@ -30,15 +30,6 @@ public final class GeneticAlgorithmImpl extends Observable implements GeneticAlg
     /** logging interface */
     private static final Logger LOG = LoggerFactory.getLogger(GeneticAlgorithmImpl.class);
 
-    /** maximum iterations to generate population */
-    private final int maxIterations;
-
-    /**
-     * abort criterion factor. relative deviation from the best population to
-     * the average.
-     */
-    private final double abortCriterion;
-
     /** fitness test used for ranking */
     private final FitnessTest fitnessTest;
 
@@ -68,17 +59,15 @@ public final class GeneticAlgorithmImpl extends Observable implements GeneticAlg
     /** method which is used to select parents out of the population */
     private final Selection selectionMethod;
 
+    /** method that checks the possibility of an abort */
+    private final AbortionCheck abortionCheck;
+
     /** the global event bus */
     private final EventBus eventBus;
 
     /**
      * ctor.
      * 
-     * @param maxIterations
-     *            maximum iterations to generate population
-     * @param abortCriterion
-     *            abort criterion factor. relative deviation from the best
-     *            population to the average.
      * @param fitnessTest
      *            fitness test used for ranking
      * @param randomUtils
@@ -98,14 +87,15 @@ public final class GeneticAlgorithmImpl extends Observable implements GeneticAlg
      *            comparator used to rank population
      * @param selectionMethod
      *            method which is used to select parents out of the population
+     * @param eventBus
+     *            the global event bus
+     * @param abortionCheck
+     *            method that checks the possibility of an abort
      */
-    GeneticAlgorithmImpl(final EventBus eventBus, final int maxIterations, final double abortCriterion, final FitnessTest fitnessTest,
-            final RandomUtils randomUtils, final List<Mutation> mutationMethods, final List<Crossover> crossoverMethods, final Validator validator,
-            final PlanComparator planComparator, final Selection selectionMethod) {
-        super();
+    GeneticAlgorithmImpl(final EventBus eventBus, final FitnessTest fitnessTest, final RandomUtils randomUtils, final List<Mutation> mutationMethods,
+            final List<Crossover> crossoverMethods, final Validator validator, final PlanComparator planComparator, final Selection selectionMethod,
+            final AbortionCheck abortionCheck) {
         this.eventBus = eventBus;
-        this.maxIterations = maxIterations;
-        this.abortCriterion = abortCriterion;
         this.fitnessTest = fitnessTest;
         this.randomUtils = randomUtils;
         this.mutationMethods = mutationMethods;
@@ -113,6 +103,7 @@ public final class GeneticAlgorithmImpl extends Observable implements GeneticAlg
         this.validator = validator;
         this.planComparator = planComparator;
         this.selectionMethod = selectionMethod;
+        this.abortionCheck = abortionCheck;
     }
 
     @Override
@@ -121,27 +112,14 @@ public final class GeneticAlgorithmImpl extends Observable implements GeneticAlg
         List<Plan> population = new ArrayList<>(startPopulation);
         Collections.sort(population, this.planComparator);
 
-        for (int i = 0; i < this.maxIterations && checkNotAbort(population); i++) {
+        int i = 0;
+        while (!this.abortionCheck.checkAbort(i++, population)) {
             population = createNextPopulation(configuration, population);
             logPopulation(i, population);
             this.eventBus.post(new NewPopulationEvent(i, this.fitnessTest, population));
         }
 
         return population.get(0);
-    }
-
-    /**
-     * checks the abort criterion.
-     * 
-     * @param population
-     *            the actual sorted population
-     * @return true: not abort; false: abort
-     */
-    private boolean checkNotAbort(final List<Plan> population) {
-        final double bestFiness = this.fitnessTest.calculateFitness(population.get(0));
-        final double avgFiness = this.fitnessTest.avgFitness(population);
-        final double factor = 1 - bestFiness / avgFiness;
-        return factor > this.abortCriterion;
     }
 
     /**

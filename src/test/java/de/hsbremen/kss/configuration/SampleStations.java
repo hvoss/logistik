@@ -8,7 +8,7 @@ public class SampleStations {
 
     public static final Station HAMBURG = new Station(2, "Hamburg", new Vector2D(282, 707));
 
-    public static final Station Hannover = new Station(3, "Hannover", new Vector2D(265, 575));
+    public static final Station HANNOVER = new Station(3, "Hannover", new Vector2D(265, 575));
 
     public static final Station MUENCHEN = new Station(4, "München", new Vector2D(392, 98));
 

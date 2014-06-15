@@ -131,4 +131,8 @@ public final class OrderStation {
         return orderStations;
     }
 
+    @Override
+    public String toString() {
+        return this.station.toString();
+    }
 }
