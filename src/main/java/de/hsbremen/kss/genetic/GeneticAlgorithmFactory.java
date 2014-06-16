@@ -35,6 +35,8 @@ public class GeneticAlgorithmFactory {
         final Validator validator = new SimpleValidator();
         final PlanComparator planComparator = new PlanComparator(fitnessTest);
         final Selection selectionMethod = new RandomSelection(randomUtils);
+        // selectionMethod = new LinearDistributionSelectionImpl(randomUtils);
+
         final AbortionCheck abortionCheck = new AbortionCheckImpl(fitnessTest, maxIterations, abortCriterion);
         return new GeneticAlgorithmImpl(eventBus, fitnessTest, randomUtils, mutationMethods, crossoverMethods, validator, planComparator,
                 selectionMethod, abortionCheck);

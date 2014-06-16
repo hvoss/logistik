@@ -208,9 +208,12 @@ public final class GeneticAlgorithmImpl extends Observable implements GeneticAlg
      *            the actual population
      */
     private void logPopulation(final int iteration, final List<Plan> population) {
-        final Double best = Precision.round(this.fitnessTest.calculateFitness(population.get(0)), 2);
+        final Plan bestPlan = population.get(0);
+        final Double best = Precision.round(this.fitnessTest.calculateFitness(bestPlan), 2);
         final Double worst = Precision.round(this.fitnessTest.calculateFitness(population.get(population.size() - 1)), 2);
         final Double avg = Precision.round(this.fitnessTest.avgFitness(population), 2);
-        GeneticAlgorithmImpl.LOG.info("iteration: #" + iteration + ", best: " + best + ", worst:" + worst + ", avg: " + avg);
+        final int numTours = bestPlan.getTours().size();
+        GeneticAlgorithmImpl.LOG.info("iteration: #" + iteration + ", best: " + best + ", worst:" + worst + ", avg: " + avg + ", numTours: "
+                + numTours);
     }
 }

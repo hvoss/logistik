@@ -14,58 +14,49 @@ import de.hsbremen.kss.util.RandomUtils;
 
 public class AllocateLongestRouteMutationImpl implements Mutation {
 
-	private final RandomUtils randomUtils;
+    private final RandomUtils randomUtils;
 
-	public AllocateLongestRouteMutationImpl(final RandomUtils randomUtils) {
-		this.randomUtils = randomUtils;
-	}
+    public AllocateLongestRouteMutationImpl(final RandomUtils randomUtils) {
+        this.randomUtils = randomUtils;
+    }
 
-	@Override
-	public Plan mutate(final Plan plan) {
-		final Plan newPlan = new Plan(SweepConstruction.class);
-		
-		final List<Tour> tours = new ArrayList<>(plan.getTours());
-		Tour tourToRemove = tours.get(0);
+    @Override
+    public Plan mutate(final Plan plan) {
+        final Plan newPlan = new Plan(SweepConstruction.class);
 
-		for (Tour tour : tours) {
-			if (tourToRemove.length() < tour.length()) {
-				tourToRemove = tour;
-			}
-		}
+        final List<Tour> tours = new ArrayList<>(plan.getTours());
+        Tour tourToRemove = tours.get(0);
+        for (final Tour tour : tours) {
+            if (tourToRemove.length() < tour.length()) {
+                tourToRemove = tour;
+            }
+        }
+        tours.remove(tourToRemove);
 
-		final List<OrderAction> allocatedActions = tourToRemove
-				.getOrderActions();
-		List<OrderAction> newTourActions;
-		tours.remove(tourToRemove);
+        final List<List<OrderAction>> copiedTours = new ArrayList<>();
+        for (final Tour oldTour : tours) {
+            copiedTours.add(oldTour.getOrderActions());
+        }
 
-		Tour tourToManipulate = tours.get(0);
-		newTourActions = tourToManipulate.getOrderActions();
-		Tour newTour = newPlan.newTour(tourToManipulate.getVehicle());
-		tours.remove(tourToManipulate);
-		newTour.leafSourceDepot();
-		//newTour.addOtherActions(newTourActions);
+        final List<Order> allocatedOrder = new ArrayList<>(tourToRemove.getOrders());
 
-		while (!allocatedActions.isEmpty()) {
-			Order orderToMove = allocatedActions.get(0).getOrder();
+        while (!allocatedOrder.isEmpty()) {
+            final Order orderToMove = this.randomUtils.removeRandomElement(allocatedOrder);
+            final List<OrderAction> tour = this.randomUtils.randomElement(copiedTours);
 
-			this.randomUtils.insertAtRandomPosition(newTourActions,
-					new OrderLoadAction(orderToMove));
-			this.randomUtils.insertAtRandomPosition(newTourActions,
-					new OrderUnloadAction(orderToMove));
+            final int sourceIndex = this.randomUtils.insertAtRandomPosition(tour, new OrderLoadAction(orderToMove));
+            this.randomUtils.insertAtRandomPosition(tour, new OrderUnloadAction(orderToMove), sourceIndex);
+        }
 
-			allocatedActions.remove(0);
+        for (int i = 0; i < tours.size(); i++) {
+            final Tour newTour = newPlan.newTour(tours.get(i).getVehicle());
+            newTour.leafSourceDepot();
+            newTour.addOtherActions(copiedTours.get(i));
+            newTour.gotoDestinationDepot();
+            newPlan.addTour(newTour);
+        }
 
-		}
-		
-		newTour.addOtherActions(newTourActions);
-		newTour.gotoDestinationDepot();
-		tours.add(newTour);
-
-		for (Tour tour : tours) {
-			newPlan.addTour(tour);
-		}
-
-		return newPlan;
-	}
+        return newPlan;
+    }
 
 }
