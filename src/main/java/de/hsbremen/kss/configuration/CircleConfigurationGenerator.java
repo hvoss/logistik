@@ -18,35 +18,39 @@ public class CircleConfigurationGenerator {
         this.randomUtils = randomUtils;
     }
 
-    public Configuration generateConfiguration(final int diameter, final int numStation, final int rounds) {
+    public Configuration generateConfiguration(final int diameter, final int numStation) {
         final List<Station> stations = generateStations(diameter, numStation);
 
+        final int loadableOrders = 4;
+        final int numVehicles = numStation / loadableOrders;
         final Product product = new Product(1, "Product #1");
-        final Vehicle vehicle = new Vehicle("1", "Vehicle #1", stations.get(0), stations.get(0), 80d, TimeWindow.INFINITY_TIMEWINDOW, product,
-                Integer.MAX_VALUE);
 
-        final List<Order> orders = new ArrayList<>(numStation * rounds);
-        Station lastStation = null;
-        for (int i = 0; i < numStation * rounds; i++) {
-            final int idx = i % numStation;
-            final Station station = stations.get(idx);
+        final List<Vehicle> vehicles = new ArrayList<>(numVehicles);
+        final Station depot = new Station(0, "Depot", new Vector2D(0, 0));
 
-            if (lastStation != null) {
-                final OrderStation source = new OrderStation(lastStation, TimeWindow.INFINITY_TIMEWINDOW, 0d);
-                final OrderStation destination = new OrderStation(station, TimeWindow.INFINITY_TIMEWINDOW, 0d);
+        for (int i = 1; i <= numVehicles; i++) {
+            final Vehicle vehicle = new Vehicle("" + i, "Vehicle #" + i, depot, depot, 80d, TimeWindow.INFINITY_TIMEWINDOW, product, loadableOrders);
+            vehicles.add(vehicle);
 
-                final String name = lastStation.getName() + " => " + station.getName();
-
-                final Order order = new Order(i, name, source, destination, product, 1);
-                orders.add(order);
-
-            }
-
-            lastStation = station;
         }
 
-        return new Configuration(new HashSet<>(orders), new HashSet<>(stations), new HashSet<>(Arrays.asList(vehicle)), new HashSet<>(
-                Arrays.asList(product)), new HashSet<ComplexOrder>());
+        final List<Order> orders = new ArrayList<>(numStation);
+        for (int i = 0; i < numStation; i++) {
+            final Station station = stations.get(i);
+
+            final OrderStation source = new OrderStation(depot, TimeWindow.INFINITY_TIMEWINDOW, 0d);
+            final OrderStation destination = new OrderStation(station, TimeWindow.INFINITY_TIMEWINDOW, 0d);
+
+            final String name = depot.getName() + " => " + station.getName();
+
+            final Order order = new Order(i, name, source, destination, product, 1);
+            orders.add(order);
+
+        }
+        stations.add(depot);
+
+        return new Configuration(new HashSet<>(orders), new HashSet<>(stations), new HashSet<>(vehicles), new HashSet<>(Arrays.asList(product)),
+                new HashSet<ComplexOrder>());
 
     }
 

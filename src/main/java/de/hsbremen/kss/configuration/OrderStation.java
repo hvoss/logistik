@@ -135,4 +135,12 @@ public final class OrderStation {
     public String toString() {
         return this.station.toString();
     }
+
+    public boolean isSource() {
+        return this == this.order.getSource();
+    }
+
+    public boolean isDestination() {
+        return this == this.order.getDestination();
+    }
 }

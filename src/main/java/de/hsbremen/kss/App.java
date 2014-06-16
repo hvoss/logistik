@@ -21,7 +21,7 @@ import de.hsbremen.kss.chart.PopulationDataset;
 import de.hsbremen.kss.configuration.CircleConfigurationGenerator;
 import de.hsbremen.kss.configuration.Configuration;
 import de.hsbremen.kss.construction.Construction;
-import de.hsbremen.kss.construction.RandomConstruction;
+import de.hsbremen.kss.construction.SimpleRandomConstruction;
 import de.hsbremen.kss.events.NewPopulationEvent;
 import de.hsbremen.kss.genetic.GeneticAlgorithm;
 import de.hsbremen.kss.genetic.GeneticAlgorithmFactory;
@@ -75,14 +75,14 @@ public final class App {
 
         final List<Construction> constructionMethods = new ArrayList<>();
         final RandomSimpleConstruction randomSimpleConstruction = new RandomSimpleConstruction(this.randomUtils);
-        final RandomConstruction randomConstruction = new RandomConstruction(randomSimpleConstruction, this.randomUtils);
+        final Construction randomConstruction = new SimpleRandomConstruction(this.randomUtils);
         constructionMethods.add(randomConstruction);
 
         final PopulationGeneratorImpl populationGenerator = new PopulationGeneratorImpl(this.randomUtils);
 
         final GeneticAlgorithm geneticAlgorithm = GeneticAlgorithmFactory.createGeneticAlgorithm(this.eventBus, this.randomUtils);
         final CircleConfigurationGenerator circleConfigurationGenerator = new CircleConfigurationGenerator(this.randomUtils);
-        final Configuration circleConfig = circleConfigurationGenerator.generateConfiguration(diameter, 40, 1);
+        final Configuration circleConfig = circleConfigurationGenerator.generateConfiguration(diameter, 40);
 
         SwingUtilities.invokeLater(new Runnable() {
             @Override

@@ -150,4 +150,10 @@ public final class Plan {
         return new Tour(vehicle, this.tourIdCounter++);
     }
 
+    public void addTours(final List<Tour> tours2) {
+        for (final Tour tour : tours2) {
+            addTour(tour);
+        }
+    }
+
 }

@@ -10,6 +10,8 @@ import org.apache.commons.math3.util.Precision;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import ch.qos.logback.classic.Level;
+
 import com.google.common.eventbus.EventBus;
 
 import de.hsbremen.kss.configuration.Configuration;
@@ -17,6 +19,7 @@ import de.hsbremen.kss.events.NewPopulationEvent;
 import de.hsbremen.kss.fitness.FitnessTest;
 import de.hsbremen.kss.model.Plan;
 import de.hsbremen.kss.util.RandomUtils;
+import de.hsbremen.kss.validate.SimpleValidator;
 import de.hsbremen.kss.validate.Validator;
 
 /**
@@ -109,6 +112,11 @@ public final class GeneticAlgorithmImpl extends Observable implements GeneticAlg
     @Override
     public Plan startOptimize(final Configuration configuration, final Collection<Plan> startPopulation) {
 
+        final ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(SimpleValidator.class);
+
+        final Level oldLevel = logger.getLevel();
+        logger.setLevel(Level.OFF);
+
         List<Plan> population = new ArrayList<>(startPopulation);
         Collections.sort(population, this.planComparator);
 
@@ -118,6 +126,8 @@ public final class GeneticAlgorithmImpl extends Observable implements GeneticAlg
             logPopulation(i, population);
             this.eventBus.post(new NewPopulationEvent(i, this.fitnessTest, population));
         }
+
+        logger.setLevel(oldLevel);
 
         return population.get(0);
     }
