@@ -1,12 +1,15 @@
 package de.hsbremen.kss.gui;
 
 import java.awt.Canvas;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 
@@ -76,6 +79,9 @@ public final class MapCanvas extends Canvas {
 
     /** plan to display */
     private Plan plan;
+
+    private static final List<Color> COLORS = Arrays.asList(Color.BLACK, Color.RED, Color.BLUE, Color.GRAY, Color.MAGENTA, Color.YELLOW, Color.PINK,
+            Color.GREEN);
 
     /**
      * ctor.
@@ -212,7 +218,7 @@ public final class MapCanvas extends Canvas {
      * @param destination
      *            destination if the arrow
      */
-    private void drawArrow(final Graphics g, final Vector2D source, final Vector2D destination) {
+    private void drawArrow(final Graphics g, final Color color, final Vector2D source, final Vector2D destination) {
         final Vector2D arrowVector = source.subtract(destination).normalize().scalarMultiply(MapCanvas.ARROWHEAD_LENGTH);
 
         final Vector3D arrowVector3d = convert(arrowVector);
@@ -220,9 +226,9 @@ public final class MapCanvas extends Canvas {
         final Vector3D a1 = MapCanvas.POSITIVE_ROTATION.applyTo(arrowVector3d);
         final Vector3D a2 = MapCanvas.NEGATIVE_ROTATION.applyTo(arrowVector3d);
 
-        drawLine(g, source, destination);
-        drawLine(g, destination, destination.add(convert(a1)));
-        drawLine(g, destination, destination.add(convert(a2)));
+        drawLine(g, color, source, destination);
+        drawLine(g, color, destination, destination.add(convert(a1)));
+        drawLine(g, color, destination, destination.add(convert(a2)));
     }
 
     /**
@@ -257,13 +263,16 @@ public final class MapCanvas extends Canvas {
      * @param destination
      *            end point of the line
      */
-    private void drawLine(final Graphics g, final Vector2D source, final Vector2D destination) {
+    private void drawLine(final Graphics g, final Color color, final Vector2D source, final Vector2D destination) {
         final int sX = transformX(source.getX());
         final int sY = transformY(source.getY());
         final int dX = transformX(destination.getX());
         final int dY = transformY(destination.getY());
 
+        final Color oldColor = g.getColor();
+        g.setColor(color);
         g.drawLine(sX, sY, dX, dY);
+        g.setColor(oldColor);
     }
 
     /**
@@ -273,13 +282,16 @@ public final class MapCanvas extends Canvas {
      */
     public void drawPlan(final Graphics g) {
         if (this.plan != null) {
-            for (final Tour tour : this.plan.getTours()) {
+            final List<Tour> tours = this.plan.getTours();
+            for (int i = 0; i < tours.size(); i++) {
+                final Tour tour = tours.get(i);
+                final Color color = MapCanvas.COLORS.get(i % MapCanvas.COLORS.size());
                 Station lastStation = null;
                 for (final Action action : tour.getActions()) {
                     final Station station = action.getStation();
 
                     if (lastStation != null && !station.equals(lastStation)) {
-                        drawArrow(g, lastStation.getCoordinates(), station.getCoordinates());
+                        drawArrow(g, color, lastStation.getCoordinates(), station.getCoordinates());
                     }
 
                     lastStation = station;
