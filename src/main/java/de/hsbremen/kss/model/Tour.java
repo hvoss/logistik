@@ -62,6 +62,10 @@ public final class Tour {
      * adds the {@link FromDepotAction} to the tour.
      */
     public void leafSourceDepot() {
+        if (!this.actions.isEmpty()) {
+            throw new IllegalStateException();
+        }
+
         this.actions.add(new FromDepotAction(this.vehicle.getSourceDepot(), this.vehicle.getTimeWindow()));
         this.locked = false;
     }

@@ -23,9 +23,9 @@ public class GeneticAlgorithmFactory {
         final FitnessTest fitnessTest = new FitnessTestBuilder().addFitnessTest(new LengthFitnessTest()).addFitnessTest(new VehicleFitnessTest())
                 .addFitnessTest(new CapacityFitnessTest());
 
-        MutationBuilder mutationBuilder = new MutationBuilder(randomUtils);
-        
-        //@formater:off
+        final MutationBuilder mutationBuilder = new MutationBuilder(randomUtils);
+
+        //@formatter:off
         final List<Mutation> mutationMethods = mutationBuilder
             .moveActionMutation(20)
             .moveSubrouteMutation(10)
@@ -33,10 +33,11 @@ public class GeneticAlgorithmFactory {
             .allocateLongestRouteMutation(2)
             .allocateRandomRouteMutation(2)
             .allocateShortestRouteMutation(2)
+            .combineTwoToursMutationImpl(1)
             .nullMutation(10)
             .build();
-        //@formater:on
-        
+        //@formatter:on
+
         final List<Crossover> crossoverMethods = new ArrayList<>();
         // crossoverMethods.add(new ControlStringCrossoverImpl(randomUtils));
 
