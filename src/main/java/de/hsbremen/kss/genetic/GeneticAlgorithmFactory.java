@@ -23,14 +23,20 @@ public class GeneticAlgorithmFactory {
         final FitnessTest fitnessTest = new FitnessTestBuilder().addFitnessTest(new LengthFitnessTest()).addFitnessTest(new VehicleFitnessTest())
                 .addFitnessTest(new CapacityFitnessTest());
 
-        final List<Mutation> mutationMethods = new ArrayList<>();
-        mutationMethods.add(new MoveActionMutationImpl(randomUtils));
-        mutationMethods.add(new MoveSubrouteMutation(randomUtils));
-        mutationMethods.add(new SwapOrderMutationImpl(randomUtils));
-        mutationMethods.add(new AllocateLongestRouteMutationImpl(randomUtils));
-        mutationMethods.add(new AllocateShortestRouteMutationImpl(randomUtils));
-        mutationMethods.add(new AllocateRandomRouteMutationImpl(randomUtils));
-
+        MutationBuilder mutationBuilder = new MutationBuilder(randomUtils);
+        
+        //@formater:off
+        final List<Mutation> mutationMethods = mutationBuilder
+            .moveActionMutation(20)
+            .moveSubrouteMutation(10)
+            .swapOrderMutation(10)
+            .allocateLongestRouteMutation(2)
+            .allocateRandomRouteMutation(2)
+            .allocateShortestRouteMutation(2)
+            .nullMutation(10)
+            .build();
+        //@formater:on
+        
         final List<Crossover> crossoverMethods = new ArrayList<>();
         // crossoverMethods.add(new ControlStringCrossoverImpl(randomUtils));
 
