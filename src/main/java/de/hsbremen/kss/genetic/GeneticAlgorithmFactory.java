@@ -28,6 +28,8 @@ public class GeneticAlgorithmFactory {
         mutationMethods.add(new MoveSubrouteMutation(randomUtils));
         mutationMethods.add(new SwapOrderMutationImpl(randomUtils));
         mutationMethods.add(new AllocateLongestRouteMutationImpl(randomUtils));
+        mutationMethods.add(new AllocateShortestRouteMutationImpl(randomUtils));
+        mutationMethods.add(new AllocateRandomRouteMutationImpl(randomUtils));
 
         final List<Crossover> crossoverMethods = new ArrayList<>();
         // crossoverMethods.add(new ControlStringCrossoverImpl(randomUtils));

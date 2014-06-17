@@ -461,4 +461,38 @@ public final class Tour {
             throw new IllegalStateException("the tour is locked.");
         }
     }
+
+    /**
+     * finds the longest of the given tours.
+     * 
+     * @param tours
+     *            tours to search for
+     * @return the longest tour.
+     */
+    public static Tour findLongestTour(final Iterable<Tour> tours) {
+        Tour longestTour = null;
+        for (final Tour tour : tours) {
+            if (longestTour == null || longestTour.length() < tour.length()) {
+                longestTour = tour;
+            }
+        }
+        return longestTour;
+    }
+
+    /**
+     * finds the shortest of the given tours.
+     * 
+     * @param tours
+     *            tours to search for
+     * @return the longest tour.
+     */
+    public static Tour findShortestTour(final Collection<Tour> tours) {
+        Tour shortestTour = null;
+        for (final Tour tour : tours) {
+            if (shortestTour == null || shortestTour.length() > tour.length()) {
+                shortestTour = tour;
+            }
+        }
+        return shortestTour;
+    }
 }
