@@ -39,6 +39,9 @@ public final class Tour {
     /** identifier of the tour */
     private final int id;
 
+    /** indicates whether the tour is locked or not */
+    private boolean locked = true;
+
     /**
      * Instantiates a new tour.
      * 
@@ -60,6 +63,7 @@ public final class Tour {
      */
     public void leafSourceDepot() {
         this.actions.add(new FromDepotAction(this.vehicle.getSourceDepot(), this.vehicle.getTimeWindow()));
+        this.locked = false;
     }
 
     /**
@@ -67,6 +71,7 @@ public final class Tour {
      */
     public void gotoDestinationDepot() {
         this.actions.add(new ToDepotAction(this.vehicle.getDestinationDepot(), this.vehicle.getTimeWindow()));
+        this.locked = true;
     }
 
     /**
@@ -196,6 +201,7 @@ public final class Tour {
      *            action to add
      */
     private void addAction(final Action action) {
+        checkLocked();
         Validate.notNull(action, "action is null");
         this.actions.add(action);
     }
@@ -443,6 +449,16 @@ public final class Tour {
     public void addOtherActions(final Iterable<? extends Action> actions) {
         for (final Action action : actions) {
             addAction(action);
+        }
+    }
+
+    /**
+     * checks whether the tour is locked or not. if the tour is locked, a
+     * exception will be thrown.
+     */
+    private void checkLocked() {
+        if (this.locked) {
+            throw new IllegalStateException("the tour is locked.");
         }
     }
 }

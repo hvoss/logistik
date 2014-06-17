@@ -56,6 +56,7 @@ public class AllocateLongestRouteMutationImpl implements Mutation {
             newPlan.addTour(newTour);
         }
 
+        newPlan.lock();
         return newPlan;
     }
 

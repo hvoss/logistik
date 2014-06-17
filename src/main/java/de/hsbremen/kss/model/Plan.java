@@ -33,6 +33,12 @@ public final class Plan {
     private int tourIdCounter = 1;
 
     /**
+     * indicates whether the plan is locked or not. A locked plan can't be
+     * modified.
+     */
+    private boolean locked = false;
+
+    /**
      * Instantiates a new plan.
      * 
      * @param constructionClazz
@@ -63,6 +69,7 @@ public final class Plan {
      *            tour to add.
      */
     public void addTour(final Tour tour) {
+        checkLocked();
         Validate.notNull(tour, "tour is null");
         this.tours.add(tour);
     }
@@ -147,12 +154,38 @@ public final class Plan {
      * @return the new tour.
      */
     public Tour newTour(final Vehicle vehicle) {
+        checkLocked();
         return new Tour(vehicle, this.tourIdCounter++);
     }
 
-    public void addTours(final List<Tour> tours2) {
-        for (final Tour tour : tours2) {
+    /**
+     * adds a collection of tours to the plan.
+     * 
+     * @param toursToAdd
+     *            tours to add.
+     */
+    public void addTours(final Iterable<Tour> toursToAdd) {
+        checkLocked();
+        for (final Tour tour : toursToAdd) {
             addTour(tour);
+        }
+    }
+
+    /**
+     * locks the plan. no further modifying is possible.
+     */
+    public void lock() {
+        checkLocked();
+        this.locked = true;
+    }
+
+    /**
+     * checks whether the plan is locked or not. if the plan is locked, a
+     * exception will be thrown.
+     */
+    private void checkLocked() {
+        if (this.locked) {
+            throw new IllegalStateException("the plan is locked.");
         }
     }
 

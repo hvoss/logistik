@@ -49,6 +49,9 @@ public final class ControlStringCrossoverImpl implements Crossover {
             newTour.gotoDestinationDepot();
             newPlan.addTour(newTour);
         }
+
+        newPlan.lock();
+
         return newPlan;
     }
 

@@ -7,13 +7,13 @@ import de.hsbremen.kss.configuration.Order;
 import de.hsbremen.kss.configuration.Station;
 import de.hsbremen.kss.model.Plan;
 
-public class MultipleSavingsConstruction implements Construction{
-	
-	private final SavingsContruction savingsConstruction = new SavingsContruction();
+public class MultipleSavingsConstruction implements Construction {
 
-	@Override
-	public Plan constructPlan(Configuration configuration) {
-		Plan bestPlan = null;
+    private final SavingsContruction savingsConstruction = new SavingsContruction();
+
+    @Override
+    public Plan constructPlan(final Configuration configuration) {
+        Plan bestPlan = null;
         final Set<Station> allSourceStations = Order.getAllSourceStations(configuration.getOrders());
 
         for (final Station station : allSourceStations) {
@@ -25,13 +25,16 @@ public class MultipleSavingsConstruction implements Construction{
 
         }
 
-        return new Plan(MultipleSavingsConstruction.class, bestPlan);
-	}
+        final Plan plan = new Plan(MultipleSavingsConstruction.class, bestPlan);
 
-	@Override
-	public void logStatistic() {
-		// TODO Auto-generated method stub
-		
-	}
+        plan.lock();
+        return plan;
+    }
+
+    @Override
+    public void logStatistic() {
+        // TODO Auto-generated method stub
+
+    }
 
 }

@@ -39,6 +39,8 @@ public class SwapOrderMutationImpl implements Mutation {
             createTour(firstTour, firstOrder, secondOrder, newPlan);
             createTour(secondTour, secondOrder, firstOrder, newPlan);
 
+            newPlan.lock();
+
             return newPlan;
         }
 

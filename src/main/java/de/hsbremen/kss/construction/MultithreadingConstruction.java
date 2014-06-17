@@ -135,7 +135,10 @@ public final class MultithreadingConstruction implements Construction {
 
         this.duration = System.currentTimeMillis() - start;
 
-        return new Plan(MultithreadingConstruction.class, bestPlan);
+        final Plan plan = new Plan(MultithreadingConstruction.class, bestPlan);
+
+        plan.lock();
+        return plan;
     }
 
     @Override

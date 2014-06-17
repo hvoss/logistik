@@ -44,6 +44,8 @@ public class MoveSubrouteMutation implements Mutation {
             mutatedPlan.addTour(tour);
         }
 
+        mutatedPlan.lock();
+
         return mutatedPlan;
     }
 }

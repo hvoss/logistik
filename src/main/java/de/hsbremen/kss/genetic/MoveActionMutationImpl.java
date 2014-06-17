@@ -39,6 +39,8 @@ public class MoveActionMutationImpl implements Mutation {
             newPlan.addTour(tour);
         }
 
+        newPlan.lock();
+
         return newPlan;
     }
 

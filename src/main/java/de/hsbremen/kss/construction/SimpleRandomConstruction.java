@@ -58,6 +58,7 @@ public class SimpleRandomConstruction implements Construction {
             plan.addTour(tour);
         }
 
+        plan.lock();
         return plan;
     }
 

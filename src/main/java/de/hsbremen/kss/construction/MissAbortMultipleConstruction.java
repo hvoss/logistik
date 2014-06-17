@@ -55,7 +55,10 @@ public final class MissAbortMultipleConstruction implements Construction {
             }
 
         }
-        return new Plan(MissAbortMultipleConstruction.class, bestRandomPlan);
+        final Plan plan = new Plan(MissAbortMultipleConstruction.class, bestRandomPlan);
+
+        plan.lock();
+        return plan;
     }
 
     @Override

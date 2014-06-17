@@ -51,7 +51,10 @@ public final class MultipleSweepConstruction implements Construction {
             }
         }
 
-        return new Plan(MultipleSweepConstruction.class, bestPlan);
+        final Plan plan = new Plan(MultipleSweepConstruction.class, bestPlan);
+
+        plan.lock();
+        return plan;
     }
 
     @Override

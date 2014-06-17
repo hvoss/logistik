@@ -109,6 +109,8 @@ public abstract class BaseConstruction implements Construction {
             }
         }
 
+        plan.lock();
+
         return plan;
     }
 

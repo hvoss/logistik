@@ -49,7 +49,10 @@ public final class FixMultipleConstruction implements CloneableConstruction {
                 this.planFoundInIteration = i;
             }
         }
-        return new Plan(FixMultipleConstruction.class, bestRandomPlan);
+
+        final Plan plan = new Plan(FixMultipleConstruction.class, bestRandomPlan);
+        plan.lock();
+        return plan;
     }
 
     @Override

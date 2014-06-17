@@ -26,15 +26,14 @@ import de.hsbremen.kss.util.ConstructionUtils;
  * 
  */
 public class SavingsContruction implements Construction {
-	
+
     @Override
     public Plan constructPlan(final Configuration configuration) {
-    	return constructPlan(configuration, null);
+        return constructPlan(configuration, null);
     }
 
-    
-    public Plan constructPlan(final Configuration configuration, Station startStation) {
-    	final Plan plan = new Plan(SavingsContruction.class);
+    public Plan constructPlan(final Configuration configuration, final Station startStation) {
+        final Plan plan = new Plan(SavingsContruction.class);
 
         final Vehicle vehicle = CollectionUtils.get(configuration.getVehicles(), 0);
         final Tour tour = plan.newTour(vehicle);
@@ -42,30 +41,29 @@ public class SavingsContruction implements Construction {
 
         final Set<Order> visitedSourceOrders = new HashSet<>();
         final Set<Order> visitedDestinationOrders = new HashSet<>();
-        
+
         Station actualStation;
         Station lastStation = null;
-        
-        if(startStation != null) {
-        	actualStation = startStation;
+
+        if (startStation != null) {
+            actualStation = startStation;
         } else {
-        	final List<SavingStation> savingsList = new ArrayList<>();
-        	final Set<Station> stations = Order.getAllSourceStations(configuration.getOrders());
-        	final Set<Station> processedStations = new HashSet<>();
-        	
+            final List<SavingStation> savingsList = new ArrayList<>();
+            final Set<Station> stations = Order.getAllSourceStations(configuration.getOrders());
+            final Set<Station> processedStations = new HashSet<>();
+
             for (final Station station : stations) {
                 processedStations.add(station);
                 for (final Station otherStation : stations) {
                     if (!processedStations.contains(otherStation)) {
-                    	savingsList.add(new SavingStation(station, otherStation, sourceDepot));
+                        savingsList.add(new SavingStation(station, otherStation, sourceDepot));
                     }
                 }
             }
-            
+
             Collections.sort(savingsList);
-        	actualStation = savingsList.get(0).getSourceStation();
+            actualStation = savingsList.get(0).getSourceStation();
         }
-    	
 
         while (true) {
             final Set<Station> processableStations = ConstructionUtils.processableStations(configuration.getOrders(), visitedSourceOrders,
@@ -73,15 +71,15 @@ public class SavingsContruction implements Construction {
             if (processableStations.isEmpty()) {
                 break;
             }
-            
-            if(lastStation != null) {
-            	final List<SavingStation> savingsList = new ArrayList<>(processableStations.size());
-            	for (Station station : processableStations) {
-            		savingsList.add(new SavingStation(lastStation, station, sourceDepot));
-            	}
-            	
-            	Collections.sort(savingsList);
-            	actualStation = savingsList.get(0).getDestinationStation();
+
+            if (lastStation != null) {
+                final List<SavingStation> savingsList = new ArrayList<>(processableStations.size());
+                for (final Station station : processableStations) {
+                    savingsList.add(new SavingStation(lastStation, station, sourceDepot));
+                }
+
+                Collections.sort(savingsList);
+                actualStation = savingsList.get(0).getDestinationStation();
             }
 
             final Set<Order> newSourceOrders = new HashSet<>(actualStation.getSourceOrders());
@@ -103,13 +101,14 @@ public class SavingsContruction implements Construction {
                     visitedSourceOrders.add(newSourceOrder);
                 }
             }
-            
+
             lastStation = actualStation;
 
         }
-        
+
         plan.addTour(tour);
-        
+
+        plan.lock();
         return plan;
     }
 
