@@ -15,7 +15,7 @@ import de.hsbremen.kss.model.Plan;
 public class VehicleFitnessTest extends AbstractFitnessTest {
 
     /** factor for the total number of used vehicles */
-    private static final double NUMBER_OF_VEHICLES = 0.1;
+    private static final double NUMBER_OF_VEHICLES = 0.01;
 
     @Override
     public Double calculateFitness(final Plan plan) {

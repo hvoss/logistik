@@ -11,7 +11,7 @@ import de.hsbremen.kss.fitness.FitnessTestBuilder;
 import de.hsbremen.kss.fitness.LengthFitnessTest;
 import de.hsbremen.kss.fitness.VehicleFitnessTest;
 import de.hsbremen.kss.util.RandomUtils;
-import de.hsbremen.kss.validate.SimpleValidator;
+import de.hsbremen.kss.validate.RightOrderValidatorImpl;
 import de.hsbremen.kss.validate.Validator;
 
 public class GeneticAlgorithmFactory {
@@ -41,13 +41,13 @@ public class GeneticAlgorithmFactory {
         final List<Crossover> crossoverMethods = new ArrayList<>();
         // crossoverMethods.add(new ControlStringCrossoverImpl(randomUtils));
 
-        final Validator validator = new SimpleValidator();
-        final PlanComparator planComparator = new PlanComparator(fitnessTest);
+        final Validator validator = new RightOrderValidatorImpl();
+        validator.enableLogging(false);
         final Selection selectionMethod = new RandomSelection(randomUtils);
         // selectionMethod = new LinearDistributionSelectionImpl(randomUtils);
 
         final AbortionCheck abortionCheck = new AbortionCheckImpl(fitnessTest, maxIterations, abortCriterion);
-        return new GeneticAlgorithmImpl(eventBus, fitnessTest, randomUtils, mutationMethods, crossoverMethods, validator, planComparator,
-                selectionMethod, abortionCheck);
+        return new GeneticAlgorithmImpl(eventBus, fitnessTest, randomUtils, mutationMethods, crossoverMethods, validator, selectionMethod,
+                abortionCheck);
     }
 }

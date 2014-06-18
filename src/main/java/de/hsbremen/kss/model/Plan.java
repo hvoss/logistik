@@ -32,6 +32,10 @@ public final class Plan {
     /** counter of the tour ids */
     private int tourIdCounter = 1;
 
+    private Boolean valid;
+
+    private Double fitness;
+
     /**
      * indicates whether the plan is locked or not. A locked plan can't be
      * modified.
@@ -187,6 +191,22 @@ public final class Plan {
         if (this.locked) {
             throw new IllegalStateException("the plan is locked.");
         }
+    }
+
+    public Boolean getValid() {
+        return this.valid;
+    }
+
+    public void setValid(final Boolean valid) {
+        this.valid = valid;
+    }
+
+    public Double getFitness() {
+        return this.fitness;
+    }
+
+    public void setFitness(final Double fitness) {
+        this.fitness = fitness;
     }
 
 }

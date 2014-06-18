@@ -10,8 +10,6 @@ import org.apache.commons.math3.util.Precision;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import ch.qos.logback.classic.Level;
-
 import com.google.common.eventbus.EventBus;
 
 import de.hsbremen.kss.configuration.Configuration;
@@ -19,7 +17,6 @@ import de.hsbremen.kss.events.NewPopulationEvent;
 import de.hsbremen.kss.fitness.FitnessTest;
 import de.hsbremen.kss.model.Plan;
 import de.hsbremen.kss.util.RandomUtils;
-import de.hsbremen.kss.validate.SimpleValidator;
 import de.hsbremen.kss.validate.Validator;
 
 /**
@@ -56,9 +53,6 @@ public final class GeneticAlgorithmImpl extends Observable implements GeneticAlg
     /** validator to check a plan */
     private final Validator validator;
 
-    /** comparator used to rank population */
-    private final PlanComparator planComparator;
-
     /** method which is used to select parents out of the population */
     private final Selection selectionMethod;
 
@@ -86,8 +80,6 @@ public final class GeneticAlgorithmImpl extends Observable implements GeneticAlg
      *            crossover.
      * @param validator
      *            validator to check a plan
-     * @param planComparator
-     *            comparator used to rank population
      * @param selectionMethod
      *            method which is used to select parents out of the population
      * @param eventBus
@@ -96,38 +88,30 @@ public final class GeneticAlgorithmImpl extends Observable implements GeneticAlg
      *            method that checks the possibility of an abort
      */
     GeneticAlgorithmImpl(final EventBus eventBus, final FitnessTest fitnessTest, final RandomUtils randomUtils, final List<Mutation> mutationMethods,
-            final List<Crossover> crossoverMethods, final Validator validator, final PlanComparator planComparator, final Selection selectionMethod,
-            final AbortionCheck abortionCheck) {
+            final List<Crossover> crossoverMethods, final Validator validator, final Selection selectionMethod, final AbortionCheck abortionCheck) {
         this.eventBus = eventBus;
         this.fitnessTest = fitnessTest;
         this.randomUtils = randomUtils;
         this.mutationMethods = mutationMethods;
         this.crossoverMethods = crossoverMethods;
         this.validator = validator;
-        this.planComparator = planComparator;
         this.selectionMethod = selectionMethod;
         this.abortionCheck = abortionCheck;
     }
 
     @Override
     public Plan startOptimize(final Configuration configuration, final Collection<Plan> startPopulation) {
-
-        final ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(SimpleValidator.class);
-
-        final Level oldLevel = logger.getLevel();
-        logger.setLevel(Level.OFF);
-
         List<Plan> population = new ArrayList<>(startPopulation);
-        Collections.sort(population, this.planComparator);
+        final PlanComparator planComparator = new PlanComparator(configuration, this.fitnessTest, this.validator);
+
+        Collections.sort(population, planComparator);
 
         int i = 0;
         while (!this.abortionCheck.checkAbort(i++, population)) {
-            population = createNextPopulation(configuration, population);
+            population = createNextPopulation(configuration, planComparator, population);
             logPopulation(i, population);
             this.eventBus.post(new NewPopulationEvent(i, this.fitnessTest, population));
         }
-
-        logger.setLevel(oldLevel);
 
         return population.get(0);
     }
@@ -137,11 +121,13 @@ public final class GeneticAlgorithmImpl extends Observable implements GeneticAlg
      * 
      * @param configuration
      *            the given configuration
+     * @param planComparator
+     *            comparator used to rank population
      * @param oldPopulation
      *            the old population
      * @return the next population
      */
-    public List<Plan> createNextPopulation(final Configuration configuration, final List<Plan> oldPopulation) {
+    private List<Plan> createNextPopulation(final Configuration configuration, final PlanComparator planComparator, final List<Plan> oldPopulation) {
         final List<Plan> nextPopulation = new ArrayList<>(oldPopulation.size() * 2);
 
         for (int i = 0; i < oldPopulation.size(); i++) {
@@ -153,7 +139,7 @@ public final class GeneticAlgorithmImpl extends Observable implements GeneticAlg
 
         nextPopulation.addAll(oldPopulation);
 
-        Collections.sort(nextPopulation, this.planComparator);
+        Collections.sort(nextPopulation, planComparator);
 
         return nextPopulation.subList(0, oldPopulation.size());
     }
@@ -182,18 +168,14 @@ public final class GeneticAlgorithmImpl extends Observable implements GeneticAlg
         if (crossoverMethod != null) {
             final Plan crossoverChild = crossoverMethod.crossover(firstParent, secondParent);
 
-            if (this.validator.validate(configuration, crossoverChild)) {
-                child = crossoverChild;
-            }
+            child = crossoverChild;
         }
 
         final Mutation mutationMethod = this.randomUtils.randomElement(this.mutationMethods);
         if (mutationMethod != null) {
             final Plan mutatedChild = mutationMethod.mutate(child);
 
-            if (this.validator.validate(configuration, mutatedChild)) {
-                child = mutatedChild;
-            }
+            child = mutatedChild;
         }
 
         return child;

@@ -31,6 +31,8 @@ import de.hsbremen.kss.gui.Map;
 import de.hsbremen.kss.model.Plan;
 import de.hsbremen.kss.simpleconstruction.RandomSimpleConstruction;
 import de.hsbremen.kss.util.RandomUtils;
+import de.hsbremen.kss.validate.SimpleValidator;
+import de.hsbremen.kss.validate.Validator;
 
 /**
  * Starts the program
@@ -96,11 +98,13 @@ public final class App {
 
         final Plan plan = geneticAlgorithm.startOptimize(circleConfig, randomPlans);
 
+        final Validator validator = new SimpleValidator();
+        validator.enableLogging(true);
+
         plan.logPlan();
+        App.LOG.info("valid:" + validator.validate(circleConfig, plan));
         plan.logTours();
     }
-
-    private final int count = 0;
 
     @Subscribe
     public void listen(final NewPopulationEvent newPopulationEvent) {

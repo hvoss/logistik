@@ -21,4 +21,6 @@ public interface Validator {
      * @return true, if the plan is valid
      */
     boolean validate(Configuration configuration, Plan plan);
+
+    void enableLogging(boolean enable);
 }
