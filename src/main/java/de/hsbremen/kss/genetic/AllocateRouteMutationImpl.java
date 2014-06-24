@@ -37,7 +37,7 @@ public abstract class AllocateRouteMutationImpl implements Mutation {
 
             final List<Order> allocatedOrder = new ArrayList<>(tourToRemove.getOrders());
 
-            while (!allocatedOrder.isEmpty()) {
+            while (allocatedOrder.size() >= 2) {
                 final Order orderToMove = this.randomUtils.removeRandomElement(allocatedOrder);
                 final List<OrderAction> tour = this.randomUtils.randomElement(copiedTours);
 

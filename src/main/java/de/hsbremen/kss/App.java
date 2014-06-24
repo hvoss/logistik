@@ -1,5 +1,6 @@
 package de.hsbremen.kss;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,9 +21,13 @@ import com.google.common.eventbus.Subscribe;
 import de.hsbremen.kss.chart.PopulationDataset;
 import de.hsbremen.kss.configuration.CircleConfigurationGenerator;
 import de.hsbremen.kss.configuration.Configuration;
+import de.hsbremen.kss.configuration.ConfigurationGenerator;
+import de.hsbremen.kss.configuration.JAXBConfigurationParserImpl;
 import de.hsbremen.kss.construction.Construction;
+import de.hsbremen.kss.construction.NearestNeighbor;
 import de.hsbremen.kss.construction.SimpleRandomConstruction;
 import de.hsbremen.kss.events.NewPopulationEvent;
+import de.hsbremen.kss.fitness.VehicleMakespanFitnessTest;
 import de.hsbremen.kss.genetic.GeneticAlgorithm;
 import de.hsbremen.kss.genetic.GeneticAlgorithmFactory;
 import de.hsbremen.kss.genetic.PopulationGeneratorImpl;
@@ -44,7 +49,7 @@ public final class App {
     /** logging interface */
     private static final Logger LOG = LoggerFactory.getLogger(App.class);
 
-    private final RandomUtils randomUtils = new RandomUtils(0);
+    private final RandomUtils randomUtils = new RandomUtils();
 
     private MainFrame mainFrame;
 
@@ -68,7 +73,48 @@ public final class App {
     public static void main(final String[] args) {
         final App app = new App();
         app.test();
-        app.start();
+        app.germany();
+    }
+
+    public void germany() {
+        final JAXBConfigurationParserImpl jaxbConfigurationParserImpl = new JAXBConfigurationParserImpl();
+        final Configuration germanyConfiguration = jaxbConfigurationParserImpl.parseConfiguration(new File("experiment.xml"));
+
+        final List<Construction> constructionMethods = new ArrayList<>();
+        final RandomSimpleConstruction randomSimpleConstruction = new RandomSimpleConstruction(this.randomUtils);
+        final NearestNeighbor nearestNeighbor = new NearestNeighbor(randomSimpleConstruction, this.randomUtils);
+        final Construction randomConstruction = new SimpleRandomConstruction(this.randomUtils);
+        constructionMethods.add(randomConstruction);
+        // constructionMethods.add(nearestNeighbor);
+
+        final ConfigurationGenerator configurationGenerator = new ConfigurationGenerator(this.randomUtils);
+
+        final Configuration generateConfiguration = configurationGenerator.generateConfiguration(germanyConfiguration.getStations(),
+                germanyConfiguration.getProducts(), germanyConfiguration.getVehicles(), 20);
+
+        final GeneticAlgorithm geneticAlgorithm = GeneticAlgorithmFactory.createGeneticAlgorithm(this.eventBus, this.randomUtils);
+
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                App.this.mainFrame = new MainFrame(Map.GERMANY, generateConfiguration);
+
+            }
+        });
+
+        final PopulationGeneratorImpl populationGenerator = new PopulationGeneratorImpl(this.randomUtils);
+        final List<Plan> randomPlans = populationGenerator.createPopulation(generateConfiguration, constructionMethods, 200);
+
+        final Plan plan = geneticAlgorithm.startOptimize(generateConfiguration, randomPlans);
+
+        final Validator validator = new SimpleValidator();
+        validator.enableLogging(true);
+
+        final VehicleMakespanFitnessTest vehicleMakespanFitnessTest = new VehicleMakespanFitnessTest();
+        plan.logPlan();
+        App.LOG.info("valid:" + validator.validate(generateConfiguration, plan));
+        App.LOG.info("fitness: " + vehicleMakespanFitnessTest.calculateFitness(plan));
+        plan.logTours();
     }
 
     public void start() {
@@ -76,7 +122,6 @@ public final class App {
         final int diameter = 300;
 
         final List<Construction> constructionMethods = new ArrayList<>();
-        final RandomSimpleConstruction randomSimpleConstruction = new RandomSimpleConstruction(this.randomUtils);
         final Construction randomConstruction = new SimpleRandomConstruction(this.randomUtils);
         constructionMethods.add(randomConstruction);
 
@@ -94,15 +139,18 @@ public final class App {
             }
         });
 
-        final List<Plan> randomPlans = populationGenerator.createPopulation(circleConfig, constructionMethods, 1000);
+        final List<Plan> randomPlans = populationGenerator.createPopulation(circleConfig, constructionMethods, 50);
 
         final Plan plan = geneticAlgorithm.startOptimize(circleConfig, randomPlans);
 
         final Validator validator = new SimpleValidator();
         validator.enableLogging(true);
 
+        final VehicleMakespanFitnessTest vehicleMakespanFitnessTest = new VehicleMakespanFitnessTest();
+
         plan.logPlan();
         App.LOG.info("valid:" + validator.validate(circleConfig, plan));
+        App.LOG.info("fitness: " + vehicleMakespanFitnessTest.calculateFitness(plan));
         plan.logTours();
     }
 

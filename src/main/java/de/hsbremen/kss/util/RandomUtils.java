@@ -30,6 +30,10 @@ public class RandomUtils {
         this.random = new Random(seed);
     }
 
+    public RandomUtils() {
+        this.random = new Random();
+    }
+
     /**
      * returns a random element of a collection.
      * 

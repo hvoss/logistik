@@ -30,4 +30,20 @@ public class NewPopulationEvent {
     public double avgFitness() {
         return this.fitnessTest.avgFitness(this.sortedPopulation);
     }
+
+    public double bestLength() {
+        return this.sortedPopulation.get(0).length();
+    }
+
+    public double worstLength() {
+        return this.sortedPopulation.get(this.sortedPopulation.size() - 1).length();
+    }
+
+    public double avgLength() {
+        double avgLength = 0.0;
+        for (final Plan plan : this.sortedPopulation) {
+            avgLength += plan.length() / this.sortedPopulation.size();
+        }
+        return avgLength;
+    }
 }

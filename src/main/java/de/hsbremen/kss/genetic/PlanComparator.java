@@ -29,9 +29,7 @@ public final class PlanComparator implements Comparator<Plan> {
         final boolean firstValid = this.validator.validate(this.configuration, firstPlan);
         final boolean secondValid = this.validator.validate(this.configuration, secondPlan);
 
-        if (!firstValid && !secondValid) {
-            return 0;
-        } else if (firstValid && !secondValid) {
+        if (firstValid && !secondValid) {
             return -1;
         } else if (!firstValid && secondValid) {
             return 1;

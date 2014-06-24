@@ -9,7 +9,9 @@ import de.hsbremen.kss.fitness.CapacityFitnessTest;
 import de.hsbremen.kss.fitness.FitnessTest;
 import de.hsbremen.kss.fitness.FitnessTestBuilder;
 import de.hsbremen.kss.fitness.LengthFitnessTest;
+import de.hsbremen.kss.fitness.LoadingFitnessTest;
 import de.hsbremen.kss.fitness.VehicleFitnessTest;
+import de.hsbremen.kss.fitness.VehicleMakespanFitnessTest;
 import de.hsbremen.kss.util.RandomUtils;
 import de.hsbremen.kss.validate.RightOrderValidatorImpl;
 import de.hsbremen.kss.validate.Validator;
@@ -17,11 +19,11 @@ import de.hsbremen.kss.validate.Validator;
 public class GeneticAlgorithmFactory {
 
     public static GeneticAlgorithm createGeneticAlgorithm(final EventBus eventBus, final RandomUtils randomUtils) {
-        final int maxIterations = 1000;
-        final double abortCriterion = 0.001;
+        final int maxIterations = 5000;
+        final double abortCriterion = 0.01;
 
         final FitnessTest fitnessTest = new FitnessTestBuilder().addFitnessTest(new LengthFitnessTest()).addFitnessTest(new VehicleFitnessTest())
-                .addFitnessTest(new CapacityFitnessTest());
+                .addFitnessTest(new CapacityFitnessTest()).addFitnessTest(new VehicleMakespanFitnessTest()).addFitnessTest(new LoadingFitnessTest());
 
         final MutationBuilder mutationBuilder = new MutationBuilder(randomUtils);
 
@@ -34,12 +36,12 @@ public class GeneticAlgorithmFactory {
             .allocateRandomRouteMutation(2)
             .allocateShortestRouteMutation(2)
             .combineTwoToursMutationImpl(1)
-            .nullMutation(10)
+//            .nullMutation(10)
             .build();
         //@formatter:on
 
         final List<Crossover> crossoverMethods = new ArrayList<>();
-        // crossoverMethods.add(new ControlStringCrossoverImpl(randomUtils));
+        crossoverMethods.add(new ControlStringCrossoverImpl(randomUtils));
 
         final Validator validator = new RightOrderValidatorImpl();
         validator.enableLogging(false);

@@ -75,7 +75,13 @@ public final class Plan {
     public void addTour(final Tour tour) {
         checkLocked();
         Validate.notNull(tour, "tour is null");
+
+        if (tour.getOrderActions().isEmpty()) {
+            throw new IllegalStateException();
+        }
+
         this.tours.add(tour);
+
     }
 
     /**

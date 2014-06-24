@@ -21,41 +21,46 @@ public class ConfigurationGenerator {
     public Configuration generateConfiguration(final Collection<Station> stations, final Collection<Product> products,
             final Collection<Vehicle> vehicles, final int numberOfOrder) {
         final Set<Order> orders = new HashSet<>();
-        final Set<Station> stationCopy = Station.copy(stations);
 
-        final Station sourceStation = this.randomUtils.randomElement(stationCopy);
-        
         for (int i = 0; i < numberOfOrder; i++) {
-            final Station destinationStation = this.randomUtils.randomElement(stationCopy, sourceStation);
+            final Station sourceStation = this.randomUtils.randomElement(stations);
+            final Station destinationStation = this.randomUtils.randomElement(stations, sourceStation);
             final Product product = this.randomUtils.randomElement(products);
             final String name = sourceStation.getName() + " => " + destinationStation.getName();
 
-            final TimeWindow timeWindow = TimeWindow.INFINITY_TIMEWINDOW;
+            final double startStart = this.randomUtils.nextInt(8, 18);
+            final double endStart = this.randomUtils.nextInt(19, 23);
+            final double startEnd = this.randomUtils.nextInt(31, 35);
+            final double endEnd = this.randomUtils.nextInt(36, 40);
+
+            final TimeWindow startTimeWindow = new TimeWindow(startStart, endStart);
+            final TimeWindow endTimeWindow = new TimeWindow(startEnd, endEnd);
+
             final Double serviceTime = 0.25;
 
-            final OrderStation source = new OrderStation(sourceStation, timeWindow, serviceTime);
-            final OrderStation destination = new OrderStation(destinationStation, timeWindow, serviceTime);
+            final OrderStation source = new OrderStation(sourceStation, startTimeWindow, serviceTime);
+            final OrderStation destination = new OrderStation(destinationStation, endTimeWindow, serviceTime);
 
             final Integer amount = 1;
 
             final Order order = new Order(i, name, source, destination, product, amount);
             orders.add(order);
         }
-        return new Configuration(orders, stationCopy, new HashSet<>(vehicles), new HashSet<>(products), new HashSet<ComplexOrder>());
+        return new Configuration(orders, new HashSet<>(stations), new HashSet<>(vehicles), new HashSet<>(products), new HashSet<ComplexOrder>());
     }
-    
-    public List<Station> generateStations(int minX, int maxX, int minY, int maxY, int num) {
-    	List<Station> stations = new ArrayList<>(num);
-    	
-    	for (int i = 1; i<= num; i++) {
-    		int x = this.randomUtils.nextInt(minX, maxX +1);
-    		int y = this.randomUtils.nextInt(minY, maxY +1);
-    		
-    		Vector2D coordinates = new Vector2D(x, y);
-    		Station station = new Station(i, "Station #"+ i, coordinates);
-    		stations.add(station);
-    	}
-    	
-    	return stations;
+
+    public List<Station> generateStations(final int minX, final int maxX, final int minY, final int maxY, final int num) {
+        final List<Station> stations = new ArrayList<>(num);
+
+        for (int i = 1; i <= num; i++) {
+            final int x = this.randomUtils.nextInt(minX, maxX + 1);
+            final int y = this.randomUtils.nextInt(minY, maxY + 1);
+
+            final Vector2D coordinates = new Vector2D(x, y);
+            final Station station = new Station(i, "Station #" + i, coordinates);
+            stations.add(station);
+        }
+
+        return stations;
     }
 }

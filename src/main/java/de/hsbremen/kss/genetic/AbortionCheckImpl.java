@@ -47,8 +47,11 @@ public final class AbortionCheckImpl implements AbortionCheck {
     private boolean checkAverageEqualBest(final List<Plan> population) {
         final double bestFiness = this.fitnessTest.calculateFitness(population.get(0));
         final double avgFiness = this.fitnessTest.avgFitness(population);
-        final double factor = 1 - bestFiness / avgFiness;
-        return factor < this.abortCriterion;
+        if (avgFiness > 0) {
+            final double factor = 1 - bestFiness / avgFiness;
+            return factor < this.abortCriterion;
+        }
+        return true;
     }
 
     @Override

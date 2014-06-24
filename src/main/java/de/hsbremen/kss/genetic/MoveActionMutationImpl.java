@@ -25,6 +25,11 @@ public class MoveActionMutationImpl implements Mutation {
         final Tour tourToMutate = this.randomUtils.removeRandomElement(tours);
 
         final List<OrderAction> actions = tourToMutate.getOrderActions();
+
+        if (actions.size() <= 2) {
+            return plan;
+        }
+
         final OrderAction actionToMove = this.randomUtils.removeRandomElement(actions);
         this.randomUtils.insertAtRandomPosition(actions, actionToMove);
 

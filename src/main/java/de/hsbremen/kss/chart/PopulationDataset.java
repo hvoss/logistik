@@ -25,10 +25,16 @@ public class PopulationDataset extends XYSeriesCollection {
     }
 
     @Subscribe
-    public void listen(final NewPopulationEvent newPopulationEvent) {
+    public void listenFitness(final NewPopulationEvent newPopulationEvent) {
         this.bestPlan.add(newPopulationEvent.iteration, newPopulationEvent.bestFitness());
         this.worstPlan.add(newPopulationEvent.iteration, newPopulationEvent.worstFitness());
         this.avgPlan.add(newPopulationEvent.iteration, newPopulationEvent.avgFitness());
+    }
+
+    public void listenLength(final NewPopulationEvent newPopulationEvent) {
+        this.bestPlan.add(newPopulationEvent.iteration, newPopulationEvent.bestLength());
+        this.worstPlan.add(newPopulationEvent.iteration, newPopulationEvent.worstLength());
+        this.avgPlan.add(newPopulationEvent.iteration, newPopulationEvent.avgLength());
     }
 
 }

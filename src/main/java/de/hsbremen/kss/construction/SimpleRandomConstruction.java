@@ -31,31 +31,32 @@ public class SimpleRandomConstruction implements Construction {
 
         final Plan plan = new Plan(SimpleRandomConstruction.class);
 
-        while (!vehicles.isEmpty()) {
-            final Vehicle vehicle = this.randomUtils.removeRandomElement(vehicles);
-            final Tour tour = plan.newTour(vehicle);
-
+        while (!vehicles.isEmpty() && !orders.isEmpty()) {
             final ArrayList<OrderStation> stations = new ArrayList<>();
             for (int i = 0; i < ordersVehciles && !orders.isEmpty(); i++) {
                 final Order order = this.randomUtils.removeRandomElement(orders);
                 stations.add(order.getSource());
             }
 
-            tour.leafSourceDepot();
-            while (!stations.isEmpty()) {
-                final OrderStation station = this.randomUtils.removeRandomElement(stations);
-                final Order order = station.getOrder();
-                if (station.isSource()) {
-                    tour.addSourceOrder(order);
-                    stations.add(order.getDestination());
-                } else if (station.isDestination()) {
-                    tour.addDestinationOrder(order);
-                } else {
-                    throw new IllegalStateException();
+            if (!stations.isEmpty()) {
+                final Vehicle vehicle = this.randomUtils.removeRandomElement(vehicles);
+                final Tour tour = plan.newTour(vehicle);
+                tour.leafSourceDepot();
+                while (!stations.isEmpty()) {
+                    final OrderStation station = this.randomUtils.removeRandomElement(stations);
+                    final Order order = station.getOrder();
+                    if (station.isSource()) {
+                        tour.addSourceOrder(order);
+                        stations.add(order.getDestination());
+                    } else if (station.isDestination()) {
+                        tour.addDestinationOrder(order);
+                    } else {
+                        throw new IllegalStateException();
+                    }
                 }
+                tour.gotoDestinationDepot();
+                plan.addTour(tour);
             }
-            tour.gotoDestinationDepot();
-            plan.addTour(tour);
         }
 
         plan.lock();
