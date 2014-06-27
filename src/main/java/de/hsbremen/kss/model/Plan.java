@@ -80,7 +80,7 @@ public final class Plan {
             throw new IllegalStateException();
         }
 
-        this.tours.add(tour);
+        this.tours.add(new Tour(tour, this.tourIdCounter++));
 
     }
 
@@ -154,18 +154,6 @@ public final class Plan {
             }
         }
         return null;
-    }
-
-    /**
-     * creates a new tour.
-     * 
-     * @param vehicle
-     *            vehicle which should be used.
-     * @return the new tour.
-     */
-    public Tour newTour(final Vehicle vehicle) {
-        checkLocked();
-        return new Tour(vehicle, this.tourIdCounter++);
     }
 
     /**

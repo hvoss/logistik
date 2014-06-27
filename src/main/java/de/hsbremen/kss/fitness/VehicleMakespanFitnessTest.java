@@ -8,7 +8,7 @@ import de.hsbremen.kss.model.Tour;
 public class VehicleMakespanFitnessTest extends AbstractFitnessTest {
 
     /** factor for the total number of overloads */
-    private static final double NUMBER_OF_OVERLOADS = 1.2d;
+    private static final double NUMBER_OF_OVERLOADS = 5d;
 
     @Override
     public Double calculateFitness(final Plan plan) {

@@ -21,11 +21,11 @@ public class FitnessTestTest {
 	@Before
 	public void setup() {
 		this.firstPlan = new Plan(SweepConstruction.class);
-		final Tour firstTour = this.firstPlan.newTour(SampleVehicle.CAPACITY_LKW);
-		
+		final Tour firstTour = new Tour(SampleVehicle.CAPACITY_LKW);
+		 
 		this.secondPlan = new Plan(SweepConstruction.class);
-		final Tour secondTour = this.secondPlan.newTour(SampleVehicle.CAPACITY_LKW);
-		final Tour thirdTour = this.secondPlan.newTour(SampleVehicle.CAPACITY_LKW);
+		final Tour secondTour = new Tour(SampleVehicle.CAPACITY_LKW);
+		final Tour thirdTour = new Tour(SampleVehicle.CAPACITY_LKW);
 		
 		firstTour.leafSourceDepot();
 		firstTour.addSourceOrder(SampleOrders.BERLIN_ELLENBOGEN);

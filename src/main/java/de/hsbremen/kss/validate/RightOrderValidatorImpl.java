@@ -66,6 +66,11 @@ public class RightOrderValidatorImpl implements Validator {
                             log("Tour #" + tour.getId() + ": " + orderLoadAction + " performed multiple times");
                             allRight = false;
                         }
+                        
+                        if (!orderLoadAction.getOrder().getProduct().equals(tour.getVehicle().getProduct())) {
+                        	log("Tour #" + tour.getId() + ": " + orderLoadAction + " wrong Product!");
+                        	allRight = false;
+                        }
 
                     }
 

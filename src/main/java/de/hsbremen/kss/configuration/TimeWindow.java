@@ -19,7 +19,7 @@ public final class TimeWindow {
     private final Double end;
 
     /** infinity time window */
-    static final TimeWindow INFINITY_TIMEWINDOW = new TimeWindow(Double.MIN_VALUE, Double.MAX_VALUE);
+    public static final TimeWindow INFINITY_TIMEWINDOW = new TimeWindow(Double.MIN_VALUE, Double.MAX_VALUE);
 
     /**
      * ctor.

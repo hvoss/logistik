@@ -46,7 +46,7 @@ public abstract class AllocateRouteMutationImpl implements Mutation {
             }
 
             for (int i = 0; i < tours.size(); i++) {
-                final Tour newTour = newPlan.newTour(tours.get(i).getVehicle());
+                final Tour newTour = new Tour(tours.get(i).getVehicle());
                 newTour.leafSourceDepot();
                 newTour.addOtherActions(copiedTours.get(i));
                 newTour.gotoDestinationDepot();

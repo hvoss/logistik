@@ -42,7 +42,7 @@ public final class ControlStringCrossoverImpl implements Crossover {
             secondCrossoverPartner = parent2Tours;
         }
         for (int i = 0; i < parentSize; i++) {
-            newTour = newPlan.newTour(firstCrossoverPartner.get(i).getVehicle());
+            newTour = new Tour(firstCrossoverPartner.get(i).getVehicle());
             newTour.leafSourceDepot();
             ordersToIgnore.addAll(newTour.getOrders());
             crossover(newTour, firstCrossoverPartner.get(i), secondCrossoverPartner.get(i), ordersToIgnore);

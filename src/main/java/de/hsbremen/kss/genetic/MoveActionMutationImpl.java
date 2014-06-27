@@ -33,7 +33,7 @@ public class MoveActionMutationImpl implements Mutation {
         final OrderAction actionToMove = this.randomUtils.removeRandomElement(actions);
         this.randomUtils.insertAtRandomPosition(actions, actionToMove);
 
-        final Tour newTour = newPlan.newTour(tourToMutate.getVehicle());
+        final Tour newTour = new Tour(tourToMutate.getVehicle());
         newTour.leafSourceDepot();
         newTour.addOtherActions(actions);
         newTour.gotoDestinationDepot();

@@ -37,7 +37,7 @@ public final class Tour {
     private Integer actualLoadingAmount = 0;
 
     /** identifier of the tour */
-    private final int id;
+    private int id;
 
     /** indicates whether the tour is locked or not */
     private boolean locked = true;
@@ -50,11 +50,23 @@ public final class Tour {
      * @param id
      *            identifier of the tour
      */
-    Tour(final Vehicle vehicle, final int id) {
+    public Tour(final Vehicle vehicle) {
         this.vehicle = vehicle;
-        this.id = id;
 
         this.actions = new LinkedList<>();
+
+    }
+    
+
+    Tour(final Tour tour, int id) {
+    	if (!tour.locked) {
+    		throw new IllegalArgumentException();
+    	}
+    	
+        this.vehicle = tour.vehicle;
+        this.locked = tour.locked;
+        this.actions = tour.actions;
+        this.id= id;
 
     }
 
@@ -445,6 +457,8 @@ public final class Tour {
             addSourceOrder(((OrderLoadAction) action).getOrder());
         } else if (action instanceof OrderUnloadAction) {
             addDestinationOrder(((OrderUnloadAction) action).getOrder());
+        } else if (action instanceof WaitingAction) {
+                
         } else {
             throw new IllegalArgumentException();
         }
@@ -452,7 +466,7 @@ public final class Tour {
 
     public void addOtherActions(final Iterable<? extends Action> actions) {
         for (final Action action : actions) {
-            addAction(action);
+        	addOtherAction(action);
         }
     }
 

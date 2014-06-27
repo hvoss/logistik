@@ -23,19 +23,23 @@ public class ConfigurationGenerator {
         final Set<Order> orders = new HashSet<>();
 
         for (int i = 0; i < numberOfOrder; i++) {
-            final Station sourceStation = this.randomUtils.randomElement(stations);
+        	final Station sourceStation = this.randomUtils.randomElement(stations);
             final Station destinationStation = this.randomUtils.randomElement(stations, sourceStation);
             final Product product = this.randomUtils.randomElement(products);
             final String name = sourceStation.getName() + " => " + destinationStation.getName();
 
-            final double startStart = this.randomUtils.nextInt(8, 18);
-            final double endStart = this.randomUtils.nextInt(19, 23);
-            final double startEnd = this.randomUtils.nextInt(31, 35);
+            final double startStart = this.randomUtils.nextInt(8, 12);
+            final double endStart = this.randomUtils.nextInt(14, 20);
+            
+            final double startEnd = this.randomUtils.nextInt(8, 12);
             final double endEnd = this.randomUtils.nextInt(36, 40);
 
-            final TimeWindow startTimeWindow = new TimeWindow(startStart, endStart);
-            final TimeWindow endTimeWindow = new TimeWindow(startEnd, endEnd);
+            TimeWindow startTimeWindow = new TimeWindow(startStart, endStart);
+            TimeWindow endTimeWindow = new TimeWindow(startEnd, endEnd);
 
+            //startTimeWindow = TimeWindow.INFINITY_TIMEWINDOW;
+            //endTimeWindow = TimeWindow.INFINITY_TIMEWINDOW;
+            
             final Double serviceTime = 0.25;
 
             final OrderStation source = new OrderStation(sourceStation, startTimeWindow, serviceTime);

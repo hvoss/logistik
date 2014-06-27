@@ -37,7 +37,7 @@ public class MoveSubrouteMutationTest {
     @Test
     public void test() {
         final Plan plan = new Plan(SweepConstruction.class);
-        final Tour tour = plan.newTour(SampleVehicle.LKW);
+        final Tour tour = new Tour(SampleVehicle.LKW);
 
         tour.leafSourceDepot();
         tour.addSourceOrder(SampleOrders.BERLIN_ELLENBOGEN);

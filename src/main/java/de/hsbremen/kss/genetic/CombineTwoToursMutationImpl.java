@@ -29,7 +29,7 @@ public final class CombineTwoToursMutationImpl implements Mutation {
 
             newPlan.addTours(tours);
 
-            final Tour newTour = newPlan.newTour(firstTour.getVehicle());
+            final Tour newTour = new Tour(firstTour.getVehicle());
 
             newTour.leafSourceDepot();
             newTour.addOtherActions(firstTour.getOrderActions());

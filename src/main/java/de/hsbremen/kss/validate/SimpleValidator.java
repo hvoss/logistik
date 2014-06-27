@@ -81,9 +81,7 @@ public final class SimpleValidator implements Validator {
                     final Station station = action.getStation();
 
                     time += vehicle.calculateTavelingTime(lastStation, station);
-                    if (time < action.timewindow().getStart()) {
-                        time = action.timewindow().getStart();
-                    }
+
                     if (!action.timewindow().between(time)) {
                         log("Tour #" + tour.getId() + ": action " + action + " not performed in time window: " + action.timewindow() + " ; time: "
                                 + TimeUtils.convertToClockString(time));

@@ -48,7 +48,7 @@ public class SwapOrderMutationImpl implements Mutation {
     }
 
     private void createTour(final Tour oldTour, final Order firstOrder, final Order secondOrder, final Plan plan) {
-        final Tour newTour = plan.newTour(oldTour.getVehicle());
+        final Tour newTour = new Tour(oldTour.getVehicle());
         newTour.leafSourceDepot();
         for (final OrderAction action : oldTour.getOrderActions()) {
             if (action instanceof OrderLoadAction) {

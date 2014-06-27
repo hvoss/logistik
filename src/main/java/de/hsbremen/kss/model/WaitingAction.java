@@ -4,6 +4,7 @@ import org.apache.commons.lang3.Validate;
 
 import de.hsbremen.kss.configuration.Station;
 import de.hsbremen.kss.configuration.TimeWindow;
+import de.hsbremen.kss.configuration.Vehicle;
 import de.hsbremen.kss.util.TimeUtils;
 
 public final class WaitingAction implements Action {
@@ -41,7 +42,7 @@ public final class WaitingAction implements Action {
 
     @Override
     public TimeWindow timewindow() {
-        return this.timewindow;
+        return TimeWindow.INFINITY_TIMEWINDOW;
     }
 
     @Override

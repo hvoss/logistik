@@ -181,20 +181,52 @@
 			<Name>VW Bus</Name>
 			<SourceDepotId>13</SourceDepotId>
 			<DestinationDepotId>13</DestinationDepotId>
-			<Velocity>80</Velocity>
-			<Number>9</Number>
+			<Velocity>100</Velocity>
+			<Number>10</Number>
 			<Timespan>
 				<Start>8</Start>
-				<End>46</End>
+				<End>9999999999</End>
 			</Timespan>
 			<ProductId>1</ProductId>
 			<Capacity>1000</Capacity>
+		</Vehicle>
+	<Vehicle id="2">
+			<Name>LKW</Name>
+			<SourceDepotId>13</SourceDepotId>
+			<DestinationDepotId>13</DestinationDepotId>
+			<Velocity>80</Velocity>
+			<Number>5</Number>
+			<Timespan>
+				<Start>8</Start>
+				<End>9999999999</End>
+			</Timespan>
+			<ProductId>2</ProductId>
+			<Capacity>100000</Capacity>
+		</Vehicle>
+			<Vehicle id="3">
+			<Name>Twix-LKW</Name>
+			<SourceDepotId>13</SourceDepotId>
+			<DestinationDepotId>13</DestinationDepotId>
+			<Velocity>80</Velocity>
+			<Number>5</Number>
+			<Timespan>
+				<Start>8</Start>
+				<End>9999999999</End>
+			</Timespan>
+			<ProductId>3</ProductId>
+			<Capacity>100000</Capacity>
 		</Vehicle>
 	</Vehicles>
 
 	<Products>
 		<Product id="1">
 			<Name>Snickers</Name>
+		</Product>
+		<Product id="2">
+			<Name>Mars</Name>
+		</Product>
+				<Product id="3">
+			<Name>Twix</Name>
 		</Product>
 	</Products>
 </Configuration>

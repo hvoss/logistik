@@ -49,7 +49,7 @@ public final class App {
     /** logging interface */
     private static final Logger LOG = LoggerFactory.getLogger(App.class);
 
-    private final RandomUtils randomUtils = new RandomUtils();
+    private final RandomUtils randomUtils = new RandomUtils(0);
 
     private MainFrame mainFrame;
 
@@ -139,7 +139,7 @@ public final class App {
             }
         });
 
-        final List<Plan> randomPlans = populationGenerator.createPopulation(circleConfig, constructionMethods, 50);
+        final List<Plan> randomPlans = populationGenerator.createPopulation(circleConfig, constructionMethods, 5000);
 
         final Plan plan = geneticAlgorithm.startOptimize(circleConfig, randomPlans);
 

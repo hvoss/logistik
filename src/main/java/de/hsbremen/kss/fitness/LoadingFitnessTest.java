@@ -10,7 +10,7 @@ import de.hsbremen.kss.model.Tour;
 public class LoadingFitnessTest extends AbstractFitnessTest {
 
     /** factor for the total number of overloads */
-    private static final double NUMBER_OF_OVERLOADS = 1.6;
+    private static final double NUMBER_OF_OVERLOADS = 1.2;
 
     @Override
     public Double calculateFitness(final Plan plan) {

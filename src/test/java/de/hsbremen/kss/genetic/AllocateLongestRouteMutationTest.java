@@ -24,9 +24,9 @@ public class AllocateLongestRouteMutationTest {
     @Test
     public void test() {
         final Plan plan = new Plan(SweepConstruction.class);
-        final Tour tour1 = plan.newTour(SampleVehicle.LKW);
-        final Tour tour2 = plan.newTour(SampleVehicle.LKW);
-        final Tour tour3 = plan.newTour(SampleVehicle.LKW);
+        final Tour tour1 = new Tour(SampleVehicle.LKW);
+        final Tour tour2 = new Tour(SampleVehicle.LKW);
+        final Tour tour3 = new Tour(SampleVehicle.LKW);
 
         tour1.leafSourceDepot();
         tour1.addSourceOrder(SampleOrders.BERLIN_ELLENBOGEN);

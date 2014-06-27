@@ -38,7 +38,7 @@ public class MoveSubrouteMutation implements Mutation {
         final List<OrderAction> subRoute = this.randomUtils.removeRandomSublist(orderActions);
         this.randomUtils.insertAtRandomPosition(orderActions, subRoute);
 
-        final Tour mutatedTour = mutatedPlan.newTour(tourToMutate.getVehicle());
+        final Tour mutatedTour = new Tour(tourToMutate.getVehicle());
         mutatedTour.leafSourceDepot();
         mutatedTour.addOtherActions(orderActions);
         mutatedTour.gotoDestinationDepot();

@@ -52,7 +52,7 @@ public abstract class BaseConstruction implements Construction {
 
         while (!availableOrders.isEmpty()) {
             final Vehicle vehicle = nextVehicle(vehicles);
-            final Tour tour = plan.newTour(vehicle);
+            final Tour tour =  new Tour(vehicle);
             vehicles.remove(vehicle);
             tour.leafSourceDepot();
 
@@ -77,7 +77,7 @@ public abstract class BaseConstruction implements Construction {
                 }
 
                 // Load new orders
-                final Set<Order> availableSourceOrders = Order.filterOrdersBySourceStation(availableOrders, rElement);
+                final Set<Order> availableSourceOrders = Order.filterOrdersBySourceStation(vehicle,availableOrders, rElement);
                 final HashSet<Order> loadableOrders = new HashSet<>();
 
                 for (final Order order : availableSourceOrders) {

@@ -264,6 +264,7 @@ public final class Order {
 
     /**
      * filters the given orders by its source station.
+     * @param vehicle 
      * 
      * @param orderToFilter
      *            orders that should be filtered.
@@ -271,11 +272,11 @@ public final class Order {
      *            station to search for.
      * @return the filtered stations
      */
-    public static Set<Order> filterOrdersBySourceStation(final Iterable<Order> orderToFilter, final Station station) {
+    public static Set<Order> filterOrdersBySourceStation(Vehicle vehicle, final Iterable<Order> orderToFilter, final Station station) {
         final Set<Order> filterdOrder = new HashSet<>();
 
         for (final Order order : orderToFilter) {
-            if (order.getSourceStation().equals(station)) {
+            if (order.getSourceStation().equals(station) && vehicle.getProduct().equals(order.getProduct())) {
                 filterdOrder.add(order);
             }
         }
@@ -283,6 +284,29 @@ public final class Order {
         return filterdOrder;
     }
 
+    /**
+     * filters the given orders by its source station.
+     * @param vehicle 
+     * 
+     * @param orderToFilter
+     *            orders that should be filtered.
+     * @param station
+     *            station to search for.
+     * @return the filtered stations
+     */
+    public static Set<Order> filterOrdersByProductType(final Iterable<Order> orderToFilter, final Product product) {
+        final Set<Order> filterdOrder = new HashSet<>();
+
+        for (final Order order : orderToFilter) {
+            if (order.getProduct().equals(product)) {
+                filterdOrder.add(order);
+            }
+        }
+
+        return filterdOrder;
+    }
+
+    
     /**
      * calculates the complete service time.
      * 

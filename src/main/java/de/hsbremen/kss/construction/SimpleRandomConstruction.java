@@ -2,12 +2,14 @@ package de.hsbremen.kss.construction;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.math3.util.FastMath;
 
 import de.hsbremen.kss.configuration.Configuration;
 import de.hsbremen.kss.configuration.Order;
 import de.hsbremen.kss.configuration.OrderStation;
+import de.hsbremen.kss.configuration.Product;
 import de.hsbremen.kss.configuration.Vehicle;
 import de.hsbremen.kss.model.Plan;
 import de.hsbremen.kss.model.Tour;
@@ -27,20 +29,26 @@ public class SimpleRandomConstruction implements Construction {
         final List<Vehicle> vehicles = new ArrayList<>(configuration.getVehicles());
         final List<Order> orders = new ArrayList<>(configuration.getOrders());
 
-        final int ordersVehciles = (int) FastMath.ceil((double) orders.size() / (double) vehicles.size());
-
         final Plan plan = new Plan(SimpleRandomConstruction.class);
 
-        while (!vehicles.isEmpty() && !orders.isEmpty()) {
+        
+        for (Product product : configuration.getProducts()) {
+        	List<Order> filtersOrders = new ArrayList<>(Order.filterOrdersByProductType(orders, product));
+        	List<Vehicle> filtersVehicles = new ArrayList<>(Vehicle.filterByProduct(vehicles, product));
+			
+        final int ordersVehciles = (int) FastMath.ceil((double) filtersOrders.size() / (double) filtersVehicles.size());
+        
+        while (!filtersVehicles.isEmpty() && !filtersOrders.isEmpty()) {
             final ArrayList<OrderStation> stations = new ArrayList<>();
-            for (int i = 0; i < ordersVehciles && !orders.isEmpty(); i++) {
-                final Order order = this.randomUtils.removeRandomElement(orders);
+            final Vehicle vehicle = this.randomUtils.removeRandomElement(filtersVehicles);
+            
+            for (int i = 0; i < ordersVehciles && !filtersOrders.isEmpty(); i++) {
+                final Order order = this.randomUtils.removeRandomElement(filtersOrders);
                 stations.add(order.getSource());
             }
 
             if (!stations.isEmpty()) {
-                final Vehicle vehicle = this.randomUtils.removeRandomElement(vehicles);
-                final Tour tour = plan.newTour(vehicle);
+                final Tour tour =  new Tour(vehicle);
                 tour.leafSourceDepot();
                 while (!stations.isEmpty()) {
                     final OrderStation station = this.randomUtils.removeRandomElement(stations);
@@ -58,7 +66,7 @@ public class SimpleRandomConstruction implements Construction {
                 plan.addTour(tour);
             }
         }
-
+    }
         plan.lock();
         return plan;
     }
