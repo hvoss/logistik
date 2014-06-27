@@ -7,8 +7,12 @@ import de.hsbremen.kss.model.Tour;
 
 public class VehicleMakespanFitnessTest extends AbstractFitnessTest {
 
-    /** factor for the total number of overloads */
-    private static final double NUMBER_OF_OVERLOADS = 5d;
+    /** factor for the total difference of vehicle time */
+    private double diffOfVehicle;
+    
+    public VehicleMakespanFitnessTest(double diffOfVehicle) {
+    	this.diffOfVehicle = diffOfVehicle;
+    }
 
     @Override
     public Double calculateFitness(final Plan plan) {
@@ -19,7 +23,7 @@ public class VehicleMakespanFitnessTest extends AbstractFitnessTest {
         for (final Tour tour : plan.getTours()) {
             final double diff = tour.actualDuration() - tour.getVehicle().getTimeWindow().timespan();
             if (diff > 0) {
-                fitness += length * FastMath.pow(diff, VehicleMakespanFitnessTest.NUMBER_OF_OVERLOADS);
+                fitness += length * FastMath.pow(diff, this.diffOfVehicle);
             }
         }
 

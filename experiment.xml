@@ -190,7 +190,7 @@
 			<ProductId>1</ProductId>
 			<Capacity>1000</Capacity>
 		</Vehicle>
-	<Vehicle id="2">
+		<Vehicle id="2">
 			<Name>LKW</Name>
 			<SourceDepotId>13</SourceDepotId>
 			<DestinationDepotId>13</DestinationDepotId>

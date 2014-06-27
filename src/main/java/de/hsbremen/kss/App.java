@@ -90,7 +90,7 @@ public final class App {
         final ConfigurationGenerator configurationGenerator = new ConfigurationGenerator(this.randomUtils);
 
         final Configuration generateConfiguration = configurationGenerator.generateConfiguration(germanyConfiguration.getStations(),
-                germanyConfiguration.getProducts(), germanyConfiguration.getVehicles(), 20);
+                germanyConfiguration.getProducts(), germanyConfiguration.getVehicles(), 30);
 
         final GeneticAlgorithm geneticAlgorithm = GeneticAlgorithmFactory.createGeneticAlgorithm(this.eventBus, this.randomUtils);
 
@@ -110,7 +110,7 @@ public final class App {
         final Validator validator = new SimpleValidator();
         validator.enableLogging(true);
 
-        final VehicleMakespanFitnessTest vehicleMakespanFitnessTest = new VehicleMakespanFitnessTest();
+        final VehicleMakespanFitnessTest vehicleMakespanFitnessTest = new VehicleMakespanFitnessTest(5);
         plan.logPlan();
         App.LOG.info("valid:" + validator.validate(generateConfiguration, plan));
         App.LOG.info("fitness: " + vehicleMakespanFitnessTest.calculateFitness(plan));
@@ -146,7 +146,7 @@ public final class App {
         final Validator validator = new SimpleValidator();
         validator.enableLogging(true);
 
-        final VehicleMakespanFitnessTest vehicleMakespanFitnessTest = new VehicleMakespanFitnessTest();
+        final VehicleMakespanFitnessTest vehicleMakespanFitnessTest = new VehicleMakespanFitnessTest(5);
 
         plan.logPlan();
         App.LOG.info("valid:" + validator.validate(circleConfig, plan));

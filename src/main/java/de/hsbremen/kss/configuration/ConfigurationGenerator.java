@@ -37,8 +37,8 @@ public class ConfigurationGenerator {
             TimeWindow startTimeWindow = new TimeWindow(startStart, endStart);
             TimeWindow endTimeWindow = new TimeWindow(startEnd, endEnd);
 
-            //startTimeWindow = TimeWindow.INFINITY_TIMEWINDOW;
-            //endTimeWindow = TimeWindow.INFINITY_TIMEWINDOW;
+            startTimeWindow = TimeWindow.INFINITY_TIMEWINDOW;
+            endTimeWindow = TimeWindow.INFINITY_TIMEWINDOW;
             
             final Double serviceTime = 0.25;
 

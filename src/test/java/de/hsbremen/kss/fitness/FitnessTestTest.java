@@ -73,7 +73,7 @@ public class FitnessTestTest {
 		
 		FitnessTestBuilder fitnessTestBuilder = new FitnessTestBuilder();
 		fitnessTestBuilder.addFitnessTest(new LengthFitnessTest())
-			.addFitnessTest(new VehicleFitnessTest());
+			.addFitnessTest(new VehicleFitnessTest(0.01));
 		
 		double firstFitnessTestBuilderValue = fitnessTestBuilder.calculateFitness(this.firstPlan);
 		System.out.println("Fitness Value (Length + Vehicle) (first Plan): " + firstFitnessTestBuilderValue);
@@ -86,7 +86,7 @@ public class FitnessTestTest {
 	public void testCapacity() {
 		FitnessTestBuilder fitnessTestBuilder = new FitnessTestBuilder();
 		fitnessTestBuilder.addFitnessTest(new LengthFitnessTest())
-			.addFitnessTest(new CapacityFitnessTest());
+			.addFitnessTest(new CapacityFitnessTest(10));
 		
 		double firstFitnessTestBuilderValue = fitnessTestBuilder.calculateFitness(this.firstPlan);
 		System.out.println("Fitness Value (Length + Capacity) (first Plan): " + firstFitnessTestBuilderValue);

@@ -15,14 +15,18 @@ import de.hsbremen.kss.model.Plan;
 public class VehicleFitnessTest extends AbstractFitnessTest {
 
     /** factor for the total number of used vehicles */
-    private static final double NUMBER_OF_VEHICLES = 0.01;
+    private double numberOfVehicles;
+    
+    public VehicleFitnessTest(double numberOfVehicles) {
+    	this.numberOfVehicles = numberOfVehicles;
+    }
 
     @Override
     public Double calculateFitness(final Plan plan) {
 
         final double length = plan.length();
         final int vehicles = plan.getTours().size();
-        final double totalFitness = length * VehicleFitnessTest.NUMBER_OF_VEHICLES * vehicles;
+        final double totalFitness = length * this.numberOfVehicles * vehicles;
 
         return totalFitness;
     }

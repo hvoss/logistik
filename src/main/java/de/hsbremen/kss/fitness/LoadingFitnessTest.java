@@ -8,9 +8,13 @@ import de.hsbremen.kss.model.Plan;
 import de.hsbremen.kss.model.Tour;
 
 public class LoadingFitnessTest extends AbstractFitnessTest {
-
-    /** factor for the total number of overloads */
-    private static final double NUMBER_OF_OVERLOADS = 1.2;
+	
+    /** factor for the total difference of time windows */
+    private double diffOfTimeWindows;
+    
+    public LoadingFitnessTest(double diffOfTimeWindows) {
+    	this.diffOfTimeWindows = diffOfTimeWindows;
+    }
 
     @Override
     public Double calculateFitness(final Plan plan) {
@@ -27,7 +31,7 @@ public class LoadingFitnessTest extends AbstractFitnessTest {
                 }
                 if (action.timewindow().getEnd() < time) {
                     final double diff = time - action.timewindow().getEnd();
-                    fitness += length * FastMath.pow(diff, LoadingFitnessTest.NUMBER_OF_OVERLOADS);
+                    fitness += length * FastMath.pow(diff, this.diffOfTimeWindows);
                 }
 
                 time += action.duration();

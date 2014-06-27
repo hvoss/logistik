@@ -14,7 +14,11 @@ import de.hsbremen.kss.model.Tour;
 public class CapacityFitnessTest extends AbstractFitnessTest {
 
     /** factor for the total number of overloads */
-    private static final double NUMBER_OF_OVERLOADS = 10;
+    private double numberOfOverloads;
+    
+    public CapacityFitnessTest(double numberOfOverloads) {
+    	this.numberOfOverloads = numberOfOverloads;
+    }
 
     @Override
     public Double calculateFitness(final Plan plan) {
@@ -22,7 +26,7 @@ public class CapacityFitnessTest extends AbstractFitnessTest {
         final double length = plan.length();
         final int overloads = getNumberOfOverloads(plan);
 
-        final double totalFitness = length + FastMath.pow(overloads, CapacityFitnessTest.NUMBER_OF_OVERLOADS);
+        final double totalFitness = length + FastMath.pow(overloads, this.numberOfOverloads);
 
         return totalFitness;
     }

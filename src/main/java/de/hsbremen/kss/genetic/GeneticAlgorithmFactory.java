@@ -22,8 +22,8 @@ public class GeneticAlgorithmFactory {
         final int maxIterations = 5000;
         final double abortCriterion = 0.0001;
 
-        final FitnessTest fitnessTest = new FitnessTestBuilder().addFitnessTest(new LengthFitnessTest()).addFitnessTest(new VehicleFitnessTest())
-                .addFitnessTest(new CapacityFitnessTest()).addFitnessTest(new VehicleMakespanFitnessTest()).addFitnessTest(new LoadingFitnessTest());
+        final FitnessTest fitnessTest = new FitnessTestBuilder().addFitnessTest(new LengthFitnessTest()).addFitnessTest(new VehicleFitnessTest(0.01))
+                .addFitnessTest(new CapacityFitnessTest(10)).addFitnessTest(new VehicleMakespanFitnessTest(5)).addFitnessTest(new LoadingFitnessTest(1.2));
 
         final MutationBuilder mutationBuilder = new MutationBuilder(randomUtils);
 
@@ -46,7 +46,7 @@ public class GeneticAlgorithmFactory {
         final Validator validator = new RightOrderValidatorImpl();
         validator.enableLogging(false);
         Selection selectionMethod = new RandomSelection(randomUtils);
-//        selectionMethod = new LinearDistributionSelectionImpl(randomUtils);
+//        Selection selectionMethod = new LinearDistributionSelectionImpl(randomUtils);
 
         final AbortionCheck abortionCheck = new AbortionCheckImpl(fitnessTest, maxIterations, abortCriterion);
         return new GeneticAlgorithmImpl(eventBus, fitnessTest, randomUtils, mutationMethods, crossoverMethods, validator, selectionMethod,
