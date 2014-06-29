@@ -24,11 +24,12 @@ public class GeneticAlgorithmFactory {
 
         //@formatter:off
         final FitnessTest fitnessTest = new FitnessTestBuilder()
-                .addFitnessTest(new LengthFitnessTest())
-                .addFitnessTest(new VehicleFitnessTest(1))
-                .addFitnessTest(new CapacityFitnessTest(1.02))
-                .addFitnessTest(new VehicleMakespanFitnessTest(1.02))
-                .addFitnessTest(new LoadingFitnessTest(50));
+                .addFitnessTest(new LengthFitnessTest(2))
+                .addFitnessTest(new VehicleFitnessTest(6, 0.1))
+                .addFitnessTest(new CapacityFitnessTest(5))
+                .addFitnessTest(new VehicleMakespanFitnessTest(1.2))
+                .addFitnessTest(new LoadingFitnessTest(1.2))
+                ;
         //@formatter:on
 
         //@formatter:off
@@ -50,9 +51,9 @@ public class GeneticAlgorithmFactory {
 
         final Validator validator = new RightOrderValidatorImpl();
         validator.enableLogging(false);
-        final Selection selectionMethod = new RandomSelection(randomUtils);
-        // Selection selectionMethod = new
-        // LinearDistributionSelectionImpl(randomUtils);
+        Selection selectionMethod = null;
+        selectionMethod = new RandomSelection(randomUtils);
+        selectionMethod = new LinearDistributionSelectionImpl(randomUtils);
 
         final AbortionCheck abortionCheck = new AbortionCheckImpl(fitnessTest, maxIterations, abortCriterion);
         return new GeneticAlgorithmImpl(eventBus, fitnessTest, randomUtils, mutationMethods, crossoverMethods, validator, selectionMethod,

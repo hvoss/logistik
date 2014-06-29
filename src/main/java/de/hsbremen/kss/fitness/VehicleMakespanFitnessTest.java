@@ -8,10 +8,10 @@ import de.hsbremen.kss.model.Tour;
 public class VehicleMakespanFitnessTest extends AbstractFitnessTest {
 
     /** factor for the total difference of vehicle time */
-    private double diffOfVehicle;
-    
-    public VehicleMakespanFitnessTest(double diffOfVehicle) {
-    	this.diffOfVehicle = diffOfVehicle;
+    private final double diffOfVehicle;
+
+    public VehicleMakespanFitnessTest(final double diffOfVehicle) {
+        this.diffOfVehicle = diffOfVehicle;
     }
 
     @Override
@@ -23,7 +23,7 @@ public class VehicleMakespanFitnessTest extends AbstractFitnessTest {
         for (final Tour tour : plan.getTours()) {
             final double diff = tour.actualDuration() - tour.getVehicle().getTimeWindow().timespan();
             if (diff > 0) {
-                fitness += length * FastMath.pow(diff, this.diffOfVehicle);
+                fitness += length * FastMath.pow(diff + 1, this.diffOfVehicle);
             }
         }
 

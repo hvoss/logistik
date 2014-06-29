@@ -8,12 +8,12 @@ import de.hsbremen.kss.model.Plan;
 import de.hsbremen.kss.model.Tour;
 
 public class LoadingFitnessTest extends AbstractFitnessTest {
-	
+
     /** factor for the total difference of time windows */
-    private double diffOfTimeWindows;
-    
-    public LoadingFitnessTest(double diffOfTimeWindows) {
-    	this.diffOfTimeWindows = diffOfTimeWindows;
+    private final double diffOfTimeWindows;
+
+    public LoadingFitnessTest(final double diffOfTimeWindows) {
+        this.diffOfTimeWindows = diffOfTimeWindows;
     }
 
     @Override
@@ -31,7 +31,7 @@ public class LoadingFitnessTest extends AbstractFitnessTest {
                 }
                 if (action.timewindow().getEnd() < time) {
                     final double diff = time - action.timewindow().getEnd();
-                    fitness += length * FastMath.pow(diff, this.diffOfTimeWindows);
+                    fitness += length * FastMath.pow(diff + 1, this.diffOfTimeWindows);
                 }
 
                 time += action.duration();

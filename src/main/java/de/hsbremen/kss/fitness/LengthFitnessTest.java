@@ -4,9 +4,15 @@ import de.hsbremen.kss.model.Plan;
 
 public class LengthFitnessTest extends AbstractFitnessTest {
 
+    private final double factor;
+
+    public LengthFitnessTest(final double factor) {
+        this.factor = factor;
+    }
+
     @Override
     public Double calculateFitness(final Plan plan) {
-        return plan.length();
+        return this.factor * plan.length();
     }
 
 }

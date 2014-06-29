@@ -1,7 +1,9 @@
 package de.hsbremen.kss.fitness;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import de.hsbremen.kss.model.Plan;
 
@@ -35,6 +37,23 @@ public class FitnessTestBuilder extends AbstractFitnessTest {
         plan.setFitness(totalFitness);
 
         return totalFitness;
+    }
+
+    public Map<Class<? extends FitnessTest>, Double> fitnessDistribution(final Plan plan) {
+        final Map<Class<? extends FitnessTest>, Double> fitnessDistribution = new HashMap<>();
+        double sum = 0;
+
+        for (final FitnessTest fitnessTest : this.fitnessTests) {
+            final Double fitness = fitnessTest.calculateFitness(plan);
+            fitnessDistribution.put(fitnessTest.getClass(), fitness);
+            sum += fitness;
+        }
+
+        for (final FitnessTest fitnessTest : this.fitnessTests) {
+            fitnessDistribution.put(fitnessTest.getClass(), fitnessDistribution.get(fitnessTest.getClass()) / sum);
+        }
+
+        return fitnessDistribution;
     }
 
 }

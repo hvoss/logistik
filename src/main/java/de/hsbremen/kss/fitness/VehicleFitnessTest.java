@@ -1,5 +1,7 @@
 package de.hsbremen.kss.fitness;
 
+import org.apache.commons.math3.util.FastMath;
+
 import de.hsbremen.kss.model.Plan;
 
 /**
@@ -15,18 +17,22 @@ import de.hsbremen.kss.model.Plan;
 public class VehicleFitnessTest extends AbstractFitnessTest {
 
     /** factor for the total number of used vehicles */
-    private double numberOfVehicles;
-    
-    public VehicleFitnessTest(double numberOfVehicles) {
-    	this.numberOfVehicles = numberOfVehicles;
+    private final int numberOfVehicles;
+    private final double factor;
+
+    public VehicleFitnessTest(final int numberOfVehicles, final double factor) {
+        this.numberOfVehicles = numberOfVehicles;
+        this.factor = factor;
     }
 
     @Override
     public Double calculateFitness(final Plan plan) {
 
         final double length = plan.length();
-        final int vehicles = plan.getTours().size();
-        final double totalFitness = length * this.numberOfVehicles * vehicles;
+        int vehicles = plan.getTours().size() - this.numberOfVehicles;
+        vehicles = FastMath.max(vehicles, 0);
+
+        final double totalFitness = length * this.factor * vehicles;
 
         return totalFitness;
     }

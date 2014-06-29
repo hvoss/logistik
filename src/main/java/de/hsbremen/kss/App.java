@@ -15,6 +15,7 @@ import org.jfree.chart.axis.ValueAxis;
 import org.jfree.chart.plot.DatasetRenderingOrder;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
+import org.jfree.chart.renderer.xy.StackedXYAreaRenderer2;
 import org.jfree.chart.renderer.xy.XYItemRenderer;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.xy.XYSeries;
@@ -24,7 +25,8 @@ import org.slf4j.LoggerFactory;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 
-import de.hsbremen.kss.chart.DelayTimeDataset;
+import de.hsbremen.kss.chart.FitnessDistributionDataset;
+import de.hsbremen.kss.chart.FittnessDataset;
 import de.hsbremen.kss.chart.LengthDataset;
 import de.hsbremen.kss.configuration.CircleConfigurationGenerator;
 import de.hsbremen.kss.configuration.Configuration;
@@ -79,7 +81,8 @@ public final class App {
      */
     public static void main(final String[] args) {
         final App app = new App();
-        app.test();
+        app.lineGraph();
+        app.fitnessGraph();
         app.germany();
     }
 
@@ -172,13 +175,13 @@ public final class App {
         });
     }
 
-    public void test() {
+    public void lineGraph() {
         final LengthDataset dataset = new LengthDataset(this.eventBus);
         final JFreeChart chart = ChartFactory.createXYLineChart("", "Iteration", "Length", dataset, PlotOrientation.VERTICAL, true, false, true);
 
         final XYPlot plot = chart.getXYPlot();
 
-        plot.setDataset(1, new DelayTimeDataset(this.eventBus));
+        plot.setDataset(1, new FittnessDataset(this.eventBus));
         plot.mapDatasetToRangeAxis(1, 1);
 
         final XYItemRenderer renderer2 = new XYLineAndShapeRenderer(true, false);
@@ -186,6 +189,21 @@ public final class App {
         plot.setDatasetRenderingOrder(DatasetRenderingOrder.REVERSE);
         final ValueAxis axis2 = new NumberAxis("Fittness");
         plot.setRangeAxis(1, axis2);
+
+        final ChartPanel panel = new ChartPanel(chart);
+        final JFrame jFrame = new JFrame();
+        jFrame.setContentPane(panel);
+        jFrame.pack();
+        jFrame.setVisible(true);
+    }
+
+    public void fitnessGraph() {
+        final FitnessDistributionDataset dataset = new FitnessDistributionDataset(this.eventBus);
+        final JFreeChart chart = ChartFactory.createStackedXYAreaChart("Fitness distribution", "iteration", "distribution", dataset,
+                PlotOrientation.VERTICAL, true, true, false);
+
+        final StackedXYAreaRenderer2 stackedxyarearenderer2 = new StackedXYAreaRenderer2();
+        ((XYPlot) chart.getPlot()).setRenderer(0, stackedxyarearenderer2);
 
         final ChartPanel panel = new ChartPanel(chart);
         final JFrame jFrame = new JFrame();

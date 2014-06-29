@@ -1,21 +1,23 @@
 package de.hsbremen.kss.events;
 
 import java.util.List;
+import java.util.Map;
 
 import de.hsbremen.kss.fitness.FitnessTest;
+import de.hsbremen.kss.fitness.FitnessTestBuilder;
 import de.hsbremen.kss.model.Plan;
 
 public class NewPopulationEvent {
 
     public int iteration;
 
-    public FitnessTest fitnessTest;
+    public FitnessTestBuilder fitnessTest;
 
     public List<Plan> sortedPopulation;
 
     public NewPopulationEvent(final int iteration, final FitnessTest fitnessTest, final List<Plan> sortedPopulation) {
         this.iteration = iteration;
-        this.fitnessTest = fitnessTest;
+        this.fitnessTest = (FitnessTestBuilder) fitnessTest;
         this.sortedPopulation = sortedPopulation;
     }
 
@@ -48,7 +50,7 @@ public class NewPopulationEvent {
     }
 
     public double bestDelayTime() {
-        return this.sortedPopulation.get(0).delayTime();
+        return bestPlan().delayTime();
     }
 
     public double worstDelayTime() {
@@ -78,4 +80,13 @@ public class NewPopulationEvent {
         }
         return avgWaitingTime;
     }
+
+    public Map<Class<? extends FitnessTest>, Double> fitnessDistribution(final Plan plan) {
+        return this.fitnessTest.fitnessDistribution(plan);
+    }
+
+    public Plan bestPlan() {
+        return this.sortedPopulation.get(0);
+    }
+
 }
