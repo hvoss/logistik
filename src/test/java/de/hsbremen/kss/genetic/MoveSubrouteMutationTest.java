@@ -86,7 +86,7 @@ public class MoveSubrouteMutationTest {
         });
         replay(this.randomUtils);
 
-        final Plan mutatedPlan = this.moveSubrouteMutation.mutate(plan);
+        final Plan mutatedPlan = this.moveSubrouteMutation.mutate(null, plan);
         final List<OrderStation> actual = OrderAction.extractOrderStations(mutatedPlan.getTours().get(0).getOrderActions());
         final List<OrderStation> explected = Arrays.asList(SampleOrders.BERLIN_ELLENBOGEN.getSource(), SampleOrders.BREMEN_HAMURG.getSource(),
 

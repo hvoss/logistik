@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import de.hsbremen.kss.configuration.Configuration;
 import de.hsbremen.kss.configuration.Order;
 import de.hsbremen.kss.construction.SweepConstruction;
 import de.hsbremen.kss.model.OrderAction;
@@ -22,7 +23,7 @@ public abstract class AllocateRouteMutationImpl implements Mutation {
     }
 
     @Override
-    public Plan mutate(final Plan plan) {
+    public Plan mutate(final Configuration configuration, final Plan plan) {
         if (plan.getTours().size() >= 2) {
             final Plan newPlan = new Plan(SweepConstruction.class);
 

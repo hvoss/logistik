@@ -173,7 +173,7 @@ public final class GeneticAlgorithmImpl extends Observable implements GeneticAlg
 
         final Mutation mutationMethod = this.randomUtils.randomElement(this.mutationMethods);
         if (mutationMethod != null) {
-            final Plan mutatedChild = mutationMethod.mutate(child);
+            final Plan mutatedChild = mutationMethod.mutate(configuration, child);
 
             child = mutatedChild;
         }

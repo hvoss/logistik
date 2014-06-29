@@ -3,6 +3,7 @@ package de.hsbremen.kss.genetic;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.hsbremen.kss.configuration.Configuration;
 import de.hsbremen.kss.configuration.Order;
 import de.hsbremen.kss.construction.SweepConstruction;
 import de.hsbremen.kss.model.OrderAction;
@@ -22,7 +23,7 @@ public class SwapOrderMutationImpl implements Mutation {
     }
 
     @Override
-    public Plan mutate(final Plan plan) {
+    public Plan mutate(final Configuration configuration, final Plan plan) {
         final List<Tour> tours = new ArrayList<>(plan.getTours());
 
         if (tours.size() >= 2) {

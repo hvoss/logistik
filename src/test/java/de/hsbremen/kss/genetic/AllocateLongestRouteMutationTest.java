@@ -62,7 +62,7 @@ public class AllocateLongestRouteMutationTest {
 
         plan.logTours();
 
-        final Plan mutatedPlan = this.allocateMutation.mutate(plan);
+        final Plan mutatedPlan = this.allocateMutation.mutate(null, plan);
         System.out.println("########################################");
         System.out.println("########################################");
         System.out.println("########################################");
