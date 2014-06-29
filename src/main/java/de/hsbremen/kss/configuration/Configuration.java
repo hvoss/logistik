@@ -1,6 +1,7 @@
 package de.hsbremen.kss.configuration;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.commons.lang3.Validate;
@@ -154,4 +155,13 @@ public final class Configuration {
         return true;
     }
 
+    public Set<Product> usedProducts() {
+        final Set<Product> usedProducts = new HashSet<>();
+
+        for (final Order order : this.orders) {
+            usedProducts.add(order.getProduct());
+        }
+
+        return usedProducts;
+    }
 }

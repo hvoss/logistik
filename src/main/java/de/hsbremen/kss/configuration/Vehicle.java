@@ -229,4 +229,25 @@ public final class Vehicle {
 
         return filteredVehicles;
     }
+
+    public static Set<Vehicle> filterByProducts(final Set<Vehicle> vehiclesToFilter, final Set<Product> products) {
+        final Set<Vehicle> filteredVehicles = new HashSet<>();
+
+        for (final Vehicle vehicle : vehiclesToFilter) {
+            if (products.contains(vehicle.product)) {
+                filteredVehicles.add(vehicle);
+            }
+        }
+
+        return filteredVehicles;
+    }
+
+    public static Set<Product> extractProducts(final Set<Vehicle> vehicles) {
+        final HashSet<Product> products = new HashSet<>();
+        for (final Vehicle vehicle : vehicles) {
+            products.add(vehicle.product);
+        }
+
+        return products;
+    }
 }

@@ -5,13 +5,16 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.hsbremen.kss.configuration.Order;
+import de.hsbremen.kss.configuration.Product;
 import de.hsbremen.kss.configuration.Station;
+import de.hsbremen.kss.configuration.Vehicle;
 import de.hsbremen.kss.construction.Construction;
 
 /**
@@ -220,6 +223,28 @@ public final class Plan {
         }
 
         return delayTime;
+    }
+
+    public Set<Vehicle> usedVehicles() {
+        final Set<Vehicle> usedVehicles = new HashSet<>();
+
+        for (final Tour tour : this.tours) {
+            usedVehicles.add(tour.getVehicle());
+        }
+
+        return usedVehicles;
+    }
+
+    public List<Tour> filterToursByProducts(final Set<Product> products) {
+        final List<Tour> filteredTours = new ArrayList<>();
+
+        for (final Tour tour : this.tours) {
+            if (products.contains(tour.getVehicle().getProduct())) {
+                filteredTours.add(tour);
+            }
+        }
+
+        return filteredTours;
     }
 
 }

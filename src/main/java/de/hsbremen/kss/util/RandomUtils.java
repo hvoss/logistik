@@ -193,4 +193,15 @@ public class RandomUtils {
         final int position = nextInt(0, orderActions.size());
         orderActions.addAll(position, subRoute);
     }
+
+    public <T> List<T> removeRandomElements(final List<T> elements, final int num) {
+        final List<T> removedElements = new ArrayList<>(num);
+
+        for (int i = 0; i < num; i++) {
+            final T removedElement = removeRandomElement(elements);
+            removedElements.add(removedElement);
+        }
+
+        return removedElements;
+    }
 }

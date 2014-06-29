@@ -71,9 +71,17 @@ public class MutationBuilder {
         return this;
     }
 
-    public MutationBuilder combineTwoToursMutationImpl(final int num) {
+    public MutationBuilder combineTwoToursMutation(final int num) {
         for (int i = 0; i < num; i++) {
             this.mutations.add(new CombineTwoToursMutationImpl(this.randomUtils));
+        }
+
+        return this;
+    }
+
+    public MutationBuilder splitTourMutation(final int num) {
+        for (int i = 0; i < num; i++) {
+            this.mutations.add(new SplitTourMutation(this.randomUtils));
         }
 
         return this;

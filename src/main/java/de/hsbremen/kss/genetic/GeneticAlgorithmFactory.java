@@ -28,7 +28,7 @@ public class GeneticAlgorithmFactory {
                 .addFitnessTest(new VehicleFitnessTest(1))
                 .addFitnessTest(new CapacityFitnessTest(1.02))
                 .addFitnessTest(new VehicleMakespanFitnessTest(1.02))
-                .addFitnessTest(new LoadingFitnessTest(1.05));
+                .addFitnessTest(new LoadingFitnessTest(50));
         //@formatter:on
 
         //@formatter:off
@@ -39,8 +39,9 @@ public class GeneticAlgorithmFactory {
             .allocateLongestRouteMutation(2)
             .allocateRandomRouteMutation(2)
             .allocateShortestRouteMutation(2)
-            .combineTwoToursMutationImpl(1)
-//            .nullMutation(10)
+            .combineTwoToursMutation(1)
+            .splitTourMutation(10)
+            .nullMutation(10)
             .build();
         //@formatter:on
 
