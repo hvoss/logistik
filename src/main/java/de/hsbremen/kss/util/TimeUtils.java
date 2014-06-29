@@ -23,6 +23,14 @@ public final class TimeUtils {
      * @return "real" clock string
      */
     public static String convertToClockString(final double time) {
+        if (time == Double.MAX_VALUE) {
+            return "inf";
+        }
+
+        if (time == Double.MIN_VALUE) {
+            return "-inf";
+        }
+
         final int hours = (int) time;
         final int minutes = (int) ((time - hours) * 60);
         return hours + ":" + minutes;

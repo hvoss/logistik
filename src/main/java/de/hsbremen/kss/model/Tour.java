@@ -56,17 +56,16 @@ public final class Tour {
         this.actions = new LinkedList<>();
 
     }
-    
 
-    Tour(final Tour tour, int id) {
-    	if (!tour.locked) {
-    		throw new IllegalArgumentException();
-    	}
-    	
+    Tour(final Tour tour, final int id) {
+        if (!tour.locked) {
+            throw new IllegalArgumentException();
+        }
+
         this.vehicle = tour.vehicle;
         this.locked = tour.locked;
         this.actions = tour.actions;
-        this.id= id;
+        this.id = id;
 
     }
 
@@ -458,7 +457,7 @@ public final class Tour {
         } else if (action instanceof OrderUnloadAction) {
             addDestinationOrder(((OrderUnloadAction) action).getOrder());
         } else if (action instanceof WaitingAction) {
-                
+
         } else {
             throw new IllegalArgumentException();
         }
@@ -466,7 +465,7 @@ public final class Tour {
 
     public void addOtherActions(final Iterable<? extends Action> actions) {
         for (final Action action : actions) {
-        	addOtherAction(action);
+            addOtherAction(action);
         }
     }
 
@@ -513,4 +512,37 @@ public final class Tour {
         }
         return shortestTour;
     }
+
+    public double waitingTime() {
+        double waitingTime = 0.0;
+
+        for (final Action action : this.actions) {
+            if (action instanceof WaitingAction) {
+                waitingTime += action.duration();
+            }
+        }
+
+        return waitingTime;
+    }
+
+    public double delayTime() {
+        double delayTime = 0.0;
+        double time = this.vehicle.getTimeWindow().getStart();
+
+        Station lastStation = this.vehicle.getSourceDepot();
+        for (final Action action : this.actions) {
+            time += this.vehicle.calculateTavelingTime(lastStation, action.getStation());
+
+            if (time > action.timewindow().getEnd()) {
+                delayTime += time - action.timewindow().getEnd();
+            }
+
+            time += action.duration();
+
+            lastStation = action.getStation();
+        }
+
+        return delayTime;
+    }
+
 }

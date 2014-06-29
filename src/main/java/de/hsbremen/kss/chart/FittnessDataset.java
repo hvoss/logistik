@@ -8,15 +8,15 @@ import com.google.common.eventbus.Subscribe;
 
 import de.hsbremen.kss.events.NewPopulationEvent;
 
-public class PopulationDataset extends XYSeriesCollection {
+public class FittnessDataset extends XYSeriesCollection {
 
-    private final XYSeries bestPlan = new XYSeries("Best Plan");
+    private final XYSeries bestPlan = new XYSeries("Best Fittness");
 
-    private final XYSeries avgPlan = new XYSeries("Avarage Plan");
+    private final XYSeries avgPlan = new XYSeries("Avarage Fittness");
 
-    private final XYSeries worstPlan = new XYSeries("Worst Plan");
+    private final XYSeries worstPlan = new XYSeries("Worst Fittness");
 
-    public PopulationDataset(final EventBus eventBus) {
+    public FittnessDataset(final EventBus eventBus) {
         eventBus.register(this);
 
         addSeries(this.bestPlan);
@@ -30,11 +30,4 @@ public class PopulationDataset extends XYSeriesCollection {
         this.worstPlan.add(newPopulationEvent.iteration, newPopulationEvent.worstFitness());
         this.avgPlan.add(newPopulationEvent.iteration, newPopulationEvent.avgFitness());
     }
-
-    public void listenLength(final NewPopulationEvent newPopulationEvent) {
-        this.bestPlan.add(newPopulationEvent.iteration, newPopulationEvent.bestLength());
-        this.worstPlan.add(newPopulationEvent.iteration, newPopulationEvent.worstLength());
-        this.avgPlan.add(newPopulationEvent.iteration, newPopulationEvent.avgLength());
-    }
-
 }

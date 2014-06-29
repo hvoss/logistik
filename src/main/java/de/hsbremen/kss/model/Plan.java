@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
 
 import de.hsbremen.kss.configuration.Order;
 import de.hsbremen.kss.configuration.Station;
-import de.hsbremen.kss.configuration.Vehicle;
 import de.hsbremen.kss.construction.Construction;
 
 /**
@@ -201,6 +200,26 @@ public final class Plan {
 
     public void setFitness(final Double fitness) {
         this.fitness = fitness;
+    }
+
+    public double waitingTime() {
+        double waitingTime = 0.0;
+
+        for (final Tour tour : this.tours) {
+            waitingTime += tour.waitingTime();
+        }
+
+        return waitingTime;
+    }
+
+    public double delayTime() {
+        double delayTime = 0.0;
+
+        for (final Tour tour : this.tours) {
+            delayTime += tour.delayTime();
+        }
+
+        return delayTime;
     }
 
 }

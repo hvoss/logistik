@@ -25,10 +25,10 @@ public class GeneticAlgorithmFactory {
         //@formatter:off
         final FitnessTest fitnessTest = new FitnessTestBuilder()
                 .addFitnessTest(new LengthFitnessTest())
-                .addFitnessTest(new VehicleFitnessTest(0.01))
-                .addFitnessTest(new CapacityFitnessTest(10))
-                .addFitnessTest(new VehicleMakespanFitnessTest(5))
-                .addFitnessTest(new LoadingFitnessTest(1.2));
+                .addFitnessTest(new VehicleFitnessTest(1))
+                .addFitnessTest(new CapacityFitnessTest(1.02))
+                .addFitnessTest(new VehicleMakespanFitnessTest(1.02))
+                .addFitnessTest(new LoadingFitnessTest(1.05));
         //@formatter:on
 
         //@formatter:off
@@ -42,15 +42,16 @@ public class GeneticAlgorithmFactory {
             .combineTwoToursMutationImpl(1)
 //            .nullMutation(10)
             .build();
-        //@formatter:on10574
+        //@formatter:on
 
         final List<Crossover> crossoverMethods = new ArrayList<>();
-//        crossoverMethods.add(new ControlStringCrossoverImpl(randomUtils));
+        // crossoverMethods.add(new ControlStringCrossoverImpl(randomUtils));
 
         final Validator validator = new RightOrderValidatorImpl();
         validator.enableLogging(false);
         final Selection selectionMethod = new RandomSelection(randomUtils);
-//        Selection selectionMethod = new LinearDistributionSelectionImpl(randomUtils);
+        // Selection selectionMethod = new
+        // LinearDistributionSelectionImpl(randomUtils);
 
         final AbortionCheck abortionCheck = new AbortionCheckImpl(fitnessTest, maxIterations, abortCriterion);
         return new GeneticAlgorithmImpl(eventBus, fitnessTest, randomUtils, mutationMethods, crossoverMethods, validator, selectionMethod,

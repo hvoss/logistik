@@ -46,4 +46,36 @@ public class NewPopulationEvent {
         }
         return avgLength;
     }
+
+    public double bestDelayTime() {
+        return this.sortedPopulation.get(0).delayTime();
+    }
+
+    public double worstDelayTime() {
+        return this.sortedPopulation.get(this.sortedPopulation.size() - 1).delayTime();
+    }
+
+    public double avgDelayTime() {
+        double avgDelayTime = 0.0;
+        for (final Plan plan : this.sortedPopulation) {
+            avgDelayTime += plan.delayTime() / this.sortedPopulation.size();
+        }
+        return avgDelayTime;
+    }
+
+    public double bestWaitingyTime() {
+        return this.sortedPopulation.get(0).waitingTime();
+    }
+
+    public double worstWaitingTime() {
+        return this.sortedPopulation.get(this.sortedPopulation.size() - 1).waitingTime();
+    }
+
+    public double avgWaitingTime() {
+        double avgWaitingTime = 0.0;
+        for (final Plan plan : this.sortedPopulation) {
+            avgWaitingTime += plan.waitingTime() / this.sortedPopulation.size();
+        }
+        return avgWaitingTime;
+    }
 }

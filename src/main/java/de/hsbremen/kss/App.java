@@ -10,7 +10,13 @@ import javax.swing.SwingUtilities;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.axis.ValueAxis;
+import org.jfree.chart.plot.DatasetRenderingOrder;
 import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.plot.XYPlot;
+import org.jfree.chart.renderer.xy.XYItemRenderer;
+import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.xy.XYSeries;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +24,8 @@ import org.slf4j.LoggerFactory;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 
-import de.hsbremen.kss.chart.PopulationDataset;
+import de.hsbremen.kss.chart.DelayTimeDataset;
+import de.hsbremen.kss.chart.LengthDataset;
 import de.hsbremen.kss.configuration.CircleConfigurationGenerator;
 import de.hsbremen.kss.configuration.Configuration;
 import de.hsbremen.kss.configuration.ConfigurationGenerator;
@@ -90,7 +97,7 @@ public final class App {
         final ConfigurationGenerator configurationGenerator = new ConfigurationGenerator(this.randomUtils);
 
         final Configuration generateConfiguration = configurationGenerator.generateConfiguration(germanyConfiguration.getStations(),
-                germanyConfiguration.getProducts(), germanyConfiguration.getVehicles(), 30);
+                germanyConfiguration.getProducts(), germanyConfiguration.getVehicles(), 50);
 
         final GeneticAlgorithm geneticAlgorithm = GeneticAlgorithmFactory.createGeneticAlgorithm(this.eventBus, this.randomUtils);
 
@@ -139,7 +146,7 @@ public final class App {
             }
         });
 
-        final List<Plan> randomPlans = populationGenerator.createPopulation(circleConfig, constructionMethods, 5000);
+        final List<Plan> randomPlans = populationGenerator.createPopulation(circleConfig, constructionMethods, 200);
 
         final Plan plan = geneticAlgorithm.startOptimize(circleConfig, randomPlans);
 
@@ -166,8 +173,19 @@ public final class App {
     }
 
     public void test() {
-        final PopulationDataset dataset = new PopulationDataset(this.eventBus);
-        final JFreeChart chart = ChartFactory.createXYLineChart("", "Iteration", "Fitness", dataset, PlotOrientation.VERTICAL, true, false, false);
+        final LengthDataset dataset = new LengthDataset(this.eventBus);
+        final JFreeChart chart = ChartFactory.createXYLineChart("", "Iteration", "Length", dataset, PlotOrientation.VERTICAL, true, false, true);
+
+        final XYPlot plot = chart.getXYPlot();
+
+        plot.setDataset(1, new DelayTimeDataset(this.eventBus));
+        plot.mapDatasetToRangeAxis(1, 1);
+
+        final XYItemRenderer renderer2 = new XYLineAndShapeRenderer(true, false);
+        plot.setRenderer(1, renderer2);
+        plot.setDatasetRenderingOrder(DatasetRenderingOrder.REVERSE);
+        final ValueAxis axis2 = new NumberAxis("Fittness");
+        plot.setRangeAxis(1, axis2);
 
         final ChartPanel panel = new ChartPanel(chart);
         final JFrame jFrame = new JFrame();
@@ -175,5 +193,4 @@ public final class App {
         jFrame.pack();
         jFrame.setVisible(true);
     }
-
 }

@@ -188,7 +188,7 @@
 				<End>9999999999</End>
 			</Timespan>
 			<ProductId>1</ProductId>
-			<Capacity>1000</Capacity>
+			<Capacity>10</Capacity>
 		</Vehicle>
 		<Vehicle id="2">
 			<Name>LKW</Name>
@@ -201,7 +201,7 @@
 				<End>9999999999</End>
 			</Timespan>
 			<ProductId>2</ProductId>
-			<Capacity>100000</Capacity>
+			<Capacity>10</Capacity>
 		</Vehicle>
 			<Vehicle id="3">
 			<Name>Twix-LKW</Name>
@@ -214,7 +214,7 @@
 				<End>9999999999</End>
 			</Timespan>
 			<ProductId>3</ProductId>
-			<Capacity>100000</Capacity>
+			<Capacity>10</Capacity>
 		</Vehicle>
 	</Vehicles>
 
