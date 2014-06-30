@@ -47,7 +47,7 @@ public class RightOrderValidatorImpl implements Validator {
                     if (action instanceof FromDepotAction) {
                         final FromDepotAction fromDepotAction = (FromDepotAction) action;
                         if (i > 0) {
-                            log("Tour #" + tour.getId() + ": " + fromDepotAction + " is not the first action, it is action no: " + i);
+                            log(plan, "Tour #" + tour.getId() + ": " + fromDepotAction + " is not the first action, it is action no: " + i);
                             allRight = false;
                         }
                     }
@@ -55,7 +55,7 @@ public class RightOrderValidatorImpl implements Validator {
                     if (action instanceof ToDepotAction) {
                         final ToDepotAction toDepotAction = (ToDepotAction) action;
                         if (i - 1 == actions.size()) {
-                            log("Tour #" + tour.getId() + ": " + toDepotAction + " is not the last action, it is action no: " + i);
+                            log(plan, "Tour #" + tour.getId() + ": " + toDepotAction + " is not the last action, it is action no: " + i);
                             allRight = false;
                         }
                     }
@@ -63,13 +63,13 @@ public class RightOrderValidatorImpl implements Validator {
                     if (action instanceof OrderLoadAction) {
                         final OrderLoadAction orderLoadAction = (OrderLoadAction) action;
                         if (!visitedSourceOrders.add(orderLoadAction.getOrder())) {
-                            log("Tour #" + tour.getId() + ": " + orderLoadAction + " performed multiple times");
+                            log(plan, "Tour #" + tour.getId() + ": " + orderLoadAction + " performed multiple times");
                             allRight = false;
                         }
-                        
+
                         if (!orderLoadAction.getOrder().getProduct().equals(tour.getVehicle().getProduct())) {
-                        	log("Tour #" + tour.getId() + ": " + orderLoadAction + " wrong Product!");
-                        	allRight = false;
+                            log(plan, "Tour #" + tour.getId() + ": " + orderLoadAction + " wrong Product!");
+                            allRight = false;
                         }
 
                     }
@@ -78,12 +78,13 @@ public class RightOrderValidatorImpl implements Validator {
                         final OrderUnloadAction orderUnloadAction = (OrderUnloadAction) action;
 
                         if (!visitedSourceOrders.contains(orderUnloadAction.getOrder())) {
-                            log("Tour #" + tour.getId() + ": " + orderUnloadAction + " performed before " + OrderLoadAction.class.getSimpleName());
+                            log(plan,
+                                    "Tour #" + tour.getId() + ": " + orderUnloadAction + " performed before " + OrderLoadAction.class.getSimpleName());
                             allRight = false;
                         }
 
                         if (!visitedDestinationOrders.add(orderUnloadAction.getOrder())) {
-                            log("Tour #" + tour.getId() + ": " + orderUnloadAction + " performed multiple times");
+                            log(plan, "Tour #" + tour.getId() + ": " + orderUnloadAction + " performed multiple times");
                             allRight = false;
                         }
 
@@ -95,13 +96,13 @@ public class RightOrderValidatorImpl implements Validator {
             notVisitedDestinationOrders.removeAll(visitedDestinationOrders);
 
             for (final Order order : notVisitedSourceOrders) {
-                log("source order \"" + order + "\" not visited");
+                log(plan, "source order \"" + order + "\" not visited");
                 allRight = false;
             }
 
             for (final Order order : notVisitedDestinationOrders) {
                 final Tour tour = plan.associatedTour(order);
-                log("destination order \"" + order + "\" not visited on tour #" + tour.getId());
+                log(plan, "destination order \"" + order + "\" not visited on tour #" + tour.getId());
                 allRight = false;
             }
 
@@ -116,8 +117,8 @@ public class RightOrderValidatorImpl implements Validator {
         }
     }
 
-    private void log(final String text) {
-        if (this.enableLogging) {
+    private void log(final Plan plan, final String text) {
+        if (this.enableLogging && !plan.maybeInvalid()) {
             RightOrderValidatorImpl.LOG.warn(text);
         }
     }

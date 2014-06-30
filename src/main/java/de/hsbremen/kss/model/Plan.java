@@ -3,8 +3,10 @@ package de.hsbremen.kss.model;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang3.Validate;
@@ -16,6 +18,7 @@ import de.hsbremen.kss.configuration.Product;
 import de.hsbremen.kss.configuration.Station;
 import de.hsbremen.kss.configuration.Vehicle;
 import de.hsbremen.kss.construction.Construction;
+import de.hsbremen.kss.genetic.mutation.MoveSubrouteMutation;
 
 /**
  * The Class Plan.
@@ -26,7 +29,7 @@ public final class Plan {
     private static final Logger LOG = LoggerFactory.getLogger(Plan.class);
 
     /** the implementation which generates the plan */
-    private final Class<? extends Construction> constructionClazz;
+    private final Class<?> constructionClazz;
 
     /** The tours. */
     private final List<Tour> tours;
@@ -50,7 +53,7 @@ public final class Plan {
      * @param constructionClazz
      *            the implementation which generates the plan
      */
-    public Plan(final Class<? extends Construction> constructionClazz) {
+    public Plan(final Class<?> constructionClazz) {
         this.constructionClazz = constructionClazz;
         this.tours = new ArrayList<>();
     }
@@ -245,6 +248,24 @@ public final class Plan {
         }
 
         return filteredTours;
+    }
+
+    public Map<Product, List<Tour>> toursByProduct() {
+        final Map<Product, List<Tour>> toursByProduct = new HashMap<>();
+        for (final Tour tour : this.tours) {
+            final Product product = tour.getVehicle().getProduct();
+            List<Tour> list = toursByProduct.get(product);
+            if (list == null) {
+                list = new ArrayList<>();
+                toursByProduct.put(product, list);
+            }
+            list.add(tour);
+        }
+        return toursByProduct;
+    }
+
+    public boolean maybeInvalid() {
+        return this.constructionClazz == MoveSubrouteMutation.class;
     }
 
 }

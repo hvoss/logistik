@@ -56,6 +56,14 @@ public abstract class OrderAction implements Action {
         return getClass().getSimpleName() + " : " + this.order;
     }
 
+    public boolean isSource() {
+        return getClass().equals(OrderLoadAction.class);
+    }
+
+    public boolean isDestination() {
+        return getClass().equals(OrderUnloadAction.class);
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;

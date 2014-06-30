@@ -138,6 +138,12 @@ public final class GeneticAlgorithmImpl extends Observable implements GeneticAlg
             final Plan firstParent = this.selectionMethod.select(oldPopulation);
             final Plan secondParent = this.selectionMethod.select(oldPopulation);
             final Plan child = createChild(configuration, firstParent, secondParent);
+            if (!child.maybeInvalid()) {
+                final boolean validate = this.validator.validate(configuration, child);
+                if (!validate) {
+                    System.out.println("test");
+                }
+            }
             nextPopulation.add(child);
         }
 

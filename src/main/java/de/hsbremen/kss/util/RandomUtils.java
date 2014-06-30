@@ -129,23 +129,7 @@ public class RandomUtils {
      *            element to insert
      */
     public <T> int insertAtRandomPosition(final List<T> elements, final T elementToInsert) {
-        return insertAtRandomPosition(elements, elementToInsert, -1);
-    }
-
-    /**
-     * insert a element at a random position in the list.
-     * 
-     * @param elements
-     *            list of elements.
-     * @param elementToInsert
-     *            element to insert
-     */
-    public <T> int insertAtRandomPosition(final List<T> elements, final T elementToInsert, final int afterIdx) {
-        final int idx = nextInt(afterIdx + 1, elements.size() - 1);
-
-        elements.add(idx, elementToInsert);
-
-        return idx;
+        return insertAfterAtRandomPosition(elements, elementToInsert, -1);
     }
 
     public <T> T randomElementByLinearDistribution(final List<T> elements) {
@@ -204,4 +188,29 @@ public class RandomUtils {
 
         return removedElements;
     }
+
+    /**
+     * insert a element at a random position in the list.
+     * 
+     * @param elements
+     *            list of elements.
+     * @param elementToInsert
+     *            element to insert
+     */
+    public <T> int insertAfterAtRandomPosition(final List<T> elements, final T elementToInsert, final int afterIdx) {
+        final int idx = nextInt(afterIdx + 1, elements.size());
+
+        elements.add(idx, elementToInsert);
+
+        return idx;
+    }
+
+    public <T> int insertBeforeAtRandomPosition(final List<T> elements, final T elementToInsert, final int beforeIdx) {
+        final int idx = nextInt(0, beforeIdx);
+
+        elements.add(idx, elementToInsert);
+
+        return idx;
+    }
+
 }

@@ -2,8 +2,10 @@ package de.hsbremen.kss.util;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.collections4.CollectionUtils;
@@ -77,5 +79,17 @@ public class ConstructionUtils {
         tour.gotoDestinationDepot();
 
         return tour;
+    }
+
+    public static <K, T> Map<K, List<T>> filter(final Map<K, List<T>> elements, final int min) {
+        final Map<K, List<T>> hashMap = new HashMap<K, List<T>>();
+        for (final Map.Entry<K, List<T>> element : elements.entrySet()) {
+            final List<T> collection = element.getValue();
+            if (collection.size() >= min) {
+                hashMap.put(element.getKey(), collection);
+            }
+        }
+
+        return hashMap;
     }
 }

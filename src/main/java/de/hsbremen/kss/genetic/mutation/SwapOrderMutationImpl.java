@@ -2,15 +2,17 @@ package de.hsbremen.kss.genetic.mutation;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import de.hsbremen.kss.configuration.Configuration;
 import de.hsbremen.kss.configuration.Order;
-import de.hsbremen.kss.construction.SweepConstruction;
+import de.hsbremen.kss.configuration.Product;
 import de.hsbremen.kss.model.OrderAction;
 import de.hsbremen.kss.model.OrderLoadAction;
 import de.hsbremen.kss.model.OrderUnloadAction;
 import de.hsbremen.kss.model.Plan;
 import de.hsbremen.kss.model.Tour;
+import de.hsbremen.kss.util.ConstructionUtils;
 import de.hsbremen.kss.util.RandomUtils;
 
 public class SwapOrderMutationImpl implements Mutation {
@@ -24,15 +26,23 @@ public class SwapOrderMutationImpl implements Mutation {
 
     @Override
     public Plan mutate(final Configuration configuration, final Plan plan) {
-        final List<Tour> tours = new ArrayList<>(plan.getTours());
+        final Map<Product, List<Tour>> toursByProduct = plan.toursByProduct();
 
-        if (tours.size() >= 2) {
-            final Plan newPlan = new Plan(SweepConstruction.class);
+        final Map<Product, List<Tour>> filteredTours = ConstructionUtils.filter(toursByProduct, 2);
+
+        if (!filteredTours.isEmpty()) {
+            final List<Tour> tours = filteredTours.get(this.randomUtils.randomElement(filteredTours.keySet()));
+
+            final Plan newPlan = new Plan(SwapOrderMutationImpl.class);
 
             final Tour firstTour = this.randomUtils.removeRandomElement(tours);
             final Tour secondTour = this.randomUtils.removeRandomElement(tours);
 
-            newPlan.addTours(tours);
+            final List<Tour> allTours = new ArrayList<>(plan.getTours());
+            allTours.remove(firstTour);
+            allTours.remove(secondTour);
+
+            newPlan.addTours(allTours);
 
             final Order firstOrder = this.randomUtils.randomElement(firstTour.getOrders());
             final Order secondOrder = this.randomUtils.randomElement(secondTour.getOrders());
@@ -71,4 +81,5 @@ public class SwapOrderMutationImpl implements Mutation {
         newTour.gotoDestinationDepot();
         plan.addTour(newTour);
     }
+
 }

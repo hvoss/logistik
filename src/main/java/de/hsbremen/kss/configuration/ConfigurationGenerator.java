@@ -29,7 +29,7 @@ public class ConfigurationGenerator {
             final String name = sourceStation.getName() + " => " + destinationStation.getName();
 
             final double startStart = this.randomUtils.nextInt(8, 12);
-            final double endStart = this.randomUtils.nextInt(14, 24);
+            final double endStart = this.randomUtils.nextInt(14, 20);
 
             final double startEnd = this.randomUtils.nextInt(8, 12);
             final double endEnd = this.randomUtils.nextInt(36, 40);

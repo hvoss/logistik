@@ -17,7 +17,6 @@ import de.hsbremen.kss.genetic.fitness.VehicleFitnessTest;
 import de.hsbremen.kss.genetic.fitness.VehicleMakespanFitnessTest;
 import de.hsbremen.kss.genetic.mutation.Mutation;
 import de.hsbremen.kss.genetic.mutation.MutationBuilder;
-import de.hsbremen.kss.genetic.selection.LinearDistributionSelectionImpl;
 import de.hsbremen.kss.genetic.selection.RandomSelection;
 import de.hsbremen.kss.genetic.selection.Selection;
 import de.hsbremen.kss.util.RandomUtils;
@@ -42,15 +41,15 @@ public class GeneticAlgorithmFactory {
 
         //@formatter:off
         final List<Mutation> mutationMethods = new MutationBuilder(randomUtils)
-            .moveActionMutation(20)
-            .moveSubrouteMutation(10)
-            .swapOrderMutation(10)
-            .allocateLongestRouteMutation(2)
-            .allocateRandomRouteMutation(2)
-            .allocateShortestRouteMutation(2)
+            .moveActionMutation(1)
+            .moveSubrouteMutation(1)
+            .swapOrderMutation(1)
+            .allocateLongestRouteMutation(1)
+            .allocateRandomRouteMutation(1)
+            .allocateShortestRouteMutation(1)
             .combineTwoToursMutation(1)
-            .splitTourMutation(10)
-            .nullMutation(10)
+            .splitTourMutation(1)
+//            .nullMutation(1)
             .build();
         //@formatter:on
 
@@ -58,10 +57,10 @@ public class GeneticAlgorithmFactory {
         // crossoverMethods.add(new ControlStringCrossoverImpl(randomUtils));
 
         final Validator validator = new RightOrderValidatorImpl();
-        validator.enableLogging(false);
+        validator.enableLogging(true);
         Selection selectionMethod = null;
         selectionMethod = new RandomSelection(randomUtils);
-        selectionMethod = new LinearDistributionSelectionImpl(randomUtils);
+        // selectionMethod = new LinearDistributionSelectionImpl(randomUtils);
 
         final AbortionCheck abortionCheck = new AbortionCheckImpl(fitnessTest, maxIterations, abortCriterion);
         return new GeneticAlgorithmImpl(eventBus, fitnessTest, randomUtils, mutationMethods, crossoverMethods, validator, selectionMethod,

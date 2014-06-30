@@ -113,7 +113,7 @@ public final class App {
         });
 
         final PopulationGeneratorImpl populationGenerator = new PopulationGeneratorImpl(this.randomUtils);
-        final List<Plan> randomPlans = populationGenerator.createPopulation(generateConfiguration, constructionMethods, 200);
+        final List<Plan> randomPlans = populationGenerator.createPopulation(generateConfiguration, constructionMethods, 2000);
 
         final Plan plan = geneticAlgorithm.startOptimize(generateConfiguration, randomPlans);
 

@@ -8,7 +8,6 @@ import de.hsbremen.kss.configuration.Configuration;
 import de.hsbremen.kss.configuration.Order;
 import de.hsbremen.kss.configuration.Product;
 import de.hsbremen.kss.configuration.Vehicle;
-import de.hsbremen.kss.construction.SweepConstruction;
 import de.hsbremen.kss.model.Plan;
 import de.hsbremen.kss.model.Tour;
 import de.hsbremen.kss.util.ConstructionUtils;
@@ -52,7 +51,7 @@ public class SplitTourMutation implements Mutation {
                 final List<Tour> otherTours = new ArrayList<>(plan.getTours());
                 otherTours.remove(tourToSplit);
 
-                final Plan newPlan = new Plan(SweepConstruction.class);
+                final Plan newPlan = new Plan(SplitTourMutation.class);
 
                 newPlan.addTour(firstTour);
                 newPlan.addTour(secondTour);
