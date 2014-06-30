@@ -5,6 +5,9 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Observable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.math3.util.Precision;
 import org.slf4j.Logger;
@@ -132,22 +135,33 @@ public final class GeneticAlgorithmImpl extends Observable implements GeneticAlg
      * @return the next population
      */
     private List<Plan> createNextPopulation(final Configuration configuration, final PlanComparator planComparator, final List<Plan> oldPopulation) {
-        final List<Plan> nextPopulation = new ArrayList<>(oldPopulation.size() * 2);
+        final int numThreads = 4;
+        final ExecutorService executorService = Executors.newFixedThreadPool(numThreads);
+        final List<NextPopulationRunnable> runables = new ArrayList<>();
 
-        for (int i = 0; i < oldPopulation.size(); i++) {
-            final Plan firstParent = this.selectionMethod.select(oldPopulation);
-            final Plan secondParent = this.selectionMethod.select(oldPopulation);
-            final Plan child = createChild(configuration, firstParent, secondParent);
-            if (!child.maybeInvalid()) {
-                final boolean validate = this.validator.validate(configuration, child);
-                if (!validate) {
-                    System.out.println("test");
-                }
-            }
-            nextPopulation.add(child);
+        final int pieSize = oldPopulation.size() / numThreads;
+        for (int i = 0; i < numThreads; i++) {
+            final int fromIndex = i * pieSize;
+            final int toIndex = (i + 1) * pieSize;
+            final NextPopulationRunnable runnable = new NextPopulationRunnable(configuration, oldPopulation.subList(fromIndex, toIndex));
+            executorService.execute(runnable);
+            runables.add(runnable);
         }
 
+        executorService.shutdown();
+
+        try {
+            executorService.awaitTermination(Long.MAX_VALUE, TimeUnit.DAYS);
+        } catch (final InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        final List<Plan> nextPopulation = new ArrayList<>(oldPopulation.size() * 2);
+
         nextPopulation.addAll(oldPopulation);
+        for (final NextPopulationRunnable t : runables) {
+            nextPopulation.addAll(t.getNextPopulation());
+        }
 
         Collections.sort(nextPopulation, planComparator);
 
@@ -207,5 +221,41 @@ public final class GeneticAlgorithmImpl extends Observable implements GeneticAlg
         final int numTours = bestPlan.getTours().size();
         GeneticAlgorithmImpl.LOG.info("iteration: #" + iteration + ", best: " + best + ", worst:" + worst + ", avg: " + avg + ", numTours: "
                 + numTours);
+    }
+
+    public class NextPopulationRunnable implements Runnable {
+
+        private final List<Plan> oldPopulation;
+
+        private final List<Plan> nextPopulation;
+
+        private final Configuration configuration;
+
+        public NextPopulationRunnable(final Configuration configuration, final List<Plan> oldPopulation) {
+            this.configuration = configuration;
+            this.oldPopulation = oldPopulation;
+            this.nextPopulation = new ArrayList<>(oldPopulation.size());
+        }
+
+        @Override
+        public void run() {
+            for (int i = 0; i < this.oldPopulation.size(); i++) {
+                final Plan firstParent = GeneticAlgorithmImpl.this.selectionMethod.select(this.oldPopulation);
+                final Plan secondParent = GeneticAlgorithmImpl.this.selectionMethod.select(this.oldPopulation);
+                final Plan child = createChild(this.configuration, firstParent, secondParent);
+                if (!child.maybeInvalid()) {
+                    final boolean validate = GeneticAlgorithmImpl.this.validator.validate(this.configuration, child);
+                    if (!validate) {
+                        System.out.println("test");
+                    }
+                }
+                this.nextPopulation.add(child);
+            }
+        }
+
+        public List<Plan> getNextPopulation() {
+            return this.nextPopulation;
+        }
+
     }
 }
