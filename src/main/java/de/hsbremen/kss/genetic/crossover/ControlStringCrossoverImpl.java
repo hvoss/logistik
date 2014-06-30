@@ -1,4 +1,4 @@
-package de.hsbremen.kss.genetic;
+package de.hsbremen.kss.genetic.crossover;
 
 import java.util.ArrayList;
 import java.util.Collection;

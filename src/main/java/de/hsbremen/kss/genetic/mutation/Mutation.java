@@ -1,4 +1,4 @@
-package de.hsbremen.kss.genetic;
+package de.hsbremen.kss.genetic.mutation;
 
 import de.hsbremen.kss.configuration.Configuration;
 import de.hsbremen.kss.model.Plan;

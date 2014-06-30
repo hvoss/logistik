@@ -1,4 +1,4 @@
-package de.hsbremen.kss.fitness;
+package de.hsbremen.kss.genetic.fitness;
 
 import org.apache.commons.math3.util.FastMath;
 

@@ -6,6 +6,10 @@ import org.junit.Test;
 import de.hsbremen.kss.configuration.SampleOrders;
 import de.hsbremen.kss.configuration.SampleVehicle;
 import de.hsbremen.kss.construction.SweepConstruction;
+import de.hsbremen.kss.genetic.fitness.CapacityFitnessTest;
+import de.hsbremen.kss.genetic.fitness.FitnessTestBuilder;
+import de.hsbremen.kss.genetic.fitness.LengthFitnessTest;
+import de.hsbremen.kss.genetic.fitness.VehicleFitnessTest;
 import de.hsbremen.kss.model.Plan;
 import de.hsbremen.kss.model.Tour;
 

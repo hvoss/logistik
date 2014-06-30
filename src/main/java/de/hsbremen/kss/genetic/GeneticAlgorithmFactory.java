@@ -5,13 +5,21 @@ import java.util.List;
 
 import com.google.common.eventbus.EventBus;
 
-import de.hsbremen.kss.fitness.CapacityFitnessTest;
-import de.hsbremen.kss.fitness.FitnessTest;
-import de.hsbremen.kss.fitness.FitnessTestBuilder;
-import de.hsbremen.kss.fitness.LengthFitnessTest;
-import de.hsbremen.kss.fitness.LoadingFitnessTest;
-import de.hsbremen.kss.fitness.VehicleFitnessTest;
-import de.hsbremen.kss.fitness.VehicleMakespanFitnessTest;
+import de.hsbremen.kss.genetic.abortion.AbortionCheck;
+import de.hsbremen.kss.genetic.abortion.AbortionCheckImpl;
+import de.hsbremen.kss.genetic.crossover.Crossover;
+import de.hsbremen.kss.genetic.fitness.CapacityFitnessTest;
+import de.hsbremen.kss.genetic.fitness.FitnessTest;
+import de.hsbremen.kss.genetic.fitness.FitnessTestBuilder;
+import de.hsbremen.kss.genetic.fitness.LengthFitnessTest;
+import de.hsbremen.kss.genetic.fitness.LoadingFitnessTest;
+import de.hsbremen.kss.genetic.fitness.VehicleFitnessTest;
+import de.hsbremen.kss.genetic.fitness.VehicleMakespanFitnessTest;
+import de.hsbremen.kss.genetic.mutation.Mutation;
+import de.hsbremen.kss.genetic.mutation.MutationBuilder;
+import de.hsbremen.kss.genetic.selection.LinearDistributionSelectionImpl;
+import de.hsbremen.kss.genetic.selection.RandomSelection;
+import de.hsbremen.kss.genetic.selection.Selection;
 import de.hsbremen.kss.util.RandomUtils;
 import de.hsbremen.kss.validate.RightOrderValidatorImpl;
 import de.hsbremen.kss.validate.Validator;

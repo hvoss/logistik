@@ -1,4 +1,4 @@
-package de.hsbremen.kss.genetic;
+package de.hsbremen.kss.genetic.selection;
 
 import java.util.List;
 

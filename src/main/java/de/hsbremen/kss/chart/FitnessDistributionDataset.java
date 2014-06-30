@@ -9,8 +9,8 @@ import org.jfree.data.xy.XYSeries;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 
-import de.hsbremen.kss.events.NewPopulationEvent;
-import de.hsbremen.kss.fitness.FitnessTest;
+import de.hsbremen.kss.genetic.events.NewPopulationEvent;
+import de.hsbremen.kss.genetic.fitness.FitnessTest;
 
 public class FitnessDistributionDataset extends DefaultTableXYDataset {
 

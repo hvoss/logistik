@@ -6,6 +6,7 @@ import org.junit.Test;
 import de.hsbremen.kss.configuration.SampleOrders;
 import de.hsbremen.kss.configuration.SampleVehicle;
 import de.hsbremen.kss.construction.SweepConstruction;
+import de.hsbremen.kss.genetic.mutation.AllocateLongestRouteMutationImpl;
 import de.hsbremen.kss.model.Plan;
 import de.hsbremen.kss.model.Tour;
 import de.hsbremen.kss.util.RandomUtils;

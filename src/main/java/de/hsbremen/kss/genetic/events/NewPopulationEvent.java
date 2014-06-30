@@ -1,10 +1,10 @@
-package de.hsbremen.kss.events;
+package de.hsbremen.kss.genetic.events;
 
 import java.util.List;
 import java.util.Map;
 
-import de.hsbremen.kss.fitness.FitnessTest;
-import de.hsbremen.kss.fitness.FitnessTestBuilder;
+import de.hsbremen.kss.genetic.fitness.FitnessTest;
+import de.hsbremen.kss.genetic.fitness.FitnessTestBuilder;
 import de.hsbremen.kss.model.Plan;
 
 public class NewPopulationEvent {

@@ -1,8 +1,8 @@
-package de.hsbremen.kss.genetic;
+package de.hsbremen.kss.genetic.abortion;
 
 import java.util.List;
 
-import de.hsbremen.kss.fitness.FitnessTest;
+import de.hsbremen.kss.genetic.fitness.FitnessTest;
 import de.hsbremen.kss.model.Plan;
 
 public final class AbortionCheckImpl implements AbortionCheck {

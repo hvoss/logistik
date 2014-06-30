@@ -3,7 +3,7 @@ package de.hsbremen.kss.genetic;
 import java.util.Comparator;
 
 import de.hsbremen.kss.configuration.Configuration;
-import de.hsbremen.kss.fitness.FitnessTest;
+import de.hsbremen.kss.genetic.fitness.FitnessTest;
 import de.hsbremen.kss.model.Plan;
 import de.hsbremen.kss.validate.Validator;
 

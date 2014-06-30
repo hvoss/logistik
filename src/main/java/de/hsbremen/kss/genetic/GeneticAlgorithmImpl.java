@@ -13,8 +13,12 @@ import org.slf4j.LoggerFactory;
 import com.google.common.eventbus.EventBus;
 
 import de.hsbremen.kss.configuration.Configuration;
-import de.hsbremen.kss.events.NewPopulationEvent;
-import de.hsbremen.kss.fitness.FitnessTest;
+import de.hsbremen.kss.genetic.abortion.AbortionCheck;
+import de.hsbremen.kss.genetic.crossover.Crossover;
+import de.hsbremen.kss.genetic.events.NewPopulationEvent;
+import de.hsbremen.kss.genetic.fitness.FitnessTest;
+import de.hsbremen.kss.genetic.mutation.Mutation;
+import de.hsbremen.kss.genetic.selection.Selection;
 import de.hsbremen.kss.model.Plan;
 import de.hsbremen.kss.util.RandomUtils;
 import de.hsbremen.kss.validate.Validator;

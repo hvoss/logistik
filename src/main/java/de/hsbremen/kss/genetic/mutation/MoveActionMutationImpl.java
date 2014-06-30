@@ -1,4 +1,4 @@
-package de.hsbremen.kss.genetic;
+package de.hsbremen.kss.genetic.mutation;
 
 import java.util.ArrayList;
 import java.util.List;
