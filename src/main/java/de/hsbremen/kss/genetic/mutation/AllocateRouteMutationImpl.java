@@ -1,7 +1,6 @@
 package de.hsbremen.kss.genetic.mutation;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -17,7 +16,7 @@ import de.hsbremen.kss.model.Plan;
 import de.hsbremen.kss.model.Tour;
 import de.hsbremen.kss.util.RandomUtils;
 
-public abstract class AllocateRouteMutationImpl implements Mutation {
+public class AllocateRouteMutationImpl implements Mutation {
 
     private final RandomUtils randomUtils;
 
@@ -31,7 +30,7 @@ public abstract class AllocateRouteMutationImpl implements Mutation {
             final Plan newPlan = new Plan(AllocateRouteMutationImpl.class);
 
             final List<Tour> tours = new ArrayList<>(plan.getTours());
-            final Tour tourToRemove = chooseTourToAllocate(tours);
+            final Tour tourToRemove = this.randomUtils.randomElement(tours);
             tours.remove(tourToRemove);
 
             final List<Order> allocatedOrder = new ArrayList<>(tourToRemove.getOrders());
@@ -67,7 +66,5 @@ public abstract class AllocateRouteMutationImpl implements Mutation {
         }
         return plan;
     }
-
-    protected abstract Tour chooseTourToAllocate(Collection<Tour> tours);
 
 }

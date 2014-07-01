@@ -15,25 +15,9 @@ public class MutationBuilder {
         this.randomUtils = randomUtils;
     }
 
-    public MutationBuilder allocateLongestRouteMutation(final int num) {
+    public MutationBuilder allocateRouteMutation(final int num) {
         for (int i = 0; i < num; i++) {
-            this.mutations.add(new AllocateLongestRouteMutationImpl(this.randomUtils));
-        }
-
-        return this;
-    }
-
-    public MutationBuilder allocateShortestRouteMutation(final int num) {
-        for (int i = 0; i < num; i++) {
-            this.mutations.add(new AllocateShortestRouteMutationImpl(this.randomUtils));
-        }
-
-        return this;
-    }
-
-    public MutationBuilder allocateRandomRouteMutation(final int num) {
-        for (int i = 0; i < num; i++) {
-            this.mutations.add(new AllocateRandomRouteMutationImpl(this.randomUtils));
+            this.mutations.add(new AllocateRouteMutationImpl(this.randomUtils));
         }
 
         return this;
