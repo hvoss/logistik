@@ -25,8 +25,8 @@ public class RightOrderValidatorImpl implements Validator {
 
     @Override
     public boolean validate(final Configuration configuration, final Plan plan) {
-        if (plan.getValid() != null) {
-            return plan.getValid();
+        if (plan.getValid(this) != null) {
+            return plan.getValid(this);
         }
 
         try {
@@ -106,7 +106,7 @@ public class RightOrderValidatorImpl implements Validator {
                 allRight = false;
             }
 
-            plan.setValid(allRight);
+            plan.setValid(this, allRight);
 
             return allRight;
         } catch (final Exception ex) {

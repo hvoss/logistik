@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -18,7 +19,9 @@ import de.hsbremen.kss.configuration.Product;
 import de.hsbremen.kss.configuration.Station;
 import de.hsbremen.kss.configuration.Vehicle;
 import de.hsbremen.kss.construction.Construction;
+import de.hsbremen.kss.genetic.fitness.FitnessTest;
 import de.hsbremen.kss.genetic.mutation.MoveSubrouteMutation;
+import de.hsbremen.kss.validate.Validator;
 
 /**
  * The Class Plan.
@@ -37,9 +40,9 @@ public final class Plan {
     /** counter of the tour ids */
     private int tourIdCounter = 1;
 
-    private Boolean valid;
+    private final Map<Validator, Boolean> valid = new IdentityHashMap<>();
 
-    private Double fitness;
+    private final Map<FitnessTest, Double> fitness = new IdentityHashMap<>();
 
     /**
      * indicates whether the plan is locked or not. A locked plan can't be
@@ -192,20 +195,20 @@ public final class Plan {
         }
     }
 
-    public Boolean getValid() {
-        return this.valid;
+    public Boolean getValid(final Validator validator) {
+        return this.valid.get(validator);
     }
 
-    public void setValid(final Boolean valid) {
-        this.valid = valid;
+    public void setValid(final Validator validator, final Boolean valid) {
+        this.valid.put(validator, valid);
     }
 
-    public Double getFitness() {
-        return this.fitness;
+    public Double getFitness(final FitnessTest fitnessTest) {
+        return this.fitness.get(fitnessTest);
     }
 
-    public void setFitness(final Double fitness) {
-        this.fitness = fitness;
+    public void setFitness(final FitnessTest fitnessTest, final Double fitness) {
+        this.fitness.put(fitnessTest, fitness);
     }
 
     public double waitingTime() {

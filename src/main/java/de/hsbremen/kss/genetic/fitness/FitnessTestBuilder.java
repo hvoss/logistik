@@ -24,8 +24,8 @@ public class FitnessTestBuilder extends AbstractFitnessTest {
 
     @Override
     public Double calculateFitness(final Plan plan) {
-        if (plan.getFitness() != null) {
-            return plan.getFitness();
+        if (plan.getFitness(this) != null) {
+            return plan.getFitness(this);
         }
 
         double totalFitness = 0.0;
@@ -34,7 +34,7 @@ public class FitnessTestBuilder extends AbstractFitnessTest {
             totalFitness += fitnessTest.calculateFitness(plan);
         }
 
-        plan.setFitness(totalFitness);
+        plan.setFitness(this, totalFitness);
 
         return totalFitness;
     }
