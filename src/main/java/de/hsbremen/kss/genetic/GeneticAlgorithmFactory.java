@@ -7,6 +7,7 @@ import com.google.common.eventbus.EventBus;
 
 import de.hsbremen.kss.genetic.abortion.AbortionCheck;
 import de.hsbremen.kss.genetic.abortion.AbortionCheckImpl;
+import de.hsbremen.kss.genetic.crossover.ControlStringCrossoverImpl;
 import de.hsbremen.kss.genetic.crossover.Crossover;
 import de.hsbremen.kss.genetic.fitness.CapacityFitnessTest;
 import de.hsbremen.kss.genetic.fitness.FitnessTest;
@@ -25,7 +26,7 @@ import de.hsbremen.kss.validate.Validator;
 public class GeneticAlgorithmFactory {
 
     public static GeneticAlgorithm createGeneticAlgorithm(final EventBus eventBus, final RandomUtils randomUtils) {
-        final int maxIterations = 5000;
+        final int maxIterations = 100;
         final double abortCriterion = 0.0001;
 
         //@formatter:off
@@ -51,7 +52,11 @@ public class GeneticAlgorithmFactory {
         //@formatter:on
 
         final List<Crossover> crossoverMethods = new ArrayList<>();
-        // crossoverMethods.add(new ControlStringCrossoverImpl(randomUtils));
+        crossoverMethods.add(new ControlStringCrossoverImpl(randomUtils));
+        crossoverMethods.add(null);
+        crossoverMethods.add(null);
+        crossoverMethods.add(null);
+        crossoverMethods.add(null);
 
         final Validator validator = new RightOrderValidatorImpl();
         validator.enableLogging(true);

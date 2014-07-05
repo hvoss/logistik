@@ -2,9 +2,14 @@ package de.hsbremen.kss.genetic.crossover;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
+import de.hsbremen.kss.configuration.Configuration;
 import de.hsbremen.kss.configuration.Order;
+import de.hsbremen.kss.configuration.Product;
 import de.hsbremen.kss.construction.NearestNeighbor;
 import de.hsbremen.kss.model.Action;
 import de.hsbremen.kss.model.OrderAction;
@@ -21,33 +26,48 @@ public final class ControlStringCrossoverImpl implements Crossover {
     }
 
     @Override
-    public Plan crossover(final Plan firstPlan, final Plan secondPlan) {
+    public Plan crossover(final Configuration configuration, final Plan firstPlan, final Plan secondPlan) {
         final Plan newPlan = new Plan(NearestNeighbor.class);
-        Tour newTour;
-        final Collection<Order> ordersToIgnore = new ArrayList<Order>();
 
-        final List<Tour> parent1Tours = firstPlan.getTours();
-        final List<Tour> parent2Tours = secondPlan.getTours();
+        final Map<Product, List<Tour>> firstToursByProduct = firstPlan.toursByProduct();
+        final Map<Product, List<Tour>> secondToursByProduct = secondPlan.toursByProduct();
+        final Collection<Order> ordersToIgnore = new HashSet<Order>();
 
-        int parentSize;
-        List<Tour> firstCrossoverPartner, secondCrossoverPartner;
+        for (final Product product : configuration.getProducts()) {
+            final List<Tour> firstTours = firstToursByProduct.get(product);
+            final List<Tour> secondTours = secondToursByProduct.get(product);
 
-        if (parent1Tours.size() > parent2Tours.size()) {
-            parentSize = parent2Tours.size();
-            firstCrossoverPartner = parent2Tours;
-            secondCrossoverPartner = parent1Tours;
-        } else {
-            parentSize = parent1Tours.size();
-            firstCrossoverPartner = parent1Tours;
-            secondCrossoverPartner = parent2Tours;
-        }
-        for (int i = 0; i < parentSize; i++) {
-            newTour = new Tour(firstCrossoverPartner.get(i).getVehicle());
-            newTour.leafSourceDepot();
-            ordersToIgnore.addAll(newTour.getOrders());
-            crossover(newTour, firstCrossoverPartner.get(i), secondCrossoverPartner.get(i), ordersToIgnore);
-            newTour.gotoDestinationDepot();
-            newPlan.addTour(newTour);
+            while (!firstTours.isEmpty() || !secondTours.isEmpty()) {
+                final Tour firstTour = this.randomUtils.removeRandomElement(firstTours);
+                final Tour secondTour = this.randomUtils.removeRandomElement(secondTours);
+                Tour primaryTour;
+                Tour secondaryTour;
+                Tour newTour;
+
+                if (firstTour == null) {
+                    primaryTour = secondTour;
+                    secondaryTour = firstTour;
+                } else if (secondTour == null) {
+                    primaryTour = firstTour;
+                    secondaryTour = secondTour;
+                } else if (this.randomUtils.randomBoolean()) {
+                    primaryTour = firstTour;
+                    secondaryTour = secondTour;
+                } else {
+                    primaryTour = secondTour;
+                    secondaryTour = firstTour;
+                }
+
+                newTour = new Tour(primaryTour.getVehicle());
+                newTour.leafSourceDepot();
+                crossover(newTour, primaryTour, secondaryTour, ordersToIgnore);
+                ordersToIgnore.addAll(newTour.getOrders());
+                newTour.gotoDestinationDepot();
+
+                if (!newTour.getOrders().isEmpty()) {
+                    newPlan.addTour(newTour);
+                }
+            }
         }
 
         newPlan.lock();
@@ -56,8 +76,20 @@ public final class ControlStringCrossoverImpl implements Crossover {
     }
 
     private Tour crossover(final Tour newTour, final Tour firstTour, final Tour secondTour, final Collection<Order> orderToIgnore) {
-        final List<OrderAction> firstActions = new ArrayList<>(firstTour.getOrderActions());
-        final List<OrderAction> secondActions = new ArrayList<>(secondTour.getOrderActions());
+        final List<OrderAction> firstActions;
+        final List<OrderAction> secondActions;
+
+        if (firstTour != null) {
+            firstActions = new ArrayList<>(firstTour.getOrderActions());
+        } else {
+            firstActions = Collections.emptyList();
+        }
+
+        if (secondTour != null) {
+            secondActions = new ArrayList<>(secondTour.getOrderActions());
+        } else {
+            secondActions = Collections.emptyList();
+        }
 
         while (!firstActions.isEmpty() || !secondActions.isEmpty()) {
 

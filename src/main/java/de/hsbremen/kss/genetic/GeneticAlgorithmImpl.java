@@ -190,7 +190,7 @@ public final class GeneticAlgorithmImpl extends Observable implements GeneticAlg
 
         final Crossover crossoverMethod = this.randomUtils.randomElement(this.crossoverMethods);
         if (crossoverMethod != null) {
-            final Plan crossoverChild = crossoverMethod.crossover(firstParent, secondParent);
+            final Plan crossoverChild = crossoverMethod.crossover(configuration, firstParent, secondParent);
 
             child = crossoverChild;
         }

@@ -116,8 +116,11 @@ public class RandomUtils {
      * @return removed element.
      */
     public <T> T removeRandomElement(final List<T> elements) {
-        final int idx = nextInt(0, elements.size());
-        return elements.remove(idx);
+        if (elements != null && elements.size() > 0) {
+            final int idx = nextInt(0, elements.size());
+            return elements.remove(idx);
+        }
+        return null;
     }
 
     /**
