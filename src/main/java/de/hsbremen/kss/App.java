@@ -125,6 +125,8 @@ public final class App {
         App.LOG.info("valid:" + validator.validate(generateConfiguration, plan));
         App.LOG.info("fitness: " + vehicleMakespanFitnessTest.calculateFitness(plan));
         plan.logTours();
+
+        App.LOG.info(plan.constructionDistribution().toString());
     }
 
     public void start() {
@@ -162,6 +164,8 @@ public final class App {
         App.LOG.info("valid:" + validator.validate(circleConfig, plan));
         App.LOG.info("fitness: " + vehicleMakespanFitnessTest.calculateFitness(plan));
         plan.logTours();
+
+        App.LOG.info(plan.constructionDistribution().toString());
     }
 
     @Subscribe

@@ -51,7 +51,7 @@ public class SplitTourMutation implements Mutation {
                 final List<Tour> otherTours = new ArrayList<>(plan.getTours());
                 otherTours.remove(tourToSplit);
 
-                final Plan newPlan = new Plan(SplitTourMutation.class);
+                final Plan newPlan = new Plan(SplitTourMutation.class, plan);
 
                 newPlan.addTour(firstTour);
                 newPlan.addTour(secondTour);

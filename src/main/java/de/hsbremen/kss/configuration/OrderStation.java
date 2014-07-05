@@ -143,4 +143,58 @@ public final class OrderStation {
     public boolean isDestination() {
         return this == this.order.getDestination();
     }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((this.order == null) ? 0 : this.order.hashCode());
+        result = prime * result + ((this.serviceTime == null) ? 0 : this.serviceTime.hashCode());
+        result = prime * result + ((this.station == null) ? 0 : this.station.hashCode());
+        result = prime * result + ((this.timeWindow == null) ? 0 : this.timeWindow.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(final Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final OrderStation other = (OrderStation) obj;
+        if (this.order == null) {
+            if (other.order != null) {
+                return false;
+            }
+        } else if (!this.order.equals(other.order)) {
+            return false;
+        }
+        if (this.serviceTime == null) {
+            if (other.serviceTime != null) {
+                return false;
+            }
+        } else if (!this.serviceTime.equals(other.serviceTime)) {
+            return false;
+        }
+        if (this.station == null) {
+            if (other.station != null) {
+                return false;
+            }
+        } else if (!this.station.equals(other.station)) {
+            return false;
+        }
+        if (this.timeWindow == null) {
+            if (other.timeWindow != null) {
+                return false;
+            }
+        } else if (!this.timeWindow.equals(other.timeWindow)) {
+            return false;
+        }
+        return true;
+    }
 }

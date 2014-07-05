@@ -33,7 +33,7 @@ public class SwapOrderMutationImpl implements Mutation {
         if (!filteredTours.isEmpty()) {
             final List<Tour> tours = filteredTours.get(this.randomUtils.randomElement(filteredTours.keySet()));
 
-            final Plan newPlan = new Plan(SwapOrderMutationImpl.class);
+            final Plan newPlan = new Plan(SwapOrderMutationImpl.class, plan);
 
             final Tour firstTour = this.randomUtils.removeRandomElement(tours);
             final Tour secondTour = this.randomUtils.removeRandomElement(tours);

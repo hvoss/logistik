@@ -20,7 +20,7 @@ public class MoveSubrouteMutation implements Mutation {
 
     @Override
     public Plan mutate(final Configuration configuration, final Plan plan) {
-        final Plan mutatedPlan = new Plan(MoveSubrouteMutation.class);
+        final Plan mutatedPlan = new Plan(MoveSubrouteMutation.class, plan);
 
         final List<Tour> tours = new ArrayList<>(plan.getTours());
         if (tours.isEmpty()) {

@@ -27,7 +27,7 @@ public class AllocateRouteMutationImpl implements Mutation {
     @Override
     public Plan mutate(final Configuration configuration, final Plan plan) {
         if (plan.getTours().size() >= 2) {
-            final Plan newPlan = new Plan(AllocateRouteMutationImpl.class);
+            final Plan newPlan = new Plan(AllocateRouteMutationImpl.class, plan);
 
             final List<Tour> tours = new ArrayList<>(plan.getTours());
             final Tour tourToRemove = this.randomUtils.randomElement(tours);

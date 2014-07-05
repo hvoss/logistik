@@ -18,9 +18,9 @@ import de.hsbremen.kss.configuration.Order;
 import de.hsbremen.kss.configuration.Product;
 import de.hsbremen.kss.configuration.Station;
 import de.hsbremen.kss.configuration.Vehicle;
-import de.hsbremen.kss.construction.Construction;
 import de.hsbremen.kss.genetic.fitness.FitnessTest;
 import de.hsbremen.kss.genetic.mutation.MoveSubrouteMutation;
+import de.hsbremen.kss.util.CounterMap;
 import de.hsbremen.kss.validate.Validator;
 
 /**
@@ -35,7 +35,7 @@ public final class Plan {
     private final Class<?> constructionClazz;
 
     /** The tours. */
-    private final List<Tour> tours;
+    private final List<Tour> tours = new ArrayList<>();
 
     /** counter of the tour ids */
     private int tourIdCounter = 1;
@@ -43,6 +43,8 @@ public final class Plan {
     private final Map<Validator, Boolean> valid = new IdentityHashMap<>();
 
     private final Map<FitnessTest, Double> fitness = new IdentityHashMap<>();
+
+    private final Plan[] parents;
 
     /**
      * indicates whether the plan is locked or not. A locked plan can't be
@@ -56,22 +58,9 @@ public final class Plan {
      * @param constructionClazz
      *            the implementation which generates the plan
      */
-    public Plan(final Class<?> constructionClazz) {
+    public Plan(final Class<?> constructionClazz, final Plan... parents) {
+        this.parents = parents;
         this.constructionClazz = constructionClazz;
-        this.tours = new ArrayList<>();
-    }
-
-    /**
-     * copies a plan.
-     * 
-     * @param constructionClazz
-     *            the implementation which generates the plan
-     * @param plan
-     *            plan to copy
-     */
-    public Plan(final Class<? extends Construction> constructionClazz, final Plan plan) {
-        this.constructionClazz = constructionClazz;
-        this.tours = new ArrayList<>(plan.tours);
     }
 
     /**
@@ -271,4 +260,20 @@ public final class Plan {
         return this.constructionClazz == MoveSubrouteMutation.class;
     }
 
+    public CounterMap<Class<?>> constructionDistribution() {
+        CounterMap<Class<?>> distribution = null;
+        if (this.parents != null && this.parents.length > 0) {
+            for (final Plan parent : this.parents) {
+                if (distribution == null) {
+                    distribution = parent.constructionDistribution();
+                } else {
+                    distribution.putAll(parent.constructionDistribution());
+                }
+            }
+        } else {
+            distribution = new CounterMap<>();
+        }
+        distribution.put(this.constructionClazz, 1);
+        return distribution;
+    }
 }

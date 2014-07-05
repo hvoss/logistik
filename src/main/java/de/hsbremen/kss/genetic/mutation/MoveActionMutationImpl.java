@@ -20,7 +20,7 @@ public class MoveActionMutationImpl implements Mutation {
 
     @Override
     public Plan mutate(final Configuration configuration, final Plan plan) {
-        final Plan newPlan = new Plan(MoveActionMutationImpl.class);
+        final Plan newPlan = new Plan(MoveActionMutationImpl.class, plan);
 
         final List<Tour> tours = new ArrayList<>(plan.getTours());
         final Tour tourToMutate = this.randomUtils.removeRandomElement(tours);
