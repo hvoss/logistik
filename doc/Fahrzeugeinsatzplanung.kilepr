@@ -10,7 +10,7 @@ kile_livePreviewTool=LivePreview-PDFLaTeX
 kileprversion=2
 kileversion=2.9.60
 lastDocument=Fahrzeugeinsatzplanung.tex
-masterDocument=
+masterDocument=Fahrzeugeinsatzplanung.tex
 name=Fahrzeugeinsatzplanung
 pkg_extIsRegExp=false
 pkg_extensions=.cls .sty .bbx .cbx .lbx
@@ -195,10 +195,10 @@ order=9
 
 [item:Umsetzung.tex]
 archive=true
-column=0
+column=30
 encoding=System
 highlight=LaTeX
-line=5
+line=9
 mode=LaTeX
 open=true
 order=5
@@ -276,8 +276,8 @@ JumpList=
 ViMarks=
 
 [view-settings,view=0,item:Umsetzung.tex]
-CursorColumn=0
-CursorLine=5
+CursorColumn=30
+CursorLine=9
 JumpList=
 ViMarks=
 

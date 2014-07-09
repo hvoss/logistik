@@ -1,8 +1,23 @@
 \section{Softwarearchitektur}
 
 \subsection{Systemdesign}
+Das Systemdesign setzt sich im wesentlichen aus den folgenden vier Modulen zusammen:
+\begin{enumerate}
+ \item Konfigurationsgenerierung
+ \item Konstruktionsverfahren
+ \item Genetisches Optimierungsverfahren
+ \item Ergebnisvisualisierung
+\end{enumerate}
+Desweiteren sind zwei Datenmodelle definiert:
+\begin{enumerate}
+ \item Konfiguration-Datenmodell
+ \item Ergebnis-Datenmodell
+\end{enumerate}
 
 \subsection{Konfigurations-Datenmodell}
+Das Konfiguration-Datenmodell beschreibt die Konfiguration, die vom Anwender zur Verfügung gestellt wird. Sie umfasst Stationen, Fahrzeuge, Produkte, Aufträge und Zeitfenster (siehe \Fref{fig:KonfigurationDatenmodell}). 
+
+\myfigure[width=0.95\textwidth]{KonfigurationDatenmodell}{../src/main/java/de/hsbremen/kss/genetic/GeneticAlgorithm.png}{Klassendiagramm vom genetischen Algorithmus}
 
 \subsection{Ergebnis-Datenmodell}
 
