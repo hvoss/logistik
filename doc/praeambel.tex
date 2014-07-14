@@ -1,0 +1,57 @@
+% Seitenabstände und Kopf-/ Fußzeile
+\usepackage
+[
+	left=2.45cm,
+	right=2.50cm,
+	top=0.5cm,
+	bottom=1.5cm,
+	headheight=2.0cm,
+	includeheadfoot
+]{geometry}
+
+% Deutsche Begriffe
+\usepackage{polyglossia}
+\setdefaultlanguage[spelling=new, babelshorthands=true]{german}
+
+%Graphiken einbinden
+\usepackage{graphicx} 
+
+%Schoene Verweise
+\usepackage[german]{fancyref}
+
+% Weitere Tabellen Funktionen
+\usepackage{tabularx}
+
+% Macht das Label "`LastPage"' auf die letzte Seite.
+\usepackage{lastpage}
+
+% Literatur-Verzeichniss nach DIN 1505
+\usepackage[numbers]{natbib}
+
+% Horizontale Linien
+\usepackage{booktabs}
+
+% Mehrere Bilder nebeneinander
+\usepackage{subfigure}
+
+\usepackage{scrpage2}
+\pagestyle{scrheadings}
+\ihead{\mySubject}
+\chead{ }
+\ohead{\myDate}
+\ifoot{\myAuthor }
+\cfoot{ }
+\ofoot{Seite \thepage~von~\pageref{LastPage}}
+
+
+% Kein Einrücken beim Absatz, dafür eine halbe Zeile Abstand
+\setlength\parindent{0pt}
+\setlength\parskip{6pt}
+
+
+%%%%%%%% Tabellen
+
+\subject{\mySubject}
+\title{\myTitle}
+\subtitle{\mySubtitle}
+\author{\myAuthor}

@@ -1,0 +1,65 @@
+% Stellt ein Bild mit Label und Caption dar.
+%
+% Parameter:
+% #1: Größe (optional)
+% #2: Label
+% #3: Dateiname
+% 4#: Caption
+\newcommand{\myfigure}[4][width=0.95\textwidth]{
+  \begin{figure}[ht!]
+    \begin{center}
+      \includegraphics[#1]{#3}
+      \caption{#4}
+      \label{fig:#2}
+    \end{center}
+  \end{figure}
+}
+
+% Stellt zwei Bilder nebeneinander dar.
+% Die gesamte Figure kann mit fig:#1 referenziert werden.
+% Die linke Figure kann mit fig:#1_l und die rechte mit fig:#1_r referenziert werden.
+%
+% Parameter:
+% #1: Gesamtes Label
+% #2: Gesamte Caption
+% #3: Dateiname links
+% #4: Größe links
+% #5: Caption links
+% #6: Dateiname rechts
+% #7: Größe rechts
+% #8: Caption rechts
+\newcommand{\twoFigures}[8]{
+  \begin{figure}[ht!]
+    \begin{center}
+      \subfigure[#5]{
+	\label{fig:#1_l}
+	\includegraphics[#4]{#3} 
+      }
+      \hspace{0.5cm}
+      \subfigure[#8]{
+	\label{fig:#1_r}
+	\includegraphics[#7]{#6} 
+      }
+      \caption{#2}
+      \label{fig:#1}
+    \end{center}
+  \end{figure}
+}
+
+
+% Gibt eine Einheit einheitlich aus.
+%
+% Parameter:
+% #1: Einheit die einheitlich ausgegeben werden soll.
+\newcommand{\einheit}[1]{
+  \textit{[#1]}
+}
+ 
+\newcommand{\processlist}[3][\relax]{% 
+  \def\listfinish{#1}% 
+  \long\def\listact{#2}% 
+  \processnext#3\listfinish} 
+\newcommand{\processnext}[1]{% 
+  \ifx\listfinish#1\empty\else\listact{#1}\expandafter\processnext\fi} 
+  
+\newcommand{\TODO}[1]{\textbf{\textit{TODO(#1)}}}
