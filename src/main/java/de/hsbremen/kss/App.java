@@ -113,7 +113,14 @@ public final class App {
         });
 
         final PopulationGeneratorImpl populationGenerator = new PopulationGeneratorImpl(this.randomUtils);
-        final List<Plan> randomPlans = populationGenerator.createPopulation(generateConfiguration, constructionMethods, 2000);
+        final List<Plan> randomPlans = populationGenerator.createPopulation(generateConfiguration, constructionMethods, 200);
+        
+//        double sum = 0.0;
+//        for (Plan plan : randomPlans) {
+//        	sum += plan.length();
+//        }
+        
+//        App.LOG.info("Average Length of Random Plans: " + sum/200);
 
         final Plan plan = geneticAlgorithm.startOptimize(generateConfiguration, randomPlans);
 
