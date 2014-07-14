@@ -28,7 +28,7 @@ import de.hsbremen.kss.validate.Validator;
 public class GeneticAlgorithmFactory {
 
     public static GeneticAlgorithm createGeneticAlgorithm(final EventBus eventBus, final RandomUtils randomUtils) {
-        final int maxIterations = 1000;
+        final int maxIterations = 2000;
         final double abortCriterion = 0.0001;
 
         //@formatter:off
@@ -49,7 +49,7 @@ public class GeneticAlgorithmFactory {
             .allocateRouteMutation(6)
             .combineTwoToursMutation(1)
             .splitTourMutation(1)
-//            .nullMutation(1)
+            .nullMutation(1)
             .build();
         //@formatter:on
 
