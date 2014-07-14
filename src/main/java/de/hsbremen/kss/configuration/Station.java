@@ -17,9 +17,9 @@ import org.slf4j.LoggerFactory;
 
 /**
  * represents a station.
- * 
+ *
  * @author henrik
- * 
+ *
  */
 public final class Station {
 
@@ -41,17 +41,11 @@ public final class Station {
      */
     private final Set<Order> sourceOrders;
 
-    /** source orders wrapped by a {@link Collections#unmodifiableSet(Set)} */
-    private final Set<Order> umSourceOrders;
-
     /**
      * a list of orders for which this station is assigned as the destination
      * station.
      */
     private final Set<Order> destinationOrders;
-
-    /** destination orders wrapped by a {@link Collections#unmodifiableSet(Set)} */
-    private final Set<Order> umDestinationOrders;
 
     /** cached distances to other stations */
     private final Map<Station, Double> distances;
@@ -67,7 +61,7 @@ public final class Station {
 
     /**
      * Instantiates a new station.
-     * 
+     *
      * @param id
      *            the id
      * @param name
@@ -86,9 +80,6 @@ public final class Station {
         this.sourceOrders = new HashSet<>();
         this.destinationOrders = new HashSet<Order>();
 
-        this.umDestinationOrders = Collections.unmodifiableSet(this.destinationOrders);
-        this.umSourceOrders = Collections.unmodifiableSet(this.sourceOrders);
-
         this.distances = new HashMap<>();
         this.angles = new HashMap<>();
 
@@ -98,7 +89,7 @@ public final class Station {
 
     /**
      * copy constructor.
-     * 
+     *
      * @param station
      *            station to copy
      */
@@ -108,7 +99,7 @@ public final class Station {
 
     /**
      * Gets the id.
-     * 
+     *
      * @return the id
      */
     public Integer getId() {
@@ -117,7 +108,7 @@ public final class Station {
 
     /**
      * Gets the name.
-     * 
+     *
      * @return the name
      */
     public String getName() {
@@ -126,7 +117,7 @@ public final class Station {
 
     /**
      * Gets the coordinates.
-     * 
+     *
      * @return the coordinates
      */
     public Vector2D getCoordinates() {
@@ -136,28 +127,28 @@ public final class Station {
     /**
      * Gets the a list of orders for which this station is assigned as the
      * source station.
-     * 
+     *
      * @return the a list of orders for which this station is assigned as the
      *         source station
      */
     public Set<Order> getSourceOrders() {
-        return this.umSourceOrders;
+        return Collections.unmodifiableSet(this.sourceOrders);
     }
 
     /**
      * Gets the a list of orders for which this station is assigned as the
      * destination station.
-     * 
+     *
      * @return the a list of orders for which this station is assigned as the
      *         destination station
      */
     public Set<Order> getDestinationOrders() {
-        return this.umDestinationOrders;
+        return Collections.unmodifiableSet(this.destinationOrders);
     }
 
     /**
      * Calculates the distance to an other station.
-     * 
+     *
      * @param station
      *            the other station
      * @return the distance
@@ -175,7 +166,7 @@ public final class Station {
 
     /**
      * returns the angle (rad) to another station.
-     * 
+     *
      * @param station
      *            the other station
      * @return the angle (rad) to another station.
@@ -200,7 +191,7 @@ public final class Station {
 
     /**
      * Gets the source products.
-     * 
+     *
      * @return the source products
      */
     public Set<Product> getSourceProducts() {
@@ -219,7 +210,7 @@ public final class Station {
 
     /**
      * adds a order for which this station is assigned as the source station.
-     * 
+     *
      * @param order
      *            order for which this station is assigned as the source station
      */
@@ -234,7 +225,7 @@ public final class Station {
     /**
      * adds a order for which this station is assigned as the destination
      * station.
-     * 
+     *
      * @param order
      *            order for which this station is assigned as the destination
      *            station
@@ -254,7 +245,7 @@ public final class Station {
 
     /**
      * finds the nearest station in a collection of stations.
-     * 
+     *
      * @param stations
      *            stations to check
      * @return the nearest station
@@ -271,7 +262,7 @@ public final class Station {
 
     /**
      * finds the nearest source station in a collection of orders.
-     * 
+     *
      * @param orders
      *            orders to check
      * @return the nearest source station
@@ -296,7 +287,7 @@ public final class Station {
 
     /**
      * logs the distance between all given stations.
-     * 
+     *
      * @param vehicle
      *            vehicle used for traveling
      * @param stations
@@ -350,7 +341,7 @@ public final class Station {
 
     /**
      * calculates the length of a route.
-     * 
+     *
      * @param route
      *            route to calculate
      * @return length of the route
@@ -371,7 +362,7 @@ public final class Station {
 
     /**
      * returns the nearest station out of a collection of stations.
-     * 
+     *
      * @param stations
      *            stations to be analyzed
      * @return the nearest station
@@ -389,7 +380,7 @@ public final class Station {
 
     /**
      * copies a collection of stations.
-     * 
+     *
      * @param stations
      *            stations to copy.
      * @return copied stations

@@ -8,12 +8,11 @@ import org.apache.commons.lang3.Validate;
 
 import de.hsbremen.kss.util.TimeUtils;
 
-// TODO: Auto-generated Javadoc
 /**
  * represents a order of a customer.
- * 
+ *
  * @author henrik
- * 
+ *
  */
 public final class Order {
 
@@ -37,7 +36,7 @@ public final class Order {
 
     /**
      * Instantiates a new order.
-     * 
+     *
      * @param id
      *            the id
      * @param name
@@ -74,7 +73,7 @@ public final class Order {
 
     /**
      * Gets the id.
-     * 
+     *
      * @return the id
      */
     public int getId() {
@@ -83,7 +82,7 @@ public final class Order {
 
     /**
      * Gets the name.
-     * 
+     *
      * @return the name
      */
     public String getName() {
@@ -92,7 +91,7 @@ public final class Order {
 
     /**
      * Gets the source station.
-     * 
+     *
      * @return the source station
      */
     public Station getSourceStation() {
@@ -101,7 +100,7 @@ public final class Order {
 
     /**
      * Gets the destination station.
-     * 
+     *
      * @return the destination station
      */
     public Station getDestinationStation() {
@@ -110,7 +109,7 @@ public final class Order {
 
     /**
      * Gets the source.
-     * 
+     *
      * @return the source
      */
     public OrderStation getSource() {
@@ -119,7 +118,7 @@ public final class Order {
 
     /**
      * Gets the destination.
-     * 
+     *
      * @return the destination
      */
     public OrderStation getDestination() {
@@ -128,7 +127,7 @@ public final class Order {
 
     /**
      * Gets the product.
-     * 
+     *
      * @return the product
      */
     public Product getProduct() {
@@ -137,7 +136,7 @@ public final class Order {
 
     /**
      * Gets the amount.
-     * 
+     *
      * @return the amount
      */
     public Integer getAmount() {
@@ -146,7 +145,7 @@ public final class Order {
 
     /**
      * extracts all source stations of a collection of {@link Order}s.
-     * 
+     *
      * @param orders
      *            collection of orders to check
      * @return a set of all source stations
@@ -163,7 +162,7 @@ public final class Order {
 
     /**
      * extracts all destination stations of a collection of {@link Order}s.
-     * 
+     *
      * @param orders
      *            collection of orders to check
      * @return a set of all destination stations
@@ -183,7 +182,7 @@ public final class Order {
 
     /**
      * extracts all stations of a collection of {@link Order}s.
-     * 
+     *
      * @param orders
      *            collection of orders to check
      * @return a set of all stations
@@ -205,7 +204,7 @@ public final class Order {
 
     /**
      * filters the given orders by a maximum weight
-     * 
+     *
      * @param orderToFilter
      *            orders to filter
      * @param maxAmount
@@ -226,7 +225,7 @@ public final class Order {
 
     /**
      * calculates the complete unload duration.
-     * 
+     *
      * @param orders
      *            orders used for calculation.
      * @return the complete unload duration
@@ -243,7 +242,7 @@ public final class Order {
 
     /**
      * filters the given orders by its destination station.
-     * 
+     *
      * @param orderToFilter
      *            orders that should be filtered.
      * @param station
@@ -264,15 +263,16 @@ public final class Order {
 
     /**
      * filters the given orders by its source station.
-     * @param vehicle 
      * 
+     * @param vehicle
+     *
      * @param orderToFilter
      *            orders that should be filtered.
      * @param station
      *            station to search for.
      * @return the filtered stations
      */
-    public static Set<Order> filterOrdersBySourceStation(Vehicle vehicle, final Iterable<Order> orderToFilter, final Station station) {
+    public static Set<Order> filterOrdersBySourceStation(final Vehicle vehicle, final Iterable<Order> orderToFilter, final Station station) {
         final Set<Order> filterdOrder = new HashSet<>();
 
         for (final Order order : orderToFilter) {
@@ -286,8 +286,9 @@ public final class Order {
 
     /**
      * filters the given orders by its source station.
-     * @param vehicle 
      * 
+     * @param vehicle
+     *
      * @param orderToFilter
      *            orders that should be filtered.
      * @param station
@@ -306,10 +307,9 @@ public final class Order {
         return filterdOrder;
     }
 
-    
     /**
      * calculates the complete service time.
-     * 
+     *
      * @return the complete service time
      */
     public double serviceTime() {

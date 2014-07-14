@@ -20,12 +20,9 @@ public final class Product {
     /** vehicles which can transport this product. */
     private final Set<Vehicle> vehicles;
 
-    /** vehicles wrapped by a {@link Collections#unmodifiableSet(Set)} */
-    private final Set<Vehicle> umVehicles;
-
     /**
      * Instantiates a new product.
-     * 
+     *
      * @param id
      *            the id
      * @param name
@@ -39,13 +36,11 @@ public final class Product {
         this.name = name;
 
         this.vehicles = new HashSet<>();
-
-        this.umVehicles = Collections.unmodifiableSet(this.vehicles);
     }
 
     /**
      * Gets the id.
-     * 
+     *
      * @return the id
      */
     public Integer getId() {
@@ -54,7 +49,7 @@ public final class Product {
 
     /**
      * Gets the name.
-     * 
+     *
      * @return the name
      */
     public String getName() {
@@ -63,16 +58,16 @@ public final class Product {
 
     /**
      * Gets the vehicles which can transport this product.
-     * 
+     *
      * @return the vehicles which can transport this product
      */
     public Set<Vehicle> getVehicles() {
-        return this.umVehicles;
+        return Collections.unmodifiableSet(this.vehicles);
     }
 
     /**
      * adds vehicle which can transport this product.
-     * 
+     *
      * @param vehicle
      *            vehicle which can transport this product
      */
