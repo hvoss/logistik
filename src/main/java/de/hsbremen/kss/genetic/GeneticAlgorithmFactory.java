@@ -28,33 +28,33 @@ import de.hsbremen.kss.validate.Validator;
 public class GeneticAlgorithmFactory {
 
     public static GeneticAlgorithm createGeneticAlgorithm(final EventBus eventBus, final RandomUtils randomUtils) {
-        final int maxIterations = 5000;
-        final double abortCriterion = 0.001;
+        final int maxIterations = 2000;
+        final double abortCriterion = 0.0001;
 
-        // @formatter:off
+        //@formatter:off
         final FitnessTest fitnessTest = new FitnessTestBuilder()
-        .addFitnessTest(new LengthFitnessTest(2))
-        .addFitnessTest(new VehicleFitnessTest(8, 1.5))
-        .addFitnessTest(new CapacityFitnessTest(5))
-        .addFitnessTest(new VehicleMakespanFitnessTest(1.2))
-        .addFitnessTest(new LoadingFitnessTest(1.2))
-        ;
-        // @formatter:on
+                .addFitnessTest(new LengthFitnessTest(1))
+                .addFitnessTest(new VehicleFitnessTest(1, 2))
+                .addFitnessTest(new CapacityFitnessTest(5))
+                .addFitnessTest(new VehicleMakespanFitnessTest(1.2))
+                .addFitnessTest(new LoadingFitnessTest(1.2))
+                ;
+        //@formatter:on
 
         //@formatter:off
         final List<Mutation> mutationMethods = new MutationBuilder(randomUtils)
-        .moveActionMutation(1)
-        .moveSubrouteMutation(1)
-        .swapOrderMutation(1)
-        .allocateRouteMutation(1)
-        .combineTwoToursMutation(1)
-        .splitTourMutation(1)
-        //            .nullMutation(1)
-        .build();
+            .moveActionMutation(20)
+            .moveSubrouteMutation(10)
+            .swapOrderMutation(10)
+            .allocateRouteMutation(6)
+            .combineTwoToursMutation(1)
+            .splitTourMutation(1)
+            .nullMutation(1)
+            .build();
         //@formatter:on
 
         final List<Crossover> crossoverMethods = new ArrayList<>();
-        crossoverMethods.add(new ControlStringCrossoverImpl(randomUtils));
+//        crossoverMethods.add(new ControlStringCrossoverImpl(randomUtils));
         crossoverMethods.add(null);
         crossoverMethods.add(null);
         crossoverMethods.add(null);
@@ -64,7 +64,7 @@ public class GeneticAlgorithmFactory {
         validator.enableLogging(true);
         Selection selectionMethod = null;
         selectionMethod = new RandomSelection(randomUtils);
-        selectionMethod = new LinearDistributionSelectionImpl(randomUtils);
+//        selectionMethod = new LinearDistributionSelectionImpl(randomUtils);
 
         final AbortionCheck abortionCheck = new AbortionCheckImpl(fitnessTest, maxIterations, abortCriterion);
         return new GeneticAlgorithmImpl(eventBus, fitnessTest, randomUtils, mutationMethods, crossoverMethods, validator, selectionMethod,

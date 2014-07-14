@@ -190,7 +190,7 @@
 			<ProductId>1</ProductId>
 			<Capacity>4</Capacity>
 		</Vehicle>
-		<Vehicle id="2">
+		<!-- <Vehicle id="2">
 			<Name>LKW</Name>
 			<SourceDepotId>13</SourceDepotId>
 			<DestinationDepotId>13</DestinationDepotId>
@@ -215,18 +215,18 @@
 			</Timespan>
 			<ProductId>3</ProductId>
 			<Capacity>4</Capacity>
-		</Vehicle>
+		</Vehicle> -->
 	</Vehicles>
-
+ 	
 	<Products>
 		<Product id="1">
 			<Name>Snickers</Name>
 		</Product>
-		<Product id="2">
+		<!-- <Product id="2">
 			<Name>Mars</Name>
 		</Product>
 				<Product id="3">
 			<Name>Twix</Name>
-		</Product>
+		</Product> -->
 	</Products>
 </Configuration>
