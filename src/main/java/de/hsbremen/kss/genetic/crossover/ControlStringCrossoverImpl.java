@@ -10,7 +10,6 @@ import java.util.Map;
 import de.hsbremen.kss.configuration.Configuration;
 import de.hsbremen.kss.configuration.Order;
 import de.hsbremen.kss.configuration.Product;
-import de.hsbremen.kss.construction.NearestNeighbor;
 import de.hsbremen.kss.model.Action;
 import de.hsbremen.kss.model.OrderAction;
 import de.hsbremen.kss.model.Plan;
@@ -27,7 +26,7 @@ public final class ControlStringCrossoverImpl implements Crossover {
 
     @Override
     public Plan crossover(final Configuration configuration, final Plan firstPlan, final Plan secondPlan) {
-        final Plan newPlan = new Plan(NearestNeighbor.class);
+        final Plan newPlan = new Plan(ControlStringCrossoverImpl.class, firstPlan, secondPlan);
 
         final Map<Product, List<Tour>> firstToursByProduct = firstPlan.toursByProduct();
         final Map<Product, List<Tour>> secondToursByProduct = secondPlan.toursByProduct();

@@ -2,6 +2,7 @@ package de.hsbremen.kss.genetic.mutation;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -14,6 +15,7 @@ import de.hsbremen.kss.model.OrderLoadAction;
 import de.hsbremen.kss.model.OrderUnloadAction;
 import de.hsbremen.kss.model.Plan;
 import de.hsbremen.kss.model.Tour;
+import de.hsbremen.kss.util.ConstructionUtils;
 import de.hsbremen.kss.util.RandomUtils;
 
 public class AllocateRouteMutationImpl implements Mutation {
@@ -26,10 +28,15 @@ public class AllocateRouteMutationImpl implements Mutation {
 
     @Override
     public Plan mutate(final Configuration configuration, final Plan plan) {
-        if (plan.getTours().size() >= 2) {
+        final Map<Product, List<Tour>> toursByProduct = plan.toursByProduct();
+        final Map<Product, List<Tour>> filterdTours = ConstructionUtils.filter(toursByProduct, 2);
+
+        if (!filterdTours.isEmpty()) {
             final Plan newPlan = new Plan(AllocateRouteMutationImpl.class, plan);
 
-            final List<Tour> tours = new ArrayList<>(plan.getTours());
+            final List<Tour> tours = filterdTours.get(this.randomUtils.randomElement(filterdTours.keySet()));
+            final List<Tour> otherTours = new ArrayList<>(plan.getTours());
+            otherTours.removeAll(tours);
             final Tour tourToRemove = this.randomUtils.randomElement(tours);
             tours.remove(tourToRemove);
 
@@ -60,6 +67,8 @@ public class AllocateRouteMutationImpl implements Mutation {
                 newTour.gotoDestinationDepot();
                 newPlan.addTour(newTour);
             }
+
+            newPlan.addTours(otherTours);
 
             newPlan.lock();
             return newPlan;
