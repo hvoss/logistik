@@ -157,6 +157,22 @@ Den letzten genetischen Operator für eine Mutation stellt die Kombination von 2
 
 \FloatBarrier
 ~\newpage
+\subsection{Fitnesstest}
+\label{sec:Fitnesstest}
+Um die Individuen einer Population bewerten zu können, werden sie einem Fitnesstest unterzogen. Der hierbei ermittelte Fitnesswert gibt dann Aufschluss über die Qualität eines Individuums. In der Fahrzeugeinsatzplanung ist die Qualität eines Plans von verschiedenen Komponenten abhängig, beispielsweise von der Länge, von der Anzahl der verwendeten Fahrzeuge oder von der Art und Anzahl der Restriktionsverletzungen. Der in diesem Projekt verwendete Fitnesstest ist modular aufgebaut und sieht für die unterschiedlichen Komponenten jeweils einen separaten Baustein vor. Folgende Bausteine sind in der Applikation vorhanden:
+\begin{itemize}
+ \item Länge eines Plans ({\slshape{LengthFitnessTest}})
+ \item die Anzahl der verwendeten Fahrzeuge für einen Plan ({\slshape{VehicleFitnessTest}})
+ \item Verletzung der Kapazitätsbedingungen ({\slshape{CapacityFitnessTest}})
+ \item Verletzung der Zeitfenster der Fahrzeuge ({\slshape{VehicleMakeSpanFitnessTest}})
+ \item Verletzung der Zeitfenster der Aufträge ({\slshape{LoadingFitnessTest}})
+\end{itemize}
+Je nach Wunsch der Optimierung können diese Bausteine dann zusammengesetzt werden. Hierbei sind alle Kombinationen der genannten Bausteine möglich, auch die Verwendung eines einzelnen Bausteins ist vorgesehen.
+
+Jeder Baustein berechnet hierbei seinen eignen Fitnesswert und je nach Zusammensetzung des Fitnesstests werden diese dann addiert. Ziel ist es die Summe der einzelnen Fitnesswerte zu minimieren. Die Problematik beim Berechnen der Gesamtfitness besteht darin, dass unterschiedliche Einheiten verwendet werden, zum Beispiel Mengenangaben für die Anzahl der Fahrzeuge oder Zeitangaben für Verletzungen der Zeitfenster. Deshalb wird als Basis für die jeweiligen Fitnesswerte die Länge eines Plans verwendet. Je nach Baustein wird die Länge dann mit einem bestimmten Faktor multipliziert. Dieser Faktor ergibt sich aus der Wichtigkeit eines Bausteins und aus einem spezifischen Wert, beispielsweise die Anzahl der verwendeten Fahrzeuge. Die Wichtigkeit eines Bausteins kann von außen angegeben werden. Dadurch ist es einem Anwender möglich, festzulegen welche Komponenten für ihn wichtig sind, zum Beispiel möchte Anwender A die kürzeste Strecke zurücklegen und nimmt dafür Verletzungen der Zeitfenster in Kauf, dagegen möchte Anwender B unbedingt alle Restriktionen einhalten und akzeptiert einen längeren Weg.
+
+Eine Besonderheit bei diesem Fitnesstest stellen die Bausteine mit den Restriktionsverletzungen dar. Bei diesen Bausteinen wird folgendes Verhalten umgesetzt: mehrere kleine Verletzungen sind nicht so schlimm wie eine große, beispielsweise ist die Qualität eines Plans besser, wenn zwei Fahrzeuge um jeweils eine halbe Stunde ihr Zeitfenster verfehlen als wenn ein Fahrzeug um eine Stunde sein Zeitfenster verfehlt. Dafür wird eine exponentielle Bestrafung eingesetzt.
+
 \subsection{Bildung der Nachfolgegeneration}
 \label{sec:Nachfolgegeneration}
 Über die Mechanismen der Selektion hinaus, die in \Fref{sec:Selektion} definiert wurden, wird sowohl die komplette Ausgangspopulation, als auch die neue Population, für die Nachfolgepopulation berücksichtigt. Dazu findet auch an der Neuen wiederum eine Sortierung statt. Zum einen werden alle invaliden Lösungen, d.h. Lösungen, wo beispielsweise ein Ent- vor dem Beladen erfolgt, ans Ende der Population verschoben. Danach erfolgt eine Sortierung anhand der Fitness. Demnach werden beiden Populationen zu einer Nachfolgepopulation der definierten Menge (im Beispiel 100) zusammengefasst. Zur Veranschaulichung dient die \Fref{fig:Nachfolgegeneration}:

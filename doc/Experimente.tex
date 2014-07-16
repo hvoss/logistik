@@ -1,1 +1,297 @@
 \section{Experimente}
+In den Experimenten wird der genetische Algorithmus auf seine Funktionsweise überprüft. Außerdem soll der Einfluss der Änderungen der Parameter der Komponenten auf das Ergebnis des Algorithmus untersucht werden. Zuerst wird hierfür eine Zielsetzung definiert. Darauf folgen dann eine Beschreibung der verwendeten Konfiguration für die Experimente, die Durchführung sowie eine Auswertung zum Abschluss dieses Kapitels.
+
+\subsection{Zielsetzung}
+\label{sec:Zielsetzung}
+Mit Hilfe der Experimente soll festgestellt werden, ob der genetische Algorithmus das erwartete Verhalten, sukzessive Verbesserung der Individuen, aufweist. Wie bereits in den vorherigen Kapiteln beschrieben, besteht der genetische Algorithmus aus verschiedenen Komponenten. Die Funktionsweise einzelner Komponenten wurde bereits mit Unittests nachgewiesen. In den nachfolgenden Experimenten soll nun das Zusammenspiel dieser Komponenten beobachtet werden sowie deren Auswirkung auf das Ergebnis des genetischen Algorithmus. Dabei spielen folgende Bestandteile des genetischen Algorithmus eine zentrale Rolle:
+\begin{itemize}
+ \item Mutationen
+ \item Selektion
+ \item Crossover
+ \item Fitnesstest
+\end{itemize}
+An diesen Bestandteilen werden während der Experimente Veränderungen vorgenommen und die Auswirkungen auf das Ergebnis untersucht.
+
+Um die Qualität eines Ergebnisses beschreiben zu können, müssen vor den Experimenten Indikatoren festgelegt werden. Für die hier durchgeführten Experimente werden folgende Indikatoren verwendet:
+\begin{itemize}
+ \item Länge eines Plans
+ \item Anzahl der Fahrzeuge
+ \item Anzahl der Iterationen
+ \item Anzahl und Art der Restriktionsverletzungen
+\end{itemize}
+Als Indikator hätte auch der Fitnesswert dienen können, allerdings kann sich darunter wenig vorgestellt werden. Die Laufzeit des Algorithmus dient hierbei nicht als Indikator, da diese von System zu System variieren kann. Grundsätzlich lässt sich aber sagen, dass der genetische Algorithmus in einer angemessenen Zeit ein Ergebnis liefert.
+Bei den Experimenten gibt es eine Vielzahl von Parametern, die beim Ausführen der Applikation angegeben und somit verändert werden können, beispielsweise die Populationsgröße, Anzahl der Produkte, Generierung der Startpopulation, usw.. Um nicht eine endlose Zahl an Experimenten durchzuführen, ist es wichtig sich vorher zu überlegen, welche dieser Parameter verändert werden können und welche gleich bleiben sollen.
+
+\subsection{Konfiguration}
+\label{sec:Konfiguration}
+Für die durchzuführenden Experimente soll die Konfiguration simpel gehalten werden, um die zuvor genannten Ziele zu erreichen und die Experimente in einem überschaubaren Zeitraum durchführen zu können. In Tabelle \Fref{tab:Konfiguration} ist die verwendete Konfiguration aufgelistet:
+
+\begin{table}[ht!]
+ \caption{Konfiguration}
+ \begin{tabular}{lp{10cm}}
+ \toprule
+ \textbf {Paramter} & \textbf{Wert} \\
+ \toprule
+ Seeding & 0 \\
+ \midrule
+ Anzahl der Produkte & 1 \\
+ \midrule
+ Anzahl der Fahrzeuge & 10 \\
+ \midrule
+ Anzahl der Aufträge & 50 \\
+ \midrule
+ Zeitfenster der Fahrzeuge & ja \\
+ \midrule
+ Zeitfenster der Aufträge & ja \\
+ \midrule
+ Startpopulation & zufällig \\
+ \midrule
+ Populationsgröße & 200 \\
+ \midrule
+ MoveActionMutation & 20 \\
+ \midrule
+ MoveSubrouteMutation & 10 \\
+ \midrule
+ SwapOrderMutation & 10 \\
+ \midrule
+ AllocateRouteMutation & 6 \\
+ \midrule
+ CombineTwoToursMutation & 1 \\
+ \midrule
+ SplitTourMutation & 1 \\
+ \midrule
+ NullMutation & 1, entspricht einer Mutationsrate von 98\% \\
+ \midrule
+ Crossover & ja/nein \\
+ \midrule
+ Selektion & zufällig/linear \\
+ \midrule
+ LengthFitness & 1 \\
+ \midrule
+ VehicleFitness & 1; 2 \\
+ \midrule
+ CapacityFitnessTest & 5 \\
+ \midrule
+ VehicleMakeSpanFitnessTest & 1,2 \\
+ \midrule
+ LoadingFitnessTest & 1,2 \\
+ \midrule
+ Anordnung der Stationen & Deutschland-Karte mit gleichmäßiger Verteilung \\
+ \midrule
+ Abbruchkriterium & Die Differenz zwischen der besten und der durchschnittlichen Population beträgt weniger als 0,0001 oder 2000 Iterationen sind erreicht. \\
+ \bottomrule
+ \end{tabular}
+ \label{tab:Konfiguration}
+\end{table}
+
+\subsection{Durchführung}
+\label{sec:Durchfuerhung}
+Die Durchführung der Experimente setzt sich aus verschiedenen Einzelexperimente zusammen. Zunächst wird ein allgemeines Experiment durchgeführt. Als Grundlage für den Nachweis der Funktionalität des genetischen Algorithmus dient hierbei eine Karte (vgl. \Fref{sec:GrafischeOberflaeche}) mit den Station und den Touren eines Plans. Im Anschluss werden dann spezielle Experimente durchgeführt, welche die Auswirkungen von Mutationen, Selektion, Crossover und Fitnessbausteinen auf das Ergebnis des genetischen Algorithmus zeigen sollen.
+
+\subsubsection{Allgemein}
+\label{sec:Allgemein}
+Für dieses allgemeine Experiment wurde die in \Fref{sec:Konfiguration} aufgelistete Konfiguration minimal verändert. Anstatt der erwähnten zehn Fahrzeuge wird diesmal nur ein Fahrzeug verwendet und es werden nur 20 Aufträge bearbeitet. Dies dient der besseren Übersicht auf den verwendeten Karten. In \Fref{fig:Vergleich_l} ist zu sehen, wie die Routen des Plans nach der ersten Iteration verlaufen. Es gibt sehr viele Überschneidungen der einzelnen Routen und es sind sehr lange Routen vorhanden. Insgesamt wirkt die Verteilung sehr unstrukturiert. In \Fref{fig:Vergleich_r} ist dann zu sehen, wie die Routen nach 246 Iterationen angeordnet sind. Hierbei ist ein deutlicher Unterschied zu \Fref{fig:Vergleich_l} sichtbar. Es sind wesentlich weniger Überschneidungen zu erkennen. Außerdem werden kaum noch lange Routen absolviert. Insgesamt wirkt die Anordnung deutlich strukturierter. Das sind typische Merkmale für die Optimierung in der Fahrzeugeinsatzplanung mit einem genetischen Algorithmus und können daher als Beweis für die Funktionalität des Algorithmus verwendet werden. Allerdings ist auch nach 246 Iterationen noch nicht die beste Lösung erreicht worden, da immer noch ein paar Überschneidungen vorhanden sind. Der genetische Algorithmus kann bzw. sollte also noch verbessert werden.
+
+\twoFigures{Vergleich}{Vergleich zwischen Iteration 1 und 246}{../src/main/java/de/hsbremen/kss/genetic/Result_Before.png}{width=0.45\textwidth}{Iteration 1}{../src/main/java/de/hsbremen/kss/genetic/Result_After.png}{width=0.45\textwidth}{Iteration 246}
+
+\subsubsection{einzelne Mutationen}
+\label{sec:einzelneMutationen}
+Mit diesem Experiment soll die Auswirkung einer einzelnen Mutation auf das Ergebnis des genetischen Algorithmus untersucht werden. Dazu wird immer nur eine Mutationsart für den genetischen Algorithmus verwendet. Für dieses und  alle nachfolgenden Experimente gilt wieder die in Kapitel \Fref{sec:Konfiguration} beschriebene Konfiguration. Um die Mutationen bewerten zu können, wurde vor den Experimenten ein Referenzwert aufgenommen. Bei diesem Wert handelt es sich um die beste Lösung aus der zufällig generierten Startpopulation. Dieser Wert wird nicht nur für dieses Experiment, sondern auch für alle nachfolgenden als Referenz verwendet. Der beste Plan aus der Startpopulation hat die folgenden Eigenschaften:
+\begin{itemize}
+ \item Länge: 28622
+ \item Anzahl Fahrzeuge: 10
+ \item Verletzungen: 30 Zeitfenster (TW) können nicht eingehalten werden und zweimal ist ein Fahrzeug überladen (O).
+\end{itemize}
+In Klammern stehen die Abkürzungen, welche in den nachfolgenden Tabellen für die Restriktionsverletzungen verwendet werden.
+
+Bei diesem Experiment werden alle Fitnessbausteine, kein Crossover und die zufällige Selektion verwendet. Außerdem wird die NullMutation nicht separat untersucht, da diese nur für die Angabe der Mutationsrate zuständig ist. In \Fref{tab:einzelneMutationen} sind die Ergbenisse dieses Experimentes dargestellt.
+
+\begin{table}[ht!]
+ \centering
+ \caption{einzelne Mutationen}
+ \begin{tabular}{lrrrr}
+ \toprule
+ \textbf {Mutation} & \textbf{Länge} & \textbf{Iteration} & \textbf{Autos} & \textbf{Verletzung} \\
+ \toprule
+ MoveActionMutation & 20697 & 336 & 10 & 12 TW, 1 O \\
+ \midrule
+ MoveSubrouteMutation & 19327 & 664 & 10 & 9 TW, 1 O \\
+ \midrule
+ SwapOrderMutation & 17336 & 2000 & 10 & 5 TW, 1 O \\
+ \midrule
+ AllocateRouteMutation & 25517 & 2000 & 10 & 38 TW, 1 O \\
+ \midrule
+ CombineTwoToursMutation & 28622 & 2000 & 10 & 30 TW, 2 O \\
+ \midrule
+ SplitTourMutation & 28622 & 9 & 10 & 30 TW, 2 O \\
+ \bottomrule
+ \end{tabular}
+ \label{tab:einzelneMutationen}
+\end{table}
+
+Die Auswirkungen der einzelnen Mutationen auf das Resultat des genetischen Algorithmus unterscheiden sich deutlich, zum Beispiel erreicht man mit der {\slshape SwapOrderMutation} schon ein relativ gutes Endergebnis. Im Vergleich zum Startwert konnte sowohl die Länge als auch die Anzahl der Verletzungen deutlich reduziert werden. Dagegen können die Mutationen {\slshape CombineTwoToursMutation} und {\slshape SplitTourMutation} keine Verbesserungen des Ausgangswertes herbeiführen. Allerdings wird es mit keiner Mutation geschafft die Verletzungen der Restriktionen komplett zu beseitigen.
+
+\subsubsection{zusammengesetzte Mutationen}
+\label{sec:zusammengesetzteMutationen}
+Als nächstes wird das Zusammenspiel der Mutationen untersucht. Im Gegensatz zum ersten Experiment werden die Mutationen nun nacheinander hinzugefügt und zusammen für den genetischen Algorithmus verwendet. Die Mutationen werden von oben nach unten hintereinander hinzugefügt.
+
+Wie bereits im ersten Experiment werden alle Fitnessbausteine, kein Crossover und die zufällige Selektion verwendet. Dieses Mal wird auch die NullMutation verwendet. Die Ergebnisse sind in \Fref{tab:zusammengesetzteMutationen} zu sehen.
+
+\begin{table}[ht!]
+ \centering
+ \caption{zusammengesetzte Mutationen}
+ \begin{tabular}{lrrrr}
+ \toprule
+ \textbf {Mutation} & \textbf{Länge} & \textbf{Iteration} & \textbf{Autos} & \textbf{Verletzung} \\
+ \toprule
+ MoveActionMutation & 20697 & 336 & 10 & 12 TW, 1 O \\
+ \midrule
+ MoveSubrouteMutation & 19873 & 385 & 10 & 11 TW, 1 O \\
+ \midrule
+ SwapOrderMutation & 16154 & 681 & 10 & \\
+ \midrule
+ AllocateRouteMutation & 15884 & 681 & 10 & 1 O \\
+ \midrule
+ CombineTwoToursMutation & 16071 & 1153 & 10 & \\
+ \midrule
+ SplitTourMutation & 15546 & 871 & 10 & 1 O \\
+ \midrule
+ NullMutation & 15957 & 933 & 10 & \\
+ \bottomrule
+ \end{tabular}
+ \label{tab:zusammengesetzteMutationen}
+\end{table}
+
+Grundsätzlich lässt sich sagen: je mehr Mutationen verwendet werden, desto besser ist das Ergebnis des genetischen Algorithmus. Die Länge eines Plans wird kleiner und die Verletzungen werden deutlich reduziert, teilweise sind gar keine mehr vorhanden. Beim Hinzufügen der {\slshape CombineTwoToursMutation} wird zwar die Länge wieder größer, dafür verschwinden aber die Verletzungen. Das gleiche gilt für die {\slshape NullMutation}.
+
+\subsubsection{gleichverteilte Mutationen}
+\label{sec:gleichverteilteMutation}
+Auch in diesem Experiment werden die Mutationen nacheinander hinzugefügt, diesmal haben sie allerdings alle die gleiche Wahrscheinlichkeit. Mit diesem Experiment soll nachgewiesen werden, dass die Verteilung der Mutationen Einfluss auf das Ergebnis des genetischen Algorithmus hat. Als Vergleichswerte dienen die Ergebnisse aus \Fref{tab:zusammengesetzteMutationen}.
+Es werden wieder alle Fitnessbausteine, zufällige Selektion und kein Crossover verwendet. In \Fref{tab:gleichverteilteMutationen} sind die Ergebnisse aufgelistet. Nachdem Hinzufügen der NullMutation beträgt die Mutationsrate 86\%.
+
+\begin{table}[ht!]
+ \centering
+ \caption{gleichverteilte Mutationen}
+ \begin{tabular}{lrrrr}
+ \toprule
+ \textbf {Mutation} & \textbf{Länge} & \textbf{Iteration} & \textbf{Autos} & \textbf{Verletzung} \\
+ \toprule
+ MoveActionMutation & 20697 & 336 & 10 & 12 T, 1 O \\
+ \midrule
+ MoveSubrouteMutation & 18762 & 572 & 10 & 8 T, 1 O \\
+ \midrule
+ SwapOrderMutation & 16347 & 673 & 10 & 1 T \\
+ \midrule
+ AllocateRouteMutation & 14390 & 1596 & 10 & \\
+ \midrule
+ CombineTwoToursMutation & 15360 & 2000 & 10 & 1 O \\
+ \midrule
+ SplitTourMutation & 15283 & 745 & 10 & \\
+ \midrule
+ NullMutation & 16418 & 626 & 10 & 1 T \\
+ \bottomrule
+ \end{tabular}
+ \label{tab:gleichverteilteMutationen}
+\end{table}
+
+Durch das Verändern der Wahrscheinlichkeiten der einzelnen Mutationen werden auch andere Ergebnisse erzielt. Diese liegen größtenteils in den Bereichen der Ergebnisse mit der Mutationsverteilung aus der Konfiguration. Allerdings wird hier beim Hinzufügen der {\slshape AllocateRouteMutation} ein absoluter Bestwert erzielt, der kürzeste Plan ohne einen einzigen Verstoß gegen die Restriktionen. Dagegen wird beim Hinzufügen der {\slshape NullMutation} das Ergebnis schlechter als bei seinem Referenzwert. Das deutet darauf hin, dass die Mutationsrate möglichst hoch liegen sollte.
+
+\subsubsection{Selektion}
+\label{sec:Selektion}
+In diesem Experiment soll der Unterschied zwischen zufälliger und linearer Selektion untersucht werden. Wie bereits im vorherigen Experiment werden die Mutationen wieder nacheinander hinzugefügt. Daher können die Werte aus \Fref{tab:zusammengesetzteMutationen} als Referenzwerte betrachtet werden. Dieses Mal wird aber statt der zufälligen Selektion, die Lineare verwendet. Es werden wieder alle Fitnessbausteine und kein Crossover verwendet. In \Fref{tab:Selektion} sind die Ergebnisse der linearen Selektion dargestellt.
+
+\begin{table}[ht!]
+ \centering
+ \caption{Selektion}
+ \begin{tabular}{lrrrr}
+ \toprule
+ \textbf {Mutation} & \textbf{Länge} & \textbf{Iteration} & \textbf{Autos} & \textbf{Verletzung} \\
+ \toprule
+ MoveActionMutation & 20460 & 341 & 10 & 10 T, 1 O \\
+ \midrule
+ MoveSubrouteMutation & 19213 & 413 & 10 & 9 T \\
+ \midrule
+ SwapOrderMutation & 15647 & 550 & 10 & 1 O \\
+ \midrule
+ AllocateRouteMutation & 16622 & 803 & 10 & 1 O \\
+ \midrule
+ CombineTwoToursMutation & 16696 & 630 & 10 & 1 T \\
+ \midrule
+ SplitTourMutation & 16452 & 638 & 10 & \\
+ \midrule
+ NullMutation & 15969 & 661 & 10 & \\
+ \bottomrule
+ \end{tabular}
+ \label{tab:Selektion}
+\end{table}
+
+Beim Vergleich der zufälligen und linearen Selektion sind die Anzahl der Iterationen auffällig. Bei der linearen Selektion werden grundsätzlich deutlich weniger Iterationen als bei der zufälligen Selektion benötigt. Dafür sind die Ergebnisse aber qualitativ nicht ganz so gut. Die Verletzungen sind zwar ziemlich ähnlich aber die Länge unterscheidet sich dann doch etwas. Bei der linearen Selektion sind Pläne mit der gleichen Mutationen länger als bei der zufälligen Selektion.
+
+\subsubsection{Crossover}
+\label{sec:Crossover}
+In diesem Experiment wird die Auswirkung des Crossovers auf das Ergebnis des genetischen Algorithmus untersucht. Wie bereits in den Experimenten davor, werden die Mutationen wieder nacheinander hinzugefügt. Es wird wieder die zufällige Selektion verwendet. Daher können die Werte aus \Fref{tab:zusammengesetzteMutationen} wieder als Referenz genommen werden.
+Es werden wieder alle Fitnessbausteine verwendet, diesmal wird der genetische Algorithmus aber mit dem Crossover ausgeführt. In \Fref{tab:Crossover} sind die Ergebnisse für dieses Experiment aufgelistet.
+
+\begin{table}[ht!]
+ \centering
+ \caption{Crossover}
+ \begin{tabular}{lrrrr}
+ \toprule
+ \textbf {Mutation} & \textbf{Länge} & \textbf{Iteration} & \textbf{Autos} & \textbf{Verletzung} \\
+ \toprule
+ MoveActionMutation & 19930 & 405 & 10 & 12 T, 1 O \\
+ \midrule
+ MoveSubrouteMutation & 20139 & 562 & 10 & 9 T, 1 O \\
+ \midrule
+ SwapOrderMutation & 15730 & 823 & 10 & 1 O \\
+ \midrule
+ AllocateRouteMutation & 15518 & 1544 & 10 & 1 T, 1 O \\
+ \midrule
+ CombineTwoToursMutation & 17069 & 1027 & 10 & 1 O \\
+ \midrule
+ SplitTourMutation & 15598 & 1111 & 10 & \\
+ \midrule
+ NullMutation & 15501 & 1409 & 10 & 1 O \\
+ \bottomrule
+ \end{tabular}
+ \label{tab:Crossover}
+\end{table}
+
+Auch bei der Verwendung des Crossovers werden die Werte grundsätzlich besser, wenn eine weitere Mutation hinzukommt. Die Länge des Plans sowie die Verletzungen liegen in ähnlichen Bereichen wie bei der Verwendung des genetischen Algorithmus ohne Crossover. Interessant sind hierbei die Anzahl der Iterationen. Diese liegen deutlich über denen ohne Crossover, beispielsweise bei der {\slshape SplitTourMutation} 871 (ohne Crossover) zu 1111 (mit Crossover).
+
+\subsubsection{Fitness}
+\label{sec:Fitness}
+Mit diesem Experiment soll die Funktion des Fitnesstests nachgewiesen sowie deren Auswirkung auf den genetischen Algorithmus. Dafür werden die Bausteine des Fitnesstests nacheinander hinzugefügt und das Ergebnis untersucht. Die Vorgehensweise ist damit nahezu identisch zur Untersuchung der Mutationen. Allerdings wird beim Experiment zum Fitnesstest darauf verzichtet die Bausteine separat zu testen. Separate Tests sind nicht sinnvoll, da der genetische Algorithmus dann schnell beendet wird, z.B. wenn nur der Baustein für die Kapazitätsbedingungen getestet wird, endet der genetische Algorithmus sobald eine Lösung ohne Verletzung gefunden wird. Es werden alle Mutationen, die zufällige Selektion und kein Crossover für dieses Experiment verwendet. In \Fref{tab:Fitness} sind die Ergebnisse dargestellt.
+
+\begin{table}[ht!]
+ \centering
+ \caption{Fitness}
+ \begin{tabular}{lrrrr}
+ \toprule
+ \textbf {Fitness} & \textbf{Länge} & \textbf{Iteration} & \textbf{Autos} & \textbf{Verletzung} \\
+ \toprule
+ LengthFitness & 6528 & 826 & 1 & 87 T, 46 O \\
+ \midrule
+ VehicleFitness & 8109 & 656 & 1 & 87 T, 46 O \\
+ \midrule
+ CapacityFitnessTest & 15427 & 343 & 1 & 91 T \\
+ \midrule
+ VehicleMakeSpanFitnessTest & 15675 & 543 & 1 & 91 T \\
+ \midrule
+ LoadingFitnessTest & 15957 & 933 & 10 & \\
+ \bottomrule
+ \end{tabular}
+ \label{tab:Fitness}
+\end{table}
+
+Die Ergebnisse zeigen, dass der Fitnesstest enormen Einfluss auf den Ablauf und das Ergebnis des genetischen Algorithmus hat. Wenn nur nach der Länge optimiert wird, wird zwar ein sehr kurzer Plan gefunden, allerdings werden die Zeitfenster und Überladungen komplett außer Acht gelassen und die Verletzungen sind außerordentlich hoch. Da diese Restriktionen vom Fitnesstest nicht beachtet werden, wird auch nur ein Fahrzeug für den Plan benötigt. Anders sieht es aus, wenn der Baustein zur Bewertung der Kapazität hinzugefügt wird. Es sind dann keine Überladungen mehr vorhanden, dafür werden aber ein paar mehr Zeitfenster verletzt und der Plan wird deutlich länger. Mit dem Hinzufügen des Bausteins zur Bewertung der Zeitfenster für die Aufträge werden nun alle Restriktionen beachtet und das Ergebnis verändert sich dahingehend. Es treten weder Verletzungen der Kapazität noch der Zeitfenster auf. Dafür wird der Plan aber nochmals etwas länger und es werden wieder zehn Fahrzeuge benötigt.
+
+\subsection{Auswertung}
+\label{sec:Auswertung}
+Mit den Experimenten konnte die Funktionalität des genetischen Algorithmus nachgewiesen werden. Sowohl die Visualisierung des Plans als auch die charakteristischen Werte, z.B. die Länge oder Anzahl der Verletzungen, zeigen, dass der entwickelte Algorithmus zur Optimierung in der Fahrzeugeinsatzplanung eingesetzt werden kann. Allerdings muss erwähnt werden, dass es noch Potential zur Verbesserung gibt. Vor allem die Visualisierung zeigt, dass es noch einige Verbesserungsmöglichkeiten gibt.
+
+Die Experimente haben außerdem gezeigt, dass es sehr viele Möglichkeiten gibt den genetischen Algorithmus zu beeinflussen. Das Ergebnis kann zum Beispiel durch Mutationen, Selektion, Crossover oder den Fitnesstest verändert werden. Mit diesen Parametern kann der Algorithmus spezifischen Problemstellungen angepasst werden, z.B. kann mit der linearen Selektion schneller ein Ergebnis gefunden werden, welches aber nicht ganz so gut sein muss, wie bei der zufälligen Selektion. Mutationen sollten grundsätzlich nicht einzelnen verwendet werden, sondern immer in Kombination. Dabei wurden die besten Ergebnisse erzielt. Außerdem sollte die Mutationsrate ziemlich hoch liegen (\textgreater 90\%). Auch der Fitnesstest spielt eine wichtige Rolle bei dem entwickelten Algorithmus, da er sehr starken Einfluss auf das Ergebnis hat.
+
+Während der Entwicklung der Applikation und der Durchführung der Experimente wurden schon relativ gute Werte für die Parameter der Mutation und des Fitnesstests gefunden. Aber auch hier gibt es noch Verbesserungspotential. Durch Kombinieren verschiedener Werte für die Parameter kann der genetische Algorithmus sicherlich noch verbessert werden. Hierbei sollte aber immer daran gedacht werden, dass die Optimierung nicht nur von den Parametern abhängt, sondern auch von der Konfiguration. Wenn eine bestimmte Kombination von Parametern bei einem Problem zu einer richtig guten Lösung führt, muss dies nicht zwangsläufig bei einem anderen Problem auch so sein.
+
+Während der Experimente veränderte sich die Zahl der Fahrzeuge nicht, ausgenommen vom Experiment zum Fitnesstest. Das liegt daran, dass die Verletzung der Zeitfenster sehr stark bestraft wird. Daher werden immer alle Fahrzeuge benötigt und die Anzahl kann nicht minimiert werden. Es wurden aber auch Experimente durchgeführt, in denen die Zeitfenster sehr groß waren. Hier klappte dann auch die Minimierung der verwendeten Fahrzeuge.
