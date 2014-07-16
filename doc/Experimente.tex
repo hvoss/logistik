@@ -24,7 +24,7 @@ Bei den Experimenten gibt es eine Vielzahl von Parametern, die beim Ausführen d
 
 \subsection{Konfiguration}
 \label{sec:Konfiguration}
-Für die durchzuführenden Experimente soll die Konfiguration simpel gehalten werden, um die zuvor genannten Ziele zu erreichen und die Experimente in einem überschaubaren Zeitraum durchführen zu können. In Tabelle \Fref{tab:Konfiguration} ist die verwendete Konfiguration aufgelistet:
+Für die durchzuführenden Experimente soll die Konfiguration simpel gehalten werden, um die zuvor genannten Ziele zu erreichen und die Experimente in einem überschaubaren Zeitraum durchführen zu können. In Tabelle \Fref{tab:Konfiguration} ist die verwendete Konfiguration aufgelistet. Die Namen der Mutationen und der Fitnessbausteine sind dem Quellcode entnommen.
 
 \begin{table}[ht!]
  \caption{Konfiguration}
@@ -90,7 +90,7 @@ Die Durchführung der Experimente setzt sich aus verschiedenen Einzelexperimente
 
 \subsubsection{Allgemein}
 \label{sec:Allgemein}
-Für dieses allgemeine Experiment wurde die in \Fref{sec:Konfiguration} aufgelistete Konfiguration minimal verändert. Anstatt der erwähnten zehn Fahrzeuge wird diesmal nur ein Fahrzeug verwendet und es werden nur 20 Aufträge bearbeitet. Dies dient der besseren Übersicht auf den verwendeten Karten. In \Fref{fig:Vergleich_l} ist zu sehen, wie die Routen des Plans nach der ersten Iteration verlaufen. Es gibt sehr viele Überschneidungen der einzelnen Routen und es sind sehr lange Routen vorhanden. Insgesamt wirkt die Verteilung sehr unstrukturiert. In \Fref{fig:Vergleich_r} ist dann zu sehen, wie die Routen nach 246 Iterationen angeordnet sind. Hierbei ist ein deutlicher Unterschied zu \Fref{fig:Vergleich_l} sichtbar. Es sind wesentlich weniger Überschneidungen zu erkennen. Außerdem werden kaum noch lange Routen absolviert. Insgesamt wirkt die Anordnung deutlich strukturierter. Das sind typische Merkmale für die Optimierung in der Fahrzeugeinsatzplanung mit einem genetischen Algorithmus und können daher als Beweis für die Funktionalität des Algorithmus verwendet werden. Allerdings ist auch nach 246 Iterationen noch nicht die beste Lösung erreicht worden, da immer noch ein paar Überschneidungen vorhanden sind. Der genetische Algorithmus kann bzw. sollte also noch verbessert werden.
+Für dieses allgemeine Experiment wurde die in \Fref{sec:Konfiguration} aufgelistete Konfiguration minimal verändert. Anstatt der erwähnten zehn Fahrzeuge wird diesmal nur ein Fahrzeug verwendet und es werden nur 20 Aufträge bearbeitet. Dies dient der besseren Übersicht auf den verwendeten Karten. In \Fref{fig:Vergleich_l} ist zu sehen, wie die Touren des Plans nach der ersten Iteration verlaufen. Es gibt sehr viele Überschneidungen der einzelnen Touren und es sind sehr lange Touren vorhanden. Insgesamt wirkt die Verteilung sehr unstrukturiert. In \Fref{fig:Vergleich_r} ist dann zu sehen, wie die Touren nach 246 Iterationen angeordnet sind. Hierbei ist ein deutlicher Unterschied zu \Fref{fig:Vergleich_l} sichtbar. Es sind wesentlich weniger Überschneidungen zu erkennen. Außerdem werden kaum noch lange Touren absolviert. Insgesamt wirkt die Anordnung deutlich strukturierter. Das sind typische Merkmale für die Optimierung in der Fahrzeugeinsatzplanung mit einem genetischen Algorithmus und können daher als Beweis für die Funktionalität des Algorithmus verwendet werden. Allerdings ist auch nach 246 Iterationen noch nicht die beste Lösung erreicht worden, da immer noch ein paar Überschneidungen vorhanden sind. Der genetische Algorithmus kann bzw. sollte also noch verbessert werden.
 
 \twoFigures{Vergleich}{Vergleich zwischen Iteration 1 und 246}{../src/main/java/de/hsbremen/kss/genetic/Result_Before.png}{width=0.45\textwidth}{Iteration 1}{../src/main/java/de/hsbremen/kss/genetic/Result_After.png}{width=0.45\textwidth}{Iteration 246}
 
@@ -176,11 +176,11 @@ Es werden wieder alle Fitnessbausteine, zufällige Selektion und kein Crossover 
  \toprule
  \textbf {Mutation} & \textbf{Länge} & \textbf{Iteration} & \textbf{Autos} & \textbf{Verletzung} \\
  \toprule
- MoveActionMutation & 20697 & 336 & 10 & 12 T, 1 O \\
+ MoveActionMutation & 20697 & 336 & 10 & 12 TW, 1 O \\
  \midrule
- MoveSubrouteMutation & 18762 & 572 & 10 & 8 T, 1 O \\
+ MoveSubrouteMutation & 18762 & 572 & 10 & 8 TW, 1 O \\
  \midrule
- SwapOrderMutation & 16347 & 673 & 10 & 1 T \\
+ SwapOrderMutation & 16347 & 673 & 10 & 1 TW \\
  \midrule
  AllocateRouteMutation & 14390 & 1596 & 10 & \\
  \midrule
@@ -188,7 +188,7 @@ Es werden wieder alle Fitnessbausteine, zufällige Selektion und kein Crossover 
  \midrule
  SplitTourMutation & 15283 & 745 & 10 & \\
  \midrule
- NullMutation & 16418 & 626 & 10 & 1 T \\
+ NullMutation & 16418 & 626 & 10 & 1 TW \\
  \bottomrule
  \end{tabular}
  \label{tab:gleichverteilteMutationen}
@@ -207,15 +207,15 @@ In diesem Experiment soll der Unterschied zwischen zufälliger und linearer Sele
  \toprule
  \textbf {Mutation} & \textbf{Länge} & \textbf{Iteration} & \textbf{Autos} & \textbf{Verletzung} \\
  \toprule
- MoveActionMutation & 20460 & 341 & 10 & 10 T, 1 O \\
+ MoveActionMutation & 20460 & 341 & 10 & 10 TW, 1 O \\
  \midrule
- MoveSubrouteMutation & 19213 & 413 & 10 & 9 T \\
+ MoveSubrouteMutation & 19213 & 413 & 10 & 9 TW \\
  \midrule
  SwapOrderMutation & 15647 & 550 & 10 & 1 O \\
  \midrule
  AllocateRouteMutation & 16622 & 803 & 10 & 1 O \\
  \midrule
- CombineTwoToursMutation & 16696 & 630 & 10 & 1 T \\
+ CombineTwoToursMutation & 16696 & 630 & 10 & 1 TW \\
  \midrule
  SplitTourMutation & 16452 & 638 & 10 & \\
  \midrule
@@ -239,13 +239,13 @@ Es werden wieder alle Fitnessbausteine verwendet, diesmal wird der genetische Al
  \toprule
  \textbf {Mutation} & \textbf{Länge} & \textbf{Iteration} & \textbf{Autos} & \textbf{Verletzung} \\
  \toprule
- MoveActionMutation & 19930 & 405 & 10 & 12 T, 1 O \\
+ MoveActionMutation & 19930 & 405 & 10 & 12 TW, 1 O \\
  \midrule
- MoveSubrouteMutation & 20139 & 562 & 10 & 9 T, 1 O \\
+ MoveSubrouteMutation & 20139 & 562 & 10 & 9 TW, 1 O \\
  \midrule
  SwapOrderMutation & 15730 & 823 & 10 & 1 O \\
  \midrule
- AllocateRouteMutation & 15518 & 1544 & 10 & 1 T, 1 O \\
+ AllocateRouteMutation & 15518 & 1544 & 10 & 1 TW, 1 O \\
  \midrule
  CombineTwoToursMutation & 17069 & 1027 & 10 & 1 O \\
  \midrule
@@ -270,13 +270,13 @@ Mit diesem Experiment soll die Funktion des Fitnesstests nachgewiesen sowie dere
  \toprule
  \textbf {Fitness} & \textbf{Länge} & \textbf{Iteration} & \textbf{Autos} & \textbf{Verletzung} \\
  \toprule
- LengthFitness & 6528 & 826 & 1 & 87 T, 46 O \\
+ LengthFitness & 6528 & 826 & 1 & 87 TW, 46 O \\
  \midrule
- VehicleFitness & 8109 & 656 & 1 & 87 T, 46 O \\
+ VehicleFitness & 8109 & 656 & 1 & 87 TW, 46 O \\
  \midrule
- CapacityFitnessTest & 15427 & 343 & 1 & 91 T \\
+ CapacityFitnessTest & 15427 & 343 & 1 & 91 TW \\
  \midrule
- VehicleMakeSpanFitnessTest & 15675 & 543 & 1 & 91 T \\
+ VehicleMakeSpanFitnessTest & 15675 & 543 & 1 & 91 TW \\
  \midrule
  LoadingFitnessTest & 15957 & 933 & 10 & \\
  \bottomrule
