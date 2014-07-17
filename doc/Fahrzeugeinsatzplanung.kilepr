@@ -9,7 +9,7 @@ kile_livePreviewStatusUserSpecified=true
 kile_livePreviewTool=LivePreview-PDFLaTeX
 kileprversion=2
 kileversion=2.9.60
-lastDocument=Softwarearchitektur.tex
+lastDocument=Umsetzung.tex
 masterDocument=Fahrzeugeinsatzplanung.tex
 name=Fahrzeugeinsatzplanung
 pkg_extIsRegExp=false
@@ -32,7 +32,7 @@ Mode=BibTeX
 
 [document-settings,item:Ausblick.tex]
 Bookmarks=
-Encoding=windows-1252
+Encoding=UTF-8
 FoldedColumns=
 FoldedLines=
 Highlighting=LaTeX
@@ -105,7 +105,7 @@ Mode=LaTeX
 
 [document-settings,item:Umsetzung.tex]
 Bookmarks=
-Encoding=System
+Encoding=UTF-8
 FoldedColumns=
 FoldedLines=
 Highlighting=LaTeX
@@ -134,13 +134,13 @@ ReadWrite=true
 
 [item:Ausblick.tex]
 archive=true
-column=0
-encoding=windows-1252
+column=221
+encoding=UTF-8
 highlight=LaTeX
-line=0
+line=7
 mode=LaTeX
 open=true
-order=7
+order=1
 
 [item:Einleitung.tex]
 archive=true
@@ -149,28 +149,28 @@ encoding=windows-1252
 highlight=LaTeX
 line=5
 mode=LaTeX
-open=true
+open=false
 order=4
 
 [item:Experimente.tex]
 archive=true
-column=0
+column=270
 encoding=windows-1252
 highlight=LaTeX
-line=0
+line=88
 mode=LaTeX
 open=true
-order=6
+order=2
 
 [item:Fahrzeugeinsatzplanung.tex]
 archive=true
-column=0
+column=49
 encoding=UTF-8
 highlight=LaTeX
-line=0
+line=5
 mode=LaTeX
 open=true
-order=3
+order=5
 
 [item:Fazit.tex]
 archive=true
@@ -179,28 +179,28 @@ encoding=windows-1252
 highlight=LaTeX
 line=0
 mode=LaTeX
-open=true
+open=false
 order=8
 
 [item:GenetischerAlgorithmus.tex]
 archive=true
-column=23
+column=461
 encoding=UTF-8
 highlight=LaTeX
-line=45
+line=81
 mode=LaTeX
 open=true
-order=10
+order=3
 
 [item:Literatur.bib]
 archive=true
-column=22
+column=25
 encoding=UTF-8
 highlight=BibTeX
-line=95
+line=89
 mode=BibTeX
 open=true
-order=2
+order=4
 
 [item:MutationAufteilen2.pdf]
 archive=true
@@ -220,17 +220,17 @@ highlight=LaTeX
 line=25
 mode=LaTeX
 open=true
-order=9
+order=6
 
 [item:Umsetzung.tex]
 archive=true
-column=30
-encoding=System
+column=22
+encoding=UTF-8
 highlight=LaTeX
-line=9
+line=34
 mode=LaTeX
 open=true
-order=5
+order=0
 
 [item:expose.kilepr]
 archive=true
@@ -244,27 +244,27 @@ order=-1
 
 [item:funktionen.tex]
 archive=true
-column=12
+column=36
 encoding=UTF-8
 highlight=LaTeX
-line=51
+line=7
 mode=LaTeX
 open=true
-order=0
+order=8
 
 [item:praeambel.tex]
 archive=true
-column=0
+column=14
 encoding=UTF-8
 highlight=LaTeX
-line=47
+line=6
 mode=LaTeX
 open=true
-order=1
+order=7
 
 [view-settings,view=0,item:Ausblick.tex]
-CursorColumn=0
-CursorLine=0
+CursorColumn=221
+CursorLine=7
 JumpList=
 ViMarks=
 
@@ -275,14 +275,14 @@ JumpList=
 ViMarks=
 
 [view-settings,view=0,item:Experimente.tex]
-CursorColumn=0
-CursorLine=0
+CursorColumn=270
+CursorLine=88
 JumpList=
 ViMarks=
 
 [view-settings,view=0,item:Fahrzeugeinsatzplanung.tex]
-CursorColumn=0
-CursorLine=0
+CursorColumn=49
+CursorLine=5
 JumpList=
 ViMarks=a,-1,-1
 
@@ -293,14 +293,14 @@ JumpList=
 ViMarks=
 
 [view-settings,view=0,item:GenetischerAlgorithmus.tex]
-CursorColumn=23
-CursorLine=45
+CursorColumn=461
+CursorLine=81
 JumpList=
 ViMarks=
 
 [view-settings,view=0,item:Literatur.bib]
-CursorColumn=22
-CursorLine=95
+CursorColumn=25
+CursorLine=89
 JumpList=
 ViMarks=a,-1,-1
 
@@ -311,19 +311,19 @@ JumpList=
 ViMarks=
 
 [view-settings,view=0,item:Umsetzung.tex]
-CursorColumn=30
-CursorLine=9
+CursorColumn=22
+CursorLine=34
 JumpList=
 ViMarks=
 
 [view-settings,view=0,item:funktionen.tex]
-CursorColumn=12
-CursorLine=51
+CursorColumn=36
+CursorLine=7
 JumpList=
 ViMarks=.,64,41,[,64,38,],64,41
 
 [view-settings,view=0,item:praeambel.tex]
-CursorColumn=0
-CursorLine=47
+CursorColumn=14
+CursorLine=6
 JumpList=
 ViMarks=
