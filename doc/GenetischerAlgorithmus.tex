@@ -78,7 +78,7 @@ Beim Nearest-Neighbor handelt es sich um ein bekanntes heuristisches Eröffnungs
 Der Sweep-Algorithmus bedient sich einer anderen Technik zum Finden des nächstmöglichen Knotens. Hier wird von einem beliebigen Knoten ausgehend, der Knoten gewählt, der den geringsten Winkel von einer definierten Startkante aufweist. Dies kann sowohl im oder entgegengesetzt dem Uhrzeigersinn durchgeführt werden.
 
 \subsection{Individuenauswahl (Selektion)}
-\label{sec:Selektion}
+\label{sec:GenetischerSelektion}
 Die Selektion bestimmt welche Individuen sich paaren dürfen, und erzeugt aus Ihnen die Menge der Nachkommen. Dabei kann die Auswahl entweder komplett zufällig stattfinden oder ins direkte Verhältnis zur Fitness eines Individuums gesetzt werden. Wenn man sich für eine reine fitnessproportionale Selektion entscheidet, so ist ein verhältnismäßig niedriger Selektionsdruck vorhanden, da der genetische Algorithmus verhältnismäßig lange konvergiert. Abhilfe schafft dort eine Ranglistenbasierte Selektion. Bei diesem Verfahren wird die Selektionswahrscheinlichkeit nicht mehr ins direkte Verhältnis zur Fitness gesetzt. Stattdessen werden die unterschiedlichen Individuen nach ihrer Fitness sortiert, so dass die Tour mit dem besten Ergebnis an oberster Stelle der Population steht. Im nächsten Schritt erfolgt die Auswahl der möglichen Kinder für die oberen Elemente der Rangliste mit einer höheren Wahrscheinlichkeit als tieferliegende Individuen. 
 
 Zusätzlich wird auch hier auf ein Verfahren zurückgegriffen, welches die möglichen Eltern rein zufällig wählt. Dies hat den Vorteil, dass auch Individuen mit schlechter Fitness als potentieller Elternteil gewählt wird. Dadurch werden ggf. mehr genetische Informationen in die nächste Population übertragen und eine zu frühe Konvergenz, aufgrund von sehr guten Fitnesswerten, verhindert. 
@@ -175,7 +175,7 @@ Eine Besonderheit bei diesem Fitnesstest stellen die Bausteine mit den Restrikti
 
 \subsection{Bildung der Nachfolgegeneration}
 \label{sec:Nachfolgegeneration}
-Über die Mechanismen der Selektion hinaus, die in \Fref{sec:Selektion} definiert wurden, wird sowohl die komplette Ausgangspopulation, als auch die neue Population, für die Nachfolgepopulation berücksichtigt. Dazu findet auch an der Neuen wiederum eine Sortierung statt. Zum einen werden alle invaliden Lösungen, d.h. Lösungen, wo beispielsweise ein Ent- vor dem Beladen erfolgt, ans Ende der Population verschoben. Danach erfolgt eine Sortierung anhand der Fitness. Demnach werden beiden Populationen zu einer Nachfolgepopulation der definierten Menge (im Beispiel 100) zusammengefasst. Zur Veranschaulichung dient die \Fref{fig:Nachfolgegeneration}:
+Über die Mechanismen der Selektion hinaus, die in \Fref{sec:GenetischerSelektion} definiert wurden, wird sowohl die komplette Ausgangspopulation, als auch die neue Population, für die Nachfolgepopulation berücksichtigt. Dazu findet auch an der Neuen wiederum eine Sortierung statt. Zum einen werden alle invaliden Lösungen, d.h. Lösungen, wo beispielsweise ein Ent- vor dem Beladen erfolgt, ans Ende der Population verschoben. Danach erfolgt eine Sortierung anhand der Fitness. Demnach werden beiden Populationen zu einer Nachfolgepopulation der definierten Menge (im Beispiel 100) zusammengefasst. Zur Veranschaulichung dient die \Fref{fig:Nachfolgegeneration}:
 
 \myfigure[scale=0.85]{Nachfolgegeneration}{Nachfolgegeneration.pdf}{Bildung der Nachfolgegeneration}
 
