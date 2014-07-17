@@ -2,7 +2,7 @@
 Das nachfolgende Kapitel stellt den genetischen Algorithmus, als Verfahren zur Lösung komplexer Optimierungsprobleme, vor. Dazu werden im ersten Schritt die benötigten Grundlagen geschaffen und im Anschluss die speziellen Operatoren im Zusammenhang mit dem "`PDPTW"' vorgestellt. 
 
 \subsection{Grundlagen}
-Bei den genetischen Algorithmen handelt es sich um Verfahren, die zur Lösung komplexer Optimierungsaufgaben eingesetzt werden. Sie beruhen auf Methoden und Erkenntnisse der biologischen Genetik. Dabei dient insbesondere die Evolutionstheorie als Vorbild für die Entwicklung der genetischen Algorithmen, da die Evolution bislang gute Ergebnisse in der Natur geliefert hat. 
+Bei den genetischen Algorithmen handelt es sich um Verfahren, die zur Lösung komplexer Optimierungsaufgaben eingesetzt werden. Sie beruhen auf Methoden und Erkenntnisse der biologischen Genetik. Dabei dient insbesondere die Evolutionstheorie als Vorbild für die Entwicklung der genetischen Algorithmen, da die Evolution bislang gute Ergebnisse in der Natur geliefert hat. \cite{jih2004family} \cite{bortfeldtplanen}
 
 Die grundlegende Arbeit, zur Schaffung dieser Verfahrenstechnik, wurde von I. Rechenberg mit dem 1960 erschienenen Werk "`Evolutionsstrategie"' geschaffen. Auf diesem Wissen aufbauend, erfand John Holland 1975 die genetischen Algorithmen, die in seinem Werk "`Adaption in Natural and Artificial Systems"' niedergeschrieben wurden.
 
@@ -27,33 +27,33 @@ Eine der größten Herausforderungen für die Entwicklung und den Erfolg des gen
 
 Bevor nun eine Möglichkeit der Darstellung der beiden genannten Aspekte vorgestellt wird, müssen die Begriffe des Individuums und des Gens in den Kontext des PDPTW gebracht werden. Ein Individuum ist im nachfolgenden ein kompletter Tourenplan, der aus der Gesamtheit aller Touren besteht, die zur Erfüllung aller Aufträge notwendig sind. Ein Gen hingegen besteht aus exakt einer Tour, der ein Fahrzeug und die verschiedene Aufträge zugeordnet sind. Dies soll die nachfolgende \Fref{fig:Repraesentation1} verdeutlichen:
 
-\myfigure[]{Repraesentation1}{Repraesentation1.pdf}{} % TODO Bildunterschrift
+\myfigure[]{Repraesentation1}{Repraesentation1.pdf}{Repräsentation Gen (Tour)}
 
 Hier ist im unteren linken Bereich das verwendete Fahrzeug (Fahrzeug 5) zu finden, das für die Auslieferung der Aufträge 1, 3 und 4 verantwortlich ist. Desweiteren soll im späteren Verlauf zusätzlich die Reihenfolge identifizierbar sein, um genau zu wissen, wann welcher Auftrag ab- bzw. aufgeladen wurde. Ein Individuum stellt demnach die Gesamtheit aller Touren dar, die zur Erledigung aller Aufräge gebildet werden müssen. Dies verdeutlich die \Fref{fig:Repraesentation234}:
 
 \begin{figure}[ht!]
 	\centering
-      \subfigure[sd]{  % TODO Bildunterschrift
+      \subfigure[Tour 1]{
 	\label{fig:Repraesentation2}
 	\includegraphics[]{Repraesentation2.pdf} 
       }
       \hspace{0.5cm}
-      \subfigure[df]{  % TODO Bildunterschrift
+      \subfigure[Tour 2]{
 	\label{fig:Repraesentation3}
 	\includegraphics[]{Repraesentation3.pdf} 
       }
       \hspace{0.5cm}
-      \subfigure[sd]{  % TODO Bildunterschrift
+      \subfigure[Tour 3]{
 	\label{fig:Repraesentation4}
 	\includegraphics[]{Repraesentation4.pdf} 
       }
-      \caption{}  % TODO Bildunterschrift
+      \caption{Repräsentation Individuum (Plan)}
       \label{fig:Repraesentation234}
 \end{figure}
 
 Hierbei handelt es sich um ein konkretes Individuum, das drei Fahrzeuge verwendet, um die gezeigten acht Aufträge zu erfüllen. Zusätzlich muss jedes Gen mit einer ergänzenden Datenstruktur assoziiert werden, so dass im späteren Verlauf der Reihenfolgeaspekt dargestellt werden kann. Diese Darstellung wird im Umfeld des genetischen Algorithmus als Phänotyp bezeichnet. Dies veranschaulicht die \Fref{fig:Repraesentation5} zu einer gegebenen Tour:
 
-\myfigure[]{Repraesentation5}{Repraesentation5.pdf}{} % TODO Bildunterschrift
+\myfigure[]{Repraesentation5}{Repraesentation5.pdf}{Aktionsreihenfolge aus einem Gen}
 
 Auf diese Informationen haben die genetischen Operatoren unmittelbaren Zugriff, um eine möglichst große Varianz in die spätere Population einzubringen.
 
@@ -67,7 +67,7 @@ Bevor der genetische Algorithmus arbeiten kann, muss im ersten Schritt eine Star
 
 Die zweite Variante bringt ein gewisses Risiko mit, da es beim genetischen Algorithmus passieren kann, dass die Suche, aufgrund bereits guter Lösungen, vorzeitigt konvergiert. Um diesem Problem entgegen zu wirken, wurde der Aufbau der Startpopulation mit beiden Möglichkeiten gekoppelt. Dies soll die  \Fref{fig:Repraesentation6} verdeutlichen:
 
-\myfigure[]{Repraesentation6}{Repraesentation6.pdf}{} % TODO Bildunterschrift
+\myfigure[]{Repraesentation6}{Repraesentation6.pdf}{Aufbau der Startpopulation}
 
 Der Großteil der Population wird dabei zufällig erzeugt, wobei ein ausgewählter Teil sich den Konstruktionsheuristiken bedient. Dabei handelt es sich zum einen um das Nearest-Neighbor- und zum anderen um das Sweep-Verfahren, die in den folgenden Kapiteln kurz vorgestellt werden.
 
@@ -85,7 +85,7 @@ Zusätzlich wird auch hier auf ein Verfahren zurückgegriffen, welches die mögl
 
 Die Kombination der beiden Techniken veranschaulicht die \Fref{fig:Repraesentation7}. Dort wird als mögliches Elternpaar zum einen das Individuum 2 aufgrund der Fitness ausgewählt. Zum anderen wird Individuum 100 rein zufällig gewählt. Dadurch besteht der Vorteil, dass das Individuum, trotz schlechter Fitness, ggf. eine gute Kombination hervorbringt.
 
-\myfigure[]{Repraesentation7}{Repraesentation7.pdf}{} % TODO Bildunterschrift
+\myfigure[]{Repraesentation7}{Repraesentation7.pdf}{Individuenauswahl}
 
 \subsection{Rekombination (Crossover)}
 Bei der Rekombination, auch als Crossover bezeichnet, handelt es sich um den Vorgang, aus zwei Elternpaaren neue Individuen zu erzeugen. Dieses Verfahren stellt dabei einen der wichtigsten Suchoperatoren für genetische Algorithmen dar. Dabei werden die Nachkommen aus den Informationen der gekreuzten Elternpaare systematisch zusammengesetzt. Gesteuert wird der Crossover durch eine Wahrscheinlichkeit, die bestimmt ob entweder nur einfache Kopien der Eltern erzeugt werden, oder ein Operator zur Erzeugung der Nachkommen verwendet wird. Dazu werden nachfolgend zwei verschiedene Varianten vorgestellt.
@@ -110,7 +110,7 @@ Oben und unten ist jeweils eine Tour dargestellt, die jeweils einem Elternindivi
 \subsubsection{Crossover nach Falkenauer}
 Die zweite Variante für einen möglichen Crossover orientiert sich an dem gruppenzentrierten Operator, der von Falkenauer vorgeschlagen wurde. Im Wesentlichen besteht er aus vier Phasen die nachfolgend in der \Fref{fig:CrossoverFalkenau} dargestellt und erläutert werden.
 
-\myfigure[width=0.9\textwidth]{CrossoverFalkenau}{CrossoverFalkenau.png}{} % TODO Bildunterschrift
+\myfigure[width=0.9\textwidth]{CrossoverFalkenau}{CrossoverFalkenau.png}{CrossOver nach Falkenauer \cite{bortfeldtplanen}}
 
 \begin{enumerate}
  \item In der ersten Phase werden in jedem der beiden Eltern zufällig je zwei Crossover-Punkte gebildet, die innerhalb von jedem Elternteil den Anfang und das Ende des Crossover-Segments darstellen.
@@ -141,7 +141,7 @@ Dieser Operator geht noch einen Schritt weiter und verschiebt innerhalb einer To
 
 \myfigure[]{AktionVerschieben}{AktionVerschieben.pdf}{Verschiebung einer/mehrerer Aktion(en) innerhalb einer Tour}
 
-Die Repräsentation (links in \Fref{fig:AktionVerschieben}) bleibt davon unberührt, da es sich um eine reine Manipulation der Datenstruktur handelt. Konkret wird in diesem Beispiel das Abladen des Auftrags 3 mit dem Aufladen des Auftrags 2 vertauscht. Dies kann zur Folge habe, dass falsche Lösungen entstehen, da nach dem Operator keine Überprüfung und ggf. eine Korrektur stattfindet. Der Umgang mit der genannten Problematik wird jedoch im \Fref{sec:Nachfolgegeneration} erläutert. % TODO Referenz
+Die Repräsentation (links in \Fref{fig:AktionVerschieben}) bleibt davon unberührt, da es sich um eine reine Manipulation der Datenstruktur handelt. Konkret wird in diesem Beispiel das Abladen des Auftrags 3 mit dem Aufladen des Auftrags 2 vertauscht. Dies kann zur Folge habe, dass falsche Lösungen entstehen, da nach dem Operator keine Überprüfung und ggf. eine Korrektur stattfindet. Der Umgang mit der genannten Problematik wird jedoch im \Fref{sec:Nachfolgegeneration} erläutert. 
 
 \subsubsection{Verschiebung von Subtouren über eine Tour hinaus}
 Die bisherigen Operatoren haben lediglich ein Gen des Individuums mutiert. Um eine größere Varianz, unter dem Einfluss der Mutation, zu erschaffen wurde zusätzlich eine Möglichkeit entwickelt, wo ein Tauschen von Subtouren zwischen den unterschiedlichen Genen eines Individuums stattfindet. Dies veranschaulicht die \Fref{fig:SubrouteVerschieben}:
@@ -153,7 +153,7 @@ Dadurch entstehen letztendlich zwei komplett neue Touren innerhalb einer Fahrzeu
 \subsubsection{Kombination von 2 Touren}
 Den letzten genetischen Operator für eine Mutation stellt die Kombination von 2 Touren zu einer neuen Tour dar. Das Fahrzeug, das die Aufträge abliefert, wird zufällig aus den beiden vorhandenen gewählt. Dies wird durch die \Fref{fig:Kombination} veranschaulicht:
 
-\myfigure[]{Kombination}{Kombination.pdf}{Verschiebung von Subtouren über eine Tour hinaus}
+\myfigure[]{Kombination}{Kombination.pdf}{Kombination von zwei Touren}
 
 \FloatBarrier
 ~\newpage
