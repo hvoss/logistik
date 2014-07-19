@@ -20,9 +20,9 @@ import de.hsbremen.kss.model.Tour;
 /**
  * Realizes the Savings-Algorithm with orders (one element is an order instead
  * of a location)
- * 
+ *
  * @author david
- * 
+ *
  */
 public class SavingsTourConstruction implements Construction {
 
@@ -36,7 +36,7 @@ public class SavingsTourConstruction implements Construction {
 
         final Vehicle vehicle = CollectionUtils.get(configuration.getVehicles(), 0);
         final Station depot = vehicle.getSourceDepot();
-        final Tour tour =  new Tour(vehicle);
+        final Tour tour = new Tour(vehicle);
 
         final Set<Order> configurationOrders = new HashSet<>(configuration.getOrders());
         final Set<Order> visitedOrders = new HashSet<>(configurationOrders.size());
@@ -73,7 +73,7 @@ public class SavingsTourConstruction implements Construction {
             }
 
             final Station actualStation = actualOrder.getSourceStation();
-            final Set<Order> newSourceOrders = new HashSet<>(actualStation.getSourceOrders());
+            final Set<Order> newSourceOrders = new HashSet<>();
             newSourceOrders.removeAll(visitedOrders);
             final Set<Order> loadedSourceOrders = new HashSet<>();
 

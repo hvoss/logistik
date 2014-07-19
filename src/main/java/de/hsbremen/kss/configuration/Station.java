@@ -2,7 +2,6 @@ package de.hsbremen.kss.configuration;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -35,18 +34,6 @@ public final class Station {
     /** the coordinates. */
     private final Vector2D coordinates;
 
-    /**
-     * a list of orders for which this station is assigned as the source
-     * station.
-     */
-    private final Set<Order> sourceOrders;
-
-    /**
-     * a list of orders for which this station is assigned as the destination
-     * station.
-     */
-    private final Set<Order> destinationOrders;
-
     /** cached distances to other stations */
     private final Map<Station, Double> distances;
 
@@ -77,8 +64,6 @@ public final class Station {
         this.id = id;
         this.name = name;
         this.coordinates = coordinates;
-        this.sourceOrders = new HashSet<>();
-        this.destinationOrders = new HashSet<Order>();
 
         this.distances = new HashMap<>();
         this.angles = new HashMap<>();
@@ -125,28 +110,6 @@ public final class Station {
     }
 
     /**
-     * Gets the a list of orders for which this station is assigned as the
-     * source station.
-     *
-     * @return the a list of orders for which this station is assigned as the
-     *         source station
-     */
-    public Set<Order> getSourceOrders() {
-        return Collections.unmodifiableSet(this.sourceOrders);
-    }
-
-    /**
-     * Gets the a list of orders for which this station is assigned as the
-     * destination station.
-     *
-     * @return the a list of orders for which this station is assigned as the
-     *         destination station
-     */
-    public Set<Order> getDestinationOrders() {
-        return Collections.unmodifiableSet(this.destinationOrders);
-    }
-
-    /**
      * Calculates the distance to an other station.
      *
      * @param station
@@ -187,55 +150,6 @@ public final class Station {
         }
 
         return angle;
-    }
-
-    /**
-     * Gets the source products.
-     *
-     * @return the source products
-     */
-    public Set<Product> getSourceProducts() {
-        if (!this.sourceProductsCache.isValid()) {
-            final Set<Product> sourceProducts = new HashSet<>();
-
-            for (final Order order : this.sourceOrders) {
-                sourceProducts.add(order.getProduct());
-            }
-
-            this.sourceProductsCache.setCollection(sourceProducts);
-        }
-
-        return this.sourceProductsCache.getCollection();
-    }
-
-    /**
-     * adds a order for which this station is assigned as the source station.
-     *
-     * @param order
-     *            order for which this station is assigned as the source station
-     */
-    void addSourceOrder(final Order order) {
-        Validate.notNull(order, "order is null");
-        if (!this.sourceOrders.add(order)) {
-            throw new IllegalStateException("station " + this.name + " already contain the given source order: " + order);
-        }
-        this.sourceProductsCache.clearCache();
-    }
-
-    /**
-     * adds a order for which this station is assigned as the destination
-     * station.
-     *
-     * @param order
-     *            order for which this station is assigned as the destination
-     *            station
-     */
-    void addDestinationOrder(final Order order) {
-        Validate.notNull(order, "order is null");
-        if (!this.destinationOrders.add(order)) {
-            throw new IllegalStateException("station " + this.name + " already contain the given destination order: " + order);
-        }
-        this.destinationProductsCache.clearCache();
     }
 
     @Override

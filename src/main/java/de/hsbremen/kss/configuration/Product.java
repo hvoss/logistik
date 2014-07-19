@@ -1,9 +1,5 @@
 package de.hsbremen.kss.configuration;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
-
 import org.apache.commons.lang3.Validate;
 
 /**
@@ -16,9 +12,6 @@ public final class Product {
 
     /** the name. */
     private final String name;
-
-    /** vehicles which can transport this product. */
-    private final Set<Vehicle> vehicles;
 
     /**
      * Instantiates a new product.
@@ -34,8 +27,6 @@ public final class Product {
 
         this.id = id;
         this.name = name;
-
-        this.vehicles = new HashSet<>();
     }
 
     /**
@@ -54,28 +45,6 @@ public final class Product {
      */
     public String getName() {
         return this.name;
-    }
-
-    /**
-     * Gets the vehicles which can transport this product.
-     *
-     * @return the vehicles which can transport this product
-     */
-    public Set<Vehicle> getVehicles() {
-        return Collections.unmodifiableSet(this.vehicles);
-    }
-
-    /**
-     * adds vehicle which can transport this product.
-     *
-     * @param vehicle
-     *            vehicle which can transport this product
-     */
-    void addVehicle(final Vehicle vehicle) {
-        Validate.notNull(vehicle);
-        if (!this.vehicles.add(vehicle)) {
-            throw new IllegalStateException("product " + this.name + " already contain the given vehicle: " + vehicle);
-        }
     }
 
     @Override

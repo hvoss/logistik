@@ -66,9 +66,6 @@ public final class Order {
         this.destination.setOrder(this);
         this.product = product;
         this.amount = amount;
-
-        source.getStation().addSourceOrder(this);
-        destination.getStation().addDestinationOrder(this);
     }
 
     /**
@@ -263,7 +260,7 @@ public final class Order {
 
     /**
      * filters the given orders by its source station.
-     * 
+     *
      * @param vehicle
      *
      * @param orderToFilter
@@ -286,7 +283,7 @@ public final class Order {
 
     /**
      * filters the given orders by its source station.
-     * 
+     *
      * @param vehicle
      *
      * @param orderToFilter

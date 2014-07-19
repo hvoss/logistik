@@ -9,9 +9,6 @@ import de.hsbremen.kss.util.TimeUtils;
  */
 public final class TimeWindow {
 
-    /** the order station to which these time window belongs to. */
-    private OrderStation orderStation;
-
     /** start of the time window. */
     private final Double start;
 
@@ -23,7 +20,7 @@ public final class TimeWindow {
 
     /**
      * ctor.
-     * 
+     *
      * @param start
      *            start of the time window
      * @param end
@@ -40,27 +37,8 @@ public final class TimeWindow {
     }
 
     /**
-     * Gets the order station to which these time window belongs to.
-     * 
-     * @return the order station to which these time window belongs to
-     */
-    public OrderStation getOrderStation() {
-        return this.orderStation;
-    }
-
-    /**
-     * Sets the order station to which these time window belongs to.
-     * 
-     * @param orderStation
-     *            the new order station to which these time window belongs to
-     */
-    void setOrderStation(final OrderStation orderStation) {
-        this.orderStation = orderStation;
-    }
-
-    /**
      * Gets the start of the time window.
-     * 
+     *
      * @return the start of the time window
      */
     public Double getStart() {
@@ -69,7 +47,7 @@ public final class TimeWindow {
 
     /**
      * Gets the end of the time window.
-     * 
+     *
      * @return the end of the time window
      */
     public Double getEnd() {
@@ -78,7 +56,7 @@ public final class TimeWindow {
 
     /**
      * returns the timespan in hours.
-     * 
+     *
      * @return the timespan in hours
      */
     public double timespan() {
@@ -87,7 +65,7 @@ public final class TimeWindow {
 
     /**
      * checks if the value is between start and end (inclusive).
-     * 
+     *
      * @param value
      *            value to check.
      * @return true, if the value is between start and end.

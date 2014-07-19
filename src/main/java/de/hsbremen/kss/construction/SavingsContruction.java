@@ -21,9 +21,9 @@ import de.hsbremen.kss.util.ConstructionUtils;
 /**
  * Realizes the sequential Savings-Algorithm Has a problem, when the depot is in
  * one of the orders
- * 
+ *
  * @author david
- * 
+ *
  */
 public class SavingsContruction implements Construction {
 
@@ -82,8 +82,8 @@ public class SavingsContruction implements Construction {
                 actualStation = savingsList.get(0).getDestinationStation();
             }
 
-            final Set<Order> newSourceOrders = new HashSet<>(actualStation.getSourceOrders());
-            final Set<Order> newDestinationOrders = new HashSet<>(actualStation.getDestinationOrders());
+            final Set<Order> newSourceOrders = new HashSet<>();
+            final Set<Order> newDestinationOrders = new HashSet<>();
             newSourceOrders.removeAll(visitedSourceOrders);
             newDestinationOrders.removeAll(visitedDestinationOrders);
 
