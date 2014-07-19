@@ -1,31 +1,49 @@
 \section{Einleitung}
+\subsection{Einführung}
+Ziel dieses Projektes ist es, ein Programm zu entwickeln, mit dem eine Fahrzeugeinsatzplanung unter Berücksichtigung bestimmter Restriktionen durchgeführt werden kann. 
 
-\subsection{Problembeschreibung}
+% TODO Beschreiben was die Fahrzeugeinsatzplanung ist?
 
 \subsection{Anforderungen}
+\label{sec:Anforderungen}
+Dem Programm wird eine Konfiguration übergeben, in der folgende Parameter beschrieben sind:
 \begin{itemize}
- \item Fahrzeug
+ \item Fahrzeuge
  \begin{itemize}
-  \item Ein Fahrzeug kann einen Produkttyp transportieren
-  \item Geschwindigkeit
-  \item Kapazität
-  \item Zeitfenster
-  \item Start- und End-Depot
+  \item Ein Fahrzeug kann einen Produkt transportieren
+  \item Durchschnittliche Geschwindigkeit
+  \item Kapazität (maximale Anzahl der Produkte)
+  \item Zeitfenster (Arbeitsbeginn und -ende)
+  \item Start- und End-Depot (Station)
  \end{itemize}
- \item Produkt
+ \item Produkte
  \begin{itemize}
-  \item Name
- \end{itemize}
- \item Auftrag
- \begin{itemize}
-  \item Beliebige Auf- und Ablade-Station
-  \item Zeitfenster 
+  \item Name des Produkts
  \end{itemize}
  \item Station
  \begin{itemize}
-  \item Namen
-  \item Koordinaten
+  \item Name der Station
+  \item X-Y-Koordinaten
  \end{itemize}
-
+ \item Auftrag
+ \begin{itemize}
+  \item Name des Auftrages
+  \item Zu transportierendes Produkt
+  \item Anzahl der Produkte
+  \item Beliebige Auf- und Ablade-Station
+  \item Zeitfenster bei Auf- und Ablade-Station
+ \end{itemize}
 \end{itemize}
+Die Entfernung zwischen den Stationen kann über die Koordinaten berechnet werden. 
 
+\subsection{Restriktionen}
+\label{sec:Restriktionen}
+Folgende Restriktionen sind bei der Planung zu berücksichtigen:
+\begin{itemize}
+ \item Alle Aufträge müssen erledigt werden
+ \item Ein Fahrzeug darf nicht überladen werden
+ \item Ein Fahrzeug startet und endet im Depot 
+ \item Ein Fahrzeug darf nur innerhalb seines Zeitfensters fahren
+ \item Ein Produkt muss zuerst aufgeladen werden, bevor es abgeladen werden kann
+ \item Das Auf- und Abladen muss innerhalb des Zeitfensters erfolgen
+\end{itemize}

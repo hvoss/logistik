@@ -15,12 +15,27 @@ Desweiteren sind zwei Datenmodelle definiert:
 \end{enumerate}
 
 \subsection{Konfigurations-Datenmodell}
-Das Konfiguration-Datenmodell beschreibt die Konfiguration, die vom Anwender zur Verfügung gestellt wird. Sie umfasst Stationen, Fahrzeuge, Produkte, Aufträge und Zeitfenster (siehe \Fref{fig:KonfigurationDatenmodell}).
+Das Konfiguration-Datenmodell beschreibt die Konfiguration, die vom Anwender zur Verfügung gestellt wird (siehe \Fref{sec:Anforderungen}). Sie umfasst Stationen, Fahrzeuge, Produkte, Aufträge und Zeitfenster (siehe \Fref{fig:KonfigurationDatenmodell}).
+\myfigure[width=0.95\textwidth]{KonfigurationDatenmodell}{../src/main/java/de/hsbremen/kss/configuration/Configuration.png}{Repräsentation eines Plans mit Touren und Aktionen}
 
 \subsection{Ergebnis-Datenmodell}
+Das Ergebnis wird mit Hilfe des Ergebnis-Datenmodells repräsentiert (siehe \Fref{fig:ErgebnisDatenmodell}). Ein Ergebnis ist ein Plan, der mehrere Touren enthält, die wiederum mehrere Aktionen enthalten. Dabei wird eine Tour von einem Fahrzeug durchgeführt.
+
+Eine Aktion hat drei grundlegende Eigenschaften. Sie wird an einer Station durchgeführt, sie hat eine Ausführungszeit und muss in einem bestimmten Zeitfenster durchgeführt werden. Die Fahrten zwischen Stationen werden nicht mit einer Aktion definiert. Sie ergeben sich implizit aus zwei aufeinander folgenden Aktionen. Die folgenden Aktionen sind definiert:
+\begin{description}
+ \item[FromDepotAction] Das Fahrzeug beginnt seine Tour im Depot (Station). 
+ \item[OrderLoadAction] Das Fahrzeug läd an einer Station einen Auftrag auf.
+ \item[WaitingAction] Das Fahrzeug wartet an einer Station.
+ \item[OrderUnloadAction] Das Fahrzeug läd an einer Station einen Auftrag ab.
+ \item[ToDepotAction] Das Fahrzeug beendet seine Tour am Depot (Station).
+\end{description}
+
 \myfigure[width=0.95\textwidth]{ErgebnisDatenmodell}{../src/main/java/de/hsbremen/kss/model/Model.png}{Repräsentation eines Plans mit Touren und Aktionen}
 
 \subsection{Konfigurationsgenerierung}
 
+\subsection{Konstruktionsverfahren}
+
 \subsection{Genetischer Algorithmus}
-\myfigure[width=0.95\textwidth]{KonfigurationDatenmodell}{../src/main/java/de/hsbremen/kss/genetic/GeneticAlgorithm.png}{Klassendiagramm vom genetischen Algorithmus}
+Die Softwarearchitektur des genetischen Algorithmus ist sehr modular aufgebaut. Für die in \Fref{sec:GenetischerAlgorithmus} beschriebenen Merkmale (Individuenauswahl, Rekombination, Mutation, Fitnesstest, Bildung der Nachfolgegenerqation und Abbruchbedingung) sind Interface definiert. Die Klasse \java{GeneticAlgorithmImpl} ist nur zuständig für die Steuerung der einzelnen Module (Merkmale). Die \Fref{fig:ClassDiagrammGeneticAlogorithm} zeigt anhand eines Klassendiagramms das modulare Konzept.
+\myfigure[width=0.95\textwidth]{ClassDiagrammGeneticAlogorithm}{../src/main/java/de/hsbremen/kss/genetic/GeneticAlgorithm.png}{Klassendiagramm vom genetischen Algorithmus}
