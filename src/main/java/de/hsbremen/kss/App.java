@@ -45,7 +45,7 @@ import de.hsbremen.kss.gui.Map;
 import de.hsbremen.kss.model.Plan;
 import de.hsbremen.kss.simpleconstruction.RandomSimpleConstruction;
 import de.hsbremen.kss.util.RandomUtils;
-import de.hsbremen.kss.validate.SimpleValidator;
+import de.hsbremen.kss.validate.FullValidator;
 import de.hsbremen.kss.validate.Validator;
 
 /**
@@ -117,7 +117,7 @@ public final class App {
         
         final Plan plan = geneticAlgorithm.startOptimize(generateConfiguration, randomPlans);
 
-        final Validator validator = new SimpleValidator();
+        final Validator validator = new FullValidator();
         validator.enableLogging(true);
 
         final VehicleMakespanFitnessTest vehicleMakespanFitnessTest = new VehicleMakespanFitnessTest(5);
@@ -155,7 +155,7 @@ public final class App {
 
         final Plan plan = geneticAlgorithm.startOptimize(circleConfig, randomPlans);
 
-        final Validator validator = new SimpleValidator();
+        final Validator validator = new FullValidator();
         validator.enableLogging(true);
 
         final VehicleMakespanFitnessTest vehicleMakespanFitnessTest = new VehicleMakespanFitnessTest(5);

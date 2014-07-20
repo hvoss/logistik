@@ -1,7 +1,9 @@
 \section{Umsetzung}
+\subsection{Entwicklung}
+Die Anwendung wurde mit Java 7 entwickelt. Als Entwicklungsumgebung wurde Eclipse in Verbindung mit Maven eingesetzt. 
 
 \subsection{Verwendete Bibliotheken}
-Im Rahmen der Entwicklung wurden diverse OpenSource - Bibliotheken eingeführt, um die Entwicklung zu beschleunigen und die Qualität der Software zu steigern. Im folgenden werden die verwendeten Bibliotheken beschrieben:
+Im Rahmen der Entwicklung wurden diverse OpenSource-Bibliotheken eingeführt, um die Entwicklung zu beschleunigen und die Qualität der Software zu steigern. Im folgenden werden die verwendeten Bibliotheken beschrieben:
 \begin{description}
  \item[Apache Commons Math] (Version 3.2, Apache License 2.0) \cite{apache:CommonsMath} Stellt mathematische Funktionen zur Verfügung. Wird unteranderem für die Berechnung der Entfernungen verwendet.
  \item[Apache Commons Lang] (Version 3.3.1, Apache License 2.0) \cite{apache:CommonsLang} % TODO wird es wirklich verwendet?
@@ -16,27 +18,101 @@ Im Rahmen der Entwicklung wurden diverse OpenSource - Bibliotheken eingeführt, 
  \item[JFreeChart] (Version 1.0.17, LPGL) \cite{ObjectRefineryLimited:JFreeChart} JFreeChart wird zur Darstellung der Graphen verwendet.
 \end{description}
 
-% TODO Entwicklungsumgebung beschreiben?
-
-\subsection{Mutation}
-\myfigure[width=0.95\textwidth]{Mutation}{../src/main/java/de/hsbremen/kss/genetic/mutation/Mutation.png}{Implementierte Mutationsalgorithmen}
-
-\subsection{Selektion}
-
-\subsection{Fitnesstest}
-% TODO Eine Zeit-Verletzung von einer Stunde ist schlimmer als 12 Zeit-Verletzungen von 5 Minuten
+\newpage
+\subsection{Populationssortierung}
+Das Sortieren der Population geschieht mit Hilfe des \java{PlanComparator}s (\Fref{fig:PlanComparator}). Dieser sortiert zuerst mit Hilfe des \java{Validator}s die gültigen und ungültigen Individuen und im Anschluss die beiden Gruppen nach ihrem Fitnesswert. Somit stehen gültige Individuen immer über ungültigen Individuen.
+\myfigure[width=0.95\textwidth]{PlanComparator}{../src/main/java/de/hsbremen/kss/genetic/PlanComparator.png}{Sortierung der Population}
 
 \subsection{Validation}
+Es wurden zwei Validatoren (siehe \Fref{fig:Validator}) implementiert. Der \java{FullValidator} prüft alle Restriktionen (vgl. \Fref{sec:Restriktionen}). Er wird am Ende der Optimierung verwendet um das beste Ergebnis zu überprüfen. Für das Sortieren der Population wird hingegen der \java{RightOrderValidatorImpl} verwendet. Er führt eine schwächere Prüfung durch und ignoriert unteranderem die Verletzungen von Zeitfenstern.
+\myfigure[width=0.5\textwidth]{Validator}{../src/main/java/de/hsbremen/kss/validate/Validator.png}{Implementierte Validatoren}
 
-\subsection{Caching}
+\newpage
+\subsection{Fitnesstest}
+\Fref{fig:Fitness} zeigt die implementierten Fitness Tests. Sie lassen sich dynamisch zusammenschalten und konfigurieren. Bei der Implementierung wurde unter anderem darauf geachtet, dass eine Zeitfenster-Verletzung von einer Stunde schlechter bewertet wird, als zwölf Verletzungen von jeweils fünf Minuten. 
+\myfigure[width=0.95\textwidth]{Fitness}{../src/main/java/de/hsbremen/kss/genetic/fitness/FitnessTest.png}{Implementierte Fitness Tests}
 
-% TODO Kreis-Anordnung
+\subsection{Selektion}
+Es wurden drei unterschiedliche Selektionsverfahren entwickelt (siehe \Fref{fig:Selektion}). Die \java{RandomSelektion} wählt zufällig ein Individuum aus der Population aus. Die \java{OnyTheBest\-Selection} wählt aus den Besten (konfigurierbar) zufällig ein Individuum aus. Die \java{Linear\-Distribution\-Selection} wählt die Individuen mit einem höheren Rang mit einer höheren Wahrscheinlichkeit aus. Die \Fref{fig:SelektionGraph} verdeutlicht die unterschiedlichen Selektionsarten anhand von drei Graphen.
+\myfigure[width=0.95\textwidth]{Selektion}{../src/main/java/de/hsbremen/kss/genetic/selection/Selektion.png}{Implementierte Selektionen}
 
+\begin{figure}
+	\centering
+      \subfigure[LinearSelectionImpl]{
+	\label{fig:SelektionLinear}
+	\begin{tikzpicture}
+		\begin{axis}[
+		xmin=0, xmax=11,
+		ymin=0, ymax=11,
+		axis lines=center,
+		axis on top=true,
+		domain=1:10,
+		width=0.32\textwidth,
+		]
+
+		\addplot [mark=none,draw=red,ultra thick] {11-x};
+		\end{axis}
+		\end{tikzpicture}
+
+      }
+      \hspace{0.5cm}
+      \subfigure[RandomSelektion]{
+	\label{fig:SelektionRandom}
+		\begin{tikzpicture}
+		\begin{axis}[
+		xmin=0, xmax=11,
+		ymin=0, ymax=11,
+		axis lines=center,
+		axis on top=true,
+		domain=1:10,
+		width=0.32\textwidth,
+		]
+
+		\addplot [mark=none,draw=red,ultra thick] {1};
+		\end{axis}
+		\end{tikzpicture}
+      }
+      \hspace{0.5cm}
+      \subfigure[OnlyTheBestSelection]{
+	\label{fig:SelektionOnlyBest}
+	\begin{tikzpicture}
+	\begin{axis}[
+	xmin=0, xmax=11,
+	ymin=0, ymax=11,
+	axis lines=center,
+	axis on top=true,
+	width=0.32\textwidth,
+	]
+
+	\addplot [mark=none,draw=red,ultra thick,domain=1:3] {1};
+	\addplot [mark=none,draw=red,ultra thick,domain=4:10] {0};
+	\end{axis}
+	\end{tikzpicture}
+      }
+      \caption{Selektion bei einer Populationsgröße von 10 Individuen (X: Individuenrang, Y: Wahrscheinlichkeit)}
+      \label{fig:SelektionGraph}
+\end{figure}
+
+\newpage
+\subsection{Mutation}
+Im Klassendiagramm (\Fref{fig:Mutation}) sind alle implementierten Mutationen dargestellt. Instanzen dieser Mutationen werden dem genetischen Algorithmus übergeben. Dieser wählt dabei zufällig eine Mutation aus und wendet sie auf ein Individuum an. Es können auch "`null"'-Mutationen übergeben werden. Dies bedeutet, dass das Individuum nicht mutiert wird. Hierüber lässt sich also die Mutationsrate steuern.
+
+Die Mutationen sind so implementiert, dass sie möglichst nur gültige Lösungen liefern (Kein Abladen vor dem Aufladen; nur Produkte laden, die auch mit dem Fahrzeug transportiert werden können). 
+\myfigure[width=0.95\textwidth]{Mutation}{../src/main/java/de/hsbremen/kss/genetic/mutation/Mutation.png}{Implementierte Mutationsalgorithmen}
+
+\newpage
 \subsection{Grafische Oberfläche}
 \label{sec:GrafischeOberflaeche}
+Die drei folgenden Abbildungen zeigen die grafische Oberfläche. Sie wird beider jeder Iteration aktualisiert und zeigt somit immer den aktuellen Stand.
 
-\myfigure[width=0.95\textwidth]{FitnessDistribution}{FitnessDistribution.png}{Verteilung des Fitnesswertes} % TODO Bildunterschirft
-\myfigure[width=0.95\textwidth]{FitnessLengthGraph}{FitnessLengthGraph.png}{} % TODO Bildunterschirft
-\myfigure[width=0.95\textwidth]{Map}{Map.png}{} % TODO Bildunterschirft
+\Fref{fig:Map} zeigt eine Deutschlandkarte auf welcher das beste Individuum abgebildet wird. Die unterschiedlichen Farben symbolisieren unterschiedliche Touren.
+
+\Fref{fig:FitnessDistribution} zeigt die relativen Aufbau des Fitnesswertes. Aus diesem Graphen lässt sich entnehmen, ob es noch Verletzungen von Restriktionen gibt und was der genetische Algorithmus zur Zeit optimiert.
+
+\Fref{fig:FitnessLengthGraph} zeigt die Entwicklung des Fitness Wertes und der Gesamtstreckenlänge. Der Fitness Wert sinkt stetig. Die Streckenlänge kann sich auch wieder verschlechtern, wenn hierdurch andere Verletzung vermieden werden.
+
+\myfigure[scale=0.6]{Map}{Map.png}{Das beste Ergebnis wird auf einer Deutschlandkarte dargestellt}
+\myfigure[scale=0.6]{FitnessDistribution}{FitnessDistribution.png}{Verteilung des Fitnesswertes}
+\myfigure[scale=0.6]{FitnessLengthGraph}{FitnessLengthGraph.png}{Fitness Wert und Länge des besten und schlechtesten Individuum + Durchschnitt über die gesamt Population}
 
 

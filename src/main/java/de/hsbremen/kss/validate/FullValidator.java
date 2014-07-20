@@ -29,10 +29,10 @@ import de.hsbremen.kss.util.TimeUtils;
  * @author henrik
  * 
  */
-public final class SimpleValidator implements Validator {
+public final class FullValidator implements Validator {
 
     /** logging interface */
-    private static final Logger LOG = LoggerFactory.getLogger(SimpleValidator.class);
+    private static final Logger LOG = LoggerFactory.getLogger(FullValidator.class);
     private boolean enableLogging = true;
 
     @Override
@@ -167,7 +167,7 @@ public final class SimpleValidator implements Validator {
             return allRight;
         } catch (final Exception ex) {
             if (this.enableLogging) {
-                SimpleValidator.LOG.error("", ex);
+                FullValidator.LOG.error("", ex);
             }
             return false;
         }
@@ -175,7 +175,7 @@ public final class SimpleValidator implements Validator {
 
     private void log(final String text) {
         if (this.enableLogging) {
-            SimpleValidator.LOG.warn(text);
+            FullValidator.LOG.warn(text);
         }
     }
 
