@@ -1,21 +1,21 @@
 \section{Softwarearchitektur}
 
 \subsection{Systemdesign}
-Das Systemdesign setzt sich im wesentlichen aus den folgenden vier Modulen zusammen:
+Das Systemdesign setzt sich im Wesentlichen aus den folgenden vier Modulen zusammen:
 \begin{enumerate}
  \item Konfigurationsgenerierung
  \item Erzeugen der Startpopulation durch Konstruktionsverfahren
  \item Genetisches Optimierungsverfahren
  \item Ergebnisvisualisierung
 \end{enumerate}
-Desweiteren sind zwei Datenmodelle definiert:
+Des Weiteren sind zwei Datenmodelle definiert:
 \begin{enumerate}
  \item Konfiguration-Datenmodell
  \item Ergebnis-Datenmodell
 \end{enumerate}
 Das Aktivitätsdiagramm aus \Fref{fig:Activity} zeigt den groben Ablauf der Anwendung.
 
-\myfigure[width=0.8\textwidth]{Activity}{Activity.png}{Aktivitätsdiagramm: Grobe Ablauf der Anwendung}
+\myfigure[width=0.8\textwidth]{Activity}{Activity.png}{Aktivitätsdiagramm: Grober Ablauf der Anwendung}
 
 \subsection{Konfigurations-Datenmodell}
 Das Konfiguration-Datenmodell beschreibt die Konfiguration, die vom Anwender zur Verfügung gestellt wird (siehe \Fref{sec:Anforderungen}). Sie umfasst Stationen, Fahrzeuge, Produkte, Aufträge und Zeitfenster (siehe \Fref{fig:KonfigurationDatenmodell}).
@@ -24,12 +24,12 @@ Das Konfiguration-Datenmodell beschreibt die Konfiguration, die vom Anwender zur
 \subsection{Ergebnis-Datenmodell}
 Das Ergebnis wird mit Hilfe des Ergebnis-Datenmodells repräsentiert (siehe \Fref{fig:ErgebnisDatenmodell}). Ein Ergebnis ist ein Plan, der mehrere Touren enthält, die wiederum mehrere Aktionen enthalten. Dabei wird eine Tour von einem Fahrzeug durchgeführt.
 
-Eine Aktion hat drei grundlegende Eigenschaften. Sie wird an einer Station durchgeführt, sie hat eine Ausführungszeit und muss in einem bestimmten Zeitfenster durchgeführt werden. Die Fahrten zwischen Stationen werden nicht mit einer Aktion definiert. Sie ergeben sich implizit aus zwei aufeinander folgenden Aktionen. Die folgenden Aktionen sind definiert:
+Eine Aktion hat drei grundlegende Eigenschaften: Sie wird an einer Station durchgeführt, sie hat eine Ausführungszeit und muss in einem bestimmten Zeitfenster durchgeführt werden. Die Fahrten zwischen Stationen werden nicht mit einer Aktion definiert. Sie ergeben sich implizit aus zwei aufeinanderfolgenden Aktionen. Die folgenden Aktionen sind definiert:
 \begin{description}
  \item[FromDepotAction] Das Fahrzeug beginnt seine Tour im Depot (Station). 
- \item[OrderLoadAction] Das Fahrzeug läd an einer Station einen Auftrag auf.
+ \item[OrderLoadAction] Das Fahrzeug lädt an einer Station einen Auftrag auf.
  \item[WaitingAction] Das Fahrzeug wartet an einer Station.
- \item[OrderUnloadAction] Das Fahrzeug läd an einer Station einen Auftrag ab.
+ \item[OrderUnloadAction] Das Fahrzeug lädt an einer Station einen Auftrag ab.
  \item[ToDepotAction] Das Fahrzeug beendet seine Tour am Depot (Station).
 \end{description}
 
@@ -37,7 +37,7 @@ Eine Aktion hat drei grundlegende Eigenschaften. Sie wird an einer Station durch
 
 \FloatBarrier
 \subsection{Konfigurationsgenerierung}
-Die Konfigurationsgenerierung-Modul erzeugt eine Instanz des Konfigurations-Datenmodells. Diese Instanz ist Basis für alle weiteren Berechnungen in der Anwendung. Das Datenmodell kann aus unterschiedlichen Quellen generiert werden. 
+Das Konfigurationsgenerierung-Modul erzeugt eine Instanz des Konfigurationsdatenmodells. Diese Instanz ist Basis für alle weiteren Berechnungen in der Anwendung. Das Datenmodell kann aus unterschiedlichen Quellen generiert werden. 
 
 \subsection{Erzeugen der Startpopulation}
 Wie in \Fref{sec:Startposition} beschrieben, ist es notwendig eine Startpopulation zu erzeugen. Für das Erzeugen der Population ist die Klasse \java{PopulationGeneratorImpl} zuständig. Ihr werden beliebige Konstruktionsverfahren (\java{Construction}), eine Konfiguration und die Größe der Population übergeben. Der Generator erzeugt dann automatisch die Startpopulation.
@@ -45,5 +45,5 @@ Wie in \Fref{sec:Startposition} beschrieben, ist es notwendig eine Startpopulati
 
 \subsection{Genetischer Algorithmus}
 \label{sec:ArchtikturGenetischerAlgorithmus}
-Die Softwarearchitektur des genetischen Algorithmus ist sehr modular aufgebaut. Für die in \Fref{sec:GenetischerAlgorithmus} beschriebenen Merkmale (Individuenauswahl, Rekombination, Mutation, Fitnesstest, Bildung der Nachfolgegenerqation und Abbruchbedingung) sind Interfaces definiert. Die Klasse \java{GeneticAlgorithmImpl} ist nur zuständig für die Steuerung der einzelnen Module (Merkmale). Die \Fref{fig:ClassDiagrammGeneticAlogorithm} zeigt anhand eines Klassendiagramms das modulare Konzept.
+Die Softwarearchitektur des genetischen Algorithmus ist modular aufgebaut. Für die in \Fref{sec:GenetischerAlgorithmus} beschriebenen Merkmale (Individuenauswahl, Rekombination, Mutation, Fitnesstest, Bildung der Nachfolgegenerqation und Abbruchbedingung) sind Schnittstellen definiert. Die Klasse \java{GeneticAlgorithmImpl} ist nur zuständig für die Steuerung der einzelnen Module (Merkmale). Die \Fref{fig:ClassDiagrammGeneticAlogorithm} zeigt anhand eines Klassendiagramms das modulare Konzept.
 \myfigure[width=0.95\textwidth]{ClassDiagrammGeneticAlogorithm}{../src/main/java/de/hsbremen/kss/genetic/GeneticAlgorithm.png}{Klassendiagramm vom genetischen Algorithmus}

@@ -1,36 +1,36 @@
 \section{Genetischer Algorithmus}
 \label{sec:GenetischerAlgorithmus}
-Das nachfolgende Kapitel stellt den genetischen Algorithmus, als Verfahren zur Lösung komplexer Optimierungsprobleme, vor. Dazu werden im ersten Schritt die benötigten Grundlagen geschaffen und im Anschluss die speziellen Operatoren im Zusammenhang mit dem "`PDPTW"' vorgestellt. 
+Das nachfolgende Kapitel stellt den genetischen Algorithmus als Verfahren zur Lösung komplexer Optimierungsprobleme vor. Dazu werden im ersten Schritt die benötigten Grundlagen geschaffen und im Anschluss die speziellen Operatoren im Zusammenhang mit dem "`PDPTW"' (Pickup and Delivery with Time Windows) vorgestellt. 
 
 \subsection{Grundlagen}
-Bei den genetischen Algorithmen handelt es sich um Verfahren, die zur Lösung komplexer Optimierungsaufgaben eingesetzt werden. Sie beruhen auf Methoden und Erkenntnisse der biologischen Genetik. Dabei dient insbesondere die Evolutionstheorie als Vorbild für die Entwicklung der genetischen Algorithmen, da die Evolution bislang gute Ergebnisse in der Natur geliefert hat. \cite{jih2004family} \cite{bortfeldtplanen}
+Bei den genetischen Algorithmen handelt es sich um Verfahren, die zur Lösung komplexer Optimierungsaufgaben eingesetzt werden. Sie beruhen auf Methoden und Erkenntnissen der biologischen Genetik. Dabei dient insbesondere die Evolutionstheorie als Vorbild für die Entwicklung der genetischen Algorithmen, da die Evolution bislang gute Ergebnisse in der Natur geliefert hat. \cite{jih2004family} \cite{bortfeldtplanen}
 
-Die grundlegende Arbeit, zur Schaffung dieser Verfahrenstechnik, wurde von I. Rechenberg mit dem 1960 erschienenen Werk "`Evolutionsstrategie"' geschaffen. Auf diesem Wissen aufbauend, erfand John Holland 1975 die genetischen Algorithmen, die in seinem Werk "`Adaption in Natural and Artificial Systems"' niedergeschrieben wurden.
+Die grundlegende Arbeit zur Schaffung dieser Verfahrenstechnik wurde von I. Rechenberg mit dem 1960 erschienenen Werk "`Evolutionsstrategie"' geschaffen. Auf diesem Wissen aufbauend erfand John Holland 1975 die genetischen Algorithmen, die in seinem Werk "`Adaption in Natural and Artificial Systems"' niedergeschrieben wurden.
 
-Der genetische Algorithmus beruht dabei auf eine simple Verfahrenstechnik, welche nachfolgend dargestellt und erklärt wird:
+Der genetische Algorithmus beruht dabei auf einer simplen Verfahrenstechnik, welche nachfolgend dargestellt und erklärt wird:
 \begin{itemize}
- \item Initialisiere Population P
- \item Evaluiere alle Individuen in P
+ \item Initialisiere Population $P$
+ \item Evaluiere alle Individuen in $P$
  \item Wiederhole, solange Abbruchbedingung nicht erreicht
  \begin{itemize}
-  \item Selektiere ein Individuenpaar x, y aus P als Eltern
-  \item Erzeuge zwei Nachkommen x‘, y‘ aus x und y durch Anwendung von Crossover-Operationen mit der Wahrscheinlichkeit p(cross)
-  \item Erzeuge modifizierte Nachkommen x‘‘, y‘‘ aus x‘ und y‘ durch Anwendung von Mu\-ta\-tions-Operatoren mit der Wahrscheinlichkeit p(mut)
-  \item Füge x‘‘ und y‘‘ der Population P hinzu und entferne schlechtere Individuen
+  \item Selektiere ein Individuenpaar $x$, $y$ aus $P$ als Eltern
+  \item Erzeuge zwei Nachkommen $x‘$, $y‘$ aus $x$ und $y$ durch Anwendung von Crossover-Operationen mit der Wahrscheinlichkeit $p(cross)$
+  \item Erzeuge modifizierte Nachkommen $x‘‘$, $y‘‘$ aus $x‘$ und $y‘$ durch Anwendung von Mu\-ta\-tions-Operatoren mit der Wahrscheinlichkeit $p(mut)$
+  \item Füge $x‘‘$ und $y‘‘$ der Population P hinzu und entferne schlechtere Individuen
  \end{itemize}
- \item Gib das beste Individuum aus P als Lösung aus.
+ \item Gib das beste Individuum aus $P$ als Lösung aus.
 \end{itemize}
 
 Die einzelnen Schritte des genetischen Algorithmus werden dabei in den nachfolgenden Kapiteln anhand einer speziellen Problemstellung (PDPTW) konkretisiert und erläutert.
 
 \subsection{Repräsentation}
-Eine der größten Herausforderungen für die Entwicklung und den Erfolg des genetischen Algorithmus ist die Wahl einer geeigneten Repräsentationsebene. Dazu weißt der PDPTW zwei strukturell heterogene Teilprobleme auf. Zum einen muss eine Zusammenfassung von Aufträgen mit ihrer Zuordnung zu einem Fahrzeug als Gruppierungsproblem dargestellt werden. Auf der anderen Seite ist zusätzlich ein Reihenfolgeproblem zu lösen, indem eine zulässige Route bestimmt wird, in der die Ladeorte anzufahren sind. Aus diesen Einschränkungen folgt, dass beispielsweise eine binäre Kodierung, die im klassischen genetischen Algorithmus angewandt wird, keine geeignete Repräsentationsform darstellt. 
+Eine der größten Herausforderungen für die Entwicklung und den Erfolg des genetischen Algorithmus ist die Wahl einer geeigneten Repräsentationsebene. Dazu weist der PDPTW zwei strukturell heterogene Teilprobleme auf. Zum einen muss eine Zusammenfassung von Aufträgen mit ihrer Zuordnung zu einem Fahrzeug als Gruppierungsproblem dargestellt werden. Zum anderen Seite ist zusätzlich ein Reihenfolgeproblem zu lösen, indem eine zulässige Route bestimmt wird, in der die Ladeorte anzufahren sind. Aus diesen Einschränkungen folgt, dass beispielsweise eine binäre Kodierung, die im klassischen genetischen Algorithmus angewandt wird, keine geeignete Repräsentationsform darstellt. 
 
-Bevor nun eine Möglichkeit der Darstellung der beiden genannten Aspekte vorgestellt wird, müssen die Begriffe des Individuums und des Gens in den Kontext des PDPTW gebracht werden. Ein Individuum ist im nachfolgenden ein kompletter Tourenplan, der aus der Gesamtheit aller Touren besteht, die zur Erfüllung aller Aufträge notwendig sind. Ein Gen hingegen besteht aus exakt einer Tour, der ein Fahrzeug und die verschiedene Aufträge zugeordnet sind. Dies soll die nachfolgende \Fref{fig:Repraesentation1} verdeutlichen:
+Bevor nun eine Möglichkeit der Darstellung der beiden genannten Aspekte vorgestellt wird, müssen die Begriffe des Individuums und des Gens in den Kontext des PDPTW gebracht werden. Ein Individuum ist im Nachfolgenden ein kompletter Tourenplan, der aus der Gesamtheit aller Touren besteht, die zur Erfüllung aller Aufträge notwendig sind. Ein Gen hingegen besteht aus exakt einer Tour, der ein Fahrzeug und die verschiedene Aufträge zugeordnet sind. Dies soll die nachfolgende \Fref{fig:Repraesentation1} verdeutlichen:
 
 \myfigure[]{Repraesentation1}{Repraesentation1.pdf}{Repräsentation Gen (Tour)}
 
-Hier ist im unteren linken Bereich das verwendete Fahrzeug (Fahrzeug 5) zu finden, das für die Auslieferung der Aufträge 1, 3 und 4 verantwortlich ist. Desweiteren soll im späteren Verlauf zusätzlich die Reihenfolge identifizierbar sein, um genau zu wissen, wann welcher Auftrag ab- bzw. aufgeladen wurde. Ein Individuum stellt demnach die Gesamtheit aller Touren dar, die zur Erledigung aller Aufräge gebildet werden müssen. Dies verdeutlich die \Fref{fig:Repraesentation234}:
+Hier ist im unteren linken Bereich das verwendete Fahrzeug (Fahrzeug 5) zu finden, das für die Auslieferung der Aufträge 1, 3 und 4 verantwortlich ist. Des Weiteren soll im späteren Verlauf zusätzlich die Reihenfolge identifizierbar sein, um genau zu wissen, wann welcher Auftrag ab- bzw. aufgeladen wurde. Ein Individuum stellt demnach die Gesamtheit aller Touren dar, die zur Erledigung aller Aufräge gebildet werden müssen. Dies verdeutlicht die \Fref{fig:Repraesentation234}:
 
 \begin{figure}[ht!]
 	\centering
@@ -52,7 +52,7 @@ Hier ist im unteren linken Bereich das verwendete Fahrzeug (Fahrzeug 5) zu finde
       \label{fig:Repraesentation234}
 \end{figure}
 
-Hierbei handelt es sich um ein konkretes Individuum, das drei Fahrzeuge verwendet, um die gezeigten acht Aufträge zu erfüllen. Zusätzlich muss jedes Gen mit einer ergänzenden Datenstruktur assoziiert werden, so dass im späteren Verlauf der Reihenfolgeaspekt dargestellt werden kann. Diese Darstellung wird im Umfeld des genetischen Algorithmus als Phänotyp bezeichnet. Dies veranschaulicht die \Fref{fig:Repraesentation5} zu einer gegebenen Tour.
+Hierbei handelt es sich um ein konkretes Individuum, das drei Fahrzeuge verwendet, um die gezeigten acht Aufträge zu erfüllen. Zusätzlich muss jedes Gen mit einer ergänzenden Datenstruktur assoziiert werden, sodass im späteren Verlauf der Reihenfolgeaspekt dargestellt werden kann. Diese Darstellung wird im Umfeld des genetischen Algorithmus als Phänotyp bezeichnet. Dies veranschaulicht die \Fref{fig:Repraesentation5} zu einer gegebenen Tour.
 
 \myfigure[]{Repraesentation5}{Repraesentation5.pdf}{Aktionsreihenfolge aus einem Gen}
 
@@ -67,34 +67,34 @@ Bevor der genetische Algorithmus arbeiten kann, muss im ersten Schritt eine Star
  \item Auswahl von "`guten"' Individuen, die durch bestimmte Konstruktionsheuristiken erzeugt wurden
 \end{enumerate}
 
-Die zweite Variante bringt ein gewisses Risiko mit, da es beim genetischen Algorithmus passieren kann, dass die Suche, aufgrund bereits guter Lösungen, vorzeitigt konvergiert. Um diesem Problem entgegen zu wirken, wurde der Aufbau der Startpopulation mit beiden Möglichkeiten gekoppelt. Dies soll die  \Fref{fig:Repraesentation6} verdeutlichen:
+Die zweite Variante bringt ein gewisses Risiko mit sich, da es beim genetischen Algorithmus passieren kann, dass die Suche aufgrund bereits guter Lösungen, vorzeitig konvergiert. Um diesem Problem entgegenzuwirken, wurde der Aufbau der Startpopulation mit beiden Möglichkeiten gekoppelt. Dies soll die  \Fref{fig:Repraesentation6} verdeutlichen:
 
 \myfigure[]{Repraesentation6}{Repraesentation6.pdf}{Aufbau der Startpopulation}
 
 Der Großteil der Population wird dabei zufällig erzeugt, wobei ein ausgewählter Teil sich den Konstruktionsheuristiken bedient. Dabei handelt es sich zum einen um das Nearest-Neighbor- und zum anderen um das Sweep-Verfahren, die in den folgenden Kapiteln kurz vorgestellt werden.
 
 \subsubsection{Nearest-Neighbor}
-Beim Nearest-Neighbor handelt es sich um ein bekanntes heuristisches Eröffnungsverfahren was beispielsweise zur Lösung des „Problems des Handlungsreisenden“ verwendet wird. Da das PDPTW eine Abwandlung von dieser Problemstellung ist, eignet sich diese Heuristik ideal für die Erzeugung von potentiellen Startindividuen. Dabei wird bei dieser Technik von einem beliebigen Startpunkt ausgehend der nächstdichteste Knoten besucht. Dies wird sukzessiv fortgesetzt, bis alle Knoten besucht wurden. 
+Beim Nearest-Neighbor handelt es sich um ein bekanntes heuristisches Eröffnungsverfahren, das beispielsweise zur Lösung des "`Problems des Handlungsreisenden"' verwendet wird. Da das PDPTW eine Abwandlung von dieser Problemstellung ist, eignet sich diese Heuristik ideal für die Erzeugung von potentiellen Startindividuen. Dabei wird bei dieser Technik von einem beliebigen Startpunkt ausgehend der nächstliegende Knoten besucht. Dies wird sukzessiv fortgesetzt, bis alle Knoten besucht wurden. 
 
 \subsubsection{Sweep}
-Der Sweep-Algorithmus bedient sich einer anderen Technik zum Finden des nächstmöglichen Knotens. Hier wird von einem beliebigen Knoten ausgehend, der Knoten gewählt, der den geringsten Winkel von einer definierten Startkante aufweist. Dies kann sowohl im oder entgegengesetzt dem Uhrzeigersinn durchgeführt werden.
+Der Sweep-Algorithmus bedient sich einer anderen Technik zum Finden des nächstmöglichen Knotens. Hier wird von einem beliebigen Knoten ausgehend der Knoten gewählt, der den geringsten Winkel von einer definierten Startkante aufweist. Dies kann sowohl im oder gegen dem Uhrzeigersinn durchgeführt werden.
 
 \subsection{Individuenauswahl (Selektion)}
 \label{sec:GenetischerSelektion}
-Die Selektion bestimmt welche Individuen sich paaren dürfen, und erzeugt aus Ihnen die Menge der Nachkommen. Dabei kann die Auswahl entweder komplett zufällig stattfinden oder ins direkte Verhältnis zur Fitness eines Individuums gesetzt werden. Wenn man sich für eine reine fitnessproportionale Selektion entscheidet, so ist ein verhältnismäßig niedriger Selektionsdruck vorhanden, da der genetische Algorithmus verhältnismäßig lange konvergiert. Abhilfe schafft dort eine Ranglistenbasierte Selektion. Bei diesem Verfahren wird die Selektionswahrscheinlichkeit nicht mehr ins direkte Verhältnis zur Fitness gesetzt. Stattdessen werden die unterschiedlichen Individuen nach ihrer Fitness sortiert, so dass die Tour mit dem besten Ergebnis an oberster Stelle der Population steht. Im nächsten Schritt erfolgt die Auswahl der möglichen Kinder für die oberen Elemente der Rangliste mit einer höheren Wahrscheinlichkeit als tieferliegende Individuen. 
+Die Selektion bestimmt welche Individuen sich paaren dürfen und erzeugt aus ihnen die Menge der Nachkommen. Dabei kann die Auswahl entweder komplett zufällig stattfinden oder ins direkte Verhältnis zur Fitness eines Individuums gesetzt werden. Wenn man sich für eine reine fitnessproportionale Selektion entscheidet, so ist ein verhältnismäßig niedriger Selektionsdruck vorhanden, da der genetische Algorithmus verhältnismäßig lange konvergiert. Abhilfe schafft dort eine ranglistenbasierte Selektion. Bei diesem Verfahren wird die Selektionswahrscheinlichkeit nicht mehr ins direkte Verhältnis zur Fitness gesetzt. Stattdessen werden die unterschiedlichen Individuen nach ihrer Fitness sortiert, so dass die Tour mit dem besten Ergebnis an oberster Stelle der Population steht. Im nächsten Schritt erfolgt die Auswahl der möglichen Kinder für die oberen Elemente der Rangliste mit einer höheren Wahrscheinlichkeit als tieferliegende Individuen. 
 
-Zusätzlich wird auch hier auf ein Verfahren zurückgegriffen, welches die möglichen Eltern rein zufällig wählt. Dies hat den Vorteil, dass auch Individuen mit schlechter Fitness als potentieller Elternteil gewählt wird. Dadurch werden ggf. mehr genetische Informationen in die nächste Population übertragen und eine zu frühe Konvergenz, aufgrund von sehr guten Fitnesswerten, verhindert. 
+Zusätzlich wird auch hier auf ein Verfahren zurückgegriffen, das die möglichen Eltern rein zufällig wählt. Dies hat den Vorteil, dass auch Individuen mit schlechter Fitness als potentieller Elternteil gewählt wird. Dadurch werden ggf. mehr genetische Informationen in die nächste Population übertragen und eine zu frühe Konvergenz aufgrund von sehr guten Fitnesswerten verhindert. 
 
-Die Kombination der beiden Techniken veranschaulicht die \Fref{fig:Repraesentation7}. Dort wird als mögliches Elternpaar zum einen das Individuum 2 aufgrund der Fitness ausgewählt. Zum anderen wird Individuum 100 rein zufällig gewählt. Dadurch besteht der Vorteil, dass das Individuum, trotz schlechter Fitness, ggf. eine gute Kombination hervorbringt.
+Die Kombination der beiden Techniken veranschaulicht die \Fref{fig:Repraesentation7}. Dort wird als mögliches Elternpaar zum einen das Individuum 2 aufgrund der Fitness ausgewählt. Zum anderen wird Individuum 100 rein zufällig gewählt. Dadurch besteht der Vorteil, dass das Individuum trotz schlechter Fitness ggf. eine gute Kombination hervorbringt.
 
 \myfigure[]{Repraesentation7}{Repraesentation7.pdf}{Individuenauswahl}
 
 \subsection{Rekombination (Crossover)}
-Bei der Rekombination, auch als Crossover bezeichnet, handelt es sich um den Vorgang, aus zwei Elternpaaren neue Individuen zu erzeugen. Dieses Verfahren stellt dabei einen der wichtigsten Suchoperatoren für genetische Algorithmen dar. Dabei werden die Nachkommen aus den Informationen der gekreuzten Elternpaare systematisch zusammengesetzt. Gesteuert wird der Crossover durch eine Wahrscheinlichkeit, die bestimmt ob entweder nur einfache Kopien der Eltern erzeugt werden, oder ein Operator zur Erzeugung der Nachkommen verwendet wird. Dazu werden nachfolgend zwei verschiedene Varianten vorgestellt.
+Bei der Rekombination, auch als Crossover bezeichnet, handelt es sich um den Vorgang, bei dem aus zwei Elternpaaren neue Individuen zu erzeugen werden. Dieses Verfahren stellt dabei einen der wichtigsten Suchoperatoren für genetische Algorithmen dar. Dabei werden die Nachkommen aus den Informationen der gekreuzten Elternpaare systematisch zusammengesetzt. Gesteuert wird der Crossover durch eine Wahrscheinlichkeit, die bestimmt, ob entweder nur einfache Kopien der Eltern erzeugt werden oder ein Operator zur Erzeugung der Nachkommen verwendet wird. Dazu werden nachfolgend zwei verschiedene Varianten vorgestellt.
 
 \subsubsection{Crossover mit Control-String}
 \label{sec:CrossoverControlString}
-Bei dieser Variante der Rekombination wird, auf Grundlage der gewählten Eltern, ein Bit-String gebildet, der letztendlich zu der Entscheidung führt, ob sich der Nachkomme aus einem Teil des ersten oder zweiten Elternteils zusammensetzt. Im Kontext der Fahrzeugeinsatzplanung soll dies die \Fref{tab:CrossoverControlString} verdeutlichen:
+Bei dieser Variante der Rekombination wird auf Grundlage der gewählten Eltern ein Bit-String gebildet, der letztendlich zu der Entscheidung führt, ob sich der Nachkomme aus einem Teil des ersten oder zweiten Elternteils zusammensetzt. Im Kontext der Fahrzeugeinsatzplanung soll dies die \Fref{tab:CrossoverControlString} verdeutlichen:
 
 \begin{table}[ht!]
  \centering
@@ -111,23 +111,23 @@ Bei dieser Variante der Rekombination wird, auf Grundlage der gewählten Eltern,
 Oben und unten ist jeweils eine Tour dargestellt, die jeweils einem Elternindividuum entnommen wurde. In der Mitte befindet sich der "`Control-String"', wobei die Länge der Summe der Aufträge (Be- und Entladung) der beiden Eltern entspricht. Nun nimmt ein Element des Strings zufällig eine Ausprägung von "`1"' oder "`0"' an, wobei die "`1"' besagt, dass das Element aus Fahrzeug 1 von Plan 1 für den Nachkommen gewählt wird. Auf gleiche Weise geschieht dies mit der "`0"' für Fahrzeug 1 aus Plan 2. Bereits gewählte Aufträge werden dabei nicht mehr berücksichtigt. Letztendlich entsteht der unten in der \Fref{tab:CrossoverControlString} aufgeführte Nachkomme.
 
 \subsubsection{Crossover nach Falkenauer}
-Die zweite Variante für einen möglichen Crossover orientiert sich an dem gruppenzentrierten Operator, der von Falkenauer vorgeschlagen wurde. Im Wesentlichen besteht er aus vier Phasen die nachfolgend in der \Fref{fig:CrossoverFalkenau} dargestellt und erläutert werden.
+Die zweite Variante für einen möglichen Crossover orientiert sich an dem gruppenzentrierten Operator, der von Falkenauer vorgeschlagen wurde. Im Wesentlichen besteht er aus vier Phasen, die nachfolgend in der \Fref{fig:CrossoverFalkenau} dargestellt und erläutert werden.
 
 \myfigure[width=0.9\textwidth]{CrossoverFalkenau}{CrossoverFalkenau.png}{CrossOver nach Falkenauer \cite{bortfeldtplanen}}
 
 \begin{enumerate}
  \item In der ersten Phase werden in jedem der beiden Eltern zufällig je zwei Crossover-Punkte gebildet, die innerhalb von jedem Elternteil den Anfang und das Ende des Crossover-Segments darstellen.
- \item Hier wird das Crossover-Segment des zweiten Elternteils an den ersten Crossover-Punkt des ersten Elternteils angefügt. Die dazugehörigen Touren werden vom Elternteil unmittelbar übernommen, also vorerst ohne Neukonstruktion. Als Folge kann eine Anzahl von Aufträgen mehreren Fahrzeugeinsatzplänen zugeordnet sein. Desweiteren kann es auch vorkommen, dass mehrere Touren vom gleichen Fahrzeug bedient werden.
- \item In dieser Phase werden alle auftretenden Probleme aus Punkt 2 aufgelöst. Dabei wird so vorgegangen, dass vorerst alle neuerhaltenden Touren unangetastet bleiben und die Touren des empfangenden Elternteils modifiziert werden, um alle Konflikte zu lösen. Dazu werden alle Touren eliminiert, die auf ein Fahrzeug referenzieren, das neu hinzugefügt wurde (im Beispiel Fahrzeug 1). Falls anschließend noch einzelne Aufträge doppelt vorhanden sind, so werden auch diese aus den Touren des empfangenden Elternteils eliminiert (im Beispiel die Aufträge 2, 6 und 7). Nach Abschluss dieser Operation sind einzelne Aufträge (im Beispiel 5 und 8) noch vorerst keiner Tour zugeordnet.
+ \item Hier wird das Crossover-Segment des zweiten Elternteils an den ersten Crossover-Punkt des ersten Elternteils angefügt. Die dazugehörigen Touren werden vom Elternteil unmittelbar übernommen, also vorerst ohne Neukonstruktion. Als Folge kann eine Anzahl von Aufträgen mehreren Fahrzeugeinsatzplänen zugeordnet sein. Des Weiteren kann es auch vorkommen, dass mehrere Touren vom gleichen Fahrzeug bedient werden.
+ \item In dieser Phase werden alle auftretenden Probleme aus Punkt 2 aufgelöst. Dabei wird so vorgegangen, dass vorerst alle neuerhaltenden Touren unangetastet bleiben und die Touren des empfangenden Elternteils modifiziert werden. Dazu werden alle Touren eliminiert, die auf ein Fahrzeug referenzieren, das neu hinzugefügt wurde (im Beispiel Fahrzeug 1). Falls anschließend noch einzelne Aufträge doppelt vorhanden sind, so werden auch diese aus den Touren des empfangenden Elternteils eliminiert (im Beispiel die Aufträge 2, 6 und 7). Nach Abschluss dieser Operation sind einzelne Aufträge (im Beispiel 5 und 8) noch vorerst keiner Tour zugeordnet.
  \item Die verbleibenden Aufträge werden rein zufällig an die vorhandenen Touren vergeben. Dazu kann beispielsweise auch ein komplett neues Fahrzeug allokiert werden. Nach Abschluss von Schritt 4 liegt letztendlich als Ergebnis ein vollständiges Kind vor.
 \end{enumerate}
 
 Gegebenenfalls können die Schritte 2-4 mit vertauschten Rollen der Eltern wiederholt werden, falls man ein zweites Kind erzeugen möchte.
 
 \subsection{Mutation}
-Unter der Mutation, im Zusammenhang zum Genetischen Algorithmus, versteht man die Art und Weise, um aus einem Elternteil ein neues Individuum durch zufällige Veränderung zu erzeugen. Diese Änderung wird dabei auch hier durch eine Wahrscheinlichkeit gesteuert, die angibt, ob eine Mutation an einem Individuum stattfindet oder nicht. Sie dienen hauptsächlich dazu, eine gewisse Inhomogenität und Divergenz mit in die Population herein zu bringen, was durch die Rekombination unter Umständen nicht möglich ist. Zusätzlich wird eine frühzeitige Konvergenz des Algorithmus verhindert und der Selektionsdruck abgeschwächt. 
+Unter der Mutation im Zusammenhang zum genetischen Algorithmus versteht man die Art und Weise, um aus einem Elternteil ein neues Individuum durch zufällige Veränderung zu erzeugen. Diese Änderung wird dabei auch hier durch eine Wahrscheinlichkeit gesteuert, die angibt, ob eine Mutation an einem Individuum stattfindet oder nicht. Sie dienen hauptsächlich dazu, eine gewisse Inhomogenität und Divergenz mit in die Population hereinzubringen, was durch die Rekombination unter Umständen nicht möglich ist. Zusätzlich wird eine frühzeitige Konvergenz des Algorithmus verhindert und der Selektionsdruck abgeschwächt. 
 
-Innerhalb dieser Arbeit wurden insgesamt sieben verschiedene Mutationsoperatoren entwickelt, welche mit einer Gewichtung dem genetischen Algorithmus hinzugefügt werden können. Diese werden im nachfolgenden jeweils mit einer Abbildung vorgestellt.
+Innerhalb dieser Arbeit wurden insgesamt sieben verschiedene Mutationsoperatoren entwickelt, welche mit einer Gewichtung dem genetischen Algorithmus hinzugefügt werden können. Diese werden in nachfolgenden Abschnitten jeweils mit einer Abbildung vorgestellt.
 
 \subsubsection{Aufteilung der längsten Route}
 \label{sec:AufteilungLangaesteRoute}
@@ -137,24 +137,24 @@ Dieser Operator überprüft die Länge von jeder Tour innerhalb einer Fahrzeugei
 \myfigure{MutationAufteilen2}{MutationAufteilen2.pdf}{Neues Individuum}
 
 \subsubsection{Aufteilung der kleinsten/zufälligen Tour}
-Diese beiden Mutationsoperatoren arbeiten auf die gleiche Weise wie unter \Fref{sec:AufteilungLangaesteRoute} beschrieben. Dabei wird hier der mögliche Kandidat entweder zufällig oder anhand der kleinsten Tour gewählt. Da die Arbeitsweise nahezu identisch ist, wurde hier auf eine zusätzliche Abbildung verzichtet.
+Diese beiden Mutationsoperatoren arbeiten auf die gleiche Weise, wie unter \Fref{sec:AufteilungLangaesteRoute} beschrieben. Dabei wird hier der mögliche Kandidat entweder zufällig oder anhand der kleinsten Tour gewählt. Da die Arbeitsweise nahezu identisch ist, wurde hier auf eine zusätzliche Abbildung verzichtet.
 
 \subsubsection{Verschiebung einer/mehrerer Aktion(en) innerhalb einer Tour}
-Dieser Operator geht noch einen Schritt weiter und verschiebt innerhalb einer Tour eine Aktion. Bei einer Aktion kann es sich um ein Auf- oder Abladen eines bestimmten Auftrags handeln, was über die assoziierte Datenstruktur zu einer Tour gewährleistet wird. (siehe \Fref{fig:AktionVerschieben}). Ein weiterer Operator verschiebt zusätzlich nicht nur eine Aktion, sondern ganze Subrouten, die in ihren Grenzen zufällig gewählt werden.
+Dieser Operator geht noch einen Schritt weiter und verschiebt innerhalb einer Tour eine Aktion. Bei einer Aktion kann es sich um ein Auf- oder Abladen eines bestimmten Auftrags handeln, was über die assoziierte Datenstruktur zu einer Tour gewährleistet wird (siehe \Fref{fig:AktionVerschieben}). Ein weiterer Operator verschiebt zusätzlich nicht nur eine Aktion, sondern ganze Subrouten, die in ihren Grenzen zufällig gewählt werden.
 
 \myfigure[]{AktionVerschieben}{AktionVerschieben.pdf}{Verschiebung einer/mehrerer Aktion(en) innerhalb einer Tour}
 
-Die Repräsentation (links in \Fref{fig:AktionVerschieben}) bleibt davon unberührt, da es sich um eine reine Manipulation der Datenstruktur handelt. Konkret wird in diesem Beispiel das Abladen des Auftrags 3 mit dem Aufladen des Auftrags 2 vertauscht. Dies kann zur Folge habe, dass falsche Lösungen entstehen, da nach dem Operator keine Überprüfung und ggf. eine Korrektur stattfindet. Der Umgang mit der genannten Problematik wird jedoch im \Fref{sec:Nachfolgegeneration} erläutert. 
+Die Repräsentation (links in \Fref{fig:AktionVerschieben}) bleibt davon unberührt, da es sich um eine reine Manipulation der Datenstruktur handelt. Konkret wird in diesem Beispiel das Abladen des Auftrags 3 mit dem Aufladen des Auftrags 2 vertauscht. Dies kann zur Folge habe, dass falsche Lösungen entstehen, da nach dem Operator keine Überprüfung und ggf. Korrektur stattfindet. Der Umgang mit der genannten Problematik wird jedoch im \Fref{sec:Nachfolgegeneration} erläutert. 
 
 \subsubsection{Verschiebung von Subtouren über eine Tour hinaus}
-Die bisherigen Operatoren haben lediglich ein Gen des Individuums mutiert. Um eine größere Varianz, unter dem Einfluss der Mutation, zu erschaffen wurde zusätzlich eine Möglichkeit entwickelt, wo ein Tauschen von Subtouren zwischen den unterschiedlichen Genen eines Individuums stattfindet. Dies veranschaulicht die \Fref{fig:SubrouteVerschieben}:
+Die bisherigen Operatoren haben lediglich ein Gen des Individuums mutiert. Um eine größere Varianz unter dem Einfluss der Mutation zu erschaffen, wurde zusätzlich eine Möglichkeit entwickelt, bei der ein Tauschen von Subtouren zwischen den unterschiedlichen Genen eines Individuums stattfindet. Dies veranschaulicht die \Fref{fig:SubrouteVerschieben}:
 
 \myfigure[]{SubrouteVerschieben}{SubrouteVerschieben.pdf}{Verschiebung von Subtouren über eine Tour hinaus}
 
 Dadurch entstehen letztendlich zwei komplett neue Touren innerhalb einer Fahrzeugeinsatzplanung, wobei diese Mutation Einfluss auf die Repräsentationsebene hat, da beispielsweise die Order 2 und 7 von Tour 2 nun von der Tour 1 ausgeführt wird. 
 
-\subsubsection{Kombination von 2 Touren}
-Den letzten genetischen Operator für eine Mutation stellt die Kombination von 2 Touren zu einer neuen Tour dar. Das Fahrzeug, das die Aufträge abliefert, wird zufällig aus den beiden vorhandenen gewählt. Dies wird durch die \Fref{fig:Kombination} veranschaulicht:
+\subsubsection{Kombination von zwei Touren}
+Den letzten genetischen Operator für eine Mutation stellt die Kombination von zwei Touren zu einer neuen Tour dar. Das Fahrzeug, das die Aufträge abliefert, wird zufällig aus den beiden vorhandenen gewählt. Dies wird durch die \Fref{fig:Kombination} veranschaulicht:
 
 \myfigure[]{Kombination}{Kombination.pdf}{Kombination von zwei Touren}
 
@@ -172,13 +172,13 @@ Um die Individuen einer Population bewerten zu können, werden sie einem Fitness
 \end{itemize}
 Je nach Wunsch der Optimierung können diese Bausteine dann zusammengesetzt werden. Hierbei sind alle Kombinationen der genannten Bausteine möglich, auch die Verwendung eines einzelnen Bausteins ist vorgesehen.
 
-Jeder Baustein berechnet hierbei seinen eignen Fitnesswert und je nach Zusammensetzung des Fitnesstests werden diese dann addiert. Ziel ist es die Summe der einzelnen Fitnesswerte zu minimieren. Die Problematik beim Berechnen der Gesamtfitness besteht darin, dass unterschiedliche Einheiten verwendet werden, zum Beispiel Mengenangaben für die Anzahl der Fahrzeuge oder Zeitangaben für Verletzungen der Zeitfenster. Deshalb wird als Basis für die jeweiligen Fitnesswerte die Länge eines Plans verwendet. Je nach Baustein wird die Länge dann mit einem bestimmten Faktor multipliziert. Dieser Faktor ergibt sich aus der Wichtigkeit eines Bausteins und aus einem spezifischen Wert, beispielsweise die Anzahl der verwendeten Fahrzeuge. Die Wichtigkeit eines Bausteins kann von außen angegeben werden. Dadurch ist es einem Anwender möglich, festzulegen welche Komponenten für ihn wichtig sind, zum Beispiel möchte Anwender A die kürzeste Strecke zurücklegen und nimmt dafür Verletzungen der Zeitfenster in Kauf, dagegen möchte Anwender B unbedingt alle Restriktionen einhalten und akzeptiert einen längeren Weg.
+Jeder Baustein berechnet hierbei seinen eignen Fitnesswert und je nach Zusammensetzung des Fitnesstests werden diese dann addiert. Ziel ist es die Summe der einzelnen Fitnesswerte zu minimieren. Die Problematik beim Berechnen der Gesamtfitness besteht darin, dass unterschiedliche Einheiten verwendet werden, zum Beispiel Mengenangaben für die Anzahl der Fahrzeuge oder Zeitangaben für Verletzungen der Zeitfenster. Deshalb wird als Basis für die jeweiligen Fitnesswerte die Länge eines Plans verwendet. Je nach Baustein wird die Länge dann mit einem bestimmten Faktor multipliziert. Dieser Faktor ergibt sich aus der Wichtigkeit eines Bausteins und aus einem spezifischen Wert, beispielsweise die Anzahl der verwendeten Fahrzeuge. Die Wichtigkeit eines Bausteins kann von außen angegeben werden. Dadurch ist es einem Anwender möglich festzulegen, welche Komponenten für ihn wichtig sind, zum Beispiel möchte Anwender A die kürzeste Strecke zurücklegen und nimmt dafür Verletzungen der Zeitfenster in Kauf. Dagegen möchte Anwender B unbedingt alle Restriktionen einhalten und akzeptiert einen längeren Weg.
 
-Eine Besonderheit bei diesem Fitnesstest stellen die Bausteine mit den Restriktionsverletzungen dar. Bei diesen Bausteinen wird folgendes Verhalten umgesetzt: mehrere kleine Verletzungen sind nicht so schlimm wie eine große, beispielsweise ist die Qualität eines Plans besser, wenn zwei Fahrzeuge um jeweils eine halbe Stunde ihr Zeitfenster verfehlen als wenn ein Fahrzeug um eine Stunde sein Zeitfenster verfehlt. Dafür wird eine exponentielle Bestrafung eingesetzt.
+Eine Besonderheit bei diesem Fitnesstest stellen die Bausteine mit den Restriktionsverletzungen dar. Bei diesen Bausteinen wird folgendes Verhalten umgesetzt: mehrere kleine Verletzungen sind nicht so schlimm wie eine große, beispielsweise ist die Qualität eines Plans besser, wenn zwei Fahrzeuge um jeweils eine halbe Stunde ihr Zeitfenster verfehlen, als wenn ein Fahrzeug um eine Stunde sein Zeitfenster verfehlt. Dafür wird eine exponentielle Bestrafung eingesetzt.
 
 \subsection{Bildung der Nachfolgegeneration}
 \label{sec:Nachfolgegeneration}
-Über die Mechanismen der Selektion hinaus, die in \Fref{sec:GenetischerSelektion} definiert wurden, wird sowohl die komplette Ausgangspopulation, als auch die neue Population, für die Nachfolgepopulation berücksichtigt. Dazu findet auch an der Neuen wiederum eine Sortierung statt. Zum einen werden alle invaliden Lösungen, d.h. Lösungen, wo beispielsweise ein Ent- vor dem Beladen erfolgt, ans Ende der Population verschoben. Danach erfolgt eine Sortierung anhand der Fitness. Demnach werden beiden Populationen zu einer Nachfolgepopulation der definierten Menge (im Beispiel 100) zusammengefasst. Zur Veranschaulichung dient die \Fref{fig:Nachfolgegeneration}:
+Über die Mechanismen der Selektion hinaus, die in \Fref{sec:GenetischerSelektion} definiert wurden, wird sowohl die komplette Ausgangspopulation als auch die neue Population für die Nachfolgepopulation berücksichtigt. Dazu findet auch an der neuen wiederum eine Sortierung statt. Zum einen werden alle invaliden Lösungen, d.h. Lösungen, wo beispielsweise ein Ent- vor dem Beladen erfolgt, ans Ende der Population verschoben. Danach erfolgt eine Sortierung anhand der Fitness. Demnach werden beiden Populationen zu einer Nachfolgepopulation der definierten Menge (im Beispiel 100) zusammengefasst. Zur Veranschaulichung dient die \Fref{fig:Nachfolgegeneration}:
 
 \myfigure[scale=0.85]{Nachfolgegeneration}{Nachfolgegeneration.pdf}{Bildung der Nachfolgegeneration}
 
@@ -186,13 +186,13 @@ Das Resultat ist die neue Nachfolgepopulation, die wieder in den genetischen Alg
 
 \FloatBarrier
 \subsection{Abbruchbedingung}
-Als letzten entscheidenden Punkt muss beim genetischen Algorithmus eine Abbruchbedingung definiert werden, wann die Suche abgeschlossen ist. Dazu wurden zwei Varianten entwickelt:
+Als letzten entscheidenden Punkt muss beim genetischen Algorithmus eine Abbruchbedingung dazu definiert werden, wann die Suche abgeschlossen ist. Dazu wurden zwei Varianten entwickelt:
 
 \begin{enumerate}
  \item Der genetische Algorithmus wird solange durchlaufen, bis eine definierte Anzahl von Iterationen (z.B. 5000) erreicht wurde.
  \item Die Fitness der besten Lösung entspricht einem definierten Abstand von der Durchschnittsfitness von allen Lösungen zu dieser Lösung
 \end{enumerate}
 
-Die erste Bedingung wird für den Fall benötigt, dass der genetische Algorithmus nicht unendlich oft durchlaufen wird. Eine Iteration entspricht dabei dem Weg von einer Ausgangspopulation bis hin zu Neubildung der Nachfolgegeneration.
+Die erste Bedingung wird für den Fall benötigt, dass der genetische Algorithmus nicht unendlich oft durchlaufen wird. Eine Iteration entspricht dabei dem Weg von einer Ausgangspopulation bis hin zur Neubildung der Nachfolgegeneration.
 
 Die zweite Bedingung ist die eigentlich entscheidende, da der Algorithmus solange laufen soll, bis keine bessere Lösung mehr gefunden wird. Ist dies der Fall, so kann die genetische Suche abgeschlossen werden und das erste Individuum in der Population entspricht der optimalen Lösung für eine gegebene Konfiguration.
