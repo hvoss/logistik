@@ -1,4 +1,4 @@
-\section{GenetischerAlgorithmus}
+\section{Genetischer Algorithmus}
 \label{sec:GenetischerAlgorithmus}
 Das nachfolgende Kapitel stellt den genetischen Algorithmus, als Verfahren zur Lösung komplexer Optimierungsprobleme, vor. Dazu werden im ersten Schritt die benötigten Grundlagen geschaffen und im Anschluss die speziellen Operatoren im Zusammenhang mit dem "`PDPTW"' vorgestellt. 
 
@@ -52,7 +52,7 @@ Hier ist im unteren linken Bereich das verwendete Fahrzeug (Fahrzeug 5) zu finde
       \label{fig:Repraesentation234}
 \end{figure}
 
-Hierbei handelt es sich um ein konkretes Individuum, das drei Fahrzeuge verwendet, um die gezeigten acht Aufträge zu erfüllen. Zusätzlich muss jedes Gen mit einer ergänzenden Datenstruktur assoziiert werden, so dass im späteren Verlauf der Reihenfolgeaspekt dargestellt werden kann. Diese Darstellung wird im Umfeld des genetischen Algorithmus als Phänotyp bezeichnet. Dies veranschaulicht die \Fref{fig:Repraesentation5} zu einer gegebenen Tour:
+Hierbei handelt es sich um ein konkretes Individuum, das drei Fahrzeuge verwendet, um die gezeigten acht Aufträge zu erfüllen. Zusätzlich muss jedes Gen mit einer ergänzenden Datenstruktur assoziiert werden, so dass im späteren Verlauf der Reihenfolgeaspekt dargestellt werden kann. Diese Darstellung wird im Umfeld des genetischen Algorithmus als Phänotyp bezeichnet. Dies veranschaulicht die \Fref{fig:Repraesentation5} zu einer gegebenen Tour.
 
 \myfigure[]{Repraesentation5}{Repraesentation5.pdf}{Aktionsreihenfolge aus einem Gen}
 
@@ -93,6 +93,7 @@ Die Kombination der beiden Techniken veranschaulicht die \Fref{fig:Repraesentati
 Bei der Rekombination, auch als Crossover bezeichnet, handelt es sich um den Vorgang, aus zwei Elternpaaren neue Individuen zu erzeugen. Dieses Verfahren stellt dabei einen der wichtigsten Suchoperatoren für genetische Algorithmen dar. Dabei werden die Nachkommen aus den Informationen der gekreuzten Elternpaare systematisch zusammengesetzt. Gesteuert wird der Crossover durch eine Wahrscheinlichkeit, die bestimmt ob entweder nur einfache Kopien der Eltern erzeugt werden, oder ein Operator zur Erzeugung der Nachkommen verwendet wird. Dazu werden nachfolgend zwei verschiedene Varianten vorgestellt.
 
 \subsubsection{Crossover mit Control-String}
+\label{sec:CrossoverControlString}
 Bei dieser Variante der Rekombination wird, auf Grundlage der gewählten Eltern, ein Bit-String gebildet, der letztendlich zu der Entscheidung führt, ob sich der Nachkomme aus einem Teil des ersten oder zweiten Elternteils zusammensetzt. Im Kontext der Fahrzeugeinsatzplanung soll dies die \Fref{tab:CrossoverControlString} verdeutlichen:
 
 \begin{table}[ht!]
